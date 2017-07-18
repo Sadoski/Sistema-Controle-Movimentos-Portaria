@@ -6,7 +6,10 @@ from mysql.connector import Error
 from conexao.conexao import ConexaoDb, mysql
 from classes.classPrincipal import Principal
 from telas.frmMainHouse import Ui_frmMainHouse
+from telas.frmLogin import Ui_frmLogin
 app = QtGui.QApplication(sys.argv)
+
+
 
 
 class LogarDao(object):
@@ -22,9 +25,11 @@ class LogarDao(object):
         try:
             if result:
                 for i in result:
+
                     principal = Principal()
                     principal.show()
-                    sys.exit(self.app.exec_())
+                    principal.exec()
+                    #return result
 
             else:
                 w = QWidget()

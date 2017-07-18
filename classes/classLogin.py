@@ -4,6 +4,8 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
+from .classEmpresa import Empresa
+app = QtGui.QApplication(sys.argv)
 
 
 class Login(QtGui.QMainWindow):
@@ -19,10 +21,18 @@ class Login(QtGui.QMainWindow):
         self.__ui.btnEsqueciSenha.clicked.connect(self.__esqueciSenha)
 
     def __login(self):
-        self.__login = self.__ui.txtUsuario.text()
-        self.__senha = self.__ui.txtSenha.text()
+        __login = self.__ui.txtUsuario.text()
+        __senha = self.__ui.txtSenha.text()
 
-        self.__logarDao.login(self.__login, self.__senha)
+        self.__logarDao.login(__login, __senha)
+        '''
+        for entrar in __empresa:
+            emp = Empresa()
+            emp.show()
+            emp.exe()
+        '''
+
+
 
     def __sair(self):
         w = QWidget()

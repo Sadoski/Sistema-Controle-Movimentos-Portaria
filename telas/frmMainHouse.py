@@ -112,7 +112,7 @@ class Ui_frmMainHouse(object):
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
         frmMainHouse.setStatusBar(self.statusbar)
         self.subMenuCadastroEmpresa = QtGui.QAction(frmMainHouse)
-        self.subMenuCadastroEmpresa.setEnabled(False)
+        #self.subMenuCadastroEmpresa.setEnabled(False)
         self.subMenuCadastroEmpresa.setObjectName(_fromUtf8("subMenuCadastroEmpresa"))
         self.subMenuCadastroFuncionarios = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroFuncionarios.setObjectName(_fromUtf8("subMenuCadastroFuncionarios"))
