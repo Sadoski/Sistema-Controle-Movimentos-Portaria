@@ -7,6 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -29,7 +31,8 @@ class Ui_frmCadastroFuncionario(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFuncionario.setFont(font)
-        frmCadastroFuncionario.setModal(True)
+        #frmCadastroFuncionario.setModal(True)
+
         self.txtIdEmpresa = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtIdEmpresa.setEnabled(False)
         self.txtIdEmpresa.setGeometry(QtCore.QRect(12, 22, 141, 25))
@@ -48,12 +51,15 @@ class Ui_frmCadastroFuncionario(object):
         self.txtIdEmpresa.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtIdEmpresa.setMaxLength(11)
         self.txtIdEmpresa.setObjectName(_fromUtf8("txtIdEmpresa"))
+
         self.lblNomeFantasia = QtGui.QLabel(frmCadastroFuncionario)
         self.lblNomeFantasia.setGeometry(QtCore.QRect(162, 2, 101, 19))
         self.lblNomeFantasia.setObjectName(_fromUtf8("lblNomeFantasia"))
+
         self.lblRazaoSocial = QtGui.QLabel(frmCadastroFuncionario)
         self.lblRazaoSocial.setGeometry(QtCore.QRect(12, 47, 91, 19))
         self.lblRazaoSocial.setObjectName(_fromUtf8("lblRazaoSocial"))
+
         self.txtInscricaoEstadua = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtInscricaoEstadua.setEnabled(False)
         self.txtInscricaoEstadua.setGeometry(QtCore.QRect(12, 113, 178, 25))
@@ -73,15 +79,19 @@ class Ui_frmCadastroFuncionario(object):
         self.txtInscricaoEstadua.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtInscricaoEstadua.setMaxLength(8)
         self.txtInscricaoEstadua.setObjectName(_fromUtf8("txtInscricaoEstadua"))
+
         self.lblInscricaoEstadual = QtGui.QLabel(frmCadastroFuncionario)
         self.lblInscricaoEstadual.setGeometry(QtCore.QRect(12, 93, 121, 19))
         self.lblInscricaoEstadual.setObjectName(_fromUtf8("lblInscricaoEstadual"))
+
         self.lblCodigoEmpresa = QtGui.QLabel(frmCadastroFuncionario)
         self.lblCodigoEmpresa.setGeometry(QtCore.QRect(12, 2, 111, 19))
         self.lblCodigoEmpresa.setObjectName(_fromUtf8("lblCodigoEmpresa"))
+
         self.lblCnpj = QtGui.QLabel(frmCadastroFuncionario)
         self.lblCnpj.setGeometry(QtCore.QRect(474, 47, 41, 19))
         self.lblCnpj.setObjectName(_fromUtf8("lblCnpj"))
+
         self.txtCnpj = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtCnpj.setEnabled(False)
         self.txtCnpj.setGeometry(QtCore.QRect(472, 67, 201, 25))
@@ -102,6 +112,7 @@ class Ui_frmCadastroFuncionario(object):
         self.txtCnpj.setText(_fromUtf8("../-"))
         self.txtCnpj.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpj.setObjectName(_fromUtf8("txtCnpj"))
+
         self.txtRazaoSocial = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtRazaoSocial.setEnabled(False)
         self.txtRazaoSocial.setGeometry(QtCore.QRect(12, 67, 451, 25))
@@ -121,51 +132,64 @@ class Ui_frmCadastroFuncionario(object):
         self.txtRazaoSocial.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtRazaoSocial.setMaxLength(70)
         self.txtRazaoSocial.setObjectName(_fromUtf8("txtRazaoSocial"))
+
         self.txtFantasia = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtFantasia.setGeometry(QtCore.QRect(162, 22, 471, 25))
         self.txtFantasia.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtFantasia.setMaxLength(70)
         self.txtFantasia.setObjectName(_fromUtf8("txtFantasia"))
+
         self.btnPesquisar = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnPesquisar.setGeometry(QtCore.QRect(644, 22, 31, 27))
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
+
         self.grbFuncionario = QtGui.QGroupBox(frmCadastroFuncionario)
         self.grbFuncionario.setGeometry(QtCore.QRect(5, 164, 675, 391))
         self.grbFuncionario.setTitle(_fromUtf8(""))
         self.grbFuncionario.setObjectName(_fromUtf8("grbFuncionario"))
+
         self.lblNomeFuncionario = QtGui.QLabel(self.grbFuncionario)
         self.lblNomeFuncionario.setGeometry(QtCore.QRect(178, 6, 121, 19))
         self.lblNomeFuncionario.setObjectName(_fromUtf8("lblNomeFuncionario"))
+
         self.txtNomeMae = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNomeMae.setGeometry(QtCore.QRect(8, 118, 321, 25))
         self.txtNomeMae.setMaxLength(70)
         self.txtNomeMae.setObjectName(_fromUtf8("txtNomeMae"))
+
         self.txtExpeditor = QtGui.QLineEdit(self.grbFuncionario)
         self.txtExpeditor.setGeometry(QtCore.QRect(216, 72, 113, 25))
         self.txtExpeditor.setMaxLength(5)
         self.txtExpeditor.setObjectName(_fromUtf8("txtExpeditor"))
+
         self.txtRg = QtGui.QLineEdit(self.grbFuncionario)
         self.txtRg.setGeometry(QtCore.QRect(6, 72, 201, 25))
         self.txtRg.setObjectName(_fromUtf8("txtRg"))
+
         self.lblDataNascimento = QtGui.QLabel(self.grbFuncionario)
         self.lblDataNascimento.setGeometry(QtCore.QRect(548, 52, 111, 19))
         self.lblDataNascimento.setObjectName(_fromUtf8("lblDataNascimento"))
+
         self.txtDataNascimento = QtGui.QDateEdit(self.grbFuncionario)
         self.txtDataNascimento.setGeometry(QtCore.QRect(548, 72, 119, 25))
         self.txtDataNascimento.setObjectName(_fromUtf8("txtDataNascimento"))
+
         self.lblCep = QtGui.QLabel(self.grbFuncionario)
         self.lblCep.setGeometry(QtCore.QRect(8, 236, 31, 19))
         self.lblCep.setObjectName(_fromUtf8("lblCep"))
+
         self.txtComplemento = QtGui.QLineEdit(self.grbFuncionario)
         self.txtComplemento.setGeometry(QtCore.QRect(8, 210, 291, 25))
         self.txtComplemento.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtComplemento.setMaxLength(50)
         self.txtComplemento.setObjectName(_fromUtf8("txtComplemento"))
+
         self.lblNomePai = QtGui.QLabel(self.grbFuncionario)
         self.lblNomePai.setGeometry(QtCore.QRect(338, 98, 71, 19))
         self.lblNomePai.setObjectName(_fromUtf8("lblNomePai"))
+
         self.txtCidades = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCidades.setEnabled(False)
         self.txtCidades.setGeometry(QtCore.QRect(168, 256, 341, 25))
@@ -184,13 +208,16 @@ class Ui_frmCadastroFuncionario(object):
         self.txtCidades.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCidades.setMaxLength(70)
         self.txtCidades.setObjectName(_fromUtf8("txtCidades"))
+
         self.lblCpf = QtGui.QLabel(self.grbFuncionario)
         self.lblCpf.setGeometry(QtCore.QRect(338, 52, 31, 19))
         self.lblCpf.setObjectName(_fromUtf8("lblCpf"))
+
         self.txtNomePai = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNomePai.setGeometry(QtCore.QRect(338, 118, 329, 25))
         self.txtNomePai.setMaxLength(70)
         self.txtNomePai.setObjectName(_fromUtf8("txtNomePai"))
+
         self.txtEstados = QtGui.QLineEdit(self.grbFuncionario)
         self.txtEstados.setEnabled(False)
         self.txtEstados.setGeometry(QtCore.QRect(516, 256, 151, 25))
@@ -209,59 +236,75 @@ class Ui_frmCadastroFuncionario(object):
         self.txtEstados.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhUppercaseOnly)
         self.txtEstados.setMaxLength(50)
         self.txtEstados.setObjectName(_fromUtf8("txtEstados"))
+
         self.txtEndereco = QtGui.QLineEdit(self.grbFuncionario)
         self.txtEndereco.setGeometry(QtCore.QRect(8, 164, 491, 25))
         self.txtEndereco.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtEndereco.setMaxLength(50)
         self.txtEndereco.setObjectName(_fromUtf8("txtEndereco"))
+
         self.lblExpeditor = QtGui.QLabel(self.grbFuncionario)
         self.lblExpeditor.setGeometry(QtCore.QRect(216, 52, 66, 19))
         self.lblExpeditor.setObjectName(_fromUtf8("lblExpeditor"))
+
         self.txtNumero = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNumero.setGeometry(QtCore.QRect(508, 164, 161, 25))
         self.txtNumero.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtNumero.setMaxLength(11)
         self.txtNumero.setObjectName(_fromUtf8("txtNumero"))
+
         self.lblRg = QtGui.QLabel(self.grbFuncionario)
         self.lblRg.setGeometry(QtCore.QRect(6, 52, 31, 19))
         self.lblRg.setObjectName(_fromUtf8("lblRg"))
+
         self.lblTelefoene = QtGui.QLabel(self.grbFuncionario)
         self.lblTelefoene.setGeometry(QtCore.QRect(8, 282, 61, 19))
         self.lblTelefoene.setObjectName(_fromUtf8("lblTelefoene"))
+
         self.txtBairro = QtGui.QLineEdit(self.grbFuncionario)
         self.txtBairro.setGeometry(QtCore.QRect(308, 210, 361, 25))
         self.txtBairro.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtBairro.setMaxLength(50)
         self.txtBairro.setObjectName(_fromUtf8("txtBairro"))
+
         self.txtCelular = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCelular.setGeometry(QtCore.QRect(208, 302, 191, 25))
         self.txtCelular.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCelular.setObjectName(_fromUtf8("txtCelular"))
+
         self.txtNomeFuncionario = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNomeFuncionario.setGeometry(QtCore.QRect(178, 26, 488, 25))
         self.txtNomeFuncionario.setMaxLength(70)
         self.txtNomeFuncionario.setObjectName(_fromUtf8("txtNomeFuncionario"))
+
         self.lblComplemento = QtGui.QLabel(self.grbFuncionario)
         self.lblComplemento.setGeometry(QtCore.QRect(8, 190, 101, 16))
         self.lblComplemento.setObjectName(_fromUtf8("lblComplemento"))
+
         self.lblEstados = QtGui.QLabel(self.grbFuncionario)
         self.lblEstados.setGeometry(QtCore.QRect(518, 236, 51, 19))
         self.lblEstados.setObjectName(_fromUtf8("lblEstados"))
+
         self.txtCpf = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCpf.setGeometry(QtCore.QRect(338, 72, 201, 25))
         self.txtCpf.setObjectName(_fromUtf8("txtCpf"))
+
         self.lblBairro = QtGui.QLabel(self.grbFuncionario)
         self.lblBairro.setGeometry(QtCore.QRect(308, 190, 41, 19))
         self.lblBairro.setObjectName(_fromUtf8("lblBairro"))
+
         self.lblCerlular = QtGui.QLabel(self.grbFuncionario)
         self.lblCerlular.setGeometry(QtCore.QRect(208, 282, 61, 19))
         self.lblCerlular.setObjectName(_fromUtf8("lblCerlular"))
+
         self.lblNumero = QtGui.QLabel(self.grbFuncionario)
         self.lblNumero.setGeometry(QtCore.QRect(508, 144, 51, 19))
         self.lblNumero.setObjectName(_fromUtf8("lblNumero"))
+
         self.lblCidades = QtGui.QLabel(self.grbFuncionario)
         self.lblCidades.setGeometry(QtCore.QRect(168, 236, 51, 19))
         self.lblCidades.setObjectName(_fromUtf8("lblCidades"))
+
         self.txtidFuncionario = QtGui.QLineEdit(self.grbFuncionario)
         self.txtidFuncionario.setEnabled(False)
         self.txtidFuncionario.setGeometry(QtCore.QRect(6, 26, 161, 25))
@@ -280,57 +323,73 @@ class Ui_frmCadastroFuncionario(object):
         self.txtidFuncionario.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.txtidFuncionario.setMaxLength(11)
         self.txtidFuncionario.setObjectName(_fromUtf8("txtidFuncionario"))
+
         self.lblCodigoFuncionario = QtGui.QLabel(self.grbFuncionario)
         self.lblCodigoFuncionario.setGeometry(QtCore.QRect(6, 6, 121, 19))
         self.lblCodigoFuncionario.setObjectName(_fromUtf8("lblCodigoFuncionario"))
+
         self.lblEndereco = QtGui.QLabel(self.grbFuncionario)
         self.lblEndereco.setGeometry(QtCore.QRect(8, 144, 66, 19))
         self.lblEndereco.setObjectName(_fromUtf8("lblEndereco"))
+
         self.txtCep = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCep.setGeometry(QtCore.QRect(8, 256, 151, 25))
         self.txtCep.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCep.setInputMask(_fromUtf8("00000-000; "))
+
         self.txtCep.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCep.setObjectName(_fromUtf8("txtCep"))
+
         self.lblNomeMae = QtGui.QLabel(self.grbFuncionario)
         self.lblNomeMae.setGeometry(QtCore.QRect(8, 98, 81, 19))
         self.lblNomeMae.setObjectName(_fromUtf8("lblNomeMae"))
+
         self.txtTelefone = QtGui.QLineEdit(self.grbFuncionario)
         self.txtTelefone.setGeometry(QtCore.QRect(8, 302, 191, 25))
         self.txtTelefone.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtTelefone.setObjectName(_fromUtf8("txtTelefone"))
+
         self.txtSetor = QtGui.QComboBox(self.grbFuncionario)
         self.txtSetor.setGeometry(QtCore.QRect(10, 350, 231, 25))
         self.txtSetor.setObjectName(_fromUtf8("txtSetor"))
+
         self.txtCargo = QtGui.QComboBox(self.grbFuncionario)
         self.txtCargo.setGeometry(QtCore.QRect(250, 350, 231, 25))
         self.txtCargo.setObjectName(_fromUtf8("txtCargo"))
+
         self.lblSetor = QtGui.QLabel(self.grbFuncionario)
         self.lblSetor.setGeometry(QtCore.QRect(10, 330, 66, 19))
         self.lblSetor.setObjectName(_fromUtf8("lblSetor"))
+
         self.lblCargo = QtGui.QLabel(self.grbFuncionario)
         self.lblCargo.setGeometry(QtCore.QRect(250, 330, 66, 19))
         self.lblCargo.setObjectName(_fromUtf8("lblCargo"))
+
         self.btnCadSetoresCancelar = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnCadSetoresCancelar.setGeometry(QtCore.QRect(480, 570, 81, 61))
         self.btnCadSetoresCancelar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresCancelar.setObjectName(_fromUtf8("btnCadSetoresCancelar"))
+
         self.btnCadSetoresEditar = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnCadSetoresEditar.setGeometry(QtCore.QRect(380, 570, 81, 61))
         self.btnCadSetoresEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresEditar.setObjectName(_fromUtf8("btnCadSetoresEditar"))
+
         self.btnCadSetoresDeletar = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnCadSetoresDeletar.setGeometry(QtCore.QRect(580, 570, 81, 61))
         self.btnCadSetoresDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresDeletar.setObjectName(_fromUtf8("btnCadSetoresDeletar"))
+
         self.btnCadSetoresSalvar = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnCadSetoresSalvar.setGeometry(QtCore.QRect(280, 570, 81, 61))
         self.btnCadSetoresSalvar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresSalvar.setObjectName(_fromUtf8("btnCadSetoresSalvar"))
+
         self.btnCadSetoresNovo = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnCadSetoresNovo.setGeometry(QtCore.QRect(180, 570, 81, 61))
         self.btnCadSetoresNovo.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresNovo.setObjectName(_fromUtf8("btnCadSetoresNovo"))
+
         self.lblNomeFantasia.setBuddy(self.txtFantasia)
         self.lblRazaoSocial.setBuddy(self.txtRazaoSocial)
         self.lblInscricaoEstadual.setBuddy(self.txtInscricaoEstadua)

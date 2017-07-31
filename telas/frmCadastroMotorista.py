@@ -29,13 +29,16 @@ class Ui_frmCadastroMotorista(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroMotorista.setFont(font)
-        frmCadastroMotorista.setModal(True)
+        #frmCadastroMotorista.setModal(True)
+
         self.grbFuncionario = QtGui.QGroupBox(frmCadastroMotorista)
         self.grbFuncionario.setGeometry(QtCore.QRect(5, 10, 675, 361))
         self.grbFuncionario.setObjectName(_fromUtf8("grbFuncionario"))
+
         self.lblNomeMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblNomeMotorista.setGeometry(QtCore.QRect(178, 20, 121, 19))
         self.lblNomeMotorista.setObjectName(_fromUtf8("lblNomeMotorista"))
+
         self.txtCnh = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCnh.setGeometry(QtCore.QRect(8, 132, 221, 25))
         self.txtCnh.setMaxLength(9)
@@ -44,26 +47,32 @@ class Ui_frmCadastroMotorista(object):
         self.txtExpeditor.setGeometry(QtCore.QRect(216, 86, 113, 25))
         self.txtExpeditor.setMaxLength(5)
         self.txtExpeditor.setObjectName(_fromUtf8("txtExpeditor"))
+
         self.txtRg = QtGui.QLineEdit(self.grbFuncionario)
         self.txtRg.setGeometry(QtCore.QRect(6, 86, 201, 25))
         self.txtRg.setObjectName(_fromUtf8("txtRg"))
         self.lblDataNascimento = QtGui.QLabel(self.grbFuncionario)
         self.lblDataNascimento.setGeometry(QtCore.QRect(548, 66, 111, 19))
         self.lblDataNascimento.setObjectName(_fromUtf8("lblDataNascimento"))
+
         self.txtDataNascimento = QtGui.QDateEdit(self.grbFuncionario)
         self.txtDataNascimento.setGeometry(QtCore.QRect(548, 86, 119, 25))
         self.txtDataNascimento.setObjectName(_fromUtf8("txtDataNascimento"))
+
         self.lblCepMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCepMotorista.setGeometry(QtCore.QRect(8, 250, 31, 19))
         self.lblCepMotorista.setObjectName(_fromUtf8("lblCepMotorista"))
+
         self.txtComplemento = QtGui.QLineEdit(self.grbFuncionario)
         self.txtComplemento.setGeometry(QtCore.QRect(8, 224, 291, 25))
         self.txtComplemento.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtComplemento.setMaxLength(50)
         self.txtComplemento.setObjectName(_fromUtf8("txtComplemento"))
+
         self.lblPisMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblPisMotorista.setGeometry(QtCore.QRect(445, 112, 31, 19))
         self.lblPisMotorista.setObjectName(_fromUtf8("lblPisMotorista"))
+
         self.txtCidades = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCidades.setEnabled(False)
         self.txtCidades.setGeometry(QtCore.QRect(168, 270, 341, 25))
@@ -82,13 +91,16 @@ class Ui_frmCadastroMotorista(object):
         self.txtCidades.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCidades.setMaxLength(70)
         self.txtCidades.setObjectName(_fromUtf8("txtCidades"))
+
         self.lblCpfMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCpfMotorista.setGeometry(QtCore.QRect(338, 66, 31, 19))
         self.lblCpfMotorista.setObjectName(_fromUtf8("lblCpfMotorista"))
+
         self.txtPis = QtGui.QLineEdit(self.grbFuncionario)
         self.txtPis.setGeometry(QtCore.QRect(445, 132, 221, 25))
         self.txtPis.setMaxLength(9)
         self.txtPis.setObjectName(_fromUtf8("txtPis"))
+
         self.txtEstados = QtGui.QLineEdit(self.grbFuncionario)
         self.txtEstados.setEnabled(False)
         self.txtEstados.setGeometry(QtCore.QRect(516, 270, 151, 25))
@@ -107,58 +119,73 @@ class Ui_frmCadastroMotorista(object):
         self.txtEstados.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhUppercaseOnly)
         self.txtEstados.setMaxLength(50)
         self.txtEstados.setObjectName(_fromUtf8("txtEstados"))
+
         self.txtEndereco = QtGui.QLineEdit(self.grbFuncionario)
         self.txtEndereco.setGeometry(QtCore.QRect(8, 178, 491, 25))
         self.txtEndereco.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtEndereco.setMaxLength(50)
         self.txtEndereco.setObjectName(_fromUtf8("txtEndereco"))
+
         self.lblExpeditorMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblExpeditorMotorista.setGeometry(QtCore.QRect(216, 66, 66, 19))
         self.lblExpeditorMotorista.setObjectName(_fromUtf8("lblExpeditorMotorista"))
+
         self.txtNumero = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNumero.setGeometry(QtCore.QRect(508, 178, 161, 25))
         self.txtNumero.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtNumero.setObjectName(_fromUtf8("txtNumero"))
+
         self.lblRg = QtGui.QLabel(self.grbFuncionario)
         self.lblRg.setGeometry(QtCore.QRect(6, 66, 31, 19))
         self.lblRg.setObjectName(_fromUtf8("lblRg"))
         self.lblTelefoeneMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblTelefoeneMotorista.setGeometry(QtCore.QRect(8, 296, 61, 19))
         self.lblTelefoeneMotorista.setObjectName(_fromUtf8("lblTelefoeneMotorista"))
+
         self.txtBairro = QtGui.QLineEdit(self.grbFuncionario)
         self.txtBairro.setGeometry(QtCore.QRect(308, 224, 361, 25))
         self.txtBairro.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtBairro.setMaxLength(50)
         self.txtBairro.setObjectName(_fromUtf8("txtBairro"))
+
         self.txtCelular = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCelular.setGeometry(QtCore.QRect(208, 316, 191, 25))
         self.txtCelular.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCelular.setObjectName(_fromUtf8("txtCelular"))
+
         self.txtNomeMotorista = QtGui.QLineEdit(self.grbFuncionario)
         self.txtNomeMotorista.setGeometry(QtCore.QRect(178, 40, 488, 25))
         self.txtNomeMotorista.setMaxLength(70)
         self.txtNomeMotorista.setObjectName(_fromUtf8("txtNomeMotorista"))
+
         self.lblComplementoMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblComplementoMotorista.setGeometry(QtCore.QRect(8, 204, 101, 16))
         self.lblComplementoMotorista.setObjectName(_fromUtf8("lblComplementoMotorista"))
+
         self.lblEstadosMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblEstadosMotorista.setGeometry(QtCore.QRect(518, 250, 51, 19))
         self.lblEstadosMotorista.setObjectName(_fromUtf8("lblEstadosMotorista"))
+
         self.txtCpf = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCpf.setGeometry(QtCore.QRect(338, 86, 201, 25))
         self.txtCpf.setObjectName(_fromUtf8("txtCpf"))
+
         self.lblBairroMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblBairroMotorista.setGeometry(QtCore.QRect(308, 204, 41, 19))
         self.lblBairroMotorista.setObjectName(_fromUtf8("lblBairroMotorista"))
+
         self.lblCerlularMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCerlularMotorista.setGeometry(QtCore.QRect(208, 296, 61, 19))
         self.lblCerlularMotorista.setObjectName(_fromUtf8("lblCerlularMotorista"))
+
         self.lblNumeroMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblNumeroMotorista.setGeometry(QtCore.QRect(508, 158, 51, 19))
         self.lblNumeroMotorista.setObjectName(_fromUtf8("lblNumeroMotorista"))
+
         self.lblCidadesMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCidadesMotorista.setGeometry(QtCore.QRect(168, 250, 51, 19))
         self.lblCidadesMotorista.setObjectName(_fromUtf8("lblCidadesMotorista"))
+
         self.txtidMotorista = QtGui.QLineEdit(self.grbFuncionario)
         self.txtidMotorista.setEnabled(False)
         self.txtidMotorista.setGeometry(QtCore.QRect(6, 40, 161, 25))
@@ -177,88 +204,113 @@ class Ui_frmCadastroMotorista(object):
         self.txtidMotorista.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.txtidMotorista.setMaxLength(11)
         self.txtidMotorista.setObjectName(_fromUtf8("txtidMotorista"))
+
         self.lblCodigoMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCodigoMotorista.setGeometry(QtCore.QRect(6, 20, 121, 19))
         self.lblCodigoMotorista.setObjectName(_fromUtf8("lblCodigoMotorista"))
+
         self.lblEnderecoMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblEnderecoMotorista.setGeometry(QtCore.QRect(8, 158, 66, 19))
         self.lblEnderecoMotorista.setObjectName(_fromUtf8("lblEnderecoMotorista"))
+
         self.txtCep = QtGui.QLineEdit(self.grbFuncionario)
         self.txtCep.setGeometry(QtCore.QRect(8, 270, 151, 25))
         self.txtCep.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtCep.setInputMask(_fromUtf8("00000-000; "))
+
         self.txtCep.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCep.setObjectName(_fromUtf8("txtCep"))
+
         self.lblCnhMotorista = QtGui.QLabel(self.grbFuncionario)
         self.lblCnhMotorista.setGeometry(QtCore.QRect(8, 112, 41, 19))
         self.lblCnhMotorista.setObjectName(_fromUtf8("lblCnhMotorista"))
+
         self.txtTelefone = QtGui.QLineEdit(self.grbFuncionario)
         self.txtTelefone.setGeometry(QtCore.QRect(8, 316, 191, 25))
         self.txtTelefone.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtTelefone.setObjectName(_fromUtf8("txtTelefone"))
+
         self.lblCategoriaCnh = QtGui.QLabel(self.grbFuncionario)
         self.lblCategoriaCnh.setGeometry(QtCore.QRect(240, 110, 101, 19))
         self.lblCategoriaCnh.setObjectName(_fromUtf8("lblCategoriaCnh"))
+
         self.txtCategoriaCnh = QtGui.QComboBox(self.grbFuncionario)
         self.txtCategoriaCnh.setGeometry(QtCore.QRect(240, 132, 195, 25))
         self.txtCategoriaCnh.setObjectName(_fromUtf8("txtCategoriaCnh"))
+
         self.groupBox = QtGui.QGroupBox(frmCadastroMotorista)
         self.groupBox.setGeometry(QtCore.QRect(4, 520, 677, 81))
         self.groupBox.setTitle(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
+
         self.btnCadSetoresSalvar = QtGui.QPushButton(self.groupBox)
         self.btnCadSetoresSalvar.setGeometry(QtCore.QRect(290, 10, 81, 61))
         self.btnCadSetoresSalvar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresSalvar.setObjectName(_fromUtf8("btnCadSetoresSalvar"))
+
         self.btnCadSetoresEditar = QtGui.QPushButton(self.groupBox)
         self.btnCadSetoresEditar.setGeometry(QtCore.QRect(390, 10, 81, 61))
         self.btnCadSetoresEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresEditar.setObjectName(_fromUtf8("btnCadSetoresEditar"))
+
         self.btnCadSetoresDeletar = QtGui.QPushButton(self.groupBox)
         self.btnCadSetoresDeletar.setGeometry(QtCore.QRect(590, 10, 81, 61))
         self.btnCadSetoresDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresDeletar.setObjectName(_fromUtf8("btnCadSetoresDeletar"))
+
         self.btnCadSetoresCancelar = QtGui.QPushButton(self.groupBox)
         self.btnCadSetoresCancelar.setGeometry(QtCore.QRect(490, 10, 81, 61))
         self.btnCadSetoresCancelar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresCancelar.setObjectName(_fromUtf8("btnCadSetoresCancelar"))
+
         self.btnCadSetoresNovo = QtGui.QPushButton(self.groupBox)
         self.btnCadSetoresNovo.setGeometry(QtCore.QRect(190, 10, 81, 61))
         self.btnCadSetoresNovo.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCadSetoresNovo.setObjectName(_fromUtf8("btnCadSetoresNovo"))
+
         self.cbCminhaoFixo = QtGui.QCheckBox(frmCadastroMotorista)
         self.cbCminhaoFixo.setGeometry(QtCore.QRect(10, 370, 101, 23))
         self.cbCminhaoFixo.setObjectName(_fromUtf8("cbCminhaoFixo"))
+
         self.grbVeiculo = QtGui.QGroupBox(frmCadastroMotorista)
         self.grbVeiculo.setEnabled(True)
         self.grbVeiculo.setGeometry(QtCore.QRect(5, 390, 675, 125))
         self.grbVeiculo.setObjectName(_fromUtf8("grbVeiculo"))
+
         self.txtModelo = QtGui.QLineEdit(self.grbVeiculo)
         self.txtModelo.setGeometry(QtCore.QRect(10, 90, 331, 25))
         self.txtModelo.setMaxLength(50)
         self.txtModelo.setObjectName(_fromUtf8("txtModelo"))
+
         self.lblTipoVeiculo = QtGui.QLabel(self.grbVeiculo)
         self.lblTipoVeiculo.setGeometry(QtCore.QRect(10, 20, 111, 19))
         self.lblTipoVeiculo.setObjectName(_fromUtf8("lblTipoVeiculo"))
+
         self.lblModelo = QtGui.QLabel(self.grbVeiculo)
         self.lblModelo.setGeometry(QtCore.QRect(10, 70, 61, 19))
         self.lblModelo.setObjectName(_fromUtf8("lblModelo"))
+
         self.txtMarca = QtGui.QLineEdit(self.grbVeiculo)
         self.txtMarca.setGeometry(QtCore.QRect(230, 40, 331, 25))
         self.txtMarca.setMaxLength(50)
         self.txtMarca.setObjectName(_fromUtf8("txtMarca"))
+
         self.lblMarca = QtGui.QLabel(self.grbVeiculo)
         self.lblMarca.setGeometry(QtCore.QRect(230, 20, 51, 19))
         self.lblMarca.setObjectName(_fromUtf8("lblMarca"))
+
         self.txtTipoVeiculo = QtGui.QComboBox(self.grbVeiculo)
         self.txtTipoVeiculo.setGeometry(QtCore.QRect(10, 40, 211, 25))
         self.txtTipoVeiculo.setObjectName(_fromUtf8("txtTipoVeiculo"))
+
         self.lblPlaca = QtGui.QLabel(self.grbVeiculo)
         self.lblPlaca.setGeometry(QtCore.QRect(350, 70, 51, 19))
         self.lblPlaca.setObjectName(_fromUtf8("lblPlaca"))
+
         self.txtPlaca = QtGui.QLineEdit(self.grbVeiculo)
         self.txtPlaca.setGeometry(QtCore.QRect(350, 90, 211, 25))
         self.txtPlaca.setObjectName(_fromUtf8("txtPlaca"))
+
         self.lblNomeMotorista.setBuddy(self.txtNomeMotorista)
         self.lblDataNascimento.setBuddy(self.txtDataNascimento)
         self.lblCepMotorista.setBuddy(self.txtCep)

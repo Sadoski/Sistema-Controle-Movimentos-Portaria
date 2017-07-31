@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import sys
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -25,8 +26,11 @@ except AttributeError:
 class Ui_frmLogin(object):
     def setupUi(self, frmLogin):
         frmLogin.setObjectName(_fromUtf8("frmLogin"))
+        frmLogin.setWindowModality(QtCore.Qt.WindowModal)
         frmLogin.resize(400, 326)
+        frmLogin.setMinimumSize(QtCore.QSize(400, 326))
         font = QtGui.QFont()
+        font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmLogin.setFont(font)
         
@@ -78,4 +82,3 @@ class Ui_frmLogin(object):
         self.btnLogin.setText(_translate("frmLogin", "Log-in", None))
         self.btnSair.setText(_translate("frmLogin", "Sair", None))
         self.btnEsqueciSenha.setText(_translate("frmLogin", "Esqueci minha senha", None))
-

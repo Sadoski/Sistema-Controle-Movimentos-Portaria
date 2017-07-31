@@ -349,4 +349,3 @@ class Ui_frmCadastroEmpresa(object):
         self.txtId.setToolTip(_translate("frmCadastroEmpresa", "Codigo", None))
         self.txtId.setWhatsThis(_translate("frmCadastroEmpresa", "Campo do codigo de identificação da empresa", None))
         self.lblCodigo.setText(_translate("frmCadastroEmpresa", "Codigo", None))
-

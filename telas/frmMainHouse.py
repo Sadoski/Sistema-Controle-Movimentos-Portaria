@@ -6,6 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
+import sys
 from PyQt4 import QtCore, QtGui
 
 try:
@@ -32,6 +33,7 @@ class Ui_frmMainHouse(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(10)
         frmMainHouse.setFont(font)
+
         self.centralwidget = QtGui.QWidget(frmMainHouse)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.lblControlePortaria = QtGui.QLabel(self.centralwidget)
@@ -42,67 +44,95 @@ class Ui_frmMainHouse(object):
         font.setWeight(75)
         self.lblControlePortaria.setFont(font)
         self.lblControlePortaria.setObjectName(_fromUtf8("lblControlePortaria"))
+
         self.lblImagem = QtGui.QLabel(self.centralwidget)
         self.lblImagem.setGeometry(QtCore.QRect(10, 110, 1000, 521))
         self.lblImagem.setText(_fromUtf8(""))
         self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/controle movimentos portaria.png")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
-        frmMainHouse.setCentralWidget(self.centralwidget)
+
+        #frmMainHouse.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(frmMainHouse)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1016, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
+
         self.menuSistema = QtGui.QMenu(self.menubar)
         self.menuSistema.setObjectName(_fromUtf8("menuSistema"))
+
         self.menuCadastros = QtGui.QMenu(self.menubar)
         self.menuCadastros.setObjectName(_fromUtf8("menuCadastros"))
+
         self.menuConsultas = QtGui.QMenu(self.menubar)
         self.menuConsultas.setObjectName(_fromUtf8("menuConsultas"))
+
         self.subMenuConsultasEntradasSaidas = QtGui.QMenu(self.menuConsultas)
         self.subMenuConsultasEntradasSaidas.setObjectName(_fromUtf8("subMenuConsultasEntradasSaidas"))
+
         self.consEntSaidSubMenuCarregamento = QtGui.QMenu(self.subMenuConsultasEntradasSaidas)
         self.consEntSaidSubMenuCarregamento.setObjectName(_fromUtf8("consEntSaidSubMenuCarregamento"))
+
         self.consEntSaidSubMenuDescarregamento = QtGui.QMenu(self.subMenuConsultasEntradasSaidas)
         self.consEntSaidSubMenuDescarregamento.setObjectName(_fromUtf8("consEntSaidSubMenuDescarregamento"))
+
         self.consEntSaidSubMenuVeiculosLeves = QtGui.QMenu(self.subMenuConsultasEntradasSaidas)
         self.consEntSaidSubMenuVeiculosLeves.setObjectName(_fromUtf8("consEntSaidSubMenuVeiculosLeves"))
+
         self.consEntSaidSubMenuCaminhoes = QtGui.QMenu(self.subMenuConsultasEntradasSaidas)
         self.consEntSaidSubMenuCaminhoes.setObjectName(_fromUtf8("consEntSaidSubMenuCaminhoes"))
+
         self.menuMovimentoPortaria = QtGui.QMenu(self.menubar)
         self.menuMovimentoPortaria.setObjectName(_fromUtf8("menuMovimentoPortaria"))
+
         self.subMenuDescarregamento = QtGui.QMenu(self.menuMovimentoPortaria)
         self.subMenuDescarregamento.setObjectName(_fromUtf8("subMenuDescarregamento"))
+
         self.menuDescaTECA = QtGui.QMenu(self.subMenuDescarregamento)
         self.menuDescaTECA.setObjectName(_fromUtf8("menuDescaTECA"))
         self.menuDescaCavacoPoSerragem = QtGui.QMenu(self.subMenuDescarregamento)
         self.menuDescaCavacoPoSerragem.setObjectName(_fromUtf8("menuDescaCavacoPoSerragem"))
+
         self.menuOutros = QtGui.QMenu(self.subMenuDescarregamento)
         self.menuOutros.setObjectName(_fromUtf8("menuOutros"))
+
         self.subMenuCarregamentos = QtGui.QMenu(self.menuMovimentoPortaria)
         self.subMenuCarregamentos.setObjectName(_fromUtf8("subMenuCarregamentos"))
+
         self.menuCarregMadeira = QtGui.QMenu(self.subMenuCarregamentos)
         self.menuCarregMadeira.setObjectName(_fromUtf8("menuCarregMadeira"))
+
         self.menuCarregCavacoPoSerragem = QtGui.QMenu(self.subMenuCarregamentos)
         self.menuCarregCavacoPoSerragem.setObjectName(_fromUtf8("menuCarregCavacoPoSerragem"))
+
         self.submMenuEntradaSaidaVeiculosLeves = QtGui.QMenu(self.menuMovimentoPortaria)
         self.submMenuEntradaSaidaVeiculosLeves.setObjectName(_fromUtf8("submMenuEntradaSaidaVeiculosLeves"))
+
         self.entSaiVeicLevSubMenuVeiculosEmpresa = QtGui.QMenu(self.submMenuEntradaSaidaVeiculosLeves)
         self.entSaiVeicLevSubMenuVeiculosEmpresa.setObjectName(_fromUtf8("entSaiVeicLevSubMenuVeiculosEmpresa"))
+
         self.entSaiVeicLevSubmenuVeiculosTerceiros = QtGui.QMenu(self.submMenuEntradaSaidaVeiculosLeves)
         self.entSaiVeicLevSubmenuVeiculosTerceiros.setObjectName(_fromUtf8("entSaiVeicLevSubmenuVeiculosTerceiros"))
+
         self.subMenuEntradaSaidaCaminhoes = QtGui.QMenu(self.menuMovimentoPortaria)
         self.subMenuEntradaSaidaCaminhoes.setObjectName(_fromUtf8("subMenuEntradaSaidaCaminhoes"))
+
         self.entSaiCamiSubMenuCaminhoesEmpresa = QtGui.QMenu(self.subMenuEntradaSaidaCaminhoes)
         self.entSaiCamiSubMenuCaminhoesEmpresa.setObjectName(_fromUtf8("entSaiCamiSubMenuCaminhoesEmpresa"))
+
         self.entSaiCamiSubMenuCaminhoesTerceiros = QtGui.QMenu(self.subMenuEntradaSaidaCaminhoes)
         self.entSaiCamiSubMenuCaminhoesTerceiros.setObjectName(_fromUtf8("entSaiCamiSubMenuCaminhoesTerceiros"))
+
         self.subMenuEntradaSaidaMaquinas = QtGui.QMenu(self.menuMovimentoPortaria)
         self.subMenuEntradaSaidaMaquinas.setObjectName(_fromUtf8("subMenuEntradaSaidaMaquinas"))
+
         self.subMenuEntradaSaidaFuncionario = QtGui.QMenu(self.menuMovimentoPortaria)
         self.subMenuEntradaSaidaFuncionario.setObjectName(_fromUtf8("subMenuEntradaSaidaFuncionario"))
+
         self.menuRelatorios = QtGui.QMenu(self.menubar)
         self.menuRelatorios.setObjectName(_fromUtf8("menuRelatorios"))
+
         self.menuAjuda = QtGui.QMenu(self.menubar)
         self.menuAjuda.setObjectName(_fromUtf8("menuAjuda"))
+
         frmMainHouse.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(frmMainHouse)
         self.statusbar.setEnabled(True)
@@ -110,111 +140,162 @@ class Ui_frmMainHouse(object):
         font.setFamily(_fromUtf8("Tahoma"))
         self.statusbar.setFont(font)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
+
         frmMainHouse.setStatusBar(self.statusbar)
         self.subMenuCadastroEmpresa = QtGui.QAction(frmMainHouse)
         #self.subMenuCadastroEmpresa.setEnabled(False)
         self.subMenuCadastroEmpresa.setObjectName(_fromUtf8("subMenuCadastroEmpresa"))
+
         self.subMenuCadastroFuncionarios = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroFuncionarios.setObjectName(_fromUtf8("subMenuCadastroFuncionarios"))
+
         self.subMenuCadastroFornecedor = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroFornecedor.setObjectName(_fromUtf8("subMenuCadastroFornecedor"))
+
         self.subMenuCadastroClintes = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroClintes.setObjectName(_fromUtf8("subMenuCadastroClintes"))
+
         self.veicEmpSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.veicEmpSubMenuEntrada.setObjectName(_fromUtf8("veicEmpSubMenuEntrada"))
+
         self.veicEmpSaida = QtGui.QAction(frmMainHouse)
         self.veicEmpSaida.setObjectName(_fromUtf8("veicEmpSaida"))
+
         self.veiTerSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.veiTerSubMenuEntrada.setObjectName(_fromUtf8("veiTerSubMenuEntrada"))
+
         self.veicTerSubMenuSaida = QtGui.QAction(frmMainHouse)
         self.veicTerSubMenuSaida.setObjectName(_fromUtf8("veicTerSubMenuSaida"))
+
         self.camiEmpSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.camiEmpSubMenuEntrada.setObjectName(_fromUtf8("camiEmpSubMenuEntrada"))
+
         self.camiEmpSubMenuSaida = QtGui.QAction(frmMainHouse)
         self.camiEmpSubMenuSaida.setObjectName(_fromUtf8("camiEmpSubMenuSaida"))
+
         self.camiTerSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.camiTerSubMenuEntrada.setObjectName(_fromUtf8("camiTerSubMenuEntrada"))
+
         self.camiTerSubMenuSaida = QtGui.QAction(frmMainHouse)
         self.camiTerSubMenuSaida.setObjectName(_fromUtf8("camiTerSubMenuSaida"))
+
         self.entSadMaquiSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.entSadMaquiSubMenuEntrada.setObjectName(_fromUtf8("entSadMaquiSubMenuEntrada"))
+
         self.entSadMaquiSubMenuSaida = QtGui.QAction(frmMainHouse)
         self.entSadMaquiSubMenuSaida.setObjectName(_fromUtf8("entSadMaquiSubMenuSaida"))
+
         self.menuSair = QtGui.QAction(frmMainHouse)
         self.menuSair.setObjectName(_fromUtf8("menuSair"))
+
         self.subMenuSobre = QtGui.QAction(frmMainHouse)
         self.subMenuSobre.setObjectName(_fromUtf8("subMenuSobre"))
+
         self.subMenuRelatorios = QtGui.QAction(frmMainHouse)
         self.subMenuRelatorios.setEnabled(False)
         self.subMenuRelatorios.setObjectName(_fromUtf8("subMenuRelatorios"))
+
         self.subMenuGraficos = QtGui.QAction(frmMainHouse)
         self.subMenuGraficos.setEnabled(False)
         self.subMenuGraficos.setObjectName(_fromUtf8("subMenuGraficos"))
+
         self.subMenuConsultasEmpresas = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasEmpresas.setEnabled(True)
         self.subMenuConsultasEmpresas.setObjectName(_fromUtf8("subMenuConsultasEmpresas"))
+
         self.subMenuConsultasFornecedores = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasFornecedores.setObjectName(_fromUtf8("subMenuConsultasFornecedores"))
+
         self.subMenuConsultasFuncionarios = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasFuncionarios.setObjectName(_fromUtf8("subMenuConsultasFuncionarios"))
+
         self.subMenuConsultasClientes = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasClientes.setObjectName(_fromUtf8("subMenuConsultasClientes"))
+
         self.subMenuConsultasMotoristas = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasMotoristas.setObjectName(_fromUtf8("subMenuConsultasMotoristas"))
+
         self.subMenuCadastroMotoristas = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroMotoristas.setObjectName(_fromUtf8("subMenuCadastroMotoristas"))
+
         self.subMenuEntradaNotasTeca = QtGui.QAction(frmMainHouse)
         self.subMenuEntradaNotasTeca.setObjectName(_fromUtf8("subMenuEntradaNotasTeca"))
+
         self.subMenuConsultasNotas = QtGui.QAction(frmMainHouse)
         self.subMenuConsultasNotas.setObjectName(_fromUtf8("subMenuConsultasNotas"))
+
         self.entSaiFuncSubMenuEntrada = QtGui.QAction(frmMainHouse)
         self.entSaiFuncSubMenuEntrada.setObjectName(_fromUtf8("entSaiFuncSubMenuEntrada"))
+
         self.entSaiFuncSubMenuSaida = QtGui.QAction(frmMainHouse)
         self.entSaiFuncSubMenuSaida.setObjectName(_fromUtf8("entSaiFuncSubMenuSaida"))
+
         self.consEntSaidSubMenuMaquinas = QtGui.QAction(frmMainHouse)
         self.consEntSaidSubMenuMaquinas.setObjectName(_fromUtf8("consEntSaidSubMenuMaquinas"))
+
         self.carreConsSubMenuMadeira = QtGui.QAction(frmMainHouse)
         self.carreConsSubMenuMadeira.setObjectName(_fromUtf8("carreConsSubMenuMadeira"))
+
         self.carreConsSubMenuCavacoSerragem = QtGui.QAction(frmMainHouse)
         self.carreConsSubMenuCavacoSerragem.setObjectName(_fromUtf8("carreConsSubMenuCavacoSerragem"))
+
         self.descaConsSubMenuTeca = QtGui.QAction(frmMainHouse)
         self.descaConsSubMenuTeca.setObjectName(_fromUtf8("descaConsSubMenuTeca"))
+
         self.descaConsSubMenuCavacoSerragem = QtGui.QAction(frmMainHouse)
         self.descaConsSubMenuCavacoSerragem.setObjectName(_fromUtf8("descaConsSubMenuCavacoSerragem"))
+
         self.descaConsSubMenuOutros = QtGui.QAction(frmMainHouse)
         self.descaConsSubMenuOutros.setObjectName(_fromUtf8("descaConsSubMenuOutros"))
+
         self.veiLevConsSubMenuEmpresa = QtGui.QAction(frmMainHouse)
         self.veiLevConsSubMenuEmpresa.setObjectName(_fromUtf8("veiLevConsSubMenuEmpresa"))
+
         self.veiLevConsSubMenuTerceiros = QtGui.QAction(frmMainHouse)
         self.veiLevConsSubMenuTerceiros.setObjectName(_fromUtf8("veiLevConsSubMenuTerceiros"))
+
         self.camiConsSubMenuEmpresa = QtGui.QAction(frmMainHouse)
         self.camiConsSubMenuEmpresa.setObjectName(_fromUtf8("camiConsSubMenuEmpresa"))
+
         self.camiConsSubMenuTerceiros = QtGui.QAction(frmMainHouse)
         self.camiConsSubMenuTerceiros.setObjectName(_fromUtf8("camiConsSubMenuTerceiros"))
+
         self.consEntSaidSubMenuFuncionarios = QtGui.QAction(frmMainHouse)
         self.consEntSaidSubMenuFuncionarios.setObjectName(_fromUtf8("consEntSaidSubMenuFuncionarios"))
+
         self.consEntSaidSubMenuNotas = QtGui.QAction(frmMainHouse)
         self.consEntSaidSubMenuNotas.setObjectName(_fromUtf8("consEntSaidSubMenuNotas"))
+
         self.carreMadeiraEntrada = QtGui.QAction(frmMainHouse)
         self.carreMadeiraEntrada.setObjectName(_fromUtf8("carreMadeiraEntrada"))
+
         self.carreMadeiraSaida = QtGui.QAction(frmMainHouse)
         self.carreMadeiraSaida.setObjectName(_fromUtf8("carreMadeiraSaida"))
+
         self.carreCavacoPoSerragemEntrada = QtGui.QAction(frmMainHouse)
         self.carreCavacoPoSerragemEntrada.setObjectName(_fromUtf8("carreCavacoPoSerragemEntrada"))
+
         self.carreCavacoPoSerragemSaida = QtGui.QAction(frmMainHouse)
         self.carreCavacoPoSerragemSaida.setObjectName(_fromUtf8("carreCavacoPoSerragemSaida"))
+
         self.descTecaEntrada = QtGui.QAction(frmMainHouse)
         self.descTecaEntrada.setObjectName(_fromUtf8("descTecaEntrada"))
+
         self.descTecaSaida = QtGui.QAction(frmMainHouse)
         self.descTecaSaida.setObjectName(_fromUtf8("descTecaSaida"))
+
         self.descCavacoPoSerragemEntrada = QtGui.QAction(frmMainHouse)
         self.descCavacoPoSerragemEntrada.setObjectName(_fromUtf8("descCavacoPoSerragemEntrada"))
+
         self.descCavacoPoSerragemSaida = QtGui.QAction(frmMainHouse)
         self.descCavacoPoSerragemSaida.setObjectName(_fromUtf8("descCavacoPoSerragemSaida"))
+
         self.menuDescaOutrEntrada = QtGui.QAction(frmMainHouse)
         self.menuDescaOutrEntrada.setObjectName(_fromUtf8("menuDescaOutrEntrada"))
+
         self.menuDescaOutrSaida = QtGui.QAction(frmMainHouse)
         self.menuDescaOutrSaida.setObjectName(_fromUtf8("menuDescaOutrSaida"))
+
         self.menuSistema.addAction(self.menuSair)
         self.menuCadastros.addAction(self.subMenuCadastroEmpresa)
         self.menuCadastros.addAction(self.subMenuCadastroFuncionarios)
