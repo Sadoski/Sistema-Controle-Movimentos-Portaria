@@ -60,7 +60,7 @@ class Principal(QtGui.QMainWindow):
         QtGui.QApplication.__init__(self)
         self.ui = Ui_frmMainHouse()
         self.ui.setupUi(self)
-        self.app = QtGui.QApplication(sys.argv)
+
 
         self.ui.subMenuCadastroEmpresa.triggered.connect(self.__cadastroEmpresa)
         self.ui.subMenuCadastroFuncionarios.triggered.connect(self.__cadastroFuncionario)

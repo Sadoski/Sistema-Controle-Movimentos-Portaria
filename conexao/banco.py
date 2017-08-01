@@ -1,7 +1,9 @@
 # coding=utf-8
+import sys
 import mysql.connector
 from conexao.conexao import ConexaoDb, mysql
 from mysql.connector import Error
+from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
@@ -11,7 +13,7 @@ class banco(object):
         self.__cursor = self.__conn.cursor()
 
     def deletarBanco(self):
-        __sql = "DROP DATABASE IF EXISTS sistemaportaria"
+        __sql = "DROP DATABASE IF EXISTS sistemasportaria"
         try:
             self.__cursor.execute(__sql)
             self.__conn.commit()

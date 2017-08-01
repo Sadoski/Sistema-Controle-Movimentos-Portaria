@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 from mysql.connector import Error
 from conexao.conexao import ConexaoDb, mysql
 from classes.classUsuario import Usuario
+from classes.classPrincipal import Principal
 
 
 class LogarDao(object):
@@ -12,7 +13,6 @@ class LogarDao(object):
 
     def __init__(self):
         self.__conexao = ConexaoDb()
-        self.app = QtGui.QApplication(sys.argv)
 
     def login(self, pUsuario, pSenha):
         #__concatena = pUsuario+pSenha

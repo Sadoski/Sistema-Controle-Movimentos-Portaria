@@ -33,6 +33,7 @@ class Ui_frmLogin(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmLogin.setFont(font)
+        frmLogin.setModal(True)
         
         self.txtUsuario = QtGui.QLineEdit(frmLogin)
         self.txtUsuario.setGeometry(QtCore.QRect(70, 110, 251, 25))

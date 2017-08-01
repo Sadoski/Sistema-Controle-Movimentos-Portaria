@@ -1,3 +1,4 @@
+import sys
 import bcrypt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
