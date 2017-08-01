@@ -2,13 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa08e98d-92ad-4927-8305-1d3f8a2f7afd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/__main__.py" afterPath="$PROJECT_DIR$/__main__.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadCliente.py" afterPath="$PROJECT_DIR$/classes/classCadCliente.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadFornecedor.py" afterPath="$PROJECT_DIR$/classes/classCadFornecedor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadFuncionarios.py" afterPath="$PROJECT_DIR$/classes/classCadFuncionarios.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadMotorista.py" afterPath="$PROJECT_DIR$/classes/classCadMotorista.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadUsuario.py" afterPath="$PROJECT_DIR$/classes/classCadUsuario.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classNotasFiscal.py" afterPath="$PROJECT_DIR$/classes/classNotasFiscal.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/__init__.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/conexao/conexao.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroClientes.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroEmpresa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroFornecedor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroFuncionario.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroMotorista.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroSetoresCargos.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroUsuarios.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmCadastroVeiculosEmpresa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaFuncionario.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaNotas.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaVeiculosCarregamentos.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaVeiculosDescarregamento.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaVeiculosEmpresa.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmEntradaVeiculosTerceiros.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmLogin.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmMainHouse.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmPesagem.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmSaidaFuncionario.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmSaidaVeiculosCarregamento.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmSaidaVeiculosCarregamentos.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmSaidaVeiculosDescarregamento.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/com/guavira/telas/frmSaidaVeiculosEmpresa.py" afterPath="" />
     </list>
     <ignored path="Sistema Contorle Movimentos Portaria.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -248,20 +268,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Sistema Contorle Movimentos Portaria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sistema Contorle Movimentos Portaria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Sistema Contorle Movimentos Portaria" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classes" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -521,9 +527,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2489019" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2489019" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3288889" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
@@ -563,13 +569,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/classes/getSetLogin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3153014">
