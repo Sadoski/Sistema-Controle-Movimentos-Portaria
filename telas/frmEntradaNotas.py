@@ -30,6 +30,9 @@ class Ui_frmEntradaNota(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmEntradaNota.setFont(font)
+        frmEntradaNota.setSizeGripEnabled(False)
+        frmEntradaNota.setModal(True)
+
         self.grbDadosEmitente = QtGui.QGroupBox(frmEntradaNota)
         self.grbDadosEmitente.setGeometry(QtCore.QRect(6, -1, 991, 205))
         self.grbDadosEmitente.setObjectName(_fromUtf8("grbDadosEmitente"))

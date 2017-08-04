@@ -13,6 +13,7 @@ class LogarDao(object):
 
     def __init__(self):
         self.__conexao = ConexaoDb()
+        self.__cursor = self.__conexao.conn.cursor()
 
     def login(self, pUsuario, pSenha):
         #__concatena = pUsuario+pSenha
@@ -24,29 +25,20 @@ class LogarDao(object):
 
 
         __sql = "select * from usuarios where login= '"+pUsuario+"' and senha = '"+pSenha+"'"
-        self.__conexao.cursor.execute(__sql)
+        self.__cursor.execute(__sql)
 
-        result = self.__conexao.cursor.fetchall()
+        result = self.__cursor.fetchall()
+        self.__conexao.conn.commit()
         try:
             if result:
                 for i in result:
                     return result
-                    self.__conexao.conn.close()
-
+                self.__cursor.close()
 
             else:
                 w = QWidget()
                 result = QMessageBox.warning(w, 'Atenção', "Usuario ou Senha incorreto!")
 
-            self.__conexao.conn.close()
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.critical(w, 'Erro', "Erro fatal no banco de dados", e)
-            self.__conexao.conn.close()
-
-        finally:
-            try:
-                self.__conexao.conn.close()
-            except mysql.connector.Error as e:
-                w = QWidget()
-                QMessageBox.critical(w, 'Erro', "Erro ao fechar Base de Dados", e)

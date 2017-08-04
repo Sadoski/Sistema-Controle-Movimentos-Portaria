@@ -121,7 +121,7 @@ INSERT INTO estado (id_estado, id_pais, sigla, nome) VALUES
 (24,1,'TO','TOCANTINS'),
 (25,1,'SC','SANTA CATARINA'),
 (26,1,'SP','SÃO PAULO'),
-(27,1,'SE','SERGIPE')
+(27,1,'SE','SERGIPE');
 
 
 
@@ -10415,8 +10415,8 @@ id_veiculos_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 marca varchar(50) ,
 modelo varchar(50) ,
 placa char(7) ,
-cadastrado timestemp,
-alterado timestemp,
+cadastrado timestamp,
+alterado timestamp,
 id_empresa integer NOT NULL,
 id_tipo_veiculo integer NOT NULL,
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
@@ -10464,7 +10464,7 @@ id_usuarios integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 login varchar(25) ,
 senha varchar(25) ,
 cadastrado timestamp,
-alterado timestemp,
+alterado timestamp,
 id_tipo_usuario integer NOT NULL,
 id_funcionario integer NOT NULL,
 FOREIGN KEY(id_tipo_usuario) REFERENCES tipo_usuario (id_tipo_usuario),

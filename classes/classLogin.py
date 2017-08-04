@@ -3,11 +3,8 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from telas.frmLogin import Ui_frmLogin
-from telas.frmMainHouse import Ui_frmMainHouse
 from dao.loginDao import LogarDao
 from classes.classPrincipal import Principal
-
-
 
 
 class Login(QtGui.QDialog):
@@ -21,6 +18,11 @@ class Login(QtGui.QDialog):
         self.__ui.btnLogin.clicked.connect(self.__login)
         self.__ui.btnSair.clicked.connect(self.__sair)
         self.__ui.btnEsqueciSenha.clicked.connect(self.__esqueciSenha)
+
+    def focusOutEvent(self, *args, **kwargs):
+        text = self.text()
+        self.setText(text.__str__().upper())
+        return QtGui.QLineEdit.focusOutEvent(self, *args, **kwargs)
 
     def __login(self):
         __login = self.__ui.txtUsuario.text()
@@ -39,10 +41,10 @@ class Login(QtGui.QDialog):
         result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             sys.exit(0)
+
             
     def __esqueciSenha(self):
         pass
-
 
 
 #if __name__ == '__main__':

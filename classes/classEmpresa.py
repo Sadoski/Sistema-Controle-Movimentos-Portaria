@@ -2,39 +2,65 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+from controller.getSetTipoEmpresa import TipoEmpresa
+from dao.cidadesEstadosDao import CidadesEstadosDao
+from dao.tipoEmpresaDao import TipoEmpresaDao
 from telas.frmCadastroEmpresa import Ui_frmCadastroEmpresa
-from dao.tipoEmpresaDao import tipoEmpresaDao
+from dao.empresaDao import EmpresaDao
+from controller.getSetEmpresa import Empresas
 
 class Empresa(QtGui.QDialog):
-    __idCidade = 0
+
 
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.__ui = Ui_frmCadastroEmpresa()
-        self.__ui.setupUi(self)
-        self.__tipoEmpresa = tipoEmpresaDao()
-        self.__setTipoEmpresa()
+        self._ui = Ui_frmCadastroEmpresa()
+        self._ui.setupUi(self)
+        self._empresa = EmpresaDao()
+        self._setTipoEmpresa()
 
 
 
-        self.__ui.btnSalvar.clicked.connect(self.__cadastroEmpresa)
+        self._ui.btnSalvar.clicked.connect(self._cadastroEmpresa)
 
-    def __setTipoEmpresa(self):
+    def mouseReleaseEvent(self, QMouseEvent):
+        cursor =QtGui.QCursor()
+        print (cursor.pos())
 
-        lista = self.__tipoEmpresa.tipoEmpresa()
+    def eventFilter(self, source, event):
+        if (event.type() == QtCore.QEvent.MouseMove and source is self.txtCep):
+            pos = event.pos()
+            print('mouse move: (%d, %d)' % (pos.x(), pos.y()))
+        return QtGui.QWidget.eventFilter(self, source, event)
+
+    def _cidades(self, cep):
+        _cep = self.removerCaracter(cep)
+
+
+        if len(_cep) == 8:
+            cidades = CidadesEstadosDao()
+            cid = cidades.cidade(_cep)
+            for cidade in cid:
+                self._ui.txtCidades.setText(cidade[0])
+                self._ui.txtEstados.setText(cidade[1])
+
+
+    def _setTipoEmpresa(self):
+
+        lista = self._empresa.tipoEmpresa()
 
         for tipo in lista:
-            self.__ui.txtTipoEmpresa.addItem(tipo[0])
+            self._ui.txtTipoEmpresa.addItem(tipo[0])
 
 
     def pesquisarCidade(self):
-        __cep = self.removerCaracter(self.__ui.txtCep.text())
-        cid = self.__tipoEmpresa.pesquisarCidades(__cep)
+        _cep = self.removerCaracter(self._ui.txtCep.text())
+        cid = self._tipoEmpresa.pesquisarCidades(_cep)
 
         for cidade in cid:
-            self.__idCidade = cidade[0]
-            self.__ui.txtCidades.setText(cidade[1])
-            self.__ui.txtEstados.setText(cidade[2])
+            self._ui.txtCidades.setText(cidade[0])
+            self._ui.txtEstados.setText(cidade[1])
 
 
 
@@ -122,21 +148,32 @@ class Empresa(QtGui.QDialog):
         i = i.replace('\\', '')
         return i
 
-    def __cadastroEmpresa(self):
-        __empresa = tipoEmpresaDao()
+    def _cadastroEmpresa(self):
+        _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
+        _cep = self.removerCaracter(self._ui.txtCep.text())
+        _telefone = self.removerCaracter(self._ui.txtTelefone.text())
 
-        __tipoEmpresa = self.__ui.txtTipoEmpresa.currentText()
-        __cnpj = self.__ui.txtCnpj.text()
-        __inscricaoEstadual = self.__ui.txtInscricaoEstadua.text()
-        __inscricaoMunicipal = self.__ui.txtInscricaoMunicipal.text()
-        __fantasia = self.__ui.txtFantasia.text()
-        __razaoSocial = self.__ui.txtRazaoSocial.text()
-        __endereco = self.__ui.txtEndereco.text()
-        __numero = self.__ui.txtNumero.text()
-        __complemento = self.__ui.txtComplemento.text()
-        __bairro = self.__ui.txtBairro.text()
-        __cidade = self.__idCidade
-        __telefone = self.__ui.txtTelefone.text()
-        #__site = self.__ui.txtSite.text()
+        #if self._ui.txtCnpj.text() == "" or self._ui.txtInscricaoEstadua.text() == "" or self._ui.txtFantasia.text() == "" or self._ui.txtRazaoSocial.text() == "" or self._ui.txtEndereco.text() == "" or self._ui.txtNumero.text() == "" or self._ui.txtBairro.text() == "" or self._ui.txtCep.text() == "" or self._ui.txtCidades.text() == "" or self._ui.txtEstados.text() == "" or self._ui.txtTelefone.text() == "":
+        _empresa = EmpresaDao()
+        _cidade = CidadesEstadosDao()
 
-        __empresa.cadastroEmpresa(__tipoEmpresa, __cnpj, __inscricaoEstadual, __inscricaoMunicipal, __fantasia, __razaoSocial, __endereco, __numero, __complemento, __bairro, __cidade, __telefone)
+
+
+        _tipoEmpresa = _empresa.idTipoEmpresa(str(self._ui.txtTipoEmpresa.currentText()))
+        _cnpj = self._ui.txtCnpj.text()
+        _inscricaoEstadual = self._ui.txtInscricaoEstadua.text()
+        _inscricaoMunicipal = self._ui.txtInscricaoMunicipal.text()
+        _fantasia = self._ui.txtFantasia.text()
+        _razaoSocial = self._ui.txtRazaoSocial.text()
+        _endereco = self._ui.txtEndereco.text()
+        _numero = self._ui.txtNumero.text()
+        _complemento = self._ui.txtComplemento.text()
+        _bairro = self._ui.txtBairro.text()
+        _cida = _cidade.idCidade(_cep)
+        _telefone = self._ui.txtTelefone.text()
+        #_site = self.__ui.txtSite.text()
+
+        _cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
+        _cadastrar = self._empresa.cadastroEmpresa(_cadastrar)
+
+

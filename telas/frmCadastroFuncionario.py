@@ -31,7 +31,8 @@ class Ui_frmCadastroFuncionario(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFuncionario.setFont(font)
-        #frmCadastroFuncionario.setModal(True)
+        frmCadastroFuncionario.setSizeGripEnabled(False)
+        frmCadastroFuncionario.setModal(True)
 
         self.txtIdEmpresa = QtGui.QLineEdit(frmCadastroFuncionario)
         self.txtIdEmpresa.setEnabled(False)

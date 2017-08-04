@@ -29,7 +29,8 @@ class Ui_frmCadastroMotorista(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroMotorista.setFont(font)
-        #frmCadastroMotorista.setModal(True)
+        frmCadastroMotorista.setSizeGripEnabled(False)
+        frmCadastroMotorista.setModal(True)
 
         self.grbFuncionario = QtGui.QGroupBox(frmCadastroMotorista)
         self.grbFuncionario.setGeometry(QtCore.QRect(5, 10, 675, 361))

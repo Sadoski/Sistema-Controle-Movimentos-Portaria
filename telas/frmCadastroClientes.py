@@ -29,6 +29,9 @@ class Ui_frmCadastroClientes(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroClientes.setFont(font)
+        frmCadastroClientes.setSizeGripEnabled(False)
+        frmCadastroClientes.setModal(True)
+
         self.grbBotoes = QtGui.QGroupBox(frmCadastroClientes)
         self.grbBotoes.setGeometry(QtCore.QRect(7, 395, 881, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))

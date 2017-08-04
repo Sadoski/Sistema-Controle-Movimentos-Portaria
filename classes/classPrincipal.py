@@ -57,17 +57,17 @@ from classes.classGraficos import Graficos
 
 class Principal(QtGui.QMainWindow):
     def __init__(self):
-        QtGui.QApplication.__init__(self)
+        QtGui.QMainWindow.__init__(self)
         self.ui = Ui_frmMainHouse()
         self.ui.setupUi(self)
 
-
-        self.ui.subMenuCadastroEmpresa.triggered.connect(self.__cadastroEmpresa)
-        self.ui.subMenuCadastroFuncionarios.triggered.connect(self.__cadastroFuncionario)
-        self.ui.subMenuCadastroFornecedor.triggered.connect(self.__cadastroFornecedor)
-        self.ui.subMenuCadastroClintes.triggered.connect(self.__cadastroClintes)
-        self.ui.subMenuCadastroMotoristas.triggered.connect(self.__cadastroMotoristas)
-        self.ui.subMenuEntradaNotasTeca.triggered.connect(self.__entradaNotasTeca)
+        self.ui.menuSair.triggered.connect(self._sair)
+        self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
+        self.ui.subMenuCadastroFuncionarios.triggered.connect(self._cadastroFuncionario)
+        self.ui.subMenuCadastroFornecedor.triggered.connect(self._cadastroFornecedor)
+        self.ui.subMenuCadastroClintes.triggered.connect(self._cadastroClintes)
+        self.ui.subMenuCadastroMotoristas.triggered.connect(self._cadastroMotoristas)
+        self.ui.subMenuEntradaNotasTeca.triggered.connect(self._entradaNotasTeca)
         '''
         #Menu Cosultas
         self.ui.subMenuConsultasEmpresas.triggered.connect(self.__consultasEmpresas)
@@ -129,44 +129,46 @@ class Principal(QtGui.QMainWindow):
         #Menu Sobre
         self.ui.subMenuSobre.triggered.connect(self.__sobre)
         '''
-    def __sair(self):
+    def _sair(self):
         w = QWidget()
         result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
-            sys.exit(None)
+            sys.exit(0)
 
-    def __cadastroEmpresa(self):
-        __empresa = Empresa()
-        __empresa.show()
-        __empresa.exec_()
+    def _cadastroEmpresa(self):
+        _empresa = Empresa()
+        _empresa.show()
+        _empresa.exec_()
 
-    def __cadastroFuncionario(self):
-        __funcionario = CadastroFuncionario()
-        __funcionario.show()
-        __funcionario.exec_()
+    def _cadastroFuncionario(self):
+        _funcionario = CadastroFuncionario()
+        _funcionario.show()
+        _funcionario.exec_()
 
-    def __cadastroFornecedor(self):
-        __fornecedor = CadastroFornecedores()
-        __fornecedor.show()
-        __fornecedor.exec_()
+    def _cadastroFornecedor(self):
+        _fornecedor = CadastroFornecedores()
+        _fornecedor.show()
+        _fornecedor.exec_()
 
-    def __cadastroClintes(self):
-        __cintes = CadastroClientes()
-        __cintes.show()
-        __cintes.exec_()
+    def _cadastroClintes(self):
+        _cintes = CadastroClientes()
+        _cintes.show()
+        _cintes.exec_()
 
-    def __cadastroMotoristas(self):
-        __motoristas = CadastroMotoristas()
-        __motoristas.show()
-        __motoristas.exec_()
+    def _cadastroMotoristas(self):
+        _motoristas = CadastroMotoristas()
+        _motoristas.show()
+        _motoristas.exec_()
 
-    def __entradaNotasTeca(self):
-        __notas = CadastroEmpresa()
-        __notas.show()
-        __notas.exec_()
+    def _entradaNotasTeca(self):
+        _notas = CadastroEmpresa()
+        _notas.show()
+        _notas.exec_()
 
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    principal = Principal()
-    principal.show()
-    sys.exit(app.exec_())
+    def closeEvent(self, event):
+        w = QWidget()
+        sair = QtGui.QMessageBox.question(w, 'Atenção', "Você tem certeza que deseja sair", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if sair == QtGui.QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()

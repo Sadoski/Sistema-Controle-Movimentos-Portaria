@@ -29,6 +29,9 @@ class Ui_frmCadastroEmpresa(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroEmpresa.setFont(font)
+        frmCadastroEmpresa.setSizeGripEnabled(False)
+        frmCadastroEmpresa.setModal(True)
+
         
         self.grbBotoes = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(4, 376, 881, 80))
