@@ -36,6 +36,8 @@ class Empresa(QtGui.QDialog):
         self._ui.txtCep.editingFinished.connect(self.pesquisarCidade)
         self._ui.txtTelefone.returnPressed.connect(self.focusBotaoSalvar)
 
+        self._ui.txtCnpj.editingFinished.connect(self.validacaoCnpj)
+
 
     def focusCnpj(self):
         self._ui.txtCnpj.setFocus()
@@ -82,12 +84,24 @@ class Empresa(QtGui.QDialog):
 
     def pesquisarCidade(self):
         _cep = self.removerCaracter(self._ui.txtCep.text())
-        cidades = CidadesEstadosDao()
-        cid = cidades.cidade(_cep)
+        if len(_cep) < 8:
+            self._ui.txtCidades.clear()
+            self._ui.txtEstados.clear()
+        else:
+            cidades = CidadesEstadosDao()
+            cid = cidades.cidade(_cep)
 
-        for cidade in cid:
-            self._ui.txtCidades.setText(cidade[0])
-            self._ui.txtEstados.setText(cidade[1])
+            for cidade in cid:
+                self._ui.txtCidades.setText(cidade[0])
+                self._ui.txtEstados.setText(cidade[1])
+
+    def validacaoCnpj(self):
+        _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
+        _val = self.validaCnpj(_cnpj)
+        if _val == False:
+            w = QWidget()
+            result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
+            return False
 
 
     def formatarCpf(self, cnpj):
@@ -100,7 +114,7 @@ class Empresa(QtGui.QDialog):
         cpf_invalidos = [11*str(i) for i in range(10)]
         if cpf in cpf_invalidos:
             w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
+            result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido 1")
             return False
 
         if not cpf.isdigit():
@@ -109,12 +123,12 @@ class Empresa(QtGui.QDialog):
 
         if len(cpf) < 11:
             w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
+            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido 2")
             return False
 
         if len(cpf) > 11:
             w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
+            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido 3")
             return False
 
         selfcpf = [int(x) for x in cpf]

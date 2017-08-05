@@ -49,10 +49,10 @@ class Ui_frmMainHouse(object):
         self.lblImagem = QtGui.QLabel(self.centralwidget)
         self.lblImagem.setGeometry(QtCore.QRect(10, 110, 1000, 521))
         self.lblImagem.setText(_fromUtf8(""))
-        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("imagens/controle movimentos portaria.png")))
+        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/controle movimentos portaria.png")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
 
-        #frmMainHouse.setCentralWidget(self.centralwidget)
+        frmMainHouse.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar(frmMainHouse)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1016, 21))
         self.menubar.setObjectName(_fromUtf8("menubar"))
