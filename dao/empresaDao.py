@@ -42,12 +42,22 @@ class EmpresaDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")
             return False
 
-    def cadastroEmpresa(self, empresas):
-
+    def cadastroEmpresa(self, _tipoEmpresa, _cnpj, _inscricaoEstadual, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cidade, _telefone):
+        self.__tipo = _tipoEmpresa
+        self.__cnpj = _cnpj
+        self.__inscricaoEstadual = _inscricaoEstadual
+        self.__fantasia = _fantasia
+        self.__razaoSocial = _razaoSocial
+        self.__endereco = _endereco
+        self.__numero = _numero
+        self.__complemento = _complemento
+        self.__cidade = _cidade
+        self.__bairro = _bairro
+        self.__telefone = _telefone
         try:
-            _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, endereco, numero_endereco, complemento, bairro, telefone, situacao, cadastrado id_cidade, id_tipo_empresa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 'Operando', %s, %s)"
-            _valores = (empresas.fantasia, empresas.razaoSocial, empresas.cnpj, empresas.inscricaoEstadual, empresas.endereco, empresas.numero, empresas.complemento, empresas.bairro, empresas.telefone, self.__dataHora, empresas.cidade, empresas.tipoEmpresa)
-            self.__cursor.execute(_sql, _valores)
+            _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, endereco, numero_endereco, complemento, bairro, telefone, site, situacao, cadastrado, atualizado, id_cidades, id_tipo_empresa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"%(self.__fantasia, self.__razaoSocial, self.__cnpj, self.__inscricaoEstadual, self.__endereco, self.__numero, self.__complemento, self.__bairro, self.__telefone, None, None, None, None, self.__cidade, self.__tipo)
+            #_valores = (empresas.fantasia, empresas.razaoSocial, empresas.cnpj, empresas.inscricaoEstadual, empresas.endereco, empresas.numero, empresas.complemento, empresas.bairro, empresas.telefone, self.__dataHora, empresas.cidade, empresas.tipoEmpresa)
+            self.__cursor.execute(_sql)
             self.__conexao.conn.commit()
             self.__cursor.close()
         except mysql.connector.Error as e:
@@ -72,7 +82,7 @@ class EmpresaDao(object):
         self.__site = site
 
         try:
-            __sql = "INSERT INTO empresa (id_cidade,id_tipo_empresa, fantasia, razao_social, cnpj, inscricao_estadual, incricao_municipal, endereco, numero, bairro, telefone site, situacao, atualizado) Values ('"+self.__cidade+"',(select id_tipo_empresa from tipo_empresa where descricao = '"+self.__tipo+"'), '"+self.__fantasia+"', '"+self.__razaoSocial+"', '"+self.__cnpj+"', '"+self.__inscricaoEstadual+"', '"+self.__inscricaoMunicial+"', '"+self.__endereco+"', '"+self.__numero+"', '"+self.__complemento+"', '"+self.__bairro+"', '"+self.__telefone+"', '"+self.__site+"', 'Operando', '"+self.__dataHora+"')"
+            __sql = "INSERT INTO empresa (id_cidade, id_tipo_empresa, fantasia, razao_social, cnpj, inscricao_estadual, incricao_municipal, endereco, numero, bairro, telefone site, situacao, atualizado) Values ('"+self.__cidade+"',(select id_tipo_empresa from tipo_empresa where descricao = '"+self.__tipo+"'), '"+self.__fantasia+"', '"+self.__razaoSocial+"', '"+self.__cnpj+"', '"+self.__inscricaoEstadual+"', '"+self.__inscricaoMunicial+"', '"+self.__endereco+"', '"+self.__numero+"', '"+self.__complemento+"', '"+self.__bairro+"', '"+self.__telefone+"', '"+self.__site+"', 'Operando', '"+self.__dataHora+"')"
 
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()

@@ -10,44 +10,46 @@ from classes.classPrincipal import Principal
 class Login(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.__ui = Ui_frmLogin()
-        self.__ui.setupUi(self)
-        self.__logarDao = LogarDao()
+        self._ui = Ui_frmLogin()
+        self._ui.setupUi(self)
+        self._logarDao = LogarDao()
 
 
-        self.__ui.btnLogin.clicked.connect(self.__login)
-        self.__ui.btnSair.clicked.connect(self.__sair)
-        self.__ui.btnEsqueciSenha.clicked.connect(self.__esqueciSenha)
+        self._ui.btnLogin.clicked.connect(self._login)
+        self._ui.btnSair.clicked.connect(self._sair)
+        self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
 
-    def focusOutEvent(self, *args, **kwargs):
-        text = self.text()
-        self.setText(text.__str__().upper())
-        return QtGui.QLineEdit.focusOutEvent(self, *args, **kwargs)
+        self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
 
-    def __login(self):
-        __login = self.__ui.txtUsuario.text()
-        __senha = self.__ui.txtSenha.text()
+    def focusSenha(self):
+        self._ui.txtSenha.setFocus()
 
-        __empresa = self.__logarDao.login(__login, __senha)
+    def focusBotaoLogar(self):
+        self._ui.btnLogin.setFocus()
 
-        if __empresa:
-            for log in __empresa:
+    def _login(self):
+        _login = self._ui.txtUsuario.text()
+        _senha = self._ui.txtSenha.text()
+
+        _empresa = self._logarDao.login(_login, _senha)
+
+        if _empresa:
+            for log in _empresa:
                 principal.show()
                 self.close()
 
 
-    def __sair(self):
+    def _sair(self):
         w = QWidget()
         result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             sys.exit(0)
 
             
-    def __esqueciSenha(self):
+    def _esqueciSenha(self):
         pass
 
 
-#if __name__ == '__main__':
 app = QtGui.QApplication(sys.argv)
 principal = Principal()
 login = Login()

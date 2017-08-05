@@ -2,7 +2,6 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-
 from controller.getSetTipoEmpresa import TipoEmpresa
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.tipoEmpresaDao import TipoEmpresaDao
@@ -24,27 +23,53 @@ class Empresa(QtGui.QDialog):
 
         self._ui.btnSalvar.clicked.connect(self._cadastroEmpresa)
 
-    def mouseReleaseEvent(self, QMouseEvent):
-        cursor =QtGui.QCursor()
-        print (cursor.pos())
+        self._ui.txtCnpj.returnPressed.connect(self.focusInsEst)
+        self._ui.txtInscricaoEstadua.returnPressed.connect(self.focusInsMun)
+        self._ui.txtInscricaoMunicipal.returnPressed.connect(self.focusFantasia)
+        self._ui.txtFantasia.returnPressed.connect(self.focusRazaoSocial)
+        self._ui.txtRazaoSocial.returnPressed.connect(self.focusEndereco)
+        self._ui.txtEndereco.returnPressed.connect(self.focusNumero)
+        self._ui.txtNumero.returnPressed.connect(self.focusComplemento)
+        self._ui.txtComplemento.returnPressed.connect(self.focusBairro)
+        self._ui.txtBairro.returnPressed.connect(self.focusCep)
+        self._ui.txtCep.returnPressed.connect(self.pesquisarCidade)
+        self._ui.txtTelefone.returnPressed.connect(self.focusBotaoSalvar)
 
-    def eventFilter(self, source, event):
-        if (event.type() == QtCore.QEvent.MouseMove and source is self.txtCep):
-            pos = event.pos()
-            print('mouse move: (%d, %d)' % (pos.x(), pos.y()))
-        return QtGui.QWidget.eventFilter(self, source, event)
+    def focusCnpj(self):
+        self._ui.txtCnpj.setFocus()
 
-    def _cidades(self, cep):
-        _cep = self.removerCaracter(cep)
+    def focusInsEst(self):
+        self._ui.txtInscricaoEstadua.setFocus()
 
+    def focusInsMun(self):
+        self._ui.txtInscricaoMunicipal.setFocus()
 
-        if len(_cep) == 8:
-            cidades = CidadesEstadosDao()
-            cid = cidades.cidade(_cep)
-            for cidade in cid:
-                self._ui.txtCidades.setText(cidade[0])
-                self._ui.txtEstados.setText(cidade[1])
+    def focusFantasia(self):
+        self._ui.txtFantasia.setFocus()
 
+    def focusRazaoSocial(self):
+        self._ui.txtRazaoSocial.setFocus()
+
+    def focusEndereco(self):
+        self._ui.txtEndereco.setFocus()
+
+    def focusNumero(self):
+        self._ui.txtNumero.setFocus()
+
+    def focusComplemento(self):
+        self._ui.txtComplemento.setFocus()
+
+    def focusBairro(self):
+        self._ui.txtBairro.setFocus()
+
+    def focusCep(self):
+        self._ui.txtCep.setFocus()
+
+    def focusTelefone(self):
+        self._ui.txtTelefone.setFocus()
+
+    def focusBotaoSalvar(self):
+        self._ui.btnSalvar.setFocus()
 
     def _setTipoEmpresa(self):
 
@@ -53,15 +78,15 @@ class Empresa(QtGui.QDialog):
         for tipo in lista:
             self._ui.txtTipoEmpresa.addItem(tipo[0])
 
-
     def pesquisarCidade(self):
         _cep = self.removerCaracter(self._ui.txtCep.text())
-        cid = self._tipoEmpresa.pesquisarCidades(_cep)
+        cidades = CidadesEstadosDao()
+        cid = cidades.cidade(_cep)
 
         for cidade in cid:
             self._ui.txtCidades.setText(cidade[0])
             self._ui.txtEstados.setText(cidade[1])
-
+        self._ui.txtTelefone.setFocus()
 
 
     def formatarCpf(self, cnpj):
@@ -169,11 +194,15 @@ class Empresa(QtGui.QDialog):
         _numero = self._ui.txtNumero.text()
         _complemento = self._ui.txtComplemento.text()
         _bairro = self._ui.txtBairro.text()
-        _cida = _cidade.idCidade(_cep)
         _telefone = self._ui.txtTelefone.text()
+        if len(_cep) == 8:
+            _cida = _cidade.idCidade(_cep, self._ui.txtCidades.text(), self._ui.txtEstados.text())
+        else:
+            _cida = None
+
         #_site = self.__ui.txtSite.text()
 
-        _cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
-        _cadastrar = self._empresa.cadastroEmpresa(_cadastrar)
+        #_cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
+        _cadastrar = self._empresa.cadastroEmpresa(_tipoEmpresa, _cnpj, _inscricaoEstadual, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
 
 

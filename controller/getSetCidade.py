@@ -1,11 +1,10 @@
-import this
+class Cidades():
 
-class Cidades(object):
-
-    def __init__(self, idCidade, nomeCidade, nomeEstado):
-        _idCidade = idCidade
-        _nomeCidade = nomeCidade
-        _nomeEstado = nomeEstado
+    def __init__(self, idCidade, idEstado, nomeCidade, cep):
+        self._idCidade = idCidade
+        self._idEstado = idEstado
+        self. _nomeCidade = nomeCidade
+        self._cep = cep
 
     @property
     def getIdCidade(self):
@@ -13,7 +12,15 @@ class Cidades(object):
 
     @getIdCidade.setter
     def setIdCidade(self, idCidade):
-        this._idCidade = idCidade
+        self._idCidade = idCidade
+
+    @property
+    def getIdEstado(self):
+        return self._idEstado
+
+    @getIdEstado.setter
+    def setIdEstado(self, idEstado):
+        self._idEstado = idEstado
 
     @property
     def getNomeCidade(self):
@@ -21,12 +28,12 @@ class Cidades(object):
 
     @getNomeCidade.setter
     def setNomeCidade(self, nomeCidade):
-        this._nomeCidade = nomeCidade
+        self._nomeCidade = nomeCidade
 
     @property
-    def getNomeEstado(self):
-        return self._nomeEstado
+    def getCep(self):
+        return self._cep
 
-    @getNomeEstado.setter
-    def setNomeEstado(self, nomeEstado):
-        this._nomeEstado = nomeEstado
+    @getCep.setter
+    def setCep(self, cep):
+        self._cep = cep

@@ -8,6 +8,8 @@
 
 import sys
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -38,7 +40,7 @@ class Ui_frmLogin(object):
         self.txtUsuario = QtGui.QLineEdit(frmLogin)
         self.txtUsuario.setGeometry(QtCore.QRect(70, 110, 251, 25))
         self.txtUsuario.setObjectName(_fromUtf8("txtUsuario"))
-
+        self.txtUsuario.setInputMethodHints(QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         
         self.txtSenha = QtGui.QLineEdit(frmLogin)
         self.txtSenha.setGeometry(QtCore.QRect(70, 180, 251, 25))
@@ -83,3 +85,7 @@ class Ui_frmLogin(object):
         self.btnLogin.setText(_translate("frmLogin", "Log-in", None))
         self.btnSair.setText(_translate("frmLogin", "Sair", None))
         self.btnEsqueciSenha.setText(_translate("frmLogin", "Esqueci minha senha", None))
+
+
+    def fixeCase(self, texto):
+        self.lineEdit().setText(texto.toUpper())
