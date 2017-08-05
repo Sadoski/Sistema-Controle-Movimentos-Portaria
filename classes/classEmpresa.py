@@ -32,8 +32,10 @@ class Empresa(QtGui.QDialog):
         self._ui.txtNumero.returnPressed.connect(self.focusComplemento)
         self._ui.txtComplemento.returnPressed.connect(self.focusBairro)
         self._ui.txtBairro.returnPressed.connect(self.focusCep)
-        self._ui.txtCep.returnPressed.connect(self.pesquisarCidade)
+        self._ui.txtCep.returnPressed.connect(self.focusTelefone)
+        self._ui.txtCep.editingFinished.connect(self.pesquisarCidade)
         self._ui.txtTelefone.returnPressed.connect(self.focusBotaoSalvar)
+
 
     def focusCnpj(self):
         self._ui.txtCnpj.setFocus()
@@ -86,7 +88,6 @@ class Empresa(QtGui.QDialog):
         for cidade in cid:
             self._ui.txtCidades.setText(cidade[0])
             self._ui.txtEstados.setText(cidade[1])
-        self._ui.txtTelefone.setFocus()
 
 
     def formatarCpf(self, cnpj):

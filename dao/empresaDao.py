@@ -56,7 +56,6 @@ class EmpresaDao(object):
         self.__telefone = _telefone
         try:
             _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, endereco, numero_endereco, complemento, bairro, telefone, site, situacao, cadastrado, atualizado, id_cidades, id_tipo_empresa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"%(self.__fantasia, self.__razaoSocial, self.__cnpj, self.__inscricaoEstadual, self.__endereco, self.__numero, self.__complemento, self.__bairro, self.__telefone, None, None, None, None, self.__cidade, self.__tipo)
-            #_valores = (empresas.fantasia, empresas.razaoSocial, empresas.cnpj, empresas.inscricaoEstadual, empresas.endereco, empresas.numero, empresas.complemento, empresas.bairro, empresas.telefone, self.__dataHora, empresas.cidade, empresas.tipoEmpresa)
             self.__cursor.execute(_sql)
             self.__conexao.conn.commit()
             self.__cursor.close()
