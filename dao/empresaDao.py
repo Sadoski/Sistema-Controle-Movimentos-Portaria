@@ -42,10 +42,11 @@ class EmpresaDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")
             return False
 
-    def cadastroEmpresa(self, tipoEmpresa, cnpj, inscricaoEstadual, fantasia, razaoSocial, endereco, numero, complemento, bairro, cidade, telefone):
+    def cadastroEmpresa(self, tipoEmpresa, cnpj, inscricaoEstadual, inscricaoMunicipal, fantasia, razaoSocial, endereco, numero, complemento, bairro, cidade, telefone):
         self.__tipo = tipoEmpresa
         self.__cnpj = cnpj
         self.__inscricaoEstadual = inscricaoEstadual
+        self.__inscricaoMunicipal = inscricaoMunicipal
         self.__fantasia = fantasia
         self.__razaoSocial = razaoSocial
         self.__endereco = endereco
@@ -55,8 +56,8 @@ class EmpresaDao(object):
         self.__bairro = bairro
         self.__telefone = telefone
         try:
-            _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, endereco, numero_endereco, complemento, bairro, telefone, cadastrado, id_cidades, id_tipo_empresa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (self.__fantasia, self.__razaoSocial, self.__cnpj, self.__inscricaoEstadual, self.__endereco, self.__numero, self.__complemento, self.__bairro, self.__telefone, self.__dataHora, self.__cidade, self.__tipo)
+            _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, inscricao_municipal, endereco, numero_endereco, complemento, bairro, telefone, cadastrado, id_cidades, id_tipo_empresa, situacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = (self.__fantasia, self.__razaoSocial, self.__cnpj, self.__inscricaoEstadual, self.__inscricaoMunicipal, self.__endereco, self.__numero, self.__complemento, self.__bairro, self.__telefone, self.__dataHora, self.__cidade, self.__tipo, "Operando")
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             self.__cursor.close()
@@ -84,7 +85,8 @@ class EmpresaDao(object):
         self.__site = site
 
         try:
-            __sql = "INSERT INTO empresa (id_cidade, id_tipo_empresa, fantasia, razao_social, cnpj, inscricao_estadual, incricao_municipal, endereco, numero, bairro, telefone site, situacao, atualizado) Values ('"+self.__cidade+"',(select id_tipo_empresa from tipo_empresa where descricao = '"+self.__tipo+"'), '"+self.__fantasia+"', '"+self.__razaoSocial+"', '"+self.__cnpj+"', '"+self.__inscricaoEstadual+"', '"+self.__inscricaoMunicial+"', '"+self.__endereco+"', '"+self.__numero+"', '"+self.__complemento+"', '"+self.__bairro+"', '"+self.__telefone+"', '"+self.__site+"', 'Operando', '"+self.__dataHora+"')"
+            __sql = "UPDATE empresa SET fantasia = %s, razao_social = %s, cnpj = %s, inscricao_estadual = %s, inscricao_municipal = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, atualizado = %s, id_cidades = %s, id_tipo_empresa = %s"
+            _valores = (self.__fantasia, self.__razaoSocial, self.__cnpj, self.__inscricaoEstadual, self.__endereco, self.__numero, self.__complemento, self.__bairro, self.__telefone, self.__dataHora, self.__cidade, self.__tipo)
 
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
@@ -110,43 +112,43 @@ class EmpresaDao(object):
         return lista
 
     def pesquisa(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao.  e.cnpj, e.inscricao_estadual, e.endereco, e.fantasia, e.razao_social, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.id_empresa = '"+pesquisa+"' or e.fantasia = '"+pesquisa+"' or e.razao_social = '"+pesquisa+"' or e.cnpj = '"+pesquisa+"' or e.inscricao_estadual = '"+pesquisa+"' or e.endereco = '"+pesquisa+"' or e.numero_endereco = '"+pesquisa+"' or e.complemento = '"+pesquisa+"' or e.bairro = '"+pesquisa+"' or e.telefone = '"+pesquisa+"' or c.cep = '"+pesquisa+"' or c.nome = '"+pesquisa+"' or c.id_estado = '"+pesquisa+"' or d.nome = '"+pesquisa+"' or t.descricao = '"+pesquisa+"'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, c.cep, c.nome, d.nome, e.site, e.telefone from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.id_empresa = '"+pesquisa+"' or e.fantasia = '"+pesquisa+"' or e.razao_social = '"+pesquisa+"' or e.cnpj = '"+pesquisa+"' or e.inscricao_estadual = '"+pesquisa+"' or e.endereco = '"+pesquisa+"' or e.numero_endereco = '"+pesquisa+"' or e.complemento = '"+pesquisa+"' or e.bairro = '"+pesquisa+"' or e.telefone = '"+pesquisa+"' or c.cep = '"+pesquisa+"' or c.nome = '"+pesquisa+"' or c.id_estado = '"+pesquisa+"' or d.nome = '"+pesquisa+"' or t.descricao = '"+pesquisa+"'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
-        self.__cursor.close()
+        #self.__cursor.close()
         return result
 
     def pesquisaCodigo(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.id_empresa = '"+pesquisa+"'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.telefone, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.id_empresa = '"+pesquisa+"'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
         #self.__cursor.close()
         return result
 
     def pesquisaFantasia(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao. e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, c.id_estado, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.fantasia = '" + pesquisa + "'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.fantasia LIKE '%"+pesquisa+"%'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
-        self.__cursor.close()
+        #self.__cursor.close()
         return result
 
     def pesquisaRazaoSocial(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao. e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, c.id_estado, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.razao_social = '" + pesquisa + "'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.razao_social LIKE '%"+pesquisa+"%'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
-        self.__cursor.close()
+        #self.__cursor.close()
         return result
 
     def pesquisaCnpj(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao. e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, c.id_estado, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.cnpj = '" + pesquisa + "'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.cnpj = '"+pesquisa+"'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
-        self.__cursor.close()
+        #self.__cursor.close()
         return result
 
     def pesquisaInscEstadual(self, pesquisa):
-        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, c.cep, c.nome, c.id_estado, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.inscricao_estadual= '" + pesquisa + "'"
+        _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.inscricao_estadual = '"+pesquisa+"'"
         self.__cursor.execute(_sql)
         result = self.__cursor.fetchall()
-        self.__cursor.close()
+        #self.__cursor.close()
         return result

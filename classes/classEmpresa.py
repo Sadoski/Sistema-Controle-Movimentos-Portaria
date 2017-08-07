@@ -22,6 +22,7 @@ class Empresa(QtGui.QDialog):
         self._ui.btnPesquisar.clicked.connect(self.pesquisar)
         self._ui.txtPesquisa.returnPressed.connect(self.pesquisar)
 
+
         self._ui.btnNovo.clicked.connect(self._botoesNovo)
         self._ui.btnSalvar.clicked.connect(self._cadastroEmpresa)
         self._ui.btnCancelar.clicked.connect(self._cancelar)
@@ -40,6 +41,8 @@ class Empresa(QtGui.QDialog):
         self._ui.txtTelefone.returnPressed.connect(self.focusBotaoSalvar)
 
         self._ui.txtCnpj.editingFinished.connect(self.validacaoCnpj)
+
+        self._ui.tbPesquisa.doubleClicked.connect(self.tablePesquisa)
 
 
     def focusCnpj(self):
@@ -198,14 +201,13 @@ class Empresa(QtGui.QDialog):
         _cep = self.removerCaracter(self._ui.txtCep.text())
         _telefone = self.removerCaracter(self._ui.txtTelefone.text())
 
-        if len(_cnpj) == 0 and self._ui.txtInscricaoEstadua.text() != "" and self._ui.txtFantasia.text() != "" and self._ui.txtRazaoSocial.text() != "" and self._ui.txtEndereco.text() != "" and self._ui.txtNumero.text() != "" and self._ui.txtBairro.text() != "" and len(_cep) == 0 and self._ui.txtCidades.text() != "" and self._ui.txtEstados.text() != "" and self._ui.txtTelefone.text() == "":
+        if self._ui.txtInscricaoEstadua.text() != '' or self._ui.txtInscricaoMunicipal.text() == '' or self._ui.txtFantasia.text() == '' or self._ui.txtRazaoSocial.text() == '' or self._ui.txtEndereco.text() == '' or self._ui.txtNumero.text() == '' or self._ui.txtComplemento.text() == '' or self._ui.txtBairro.text() == '' or self._ui.txtCidades.text() == '' or self._ui.txtEstados.text() == '' or len(_cep) == 8 or len(_telefone) == 11 or len(_cnpj) == 14 :
             _empresa = EmpresaDao()
             _cidade = CidadesEstadosDao()
 
 
 
             _tipoEmpresa = _empresa.idTipoEmpresa(str(self._ui.txtTipoEmpresa.currentText()))
-            #_cnpj = self._ui.txtCnpj.text()
             _inscricaoEstadual = self._ui.txtInscricaoEstadua.text()
             _inscricaoMunicipal = self._ui.txtInscricaoMunicipal.text()
             _fantasia = self._ui.txtFantasia.text()
@@ -223,9 +225,9 @@ class Empresa(QtGui.QDialog):
             #_site = self.__ui.txtSite.text()
 
             #_cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
-            _cadastrar = self._empresa.cadastroEmpresa(_tipoEmpresa, _cnpj, _inscricaoEstadual, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel)
+            _cadastrar = self._empresa.cadastroEmpresa(_tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel)
             self._limparCampos()
-            self._botoesCad()
+            self._botoes
         else:
             w = QWidget()
             QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
@@ -275,6 +277,15 @@ class Empresa(QtGui.QDialog):
         self._ui.btnCancelar.setEnabled(True)
         self._setTipoEmpresa()
 
+    def _botoesEditar(self):
+        self._ui.btnNovo.setEnabled(False)
+
+        self._ui.grubTextos.setEnabled(True)
+        self._ui.btnEditar.setEnabled(True)
+        self._ui.btnCancelar.setEnabled(True)
+        self._ui.btnDeletar.setEnabled(True)
+        #self._setTipoEmpresa()
+
     def pesquisar(self):
         if self._ui.radBtnCodigo.isChecked():
             _pesquisar = self._empresa.pesquisaCodigo(self._ui.txtPesquisa.text())
@@ -290,18 +301,207 @@ class Empresa(QtGui.QDialog):
                 tipoEmpresa = pesqui[1]
                 cnpj = pesqui[2]
                 inscrEstadual = pesqui[3]
-                #inscrMunicipal = pesqui[4]
-                fantasia = pesqui[4]
-                razaoSocial = pesqui[5]
-                endereco = pesqui[6]
-                numero = pesqui[7]
-                complemento = pesqui[8]
-                bairro = pesqui[9]
-                telefone = pesqui[10]
-                cep = pesqui[11]
-                cidade = pesqui[12]
-                estado = pesqui[13]
-                #site = pesqui[14]
+                inscrMunicipal = pesqui[4]
+                fantasia = pesqui[5]
+                razaoSocial = pesqui[6]
+                endereco = pesqui[7]
+                numero = pesqui[8]
+                complemento = pesqui[9]
+                bairro = pesqui[10]
+                telefone = pesqui[11]
+                site = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+
+                # preenchendo o grid de pesquisa
+                self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self._ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipoEmpresa)))
+                self._ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(cnpj)))
+                self._ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(inscrEstadual)))
+                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
+                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(fantasia)))
+                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(telefone)))
+                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+
+                linha += 1
+
+        elif self._ui.radBtnFantasia.isChecked():
+            _pesquisarFantasia = self._empresa.pesquisaFantasia(str(self._ui.txtPesquisa.text()))
+
+            qtde_registros = len(_pesquisarFantasia)
+            self._ui.tbPesquisa.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisarFantasia:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                tipoEmpresa = pesqui[1]
+                cnpj = pesqui[2]
+                inscrEstadual = pesqui[3]
+                inscrMunicipal = pesqui[4]
+                fantasia = pesqui[5]
+                razaoSocial = pesqui[6]
+                endereco = pesqui[7]
+                numero = pesqui[8]
+                complemento = pesqui[9]
+                bairro = pesqui[10]
+                telefone = pesqui[11]
+                site = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+
+                # preenchendo o grid de pesquisa
+                self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self._ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipoEmpresa)))
+                self._ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(cnpj)))
+                self._ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(inscrEstadual)))
+                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
+                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(fantasia)))
+                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(telefone)))
+                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+
+                linha += 1
+
+        elif self._ui.radBtnRazaoSocial.isChecked():
+            _pesquisarRazaoSocial = self._empresa.pesquisaRazaoSocial(str(self._ui.txtPesquisa.text()))
+
+            qtde_registros = len(_pesquisarRazaoSocial)
+            self._ui.tbPesquisa.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisarRazaoSocial:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                tipoEmpresa = pesqui[1]
+                cnpj = pesqui[2]
+                inscrEstadual = pesqui[3]
+                inscrMunicipal = pesqui[4]
+                fantasia = pesqui[5]
+                razaoSocial = pesqui[6]
+                endereco = pesqui[7]
+                numero = pesqui[8]
+                complemento = pesqui[9]
+                bairro = pesqui[10]
+                telefone = pesqui[11]
+                site = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+
+                # preenchendo o grid de pesquisa
+                self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self._ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipoEmpresa)))
+                self._ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(cnpj)))
+                self._ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(inscrEstadual)))
+                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
+                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(fantasia)))
+                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(telefone)))
+                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+
+                linha += 1
+
+        elif self._ui.radBtnCnpj.isChecked():
+            _pesquisarCnpj = self._empresa.pesquisaCnpj(self._ui.txtPesquisa.text())
+
+            qtde_registros = len(_pesquisarCnpj)
+            self._ui.tbPesquisa.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisarCnpj:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                tipoEmpresa = pesqui[1]
+                cnpj = pesqui[2]
+                inscrEstadual = pesqui[3]
+                inscrMunicipal = pesqui[4]
+                fantasia = pesqui[5]
+                razaoSocial = pesqui[6]
+                endereco = pesqui[7]
+                numero = pesqui[8]
+                complemento = pesqui[9]
+                bairro = pesqui[10]
+                telefone = pesqui[11]
+                site = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+
+                # preenchendo o grid de pesquisa
+                self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self._ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipoEmpresa)))
+                self._ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(cnpj)))
+                self._ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(inscrEstadual)))
+                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
+                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(fantasia)))
+                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(telefone)))
+                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+
+                linha += 1
+
+        elif self._ui.radBtnInsEstadual.isChecked():
+            _pesquisarInsEstadual = self._empresa.pesquisaInscEstadual(self._ui.txtPesquisa.text())
+
+            qtde_registros = len(_pesquisarInsEstadual)
+            self._ui.tbPesquisa.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisarInsEstadual:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                tipoEmpresa = pesqui[1]
+                cnpj = pesqui[2]
+                inscrEstadual = pesqui[3]
+                inscrMunicipal = pesqui[4]
+                fantasia = pesqui[5]
+                razaoSocial = pesqui[6]
+                endereco = pesqui[7]
+                numero = pesqui[8]
+                complemento = pesqui[9]
+                bairro = pesqui[10]
+                telefone = pesqui[11]
+                site = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+
 
 
                 # preenchendo o grid de pesquisa
@@ -309,35 +509,44 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipoEmpresa)))
                 self._ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(cnpj)))
                 self._ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                #self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
-                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(fantasia)))
-                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(endereco)))
-                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(numero)))
-                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(complemento)))
-                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(bairro)))
-                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(telefone)))
-                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(cep)))
-                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cidade)))
-                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(estado)))
-                #self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrMunicipal)))
+                self._ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(fantasia)))
+                self._ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self._ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+                self._ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+                self._ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+                self._ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+                self._ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(telefone)))
+                self._ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+                self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+
                 linha += 1
 
-
-        elif self._ui.radBtnFantasia.isChecked():
-            pesquisar = self._empresa.pesquisaFantasia()
-        elif self._ui.radBtnRazaoSocial.isChecked():
-            pesquisar = self._empresa.pesquisaRazaoSocial()
-        elif self._ui.radBtnCnpj.isChecked():
-            pesquisar = self._empresa.pesquisaCnpj()
-        elif self._ui.radBtnInsEstadual.isChecked():
-            pesquisar = self._empresa.pesquisaInscEstadual()
         else:
             result = QMessageBox.warning(self, 'ATENÇÃO', "Um dos campos 'Marca' ou 'Barra' dever ser selecionado")
 
     def tablePesquisa(self, pesquisa):
-        _tabela = self.tbPesquisa.model().data(pesquisa).toString()
-        self._empresa.pesquisa(_tabela)
-
-
-
+        
+            self. _botoes()
+            _tabela = str(self._ui.tbPesquisa.model().data(pesquisa))
+            _pesquisa = self._empresa.pesquisa(_tabela)
+            for pesqui in _pesquisa:
+                self._botoesEditar()
+                self._ui.txtId.setText(str(pesqui[0]))
+                self._ui.txtTipoEmpresa.addItem(pesqui[1])
+                self._ui.txtCnpj.setText(pesqui[2])
+                self._ui.txtInscricaoEstadua.setText(pesqui[3])
+                self._ui.txtInscricaoMunicipal.setText(pesqui[4])
+                self._ui.txtFantasia.setText(pesqui[5])
+                self._ui.txtRazaoSocial.setText(pesqui[6])
+                self._ui.txtEndereco.setText(pesqui[7])
+                self._ui.txtNumero.setText(pesqui[8])
+                self._ui.txtComplemento.setText(pesqui[9])
+                self._ui.txtBairro.setText(pesqui[10])
+                self._ui.txtCep.setText(pesqui[11])
+                self._ui.txtCidades.setText(pesqui[12])
+                self._ui.txtEstados.setText(pesqui[13])
+                self._ui.txtSite.setText(pesqui[14])
+                self._ui.txtTelefone.setText(pesqui[15])

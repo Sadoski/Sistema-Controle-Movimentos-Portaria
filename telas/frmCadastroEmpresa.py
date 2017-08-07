@@ -29,9 +29,6 @@ class Ui_frmCadastroEmpresa(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroEmpresa.setFont(font)
-        frmCadastroEmpresa.setSizeGripEnabled(False)
-        frmCadastroEmpresa.setModal(True)
-
         self.grbBotoes = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(4, 614, 881, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))
@@ -417,6 +414,12 @@ class Ui_frmCadastroEmpresa(object):
         self.lblSite.setGeometry(QtCore.QRect(220, 283, 31, 19))
         self.lblSite.setObjectName(_fromUtf8("lblSite"))
 
+        self.ckBoOperacional = QtGui.QCheckBox(self.grubTextos)
+        self.ckBoOperacional.setEnabled(False)
+        self.ckBoOperacional.setGeometry(QtCore.QRect(780, 340, 101, 17))
+        self.ckBoOperacional.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.ckBoOperacional.setObjectName(_fromUtf8("ckBoOperacional"))
+
         self.grbPesquisa = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbPesquisa.setGeometry(QtCore.QRect(6, 368, 877, 241))
         self.grbPesquisa.setTitle(_fromUtf8(""))
@@ -447,9 +450,12 @@ class Ui_frmCadastroEmpresa(object):
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
 
         self.tbPesquisa = QtGui.QTableWidget(self.grbPesquisa)
-        self.tbPesquisa.setGeometry(QtCore.QRect(10, 51, 861, 181))
+        self.tbPesquisa.setGeometry(QtCore.QRect(10, 51, 861, 151))
         self.tbPesquisa.setColumnCount(16)
-        self.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Tipo Empresa', 'CNPJ', 'Ins. Estadual', 'Insc. Municipal', 'Fantasia', 'Razao Socil', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Cep', 'Cidade', 'Estado', 'Site', 'Telefone'])
+        self.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Tipo Empresa', 'CNPJ', 'Ins. Estadual', 'Insc. Municipal', 'Fantasia', 'Razao Socil', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Telefone', 'Site', 'Cep', 'Cidade', 'Estado',])
+        self.tbPesquisa.setEditTriggers(self.tbPesquisa.NoEditTriggers)
+        self.tbPesquisa.setSelectionBehavior(self.tbPesquisa.SelectRows)
+        self.tbPesquisa.setSelectionMode(self.tbPesquisa.SingleSelection)
         self.tbPesquisa.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tbPesquisa.setObjectName(_fromUtf8("tbPesquisa"))
 
@@ -482,12 +488,10 @@ class Ui_frmCadastroEmpresa(object):
         self.radBtnInsEstadual.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.radBtnInsEstadual.setObjectName(_fromUtf8("radBtnInsEstadual"))
 
-        self.tbPesquisa.raise_()
-        self.radBtnCodigo.raise_()
-        self.radBtnFantasia.raise_()
-        self.radBtnRazaoSocial.raise_()
-        self.radBtnCnpj.raise_()
-        self.radBtnInsEstadual.raise_()
+        self.btnLimparPesquisa = QtGui.QPushButton(self.grbPesquisa)
+        self.btnLimparPesquisa.setGeometry(QtCore.QRect(750, 210, 121, 23))
+        self.btnLimparPesquisa.setObjectName(_fromUtf8("btnLimparPesquisa"))
+
         self.lblCep.setBuddy(self.txtCep)
         self.lblBairro.setBuddy(self.txtBairro)
         self.lblComplemento.setBuddy(self.txtComplemento)
@@ -600,6 +604,7 @@ class Ui_frmCadastroEmpresa(object):
         self.txtSite.setToolTip(_translate("frmCadastroEmpresa", "Site", None))
         self.txtSite.setWhatsThis(_translate("frmCadastroEmpresa", "Campo endereço do site", None))
         self.lblSite.setText(_translate("frmCadastroEmpresa", "Site", None))
+        self.ckBoOperacional.setText(_translate("frmCadastroEmpresa", "Operacional", None))
         self.txtPesquisa.setToolTip(_translate("frmCadastroEmpresa", "Pesquisa", None))
         self.txtPesquisa.setWhatsThis(_translate("frmCadastroEmpresa", "Campo pra inserir dados da pesquisa", None))
         self.tbPesquisa.setToolTip(_translate("frmCadastroEmpresa", "Tabela de Pesquisa", None))
@@ -610,4 +615,5 @@ class Ui_frmCadastroEmpresa(object):
         self.radBtnRazaoSocial.setText(_translate("frmCadastroEmpresa", "Razão Social", None))
         self.radBtnCnpj.setText(_translate("frmCadastroEmpresa", "CNPJ", None))
         self.radBtnInsEstadual.setText(_translate("frmCadastroEmpresa", "Ins. Esta.", None))
+        self.btnLimparPesquisa.setText(_translate("frmCadastroEmpresa", "Limpar Pesquisa", None))
 
