@@ -278,7 +278,7 @@ class Empresa(QtGui.QDialog):
         if result == QMessageBox.Yes:
             self._empresa.deletarEmpresa(self._ui.txtId.text())
             self._limparCampos()
-            self._botoes
+            self._botoes()
 
 
 
@@ -590,46 +590,46 @@ class Empresa(QtGui.QDialog):
             result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
 
     def tablePesquisa(self, pesquisa):
-        ''''
-                indexes = []
-        for selectionRange in self._ui.tbPesquisa.selectedRanges():
-            indexes.extend(range(selectionRange.topRow(), selectionRange.bottomRow() + 1))
-            print("indexes", indexes)
+        _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
+        _cep = self.removerCaracter(self._ui.txtCep.text())
+        _telefone = self.removerCaracter(self._ui.txtTelefone.text())
+        if self._ui.txtInscricaoEstadua.text() == '' and self._ui.txtInscricaoMunicipal.text() == '' and self._ui.txtFantasia.text() == '' and self._ui.txtRazaoSocial.text() == '' and self._ui.txtEndereco.text() == '' and self._ui.txtNumero.text() == '' and self._ui.txtComplemento.text() == '' and self._ui.txtBairro.text() == '' and self._ui.txtCidades.text() == '' and self._ui.txtEstados.text() == '' :
+                self.setarCampos()
 
-        for i in indexes:
-            print("specific item", self._ui.tbPesquisa.item(i, 1).text())
-            #print(results.append(str(self._ui.tbPesquisa.item(i, 1).text())))
-        '''
-        if self._ui.txtInscricaoEstadua.text() != '' or self._ui.txtInscricaoMunicipal.text() == '' or self._ui.txtFantasia.text() == '' or self._ui.txtRazaoSocial.text() == '' or self._ui.txtEndereco.text() == '' or self._ui.txtNumero.text() == '' or self._ui.txtComplemento.text() == '' or self._ui.txtBairro.text() == '' or self._ui.txtCidades.text() == '' or self._ui.txtEstados.text() == '' or len(_cep) == 8 or len(_telefone) == 11 or len(_cnpj) == 14 :
-            w = QWidget()
-            result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em precesso", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if result == QMessageBox.Yes:
-                itens = []
-                for item in self._ui.tbPesquisa.selectedItems():
-                    itens.append(item.text())
-                if len(itens) == 17:
-                    self._botoes()
-                    self._botoesEditar()
-                    self._ui.txtId.setText(str(itens[0]))
-                    self._ui.txtTipoEmpresa.addItem(str(itens[1]))
-                    self._ui.txtCnpj.setText(str(itens[2]))
-                    self._ui.txtInscricaoEstadua.setText(str(itens[3]))
-                    self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
-                    self._ui.txtFantasia.setText(str(itens[5]))
-                    self._ui.txtRazaoSocial.setText(str(itens[6]))
-                    self._ui.txtEndereco.setText(str(itens[7]))
-                    self._ui.txtNumero.setText(str(itens[8]))
-                    self._ui.txtComplemento.setText(str(itens[9]))
-                    self._ui.txtBairro.setText(str(itens[10]))
-                    self._ui.txtTelefone.setText(str(itens[11]))
-                    self._ui.txtSite.setText(str(itens[12]))
-                    self._ui.txtCep.setText(str(itens[13]))
-                    self._ui.txtCidades.setText(str(itens[14]))
-                    self._ui.txtEstados.setText(str(itens[15]))
-                    if str(itens[16]) == 'Operando':
-                        self._ui.ckBoOperacional.setChecked(True)
-                    elif str(itens[16]) == 'Fechado':
-                        self._ui.ckBoOperacional.setChecked(False)
+        else:
+                w = QWidget()
+                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em precesso", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if result == QMessageBox.Yes:
+                    self.setarCampos()
+
+    def setarCampos(self):
+
+        itens = []
+        for item in self._ui.tbPesquisa.selectedItems():
+            itens.append(item.text())
+        if len(itens) == 17:
+            self._botoes()
+            self._botoesEditar()
+            self._ui.txtId.setText(str(itens[0]))
+            self._ui.txtTipoEmpresa.addItem(str(itens[1]))
+            self._ui.txtCnpj.setText(str(itens[2]))
+            self._ui.txtInscricaoEstadua.setText(str(itens[3]))
+            self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
+            self._ui.txtFantasia.setText(str(itens[5]))
+            self._ui.txtRazaoSocial.setText(str(itens[6]))
+            self._ui.txtEndereco.setText(str(itens[7]))
+            self._ui.txtNumero.setText(str(itens[8]))
+            self._ui.txtComplemento.setText(str(itens[9]))
+            self._ui.txtBairro.setText(str(itens[10]))
+            self._ui.txtTelefone.setText(str(itens[11]))
+            self._ui.txtSite.setText(str(itens[12]))
+            self._ui.txtCep.setText(str(itens[13]))
+            self._ui.txtCidades.setText(str(itens[14]))
+            self._ui.txtEstados.setText(str(itens[15]))
+            if str(itens[16]) == 'Operando':
+                self._ui.ckBoOperacional.setChecked(True)
+            elif str(itens[16]) == 'Fechado':
+                self._ui.ckBoOperacional.setChecked(False)
 
 
     def limparTela(self):
