@@ -225,6 +225,7 @@ class Empresa(QtGui.QDialog):
             #_site = self.__ui.txtSite.text()
 
             #_cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
+
             _cadastrar = self._empresa.cadastroEmpresa(_tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel)
             self._limparCampos()
             self._botoes
@@ -258,6 +259,8 @@ class Empresa(QtGui.QDialog):
         self._ui.txtCidades.clear()
         self._ui.txtEstados.clear()
         self._ui.txtTelefone.clear()
+        self._ui.txtSite.clear()
+        self._ui.ckBoOperacional.setChecked(False)
 
     def _botoes(self):
         self._ui.btnNovo.setEnabled(True)
@@ -267,6 +270,8 @@ class Empresa(QtGui.QDialog):
         self._ui.btnEditar.setEnabled(False)
         self._ui.btnCancelar.setEnabled(False)
         self._ui.btnDeletar.setEnabled(False)
+        self._ui.ckBoOperacional.setChecked(False)
+        self._ui.ckBoOperacional.setEnabled(False)
 
     def _botoesNovo(self):
 
@@ -284,6 +289,7 @@ class Empresa(QtGui.QDialog):
         self._ui.btnEditar.setEnabled(True)
         self._ui.btnCancelar.setEnabled(True)
         self._ui.btnDeletar.setEnabled(True)
+        self._ui.ckBoOperacional.setEnabled(True)
         #self._setTipoEmpresa()
 
     def pesquisar(self):
@@ -313,6 +319,7 @@ class Empresa(QtGui.QDialog):
                 cep = pesqui[13]
                 cidade = pesqui[14]
                 estado = pesqui[15]
+                situacao = pesqui[16]
 
                 # preenchendo o grid de pesquisa
                 self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
@@ -331,6 +338,7 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
                 self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
                 self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self._ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(situacao)))
 
                 linha += 1
 
@@ -360,6 +368,7 @@ class Empresa(QtGui.QDialog):
                 cep = pesqui[13]
                 cidade = pesqui[14]
                 estado = pesqui[15]
+                situacao = pesqui[16]
 
                 # preenchendo o grid de pesquisa
                 self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
@@ -378,6 +387,7 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
                 self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
                 self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self._ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(situacao)))
 
                 linha += 1
 
@@ -407,6 +417,7 @@ class Empresa(QtGui.QDialog):
                 cep = pesqui[13]
                 cidade = pesqui[14]
                 estado = pesqui[15]
+                situacao = pesqui[16]
 
                 # preenchendo o grid de pesquisa
                 self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
@@ -425,6 +436,7 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
                 self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
                 self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self._ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(situacao)))
 
                 linha += 1
 
@@ -454,6 +466,7 @@ class Empresa(QtGui.QDialog):
                 cep = pesqui[13]
                 cidade = pesqui[14]
                 estado = pesqui[15]
+                situacao = pesqui[16]
 
                 # preenchendo o grid de pesquisa
                 self._ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
@@ -472,6 +485,7 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
                 self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
                 self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self._ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(situacao)))
 
                 linha += 1
 
@@ -501,7 +515,7 @@ class Empresa(QtGui.QDialog):
                 cep = pesqui[13]
                 cidade = pesqui[14]
                 estado = pesqui[15]
-
+                situacao = pesqui[16]
 
 
                 # preenchendo o grid de pesquisa
@@ -521,13 +535,58 @@ class Empresa(QtGui.QDialog):
                 self._ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
                 self._ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
                 self._ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self._ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(situacao)))
 
                 linha += 1
 
         else:
-            result = QMessageBox.warning(self, 'ATENÇÃO', "Um dos campos 'Marca' ou 'Barra' dever ser selecionado")
+            result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
 
     def tablePesquisa(self, pesquisa):
+        ''''
+                indexes = []
+        for selectionRange in self._ui.tbPesquisa.selectedRanges():
+            indexes.extend(range(selectionRange.topRow(), selectionRange.bottomRow() + 1))
+            print("indexes", indexes)
+
+        for i in indexes:
+            print("specific item", self._ui.tbPesquisa.item(i, 1).text())
+            #print(results.append(str(self._ui.tbPesquisa.item(i, 1).text())))
+        '''
+
+        itens = []
+        for item in self._ui.tbPesquisa.selectedItems():
+            itens.append(item.text())
+
+        self._botoes()
+        self._botoesEditar()
+        self._ui.txtId.setText(str(itens[0]))
+        self._ui.txtTipoEmpresa.addItem(str(itens[1]))
+        self._ui.txtCnpj.setText(str(itens[2]))
+        self._ui.txtInscricaoEstadua.setText(str(itens[3]))
+        self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
+        self._ui.txtFantasia.setText(str(itens[5]))
+        self._ui.txtRazaoSocial.setText(str(itens[6]))
+        self._ui.txtEndereco.setText(str(itens[7]))
+        self._ui.txtNumero.setText(str(itens[8]))
+        self._ui.txtComplemento.setText(str(itens[9]))
+        self._ui.txtBairro.setText(str(itens[10]))
+        self._ui.txtTelefone.setText(str(itens[11]))
+        self._ui.txtSite.setText(str(itens[12]))
+        self._ui.txtCep.setText(str(itens[13]))
+        self._ui.txtCidades.setText(str(itens[14]))
+        self._ui.txtEstados.setText(str(itens[15]))
+        if str(itens[16]) == 'Operando':
+            self._ui.ckBoOperacional.setChecked(True)
+        elif str(itens[16]) == 'Fechado':
+            self._ui.ckBoOperacional.setChecked(False)
+
+
+
+        '''
+        # selectedIndexes()
+        for item in self._ui.tbPesquisa.selectedIndexes():
+            print("selectedIndexes", item.row(), item.column())
         
             self. _botoes()
             _tabela = str(self._ui.tbPesquisa.model().data(pesquisa))
@@ -550,3 +609,4 @@ class Empresa(QtGui.QDialog):
                 self._ui.txtEstados.setText(pesqui[13])
                 self._ui.txtSite.setText(pesqui[14])
                 self._ui.txtTelefone.setText(pesqui[15])
+        '''
