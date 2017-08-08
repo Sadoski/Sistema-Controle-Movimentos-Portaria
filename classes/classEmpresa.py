@@ -26,6 +26,8 @@ class Empresa(QtGui.QDialog):
         self._ui.btnNovo.clicked.connect(self._botoesNovo)
         self._ui.btnSalvar.clicked.connect(self._cadastroEmpresa)
         self._ui.btnCancelar.clicked.connect(self._cancelar)
+        self._ui.btnEditar.clicked.connect(self._alterarEmpresa)
+        self._ui.btnDeletar.clicked.connect(self._deletarEmpresa)
 
         self._ui.txtCnpj.returnPressed.connect(self.focusInsEst)
         self._ui.txtInscricaoEstadua.returnPressed.connect(self.focusInsMun)
@@ -217,21 +219,66 @@ class Empresa(QtGui.QDialog):
             _complemento = self._ui.txtComplemento.text()
             _bairro = self._ui.txtBairro.text()
             _cel = _telefone
+            _site = self._ui.txtSite.text()
             if len(_cep) == 8:
                 _cida = _cidade.idCidade(_cep, self._ui.txtCidades.text(), self._ui.txtEstados.text())
             else:
                 return False
 
-            #_site = self.__ui.txtSite.text()
 
-            #_cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _telefone)
 
-            _cadastrar = self._empresa.cadastroEmpresa(_tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel)
+            _cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel, _site, 'Operando')
+            self._empresa.cadastroEmpresa(_cadastrar)
             self._limparCampos()
-            self._botoes
+            self._botoes()
         else:
             w = QWidget()
             QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
+
+    def _alterarEmpresa(self):
+        _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
+        _cep = self.removerCaracter(self._ui.txtCep.text())
+        _telefone = self.removerCaracter(self._ui.txtTelefone.text())
+
+        if self._ui.txtInscricaoEstadua.text() != '' or self._ui.txtInscricaoMunicipal.text() == '' or self._ui.txtFantasia.text() == '' or self._ui.txtRazaoSocial.text() == '' or self._ui.txtEndereco.text() == '' or self._ui.txtNumero.text() == '' or self._ui.txtComplemento.text() == '' or self._ui.txtBairro.text() == '' or self._ui.txtCidades.text() == '' or self._ui.txtEstados.text() == '' or len(_cep) == 8 or len(_telefone) == 11 or len(_cnpj) == 14 :
+            _empresa = EmpresaDao()
+            _cidade = CidadesEstadosDao()
+
+
+            _idEmpresa = self._ui.txtId.text()
+            _tipoEmpresa = _empresa.idTipoEmpresa(str(self._ui.txtTipoEmpresa.currentText()))
+            _inscricaoEstadual = self._ui.txtInscricaoEstadua.text()
+            _inscricaoMunicipal = self._ui.txtInscricaoMunicipal.text()
+            _fantasia = self._ui.txtFantasia.text()
+            _razaoSocial = self._ui.txtRazaoSocial.text()
+            _endereco = self._ui.txtEndereco.text()
+            _numero = self._ui.txtNumero.text()
+            _complemento = self._ui.txtComplemento.text()
+            _bairro = self._ui.txtBairro.text()
+            _cel = _telefone
+            _site = self._ui.txtSite.text()
+            if len(_cep) == 8:
+                _cida = _cidade.idCidade(_cep, self._ui.txtCidades.text(), self._ui.txtEstados.text())
+            else:
+                return False
+
+
+            _atualizar = Empresas(_idEmpresa, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel, _site, 'Operando')
+            self._empresa.atualizarEmpresa(_atualizar)
+            self._limparCampos()
+            self._botoes()
+        else:
+            w = QWidget()
+            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
+
+    def _deletarEmpresa(self):
+
+        w = QWidget()
+        result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja excluir essa empresa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            self._empresa.deletarEmpresa(self._ui.txtId.text())
+            self._limparCampos()
+            self._botoes
 
 
 
@@ -553,60 +600,39 @@ class Empresa(QtGui.QDialog):
             print("specific item", self._ui.tbPesquisa.item(i, 1).text())
             #print(results.append(str(self._ui.tbPesquisa.item(i, 1).text())))
         '''
+        if self._ui.txtInscricaoEstadua.text() != '' or self._ui.txtInscricaoMunicipal.text() == '' or self._ui.txtFantasia.text() == '' or self._ui.txtRazaoSocial.text() == '' or self._ui.txtEndereco.text() == '' or self._ui.txtNumero.text() == '' or self._ui.txtComplemento.text() == '' or self._ui.txtBairro.text() == '' or self._ui.txtCidades.text() == '' or self._ui.txtEstados.text() == '' or len(_cep) == 8 or len(_telefone) == 11 or len(_cnpj) == 14 :
+            w = QWidget()
+            result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em precesso", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if result == QMessageBox.Yes:
+                itens = []
+                for item in self._ui.tbPesquisa.selectedItems():
+                    itens.append(item.text())
+                if len(itens) == 17:
+                    self._botoes()
+                    self._botoesEditar()
+                    self._ui.txtId.setText(str(itens[0]))
+                    self._ui.txtTipoEmpresa.addItem(str(itens[1]))
+                    self._ui.txtCnpj.setText(str(itens[2]))
+                    self._ui.txtInscricaoEstadua.setText(str(itens[3]))
+                    self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
+                    self._ui.txtFantasia.setText(str(itens[5]))
+                    self._ui.txtRazaoSocial.setText(str(itens[6]))
+                    self._ui.txtEndereco.setText(str(itens[7]))
+                    self._ui.txtNumero.setText(str(itens[8]))
+                    self._ui.txtComplemento.setText(str(itens[9]))
+                    self._ui.txtBairro.setText(str(itens[10]))
+                    self._ui.txtTelefone.setText(str(itens[11]))
+                    self._ui.txtSite.setText(str(itens[12]))
+                    self._ui.txtCep.setText(str(itens[13]))
+                    self._ui.txtCidades.setText(str(itens[14]))
+                    self._ui.txtEstados.setText(str(itens[15]))
+                    if str(itens[16]) == 'Operando':
+                        self._ui.ckBoOperacional.setChecked(True)
+                    elif str(itens[16]) == 'Fechado':
+                        self._ui.ckBoOperacional.setChecked(False)
 
-        itens = []
-        for item in self._ui.tbPesquisa.selectedItems():
-            itens.append(item.text())
 
-        self._botoes()
-        self._botoesEditar()
-        self._ui.txtId.setText(str(itens[0]))
-        self._ui.txtTipoEmpresa.addItem(str(itens[1]))
-        self._ui.txtCnpj.setText(str(itens[2]))
-        self._ui.txtInscricaoEstadua.setText(str(itens[3]))
-        self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
-        self._ui.txtFantasia.setText(str(itens[5]))
-        self._ui.txtRazaoSocial.setText(str(itens[6]))
-        self._ui.txtEndereco.setText(str(itens[7]))
-        self._ui.txtNumero.setText(str(itens[8]))
-        self._ui.txtComplemento.setText(str(itens[9]))
-        self._ui.txtBairro.setText(str(itens[10]))
-        self._ui.txtTelefone.setText(str(itens[11]))
-        self._ui.txtSite.setText(str(itens[12]))
-        self._ui.txtCep.setText(str(itens[13]))
-        self._ui.txtCidades.setText(str(itens[14]))
-        self._ui.txtEstados.setText(str(itens[15]))
-        if str(itens[16]) == 'Operando':
-            self._ui.ckBoOperacional.setChecked(True)
-        elif str(itens[16]) == 'Fechado':
-            self._ui.ckBoOperacional.setChecked(False)
-
-
-
-        '''
-        # selectedIndexes()
-        for item in self._ui.tbPesquisa.selectedIndexes():
-            print("selectedIndexes", item.row(), item.column())
-        
-            self. _botoes()
-            _tabela = str(self._ui.tbPesquisa.model().data(pesquisa))
-            _pesquisa = self._empresa.pesquisa(_tabela)
-            for pesqui in _pesquisa:
-                self._botoesEditar()
-                self._ui.txtId.setText(str(pesqui[0]))
-                self._ui.txtTipoEmpresa.addItem(pesqui[1])
-                self._ui.txtCnpj.setText(pesqui[2])
-                self._ui.txtInscricaoEstadua.setText(pesqui[3])
-                self._ui.txtInscricaoMunicipal.setText(pesqui[4])
-                self._ui.txtFantasia.setText(pesqui[5])
-                self._ui.txtRazaoSocial.setText(pesqui[6])
-                self._ui.txtEndereco.setText(pesqui[7])
-                self._ui.txtNumero.setText(pesqui[8])
-                self._ui.txtComplemento.setText(pesqui[9])
-                self._ui.txtBairro.setText(pesqui[10])
-                self._ui.txtCep.setText(pesqui[11])
-                self._ui.txtCidades.setText(pesqui[12])
-                self._ui.txtEstados.setText(pesqui[13])
-                self._ui.txtSite.setText(pesqui[14])
-                self._ui.txtTelefone.setText(pesqui[15])
-        '''
+    def limparTela(self):
+        self._ui.tbPesquisa.clear()
+        self._ui.tbPesquisa.setColumnCount(17)
+        self._ui.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Tipo Empresa', 'CNPJ', 'Ins. Estadual', 'Insc. Municipal', 'Fantasia', 'Razao Socil', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Telefone', 'Site', 'Cep', 'Cidade', 'Estado', 'Situação'])
