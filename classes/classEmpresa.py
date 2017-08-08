@@ -204,33 +204,33 @@ class Empresa(QtGui.QDialog):
         _telefone = self.removerCaracter(self._ui.txtTelefone.text())
 
         if self._ui.txtInscricaoEstadua.text() != '' or self._ui.txtInscricaoMunicipal.text() == '' or self._ui.txtFantasia.text() == '' or self._ui.txtRazaoSocial.text() == '' or self._ui.txtEndereco.text() == '' or self._ui.txtNumero.text() == '' or self._ui.txtComplemento.text() == '' or self._ui.txtBairro.text() == '' or self._ui.txtCidades.text() == '' or self._ui.txtEstados.text() == '' or len(_cep) == 8 or len(_telefone) == 11 or len(_cnpj) == 14 :
-            _empresa = EmpresaDao()
-            _cidade = CidadesEstadosDao()
+            _valCnpj = self.validaCnpj(_cnpj)
+            if _valCnpj == True :
+                _empresa = EmpresaDao()
+                _cidade = CidadesEstadosDao()
 
 
 
-            _tipoEmpresa = _empresa.idTipoEmpresa(str(self._ui.txtTipoEmpresa.currentText()))
-            _inscricaoEstadual = self._ui.txtInscricaoEstadua.text()
-            _inscricaoMunicipal = self._ui.txtInscricaoMunicipal.text()
-            _fantasia = self._ui.txtFantasia.text()
-            _razaoSocial = self._ui.txtRazaoSocial.text()
-            _endereco = self._ui.txtEndereco.text()
-            _numero = self._ui.txtNumero.text()
-            _complemento = self._ui.txtComplemento.text()
-            _bairro = self._ui.txtBairro.text()
-            _cel = _telefone
-            _site = self._ui.txtSite.text()
-            if len(_cep) == 8:
-                _cida = _cidade.idCidade(_cep, self._ui.txtCidades.text(), self._ui.txtEstados.text())
-            else:
-                return False
+                _tipoEmpresa = _empresa.idTipoEmpresa(str(self._ui.txtTipoEmpresa.currentText()))
+                _inscricaoEstadual = self._ui.txtInscricaoEstadua.text()
+                _inscricaoMunicipal = self._ui.txtInscricaoMunicipal.text()
+                _fantasia = self._ui.txtFantasia.text()
+                _razaoSocial = self._ui.txtRazaoSocial.text()
+                _endereco = self._ui.txtEndereco.text()
+                _numero = self._ui.txtNumero.text()
+                _complemento = self._ui.txtComplemento.text()
+                _bairro = self._ui.txtBairro.text()
+                _cel = _telefone
+                _site = self._ui.txtSite.text()
+                if len(_cep) == 8:
+                    _cida = _cidade.idCidade(_cep, self._ui.txtCidades.text(), self._ui.txtEstados.text())
+                else:
+                    return None
 
-
-
-            _cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel, _site, 'Operando')
-            self._empresa.cadastroEmpresa(_cadastrar)
-            self._limparCampos()
-            self._botoes()
+                _cadastrar = Empresas(None, _tipoEmpresa, _cnpj, _inscricaoEstadual, _inscricaoMunicipal, _fantasia, _razaoSocial, _endereco, _numero, _complemento, _bairro, _cida, _cel, _site, 'Operando')
+                self._empresa.cadastroEmpresa(_cadastrar)
+                self._limparCampos()
+                self._botoes()
         else:
             w = QWidget()
             QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")

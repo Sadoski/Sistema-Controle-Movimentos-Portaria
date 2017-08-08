@@ -27,10 +27,11 @@ class Ui_frmCadastroEmpresa(object):
         frmCadastroEmpresa.setObjectName(_fromUtf8("frmCadastroEmpresa"))
         frmCadastroEmpresa.resize(889, 695)
         font = QtGui.QFont()
-        frmCadastroEmpresa.setSizeGripEnabled(False)
-        frmCadastroEmpresa.setModal(True)
         font.setPointSize(11)
         frmCadastroEmpresa.setFont(font)
+        frmCadastroEmpresa.setSizeGripEnabled(False)
+        frmCadastroEmpresa.setModal(True)
+        
         self.grbBotoes = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(4, 614, 881, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))

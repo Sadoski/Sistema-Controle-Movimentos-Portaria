@@ -1,9 +1,9 @@
 class Cidades():
 
-    def __init__(self, idCidade, idEstado, nomeCidade, cep):
+    def __init__(self, idCidade, nomeEstado, nomeCidade, cep):
         self._idCidade = idCidade
-        self._idEstado = idEstado
-        self. _nomeCidade = nomeCidade
+        self._nomeEstado = nomeEstado
+        self._nomeCidade = nomeCidade
         self._cep = cep
 
     @property
@@ -15,12 +15,12 @@ class Cidades():
         self._idCidade = idCidade
 
     @property
-    def getIdEstado(self):
-        return self._idEstado
+    def getNomeEstado(self):
+        return self._nomeEstado
 
-    @getIdEstado.setter
-    def setIdEstado(self, idEstado):
-        self._idEstado = idEstado
+    @getNomeEstado.setter
+    def setNomeEstado(self, nomeEstado):
+        self._nomeEstado = nomeEstado
 
     @property
     def getNomeCidade(self):
