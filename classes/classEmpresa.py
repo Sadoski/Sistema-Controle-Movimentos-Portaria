@@ -112,48 +112,6 @@ class Empresa(QtGui.QDialog):
                 result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
                 return False
 
-    def formatarCpf(self, cnpj):
-        return ("%s.%s.%s-%s" % (cnpj[0:3], cnpj[3:6], cnpj[6:9], cnpj[9:11]))
-
-    def validarCpf(self, cpf):
-
-        lista_validacao = [10, 9, 8, 7, 6, 5, 4, 3, 2]
-
-        cpf_invalidos = [11*str(i) for i in range(10)]
-        if cpf in cpf_invalidos:
-            w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido 1")
-            return False
-
-        if not cpf.isdigit():
-            cpf = cpf.replace(".", "")
-            cpf = cpf.replace("-", "")
-
-        if len(cpf) < 11:
-            w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido 2")
-            return False
-
-        if len(cpf) > 11:
-            w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido 3")
-            return False
-
-        selfcpf = [int(x) for x in cpf]
-
-        cpf = selfcpf[:9]
-
-        while len(cpf) < 11:
-
-            r = sum([(len(cpf)+1-i)*v for i, v in [(x, cpf[x]) for x in range(len(cpf))]]) % 11
-            if r > 1:
-                f = 11 - r
-            else:
-                f = 0
-                cpf.append(f)
-
-            return bool(cpf == selfcpf)
-
 
     def validaCnpj(self,cnpj):
         #Recebe um CNPJ e retorna True se formato válido ou False se inválido

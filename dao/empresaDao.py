@@ -148,3 +148,13 @@ class EmpresaDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisaEmpresa(self, pesquisa):
+        try:
+            _sql = "SELECT id_empresa, razao_social, cnpj, inscricao_estadual from empresa where  fantasia = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
