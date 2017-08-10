@@ -57,7 +57,7 @@ class Ui_frmLogin(object):
         self.lblImagem = QtGui.QLabel(frmLogin)
         self.lblImagem.setGeometry(QtCore.QRect(30, 10, 341, 71))
         self.lblImagem.setText(_fromUtf8(""))
-        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/sispor.jpg")))
+        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp.jpg")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
         
         self.btnEsqueciSenha = QtGui.QPushButton(frmLogin)

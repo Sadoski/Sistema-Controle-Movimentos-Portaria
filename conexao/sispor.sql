@@ -10281,7 +10281,7 @@ DROP TABLE IF EXISTS produto;
 CREATE TABLE IF NOT EXISTS produto (
 id_produto integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 id_tipo_carga integer,
-descricao varchar(50)
+descricao varchar(50),
 FOREIGN KEY(id_tipo_carga) REFERENCES tipo_carga (id_tipo_carga)
 );
 
@@ -10334,13 +10334,13 @@ id_empresa integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 fantasia varchar(50) ,
 razao_social varchar(70) ,
 cnpj char(14) ,
-inscricao_estadual char(9) ,
+inscricao_estadual varchar(15) ,
+inscricao_municipal varchar(15) ,
 endereco varchar(70) ,
 numero_endereco varchar(11) ,
 complemento varchar(50) ,
 bairro varchar(50) ,
 telefone varchar(15) ,
-fax varchar(15),
 site varchar(50),
 situacao enum('Operando', 'Fechado'),
 cadastrado timestamp,
@@ -10358,7 +10358,7 @@ DROP TABLE IF EXISTS contato_empresa;
 
 CREATE TABLE IF NOT EXISTS contato_empresa (
 id_contato_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-numero varchar(11) ,
+numero varchar(15) ,
 nome_contato varchar(50) ,
 id_empresa integer NOT NULL,
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa)
@@ -10575,7 +10575,7 @@ id_contato_cli integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome_contato varchar(50) ,
 numero varchar(11) ,
 id_cliente integer NOT NULL,
-FOREIGN KEY('id_cliente') REFERENCES 'cliente' ('id_cliente')
+FOREIGN KEY(id_cliente) REFERENCES cliente (id_cliente)
 );
 
 /* ************************************************************************** */
@@ -10801,8 +10801,8 @@ status enum('Saiu Vazio', 'Saiu Carregado'),
 observacao varchar(255) ,
 id_entrada_cami_emp_carre integer,
 id_entrada_cami_emp_desc integer ,
-FOREIGN KEY(id_entrada_cami_emp_carre) REFERENCES 'entrada_caminhao_empresa_carregamento' ('id_entrada_cami_emp_carre'),
-FOREIGN KEY(id_entrada_cami_emp_desc) REFERENCES 'entrada_caminhao_empresa_descarregamento' ('id_entrada_cami_emp_desc')
+FOREIGN KEY(id_entrada_cami_emp_carre) REFERENCES entrada_caminhao_empresa_carregamento (id_entrada_cami_emp_carre),
+FOREIGN KEY(id_entrada_cami_emp_desc) REFERENCES entrada_caminhao_empresa_descarregamento (id_entrada_cami_emp_desc)
 );
 
 /* ************************************************************************** */

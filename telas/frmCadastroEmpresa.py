@@ -31,7 +31,7 @@ class Ui_frmCadastroEmpresa(object):
         frmCadastroEmpresa.setFont(font)
         frmCadastroEmpresa.setSizeGripEnabled(False)
         frmCadastroEmpresa.setModal(True)
-        
+
         self.grbBotoes = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(4, 614, 881, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))
@@ -65,6 +65,12 @@ class Ui_frmCadastroEmpresa(object):
         self.btnEditar.setGeometry(QtCore.QRect(570, 10, 81, 61))
         self.btnEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
+
+        self.btnSetoressCargos = QtGui.QPushButton(self.grbBotoes)
+        #self.btnSetoressCargos.setEnabled(False)
+        self.btnSetoressCargos.setGeometry(QtCore.QRect(10, 10, 131, 61))
+        self.btnSetoressCargos.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnSetoressCargos.setObjectName(_fromUtf8("btnSetoressCargos"))
 
         self.grubTextos = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grubTextos.setEnabled(False)
@@ -187,7 +193,6 @@ class Ui_frmCadastroEmpresa(object):
         self.txtCep.setCursorPosition(0)
         self.txtCep.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCep.setObjectName(_fromUtf8("txtCep"))
-
         self.txtInscricaoMunicipal = QtGui.QLineEdit(self.grubTextos)
         self.txtInscricaoMunicipal.setGeometry(QtCore.QRect(703, 26, 171, 25))
         palette = QtGui.QPalette()
@@ -491,10 +496,6 @@ class Ui_frmCadastroEmpresa(object):
         self.radBtnInsEstadual.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.radBtnInsEstadual.setObjectName(_fromUtf8("radBtnInsEstadual"))
 
-        self.btnLimparPesquisa = QtGui.QPushButton(self.grbPesquisa)
-        self.btnLimparPesquisa.setGeometry(QtCore.QRect(750, 210, 121, 23))
-        self.btnLimparPesquisa.setObjectName(_fromUtf8("btnLimparPesquisa"))
-
         self.lblCep.setBuddy(self.txtCep)
         self.lblBairro.setBuddy(self.txtBairro)
         self.lblComplemento.setBuddy(self.txtComplemento)
@@ -556,6 +557,8 @@ class Ui_frmCadastroEmpresa(object):
         self.btnSalvar.setText(_translate("frmCadastroEmpresa", "Salvar", None))
         self.btnEditar.setWhatsThis(_translate("frmCadastroEmpresa", "Botão para salvar edição de um registro existente", None))
         self.btnEditar.setText(_translate("frmCadastroEmpresa", "Editar", None))
+        self.btnSetoressCargos.setWhatsThis(_translate("frmCadastroEmpresa", "Botão de cadastro de setores e cargos", None))
+        self.btnSetoressCargos.setText(_translate("frmCadastroEmpresa", "Setores / Cargos", None))
         self.grubTextos.setWhatsThis(_translate("frmCadastroEmpresa", "Grupo de Dados para cadastro e edição de empresas", None))
         self.lblCep.setText(_translate("frmCadastroEmpresa", "CEP", None))
         self.txtCidades.setToolTip(_translate("frmCadastroEmpresa", "Cidade", None))
@@ -618,5 +621,4 @@ class Ui_frmCadastroEmpresa(object):
         self.radBtnRazaoSocial.setText(_translate("frmCadastroEmpresa", "Razão Social", None))
         self.radBtnCnpj.setText(_translate("frmCadastroEmpresa", "CNPJ", None))
         self.radBtnInsEstadual.setText(_translate("frmCadastroEmpresa", "Ins. Esta.", None))
-        self.btnLimparPesquisa.setText(_translate("frmCadastroEmpresa", "Limpar Pesquisa", None))
 

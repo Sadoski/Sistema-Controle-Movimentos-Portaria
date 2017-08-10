@@ -8,6 +8,7 @@ from dao.tipoEmpresaDao import TipoEmpresaDao
 from telas.frmCadastroEmpresa import Ui_frmCadastroEmpresa
 from dao.empresaDao import EmpresaDao
 from controller.getSetEmpresa import Empresas
+from .classCadSetoresCargos import SetoresCargos
 
 class Empresa(QtGui.QDialog):
 
@@ -28,6 +29,7 @@ class Empresa(QtGui.QDialog):
         self._ui.btnCancelar.clicked.connect(self._cancelar)
         self._ui.btnEditar.clicked.connect(self._alterarEmpresa)
         self._ui.btnDeletar.clicked.connect(self._deletarEmpresa)
+        self._ui.btnSetoressCargos.clicked.connect(self.setoresCargos)
 
         self._ui.txtCnpj.returnPressed.connect(self.focusInsEst)
         self._ui.txtInscricaoEstadua.returnPressed.connect(self.focusInsMun)
@@ -90,6 +92,13 @@ class Empresa(QtGui.QDialog):
         for tipo in lista:
             self._ui.txtTipoEmpresa.addItem(tipo[0])
 
+
+    def setoresCargos(self):
+        __setoresCargos = SetoresCargos()
+        __setoresCargos.show()
+        __setoresCargos.exec_()
+
+
     def pesquisarCidade(self):
         _cep = self.removerCaracter(self._ui.txtCep.text())
         if len(_cep) < 8:
@@ -102,6 +111,9 @@ class Empresa(QtGui.QDialog):
             for cidade in cid:
                 self._ui.txtCidades.setText(cidade[0])
                 self._ui.txtEstados.setText(cidade[1])
+            if cid == []:
+                self._ui.txtCidades.clear()
+                self._ui.txtEstados.clear()
 
     def validacaoCnpj(self):
         _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
@@ -553,10 +565,10 @@ class Empresa(QtGui.QDialog):
         _telefone = self.removerCaracter(self._ui.txtTelefone.text())
         if self._ui.txtInscricaoEstadua.text() == '' and self._ui.txtInscricaoMunicipal.text() == '' and self._ui.txtFantasia.text() == '' and self._ui.txtRazaoSocial.text() == '' and self._ui.txtEndereco.text() == '' and self._ui.txtNumero.text() == '' and self._ui.txtComplemento.text() == '' and self._ui.txtBairro.text() == '' and self._ui.txtCidades.text() == '' and self._ui.txtEstados.text() == '' :
                 self.setarCampos()
-
+                self._ui.btnSetoressCargos.setEnabled(True)
         else:
                 w = QWidget()
-                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em precesso", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em processo", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if result == QMessageBox.Yes:
                     self.setarCampos()
 

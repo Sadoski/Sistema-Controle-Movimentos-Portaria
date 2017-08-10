@@ -1,4 +1,5 @@
 import sys
+import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -26,7 +27,6 @@ class CadastroFuncionario(QtGui.QDialog):
         self.__ui.txtCep.returnPressed.connect(self.focusTelefone)
         self.__ui.txtTelefone.returnPressed.connect(self.focusCelular)
         self.__ui.txtCelular.returnPressed.connect(self.focusSetores)
-
 
         self.__ui.txtFantasia.editingFinished.connect(self.pesquisarEmpresa)
         self.__ui.txtCpf.editingFinished.connect(self.validacaoCpf)
@@ -76,6 +76,7 @@ class CadastroFuncionario(QtGui.QDialog):
     def focusSetores(self):
         self.__ui.txtSetor.setFocus()
 
+
     def pesquisarEmpresa(self):
         _empresaDao = EmpresaDao()
 
@@ -99,13 +100,19 @@ class CadastroFuncionario(QtGui.QDialog):
     def validacaoCpf(self):
         _cpf = self.removerCaracter(self.__ui.txtCpf.text())
 
-
         _val = self.validarCpf(_cpf)
 
-        if _val == False:
+        if _val  != False:
+            _valCpf = self.cpf(_cpf)
+            if _valCpf == False:
+                w = QWidget()
+                QMessageBox.warning(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
+                return False
+        else:
             w = QWidget()
             QMessageBox.warning(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
             return False
+
 
 
     def removerCaracter(self, i):
@@ -124,25 +131,16 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def validarCpf(self, cpf):
 
-        cpf_invalidos = [11*str(i) for i in range(10)]
+        cpf_invalidos = [11 * str(i) for i in range(10)]
         if cpf in cpf_invalidos:
             return False
 
-        if not cpf.isdigit():
-            cpf = cpf.replace(".", "")
-            cpf = cpf.replace("-", "")
 
-        if len(cpf) < 11:
-            return False
-
-        if len(cpf) > 11:
-            return False
+    def cpf(self, cpf):
 
         selfcpf = [int(x) for x in cpf]
 
         cpf = selfcpf[:9]
-
-
 
         while len(cpf) < 11:
 

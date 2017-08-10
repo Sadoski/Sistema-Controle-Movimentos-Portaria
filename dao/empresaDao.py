@@ -158,3 +158,26 @@ class EmpresaDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisaEmpresaSetCar(self, pesquisa):
+        try:
+            _sql = "SELECT e.id_empresa, e.razao_social, t.descricao,  e.cnpj, e.inscricao_estadual from empresa e INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  fantasia = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            print(result)
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def confirmarEmpresa(self, setorCargo):
+        try:
+            _sql = "SELECT e.id_empresa from empresa where  fantasia = %s and razao_social = %s and cnpj = %s and inscricao_estadual = %s and id_empresa = %s"
+            _valores = (setorCargo.getFantasia, setorCargo.getRazaoSocial, setorCargo.getCnpj, setorCargo.getInscricao, setorCargo.getIdEmpresa)
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            print(result)
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
