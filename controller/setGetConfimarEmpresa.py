@@ -8,10 +8,10 @@ class ConfirmarEmpresa():
         self.__inscricao = inscricao
 
     @property
-    def getIdEmpres(self):
+    def getIdEmpresa(self):
         return self.__idEmpresa
 
-    @getIdEmpres.setter
+    @getIdEmpresa.setter
     def setIdEmpresa(self, idEmpresa):
         self.__idEmpresa = idEmpresa
 

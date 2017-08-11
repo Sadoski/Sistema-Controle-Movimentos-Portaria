@@ -10371,7 +10371,7 @@ DROP TABLE IF EXISTS cargo;
 
 CREATE TABLE IF NOT EXISTS cargo (
 id_cargo integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-descricao varchar(45) ,
+descricao varchar(50) ,
 cadastrado timestamp,
 atualizado timestamp,
 id_empresa integer NOT NULL,
@@ -10414,7 +10414,7 @@ CREATE TABLE IF NOT EXISTS veiculos_empresa (
 id_veiculos_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 marca varchar(50) ,
 modelo varchar(50) ,
-placa char(7) ,
+placa char(6) ,
 cadastrado timestamp,
 alterado timestamp,
 id_empresa integer NOT NULL,
@@ -10431,12 +10431,12 @@ DROP TABLE IF EXISTS funcionario;
 CREATE TABLE IF NOT EXISTS funcionario (
 id_funcionario integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome varchar(50) ,
-rg char(10) ,
-expeditor varchar(8) ,
+rg char(8) ,
+expeditor varchar(5) ,
 cpf char(14) ,
 data_nascimento date ,
-nome_mae varchar(70) ,
-nome_pai varchar(70) ,
+nome_mae varchar(50) ,
+nome_pai varchar(50) ,
 celular varchar(15) ,
 telefone varchar(15) ,
 endereco varchar(70) ,
@@ -10445,7 +10445,7 @@ complemento varchar(50) ,
 bairro varchar(50) ,
 data_demissao date ,
 data_admissao date ,
-situacao enum('Admitido', 'Demitido Sem Justa Causa', 'Demitido Justa Causa', 'Fastado, Pedido Demissão'),
+situacao enum('Admitido', 'Demitido Sem Justa Causa', 'Demitido Justa Causa', 'Afastado', 'Pedido Demissão'),
 cadastrado timestamp,
 atualizado timestamp,
 id_funcao integer NOT NULL,
@@ -10513,7 +10513,6 @@ numero_endereco varchar(11) ,
 complemento varchar(50) ,
 bairro varchar(50) ,
 telefone varchar(15) ,
-fax varchar(15) ,
 site varchar(50) ,
 email varchar(70) ,
 situacao enum('Operando', 'Fechado'),
@@ -10586,7 +10585,7 @@ CREATE TABLE IF NOT EXISTS motorista (
 id_motorista integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 nome varchar(70) ,
 rg varchar(9) ,
-expeditor varchar(10) ,
+expeditor varchar(5) ,
 cpf varchar(14) ,
 data_nascimento date ,
 cnh varchar(10) ,
@@ -10607,10 +10606,12 @@ DROP TABLE IF EXISTS veiculo_motorista;
 /* ***************************** VEICULOS MOTORISTA ****************************** */
 
 CREATE TABLE IF NOT EXISTS veiculo_motorista (
-id_veiculo integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_veiculo_mot integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 marca varchar(30) ,
 modelo varchar(50) ,
 placa varchar(8) ,
+cadastrado timestamp,
+alterado timestamp,
 id_motorista integer NOT NULL,
 FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
 );
@@ -10620,22 +10621,22 @@ DROP TABLE IF EXISTS notas_romaneio;
 /* ***************************** NOTAS FISCAIS E ROMANEIOS ****************************** */
 
 CREATE TABLE IF NOT EXISTS notas_romaneio (
-id_entrada_notas_teca integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-numero_nota char(11) ,
+id_entrada_notas_romaneios integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+numero_nota varchar(11) ,
 numero_romaneio varchar(11) ,
 data_lancamento date ,
 observacao varchar(255) ,
 cadastrado timestamp,
 alterado timestamp,
 id_fornecedor integer NOT NULL,
-id_carga integer NOT NULL,
+id_produto integer NOT NULL,
 id_empresa integer NOT NULL,
 id_cidades integer NOT NULL,
 id_motorista integer NOT NULL,
 FOREIGN KEY(id_fornecedor) REFERENCES fornecedor (id_fornecedor),
-FOREIGN KEY(id_carga) REFERENCES tipo_carga (id_carga),
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
-FOREIGN KEY(id_cidades) REFERENCES cidades (id_cidades),
+FOREIGN KEY(id_cidade) REFERENCES cidade (id_cidade),
 FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
 );
 
@@ -10645,6 +10646,8 @@ DROP TABLE IF EXISTS saida_vei_emp;
 
 CREATE TABLE IF NOT EXISTS saida_vei_emp (
 id_saida_vei_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+data date,
+hora time,
 nome_condutor varchar(70) ,
 observacao varchar(255) ,
 id_veiculos_emp integer NOT NULL,
@@ -10657,6 +10660,8 @@ DROP TABLE IF EXISTS entrada_vei_emp;
 
 CREATE TABLE IF NOT EXISTS entrada_vei_emp (
 id_entrada_vei_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+data date,
+hora time,
 nome_condutor varchar(70),
 observacao varchar(255),
 id_saida_vei_emp integer NOT NULL,
@@ -10673,13 +10678,13 @@ data date,
 hora time,
 status enum('Saiu Vazio', 'Saiu Carregado'),
 observacao varchar(255) ,
-id_entrada_notas_teca integer NOT NULL,
-id_carga integer NOT NULL,
+id_entrada_notas_romaneios integer NOT NULL,
+id_produto integer NOT NULL,
 id_fornecedor integer NOT NULL,
 id_empresa integer NOT NULL,
 id_motorista integer NOT NULL,
-FOREIGN KEY(id_entrada_notas_teca) REFERENCES notas_romaneio (id_entrada_notas_teca),
-FOREIGN KEY(id_carga) REFERENCES tipo_carga (id_carga),
+FOREIGN KEY(id_entrada_notas_romaneios) REFERENCES notas_romaneio (id_entrada_notas_romaneios),
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
 FOREIGN KEY(id_fornecedor) REFERENCES fornecedor (id_fornecedor),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
 FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
@@ -10690,7 +10695,7 @@ DROP TABLE IF EXISTS saida_veiculos_descarregamento;
 /* ***************************** SIDA VEICULOS DESCARREGAMENTO ****************************** */
 
 CREATE TABLE IF NOT EXISTS saida_veiculos_descarregamento (
-id_saida_vei_emp integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_saida_veiculos_desc integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 data date ,
 hora time ,
 status enum('Saiu Vazio', 'Saiu Carregado'),
@@ -10709,11 +10714,11 @@ data date ,
 hora time ,
 status enum('Saiu Vazio', 'Saiu Carregado'),
 observacao varchar(255) ,
-id_carga integer NOT NULL,
+id_produto integer NOT NULL,
 id_cliente integer NOT NULL,
 id_empresa integer NOT NULL,
 id_motorista integer,
-FOREIGN KEY(id_carga) REFERENCES tipo_carga (id_carga),
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
 FOREIGN KEY(id_cliente) REFERENCES cliente (id_cliente),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
 FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
@@ -10723,7 +10728,7 @@ FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
 DROP TABLE IF EXISTS saida_veiculo_carregamento;
 /* ***************************** SAIDA VECULOS CARREGAMENTO ****************************** */
 
-CREATE TABLE IF NOT EXISTS saida_veivulos_caregamento (
+CREATE TABLE IF NOT EXISTS saida_veiculos_carregamento (
 id_saida_vei_carre integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 data date ,
 hora time ,
@@ -10747,11 +10752,11 @@ status enum('Saiu Vazio', 'Saiu Carregado'),
 observacao varchar(255) ,
 id_veiculos_emp integer NOT NULL,
 id_fornecedor integer NOT NULL,
-id_carga integer NOT NULL,
-id_entrada_notas_teca integer,
+id_produto integer NOT NULL,
+id_entrada_notas_romaneios integer,
 FOREIGN KEY(id_veiculos_emp) REFERENCES veiculos_empresa (id_veiculos_emp),
 FOREIGN KEY(id_fornecedor) REFERENCES fornecedor (id_fornecedor),
-FOREIGN KEY(id_carga) REFERENCES tipo_carga (id_carga),
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
 FOREIGN KEY(id_entrada_notas_teca) REFERENCES notas_romaneio (id_entrada_notas_teca)
 );
 
@@ -10782,11 +10787,11 @@ observacao varchar(255) ,
 id_veiculos_emp integer NOT NULL,
 id_empresa integer NOT NULL,
 id_cliente integer NOT NULL NOT NULL,
-id_carga integer NOT NULL NOT NULL,
+id_produto integer NOT NULL NOT NULL,
 FOREIGN KEY(id_veiculos_emp) REFERENCES veiculos_empresa (id_veiculos_emp),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
 FOREIGN KEY(id_cliente) REFERENCES cliente (id_cliente),
-FOREIGN KEY(id_carga) REFERENCES tipo_carga (id_carga)
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto)
 );
 
 /* ************************************************************************** */
@@ -10819,7 +10824,7 @@ id_tipo_afazer integer NOT NULL,
 id_cidades integer NOT NULL,
 id_empresa integer NOT NULL,
 FOREIGN KEY(id_tipo_afazer) REFERENCES tipo_afazeres (id_tipo_afazer),
-FOREIGN KEY(id_cidades) REFERENCES cidades (id_cidades),
+FOREIGN KEY(id_cidade) REFERENCES cidade (id_cidade),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa)
 );
 
