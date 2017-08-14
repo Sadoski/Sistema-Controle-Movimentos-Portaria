@@ -3,7 +3,12 @@ import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+from controller.getSetFuncionario import Funcionario
+from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.empresaDao import EmpresaDao
+from dao.funcionarioDao import FuncionarioDao
+from dao.setoresCargosDao import SetoresCargosDao
 from telas.frmCadastroFuncionario import Ui_frmCadastroFuncionario
 
 class CadastroFuncionario(QtGui.QDialog):
@@ -17,7 +22,6 @@ class CadastroFuncionario(QtGui.QDialog):
         self.__ui.txtRg.returnPressed.connect(self.focusExpeditor)
         self.__ui.txtExpeditor.returnPressed.connect(self.focusCpf)
         self.__ui.txtCpf.returnPressed.connect(self.focusData)
-        #self.__ui.txtDataNascimento.returnPressed.connect(self.focusNomeMae)
         self.__ui.txtNomeMae.returnPressed.connect(self.focusNomePai)
         self.__ui.txtNomePai.returnPressed.connect(self.focusEndereco)
         self.__ui.txtEndereco.returnPressed.connect(self.focusNumero)
@@ -28,8 +32,18 @@ class CadastroFuncionario(QtGui.QDialog):
         self.__ui.txtTelefone.returnPressed.connect(self.focusCelular)
         self.__ui.txtCelular.returnPressed.connect(self.focusSetores)
 
+        self.__ui.txtPesquisaFuncionario.returnPressed.connect(self.pesquisarFuncionario)
+
         self.__ui.txtFantasia.editingFinished.connect(self.pesquisarEmpresa)
         self.__ui.txtCpf.editingFinished.connect(self.validacaoCpf)
+        self.__ui.txtCep.editingFinished.connect(self.pesquisarCidade)
+
+
+        self.__ui.btnCadNovo.clicked.connect(self.botaoNovoCadastro)
+        self.__ui.btnCadSalvar.clicked.connect(self.cadastrarFuncionario)
+        self.__ui.btnCadCancelar.clicked.connect(self.cancelarCadastro)
+
+        self.__ui.txtSetor.currentIndexChanged.connect(self.pesquisarCargo)
 
     def focusNomeFun(self):
         self.__ui.txtNomeFuncionario.setFocus()
@@ -76,6 +90,24 @@ class CadastroFuncionario(QtGui.QDialog):
     def focusSetores(self):
         self.__ui.txtSetor.setFocus()
 
+    def pesquisarSetor(self):
+        __setor = SetoresCargosDao()
+        setores = __setor.pesquisaSetor()
+
+        for sett in setores:
+            self.__ui.txtSetor.addItem(sett[0])
+
+        self.pesquisarCargo()
+
+
+    def pesquisarCargo(self):
+        self.__ui.txtCargo.clear()
+
+        __cargo = SetoresCargosDao()
+        cargos = __cargo.pesquisarFuncao(str(self.__ui.txtSetor.currentText()))
+        for carg in cargos:
+            self.__ui.txtCargo.addItem(carg[0])
+
 
     def pesquisarEmpresa(self):
         _empresaDao = EmpresaDao()
@@ -90,6 +122,22 @@ class CadastroFuncionario(QtGui.QDialog):
                 self.__ui.txtRazaoSocial.setText(empe[1])
                 self.__ui.txtCnpj.setText(empe[2])
                 self.__ui.txtInscricaoEstadua.setText(empe[3])
+
+    def pesquisarCidade(self):
+        _cep = self.removerCaracter(self.__ui.txtCep.text())
+        if len(_cep) < 8:
+            self.__ui.txtCidades.clear()
+            self.__ui.txtEstados.clear()
+        else:
+            cidades = CidadesEstadosDao()
+            cid = cidades.cidade(_cep)
+
+            for cidade in cid:
+                self.__ui.txtCidades.setText(cidade[0])
+                self.__ui.txtEstados.setText(cidade[1])
+            if cid == []:
+                self.__ui.txtCidades.clear()
+                self.__ui.txtEstados.clear()
 
     def limparCamposEmp(self):
         self.__ui.txtIdEmpresa.clear()
@@ -154,3 +202,500 @@ class CadastroFuncionario(QtGui.QDialog):
                 cpf.append(f)
 
         return bool(cpf == selfcpf)
+
+    def botaoNovoCadastro(self):
+        self.__ui.btnCadNovo.setEnabled(False)
+        self.__ui.btnCadSalvar.setEnabled(True)
+        self.__ui.btnCadCancelar.setEnabled(True)
+
+        self.__ui.txtFantasia.setEnabled(True)
+        self.__ui.grbFuncionario.setEnabled(True)
+
+        self.__ui.txtFantasia.setFocus()
+        self.pesquisarSetor()
+
+    def cadastrarFuncionario(self):
+        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
+            _cidade = CidadesEstadosDao()
+            _funDao = FuncionarioDao()
+
+            idEmpresa = self.__ui.txtIdEmpresa.text()
+            fantasia = self.__ui.txtFantasia.text()
+            razaoSocial = self.__ui.txtRazaoSocial.text()
+
+            nome = self.__ui.txtNomeFuncionario.text()
+            rg = self.removerCaracter(self.__ui.txtRg.text())
+            expeditor = self.__ui.txtExpeditor.text()
+            cpf = self.removerCaracter(self.__ui.txtCpf.text())
+            data = self.removerCaracter(self.__ui.txtDataNascimento.text())
+            nascimento = self.formatarData(data)
+            print(nascimento)
+            if self.__ui.radBtnMasculino.isChecked():
+                sexo = 'MASCULINO'
+            elif self.__ui.radBtnFeminino.isChecked():
+                sexo = 'FEMININO'
+            else:
+                return None
+            mae = self.__ui.txtNomeMae.text()
+            pai = self.__ui.txtNomePai.text()
+            endereco = self.__ui.txtEndereco.text()
+            numero = self.__ui.txtNumero.text()
+            complemento = self.__ui.txtComplemento.text()
+            bairro = self.__ui.txtBairro.text()
+            _cep = self.removerCaracter(self.__ui.txtCep.text())
+            if len(_cep) == 8:
+                _cida = _cidade.idCidade(_cep, self.__ui.txtCidades.text(), self.__ui.txtEstados.text())
+            else:
+                return False
+            telefone = self.removerCaracter(self.__ui.txtTelefone.text())
+            celular = self.removerCaracter(self.__ui.txtCelular.text())
+
+            funcao = _funDao.funcao(self.__ui.txtSetor.currentText(), self.__ui.txtCargo.currentText())
+            print(_cida)
+            __funcionario = Funcionario(None, nome, rg, expeditor, cpf, nascimento, sexo, mae, pai, endereco, numero, complemento, bairro, _cida, telefone, celular, funcao, idEmpresa)
+            _funDao.cadastroFuncionario(__funcionario)
+            self.botaoCancelar()
+        else:
+            w = QWidget()
+            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
+
+
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s-%s-%s" % (ano, mes, dia))
+
+    def limparCampos(self):
+        self.__ui.txtIdEmpresa.clear()
+        self.__ui.txtFantasia.clear()
+        self.__ui.txtRazaoSocial.clear()
+        self.__ui.txtCnpj.clear()
+        self.__ui.txtInscricaoEstadua.clear()
+
+        self.__ui.txtidFuncionario.clear()
+        self.__ui.txtNomeFuncionario.clear()
+        self.__ui.txtRg.clear()
+        self.__ui.txtExpeditor.clear()
+        self.__ui.txtCpf.clear()
+        self.__ui.txtDataNascimento.setDate(QDate.currentDate())
+        self.__ui.txtNomeMae.clear()
+        self.__ui.txtNomePai.clear()
+        self.__ui.txtEndereco.clear()
+        self.__ui.txtNumero.clear()
+        self.__ui.txtComplemento.clear()
+        self.__ui.txtBairro.clear()
+        self.__ui.txtCep.clear()
+        self.__ui.txtCidades.clear()
+        self.__ui.txtEstados.clear()
+        self.__ui.txtTelefone.clear()
+        self.__ui.txtCelular.clear()
+
+        self.__ui.txtSetor.clear()
+        self.__ui.txtCargo.clear()
+
+    def botaoCancelar(self):
+        self.__ui.btnCadNovo.setEnabled(True)
+        self.__ui.btnCadSalvar.setEnabled(False)
+        self.__ui.btnCadCancelar.setEnabled(False)
+
+        self.__ui.txtFantasia.setEnabled(False)
+        self.__ui.grbFuncionario.setEnabled(False)
+
+    def cancelarCadastro(self):
+        w = QWidget()
+        result = QMessageBox.question(w, 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            self. botaoCancelar()
+            self.limparCampos()
+
+    def pesquisarFuncionario(self):
+        if self.__ui.radBtnCodigoFuncionario.isChecked():
+            _funId = FuncionarioDao()
+            _pesquisar = _funId.pesquisarCodigoFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        elif self.__ui.radBtnNomeFuncionario.isChecked():
+            _funNome = FuncionarioDao()
+            _pesquisar = _funNome.pesquisarNomeFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        elif self.__ui.radBtnRg.isChecked():
+            _funRg = FuncionarioDao()
+            _pesquisar = _funRg.pesquisarRgFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        elif self.__ui.radBtnCpf.isChecked():
+            _funCpf = FuncionarioDao()
+            _pesquisar = _funCpf.pesquisarCpfFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        elif self.__ui.radBtnFantasia.isChecked():
+            _funFantasia = FuncionarioDao()
+            _pesquisar = _funFantasia.pesquisarFantasiaEmpFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        elif self.__ui.radBtnRazaoSocial.isChecked():
+            _funRazaoSocial = FuncionarioDao()
+            _pesquisar = _funRazaoSocial.pesquisarRazaoSocialEmpFuncionario(self.__ui.txtPesquisaFuncionario.text())
+
+            qtde_registros = len(_pesquisar)
+            self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in _pesquisar:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                rg = pesqui[2]
+                expeditor = pesqui[3]
+                cpf = pesqui[4]
+                nascimento = pesqui[5]
+                sexo = pesqui[6]
+                mae = pesqui[7]
+                pai = pesqui[8]
+                endereco = pesqui[9]
+                numero = pesqui[10]
+                complemento = pesqui[11]
+                bairro = pesqui[12]
+                cep = pesqui[13]
+                cidade = pesqui[14]
+                estado = pesqui[15]
+                telefone = pesqui[16]
+                celular = pesqui[17]
+                setor = pesqui[18]
+                cargo = pesqui[19]
+                fantasia = pesqui[20]
+                razaoSocial = pesqui[21]
+                cnpj = pesqui[22]
+                inscrEstadual = pesqui[23]
+
+                # preenchendo o grid de pesquisa
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
+                self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+
+                linha += 1
+
+        else:
+            result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")

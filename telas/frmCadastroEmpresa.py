@@ -63,11 +63,10 @@ class Ui_frmCadastroEmpresa(object):
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)
         self.btnEditar.setEnabled(False)
         self.btnEditar.setGeometry(QtCore.QRect(570, 10, 81, 61))
-        self.btnEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnEditar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
 
         self.btnSetoressCargos = QtGui.QPushButton(self.grbBotoes)
-        #self.btnSetoressCargos.setEnabled(False)
         self.btnSetoressCargos.setGeometry(QtCore.QRect(10, 10, 131, 61))
         self.btnSetoressCargos.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnSetoressCargos.setObjectName(_fromUtf8("btnSetoressCargos"))
