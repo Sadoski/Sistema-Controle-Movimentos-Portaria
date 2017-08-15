@@ -42,6 +42,7 @@ class CadastroFuncionario(QtGui.QDialog):
         self.__ui.btnCadNovo.clicked.connect(self.botaoNovoCadastro)
         self.__ui.btnCadSalvar.clicked.connect(self.cadastrarFuncionario)
         self.__ui.btnCadCancelar.clicked.connect(self.cancelarCadastro)
+        self.__ui.btnCadEditar.clicked.connect(self.atualizarFuncionario)
 
         self.__ui.txtSetor.currentIndexChanged.connect(self.pesquisarCargo)
 
@@ -300,7 +301,9 @@ class CadastroFuncionario(QtGui.QDialog):
     def botaoCancelar(self):
         self.__ui.btnCadNovo.setEnabled(True)
         self.__ui.btnCadSalvar.setEnabled(False)
+        self.__ui.btnCadEditar.setEnabled(False)
         self.__ui.btnCadCancelar.setEnabled(False)
+        self.__ui.btnCadDeletar.setEnabled(False)
 
         self.__ui.txtFantasia.setEnabled(False)
         self.__ui.grbFuncionario.setEnabled(False)
@@ -312,7 +315,7 @@ class CadastroFuncionario(QtGui.QDialog):
         w = QWidget()
         result = QMessageBox.question(w, 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
-            self. botaoCancelar()
+            self.botaoCancelar()
             self.limparCampos()
 
     def pesquisarFuncionario(self):
@@ -722,7 +725,7 @@ class CadastroFuncionario(QtGui.QDialog):
         itens = []
         for item in self.__ui.tbPesquisaFuncionario.selectedItems():
             itens.append(item.text())
-        print(itens)
+
         if len(itens) == 24:
             self.__ui.txtidFuncionario.setText(str(itens[0]))
             self.__ui.txtNomeFuncionario.setText(str(itens[1]))
@@ -765,8 +768,65 @@ class CadastroFuncionario(QtGui.QDialog):
         self.__ui.btnCadNovo.setEnabled(False)
         self.__ui.btnCadEditar.setEnabled(True)
         self.__ui.btnCadCancelar.setEnabled(True)
+        self.__ui.btnCadDeletar.setEnabled(True)
 
         self.__ui.txtFantasia.setEnabled(True)
         self.__ui.grbFuncionario.setEnabled(True)
 
         self.__ui.txtFantasia.setFocus()
+
+    def _deletarEmpresa(self):
+
+        w = QWidget()
+        result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja excluir esse funcionario", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            __funDao = FuncionarioDao()
+            __funDao.deletarFuncionario(self.__ui.txtidFuncionario.text())
+            self.botaoCancelar()
+            self.limparCampos()
+
+    def atualizarFuncionario(self):
+        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
+            _cidade = CidadesEstadosDao()
+            _funDao = FuncionarioDao()
+
+            idEmpresa = self.__ui.txtIdEmpresa.text()
+            fantasia = self.__ui.txtFantasia.text()
+            razaoSocial = self.__ui.txtRazaoSocial.text()
+
+            idFuncionario = self.__ui.txtidFuncionario.text()
+            nome = self.__ui.txtNomeFuncionario.text()
+            rg = self.removerCaracter(self.__ui.txtRg.text())
+            expeditor = self.__ui.txtExpeditor.text()
+            cpf = self.removerCaracter(self.__ui.txtCpf.text())
+            data = self.removerCaracter(self.__ui.txtDataNascimento.text())
+            nascimento = self.formatarData(data)
+            if self.__ui.radBtnMasculino.isChecked():
+                sexo = 'MASCULINO'
+            elif self.__ui.radBtnFeminino.isChecked():
+                sexo = 'FEMININO'
+            else:
+                return None
+            mae = self.__ui.txtNomeMae.text()
+            pai = self.__ui.txtNomePai.text()
+            endereco = self.__ui.txtEndereco.text()
+            numero = self.__ui.txtNumero.text()
+            complemento = self.__ui.txtComplemento.text()
+            bairro = self.__ui.txtBairro.text()
+            _cep = self.removerCaracter(self.__ui.txtCep.text())
+            if len(_cep) == 8:
+                _cida = _cidade.idCidade(_cep, self.__ui.txtCidades.text(), self.__ui.txtEstados.text())
+            else:
+                return False
+            telefone = self.removerCaracter(self.__ui.txtTelefone.text())
+            celular = self.removerCaracter(self.__ui.txtCelular.text())
+
+            funcao = _funDao.funcao(self.__ui.txtSetor.currentText(), self.__ui.txtCargo.currentText())
+            __funcionario = Funcionario(idFuncionario, nome, rg, expeditor, cpf, nascimento, sexo, mae, pai, endereco, numero, complemento, bairro, _cida, telefone, celular, funcao, idEmpresa)
+            _funDao.atualizarFuncioario(__funcionario)
+
+            self.botaoCancelar()
+            self.limparCampos()
+        else:
+            w = QWidget()
+            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")

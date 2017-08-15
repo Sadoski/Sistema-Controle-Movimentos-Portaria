@@ -46,6 +46,7 @@ class Empresa(QtGui.QDialog):
 
         self._ui.txtCnpj.editingFinished.connect(self.validacaoCnpj)
 
+
         self._ui.tbPesquisa.doubleClicked.connect(self.tablePesquisa)
 
 

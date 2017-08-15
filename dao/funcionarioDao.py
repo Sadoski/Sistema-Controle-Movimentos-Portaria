@@ -47,8 +47,8 @@ class FuncionarioDao(object):
     def atualizarFuncioario(self, funcionario):
 
         try:
-            __sql = "UPDATE funcionario SET nome = %s, rg = %s, expeditor = %s, cpf = %s, data_nascimento = %s, sexo = %s, nome_mae = %s, nome_pai = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, celular = %s, atualizado = %s, id_funcao = %s, id_empresa = %s,  id_cidade = %s"
-            _valores = (funcionario.getNome, funcionario.getRg, funcionario.getExpeditor, funcionario.getCpf, funcionario.getNascimento, funcionario.getSexo, funcionario.getMae, funcionario.getPai, funcionario.getEndereco, funcionario.getNumero, funcionario.getComplemento, funcionario.getBairro,  funcionario.getTelefone, funcionario.getCelular, self.__dataHora,  funcionario.getFuncao, funcionario.getEmpresa, funcionario.getCidade)
+            __sql = "UPDATE funcionario SET nome = %s, rg = %s, expeditor = %s, cpf = %s, data_nascimento = %s, sexo = %s, nome_mae = %s, nome_pai = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, celular = %s, atualizado = %s, id_funcao = %s, id_empresa = %s,  id_cidade = %s WHERE id_funcionario = %s"
+            _valores = (funcionario.getNome, funcionario.getRg, funcionario.getExpeditor, funcionario.getCpf, funcionario.getNascimento, funcionario.getSexo, funcionario.getMae, funcionario.getPai, funcionario.getEndereco, funcionario.getNumero, funcionario.getComplemento, funcionario.getBairro,  funcionario.getTelefone, funcionario.getCelular, self.__dataHora,  funcionario.getFuncao, funcionario.getEmpresa, funcionario.getCidade, funcionario.getIdFuncionario)
 
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
@@ -60,9 +60,9 @@ class FuncionarioDao(object):
             self.__conexao.conn.rollback()
             return False
 
-    def deletarEmpresa(self, empresa):
+    def deletarFuncionario(self, funcionario):
         try:
-            __sql = "DELETE FROM funcionario WHERE id_funcionario = '" + empresa + "'"
+            __sql = "DELETE FROM funcionario WHERE id_funcionario = '" + funcionario + "'"
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             # self.__cursor.close()

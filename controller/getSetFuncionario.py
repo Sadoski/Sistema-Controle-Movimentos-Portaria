@@ -22,7 +22,7 @@ class Funcionario():
 
     @property
     def getIdFuncionario(self):
-        return self.__idFuncionrio
+        return self.__idFuncionario
 
     @getIdFuncionario.setter
     def setIdFuncionario(self, idFuncionario):
