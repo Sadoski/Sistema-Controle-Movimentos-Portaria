@@ -45,6 +45,8 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.__ui.txtSetor.currentIndexChanged.connect(self.pesquisarCargo)
 
+        self.__ui.tbPesquisaFuncionario.doubleClicked.connect(self.tablePesquisa)
+
     def focusNomeFun(self):
         self.__ui.txtNomeFuncionario.setFocus()
 
@@ -302,6 +304,9 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.__ui.txtFantasia.setEnabled(False)
         self.__ui.grbFuncionario.setEnabled(False)
+
+        self.__ui.radBtnMasculino.setChecked(False)
+        self.__ui.radBtnFeminino.setChecked(False)
 
     def cancelarCadastro(self):
         w = QWidget()
@@ -699,3 +704,69 @@ class CadastroFuncionario(QtGui.QDialog):
 
         else:
             result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
+
+
+    def tablePesquisa(self, pesquisa):
+        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
+                self.setarCampos()
+                self.botaoEditarCadastro()
+        else:
+                w = QWidget()
+                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em processo", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if result == QMessageBox.Yes:
+                    self.setarCampos()
+                    self.botaoEditarCadastro()
+
+    def setarCampos(self):
+
+        itens = []
+        for item in self.__ui.tbPesquisaFuncionario.selectedItems():
+            itens.append(item.text())
+        print(itens)
+        if len(itens) == 24:
+            self.__ui.txtidFuncionario.setText(str(itens[0]))
+            self.__ui.txtNomeFuncionario.setText(str(itens[1]))
+            self.__ui.txtRg.setText(str(itens[2]))
+            self.__ui.txtExpeditor.setText(str(itens[3]))
+            self.__ui.txtCpf.setText(str(itens[4]))
+            self.__ui.txtDataNascimento.setDate(self.formatarDataRetorno(itens[5]))
+            if str(itens[6]) == 'MASCULINO':
+                self.__ui.radBtnMasculino.setChecked(True)
+            elif str(itens[6]) == 'FEMININO':
+                self.__ui.radBtnFeminino.setChecked(True)
+            else:
+                return None
+            self.__ui.txtNomeMae.setText(str(itens[7]))
+            self.__ui.txtNomePai.setText(str(itens[8]))
+            self.__ui.txtEndereco.setText(str(itens[9]))
+            self.__ui.txtNumero.setText(str(itens[10]))
+            self.__ui.txtComplemento.setText(str(itens[11]))
+            self.__ui.txtBairro.setText(str(itens[12]))
+            self.__ui.txtCep.setText(str(itens[13]))
+            self.__ui.txtCidades.setText(str(itens[14]))
+            self.__ui.txtEstados.setText(str(itens[15]))
+            self.__ui.txtTelefone.setText(str(itens[16]))
+            self.__ui.txtCelular.setText(str(itens[17]))
+            self.__ui.txtSetor.addItem(str(itens[18]))
+            self.__ui.txtCargo.addItem(str(itens[19]))
+            self.__ui.txtFantasia.setText(str(itens[20]))
+            self.__ui.txtRazaoSocial.setText(str(itens[21]))
+            self.__ui.txtCnpj.setText(str(itens[22]))
+            self.__ui.txtInscricaoEstadua.setText(str(itens[23]))
+
+    def formatarDataRetorno(self, data):
+        dia = data[8:10]
+        mes = data[5:7]
+        ano = data[:4]
+
+        return QtCore.QDate(int(ano), int(mes), int(dia))
+
+    def botaoEditarCadastro(self):
+        self.__ui.btnCadNovo.setEnabled(False)
+        self.__ui.btnCadEditar.setEnabled(True)
+        self.__ui.btnCadCancelar.setEnabled(True)
+
+        self.__ui.txtFantasia.setEnabled(True)
+        self.__ui.grbFuncionario.setEnabled(True)
+
+        self.__ui.txtFantasia.setFocus()
