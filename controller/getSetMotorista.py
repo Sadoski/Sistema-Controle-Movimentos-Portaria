@@ -1,6 +1,6 @@
 class Motorista():
 
-    def __init__(self, idMotorista, nome, nascimento, rg, expeditor, cpf, pis, sexo, cnh, categoria, endereco, numero, complemento, bairro, cidade, telefone, celular):
+    def __init__(self, idMotorista, nome, nascimento, rg, expeditor, cpf, pis, cnh, categoria, endereco, numero, complemento, bairro, cidade, telefone, celular, sexo):
         self.__idMotorista = idMotorista
         self.__nome = nome
         self.__nascimento = nascimento
@@ -24,7 +24,7 @@ class Motorista():
         return self.__idMotorista
 
     @getIdMotorista.setter
-    def setIdFuncionario(self, idMotorista):
+    def setIdMotorista(self, idMotorista):
         self.__idMotorista = idMotorista
 
     @property
@@ -34,6 +34,14 @@ class Motorista():
     @getNome.setter
     def setNome(self, nome):
         self.__nome = nome
+
+    @property
+    def getNascimento(self):
+        return self.__nascimento
+
+    @getNascimento.setter
+    def setNasciemento(self, nascimento):
+        self.__nascimento = nascimento
 
     @property
     def getRg(self):
@@ -64,24 +72,8 @@ class Motorista():
         return self.__pis
 
     @getPis.setter
-    def setCnh(self, pis):
+    def setPis(self, pis):
         self.__pis = pis
-
-    @property
-    def getNascimento(self):
-        return self.__nascimento
-
-    @getNascimento.setter
-    def setNacimento(self, nascimento):
-        self.__nascimento = nascimento
-
-    @property
-    def getSexo(self):
-        return self.__sexo
-
-    @getSexo.setter
-    def setSexo(self, sexo):
-        self.__sexo = sexo
 
     @property
     def getCnh(self):
@@ -96,7 +88,7 @@ class Motorista():
         return self.__categoria
 
     @getCategoria.setter
-    def setPai(self, categoria):
+    def setCategoria(self, categoria):
         self.__categoria = categoria
 
     @property
@@ -136,8 +128,8 @@ class Motorista():
         return self.__cidade
 
     @getCidade.setter
-    def setCidade(self, cidade):
-        self.__cidade = cidade
+    def setCidade(self, cidae):
+        self.__cidade = cidae
 
     @property
     def getTelefone(self):
@@ -155,4 +147,10 @@ class Motorista():
     def setCelular(self, celular):
         self.__celular = celular
 
+    @property
+    def getSexo(self):
+        return self.__sexo
 
+    @getSexo.setter
+    def setSexo(self, sexo):
+        self.__sexo = sexo

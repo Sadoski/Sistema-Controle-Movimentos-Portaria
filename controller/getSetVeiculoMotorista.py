@@ -1,10 +1,19 @@
 class VeiculoMotorista():
-    def __init__(self, idMotorista, tipoVeiculo, marca, modelo, placa):
-        self.ui.__idMotorista = idMotorista
+    def __init__(self, idVeiculo, idMotorista, tipoVeiculo, marca, modelo, placa):
+        self.__idVeiculo = idVeiculo
+        self.__idMotorista = idMotorista
         self.__tipoVeiculo = tipoVeiculo
         self.__marca = marca
         self.__modelo = modelo
         self.__placa = placa
+
+    @property
+    def getIdVeiculo(self):
+        return self.__idVeiculo
+
+    @getIdVeiculo.setter
+    def setIdVeiculo(self, idVeiculo):
+        self.__idVeiculo = idVeiculo
 
     @property
     def getIdMotorista(self):
