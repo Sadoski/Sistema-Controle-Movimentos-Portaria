@@ -232,7 +232,6 @@ class CadastroFuncionario(QtGui.QDialog):
             cpf = self.removerCaracter(self.__ui.txtCpf.text())
             data = self.removerCaracter(self.__ui.txtDataNascimento.text())
             nascimento = self.formatarData(data)
-            print(nascimento)
             if self.__ui.radBtnMasculino.isChecked():
                 sexo = 'MASCULINO'
             elif self.__ui.radBtnFeminino.isChecked():

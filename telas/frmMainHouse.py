@@ -415,7 +415,7 @@ class Ui_frmMainHouse(object):
         self.subMenuCadastroEmpresa.setText(_translate("frmMainHouse", "Empresa", None))
         self.subMenuCadastroFuncionarios.setText(_translate("frmMainHouse", "Funcionarios", None))
         self.subMenuCadastroFornecedor.setText(_translate("frmMainHouse", "Fornecedor", None))
-        self.subMenuCadastroClintes.setText(_translate("frmMainHouse", "Clintes", None))
+        self.subMenuCadastroClintes.setText(_translate("frmMainHouse", "Clientes", None))
         self.veicEmpSubMenuEntrada.setText(_translate("frmMainHouse", "Entrada", None))
         self.veicEmpSaida.setText(_translate("frmMainHouse", "Saída", None))
         self.veiTerSubMenuEntrada.setText(_translate("frmMainHouse", "Entrada", None))
