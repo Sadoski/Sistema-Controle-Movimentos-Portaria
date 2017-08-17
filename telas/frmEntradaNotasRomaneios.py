@@ -43,7 +43,19 @@ class Ui_frmEntradaNotaRomaneios(object):
         self.grbDadosEmitente.setObjectName(_fromUtf8("grbDadosEmitente"))
 
         self.txtIdEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
+        self.txtIdEmitente.setEnabled(False)
         self.txtIdEmitente.setGeometry(QtCore.QRect(14, 33, 181, 25))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.SolidPattern)
+        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
+        self.txtIdEmitente.setPalette(palette)
         self.txtIdEmitente.setMaxLength(11)
         self.txtIdEmitente.setObjectName(_fromUtf8("txtIdEmitente"))
 
@@ -211,7 +223,7 @@ class Ui_frmEntradaNotaRomaneios(object):
         self.lblRazaoSocialDestinatario.setObjectName(_fromUtf8("lblRazaoSocialDestinatario"))
 
         self.txtIdDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
-        self.txtIdDestinatario.setEnabled(True)
+        self.txtIdDestinatario.setEnabled(False)
         self.txtIdDestinatario.setGeometry(QtCore.QRect(13, 35, 181, 25))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -346,6 +358,7 @@ class Ui_frmEntradaNotaRomaneios(object):
         self.grbDadosMotorista.setObjectName(_fromUtf8("grbDadosMotorista"))
 
         self.txtidMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
+        self.txtidMotorista.setEnabled(False)
         self.txtidMotorista.setGeometry(QtCore.QRect(10, 40, 181, 25))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))

@@ -10273,6 +10273,17 @@ INSERT INTO tipo_carga (id_tipo_carga, descricao) VALUES
 (7, 'OUTROS'),
 (10, 'VAZIO');
 
+/* ************************************************************************** */
+DROP TABLE IF EXISTS carga_produto;
+/* ***************************** Carga Produto ****************************** */
+
+CREATE TABLE IF NOT EXISTS carga_produto (
+id_carga_produto integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+id_produto integer,
+id_tipo_carga integer,
+FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
+FOREIGN KEY(id_tipo_carga) REFERENCES tipo_carga (id_tipo_carga)
+);
 
 /* ************************************************************************** */
 DROP TABLE IF EXISTS produto;
@@ -10280,9 +10291,7 @@ DROP TABLE IF EXISTS produto;
 
 CREATE TABLE IF NOT EXISTS produto (
 id_produto integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
-id_tipo_carga integer,
 descricao varchar(50),
-FOREIGN KEY(id_tipo_carga) REFERENCES tipo_carga (id_tipo_carga)
 );
 
 
