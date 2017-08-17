@@ -588,11 +588,11 @@ class Ui_frmEntradaNotaRomaneios(object):
 
         self.tbProduto = QtGui.QTableWidget(self.grbDadosProduto)
         self.tbProduto.setGeometry(QtCore.QRect(6, 66, 981, 111))
-        self.tbProduto.setColumnCount(6)
-        self.tbProduto.setHorizontalHeaderLabels(['Tipo Carga', 'Tipo Produto', 'UN', 'QTD', 'Valor Unitario', 'Valor Total'])
+        self.tbProduto.setColumnCount(5)
+        self.tbProduto.setHorizontalHeaderLabels(['Tipo Carga', 'Tipo Produto', 'UN', 'QTD', 'Valor Unitario'])
         self.tbProduto.setEditTriggers(self.tbProduto.NoEditTriggers)
         self.tbProduto.setSelectionBehavior(self.tbProduto.SelectRows)
-        self.tbProduto.setSelectionMode(self.tbProduto.SingleSelection)
+        #self.tbProduto.setSelectionMode(self.tbProduto.SingleSelection)
         self.tbProduto.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tbProduto.setObjectName(_fromUtf8("tbProduto"))
 

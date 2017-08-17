@@ -24,6 +24,26 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
+    def pesquisarMetragem(self):
+        try:
+            _sql = "SELECT descricao FROM metragem"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarIdMetragem(self):
+        try:
+            _sql = "SELECT id_metragem FROM metragem"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisarProduto(self, produto):
         try:
             _sql = "SELECT p.descricao FROM carga_produto a INNER JOIN tipo_carga c ON c.id_tipo_carga = a.id_tipo_carga INNER JOIN produto p ON p.id_produto = a.id_produto WHERE c.descricao = '"+produto+"'"
@@ -63,3 +83,44 @@ class NotaFiscalRomanieo(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisarIdNotaFiscal(self, nota):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais FROM notas_fiscais n INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista WHERE n.numero_nota = %s AND n.data_emissao = %s AND n.valor_total = %s AND n.id_fornecedor = %s AND n.id_fornecedor = %s AND n.id_motorista = %s;"
+            _valores = (nota.getNumNotaFiscal, nota.getDataEmissao, nota.getValorTotal, nota.getIdFornecedor, nota.getIdEmpresa, nota.getIdEmpresa)
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def cadastrarNotaFiscal(self, nota):
+            try:
+                _sql = "INSERT INTO notas_fiscais (numero_nota, data_emissao, valor_total, cadastrado, id_fornecedor, id_empresa, id_motorista) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                _valores = (nota.getNumNotaFiscal, nota.getDataEmissao, nota.getValorTotal, self.__dataHora, nota.getIdFornecedor, nota.getIdEmpresa, nota.getIdEmpresa)
+                self.__cursor.execute(_sql, _valores)
+                self.__conexao.conn.commit()
+                # self.__cursor.close()
+                QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+            except mysql.connector.Error as e:
+                w = QWidget()
+                QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+                self.__conexao.conn.rollback()
+                return False
+
+    def cadastrarRomaneio(self, romaneio):
+            try:
+                _sql = "INSERT INTO romaneios(numer_romaneio, certificada, cadastrado, id_entrada_notas_fiscais, id_metragem) VALUES (%s, %s, %s, %s, %s)"
+                _valores = (romaneio.getNumRomaneio, romaneio.getCertifica, self.__dataHora, romaneio.getIdNotaFiscal, romaneio.getIdMetragem)
+                self.__cursor.execute(_sql, _valores)
+                self.__conexao.conn.commit()
+                # self.__cursor.close()
+                QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+            except mysql.connector.Error as e:
+                w = QWidget()
+                QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+                self.__conexao.conn.rollback()
+                return False
