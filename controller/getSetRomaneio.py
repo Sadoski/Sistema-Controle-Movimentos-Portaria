@@ -1,10 +1,11 @@
 class Romaneio():
-    def __init__(self, idRomaneio, idNotaFiscal, idMetragem, numRomaneio, certificada):
+    def __init__(self, idRomaneio, idNotaFiscal, numRomaneio, idMetragem,  certificada):
         self.__idRomaneio = idRomaneio
         self.__idNotaFiscal = idNotaFiscal
-        self.__idMetragem = idMetragem
         self.__numRomaneio = numRomaneio
+        self.__idMetragem = idMetragem
         self.__certificada = certificada
+        print(self.__certificada)
 
     @property
     def getIdRomaneio(self):
@@ -40,8 +41,8 @@ class Romaneio():
 
     @property
     def getCertifica(self):
-        self.__certificada
+        return self.__certificada
 
     @getCertifica.setter
-    def setCertifica(self, certificada):
+    def setCertificada(self, certificada):
         self.__certificada = certificada

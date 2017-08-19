@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetNotaFiscal import NotaFiscal
 from controller.getSetRomaneio import Romaneio
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
@@ -13,6 +14,7 @@ class CadastroEmpresa(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaNotaRomaneios()
         self.ui.setupUi(self)
+        self.desc = []
 
         self.unidadeMedida()
         self.pesquisarTiposCarga()
@@ -35,7 +37,8 @@ class CadastroEmpresa(QtGui.QDialog):
 
         self.ui.txtTipoCargaServico.currentIndexChanged.connect(self.pesquisaProduto)
 
-        self.ui.btnNovo.clicked.connect(self.cadastroDescricaoProduto)
+        #self.ui.btnNovo.clicked.connect(self.cadastroDescricaoProduto)
+        self.ui.btnSalvar.clicked.connect(self.cadastrar)
 
     def focusEmpresa(self):
         self.ui.txtFantasiaDestinatario.setFocus()
@@ -151,12 +154,24 @@ class CadastroEmpresa(QtGui.QDialog):
                 self.ui.txtModelo.setText(i[4])
                 self.ui.txtPlaca.setText(i[5])
 
-    def removerCaracter(self, i):
+    def removerCaracterDinheiro(self, i):
         i = str(i)
         i = i.replace('.', '')
         i = i.replace('R', '')
         i = i.replace('$', '')
+        i = i.replace(',', '.')
         i = i.replace(' ', '')
+        return i
+
+    def removerCaracter(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('/', '')
+        i = i.replace('-', '')
+        i = i.replace('(', '')
+        i = i.replace(')', '')
+        i = i.replace('\\', '')
         return i
 
     def addDescricaoProduto(self):
@@ -164,10 +179,11 @@ class CadastroEmpresa(QtGui.QDialog):
         __produto = str(self.ui.txtTipoProdutoServico.currentText())
         __un = str(self.ui.txtUn.currentText())
         __qtd = str(self.ui.txtQuantidade.text())
-        __valorUni = str(self.removerCaracter(self.ui.txtValorUnitario.text()))
+        __valorUni = str(self.removerCaracterDinheiro(self.ui.txtValorUnitario.text()))
 
 
         add = [(__carga, __produto, __un, __qtd, __valorUni)]
+        self.desc.append([__carga, __produto, __un, __qtd, __valorUni])
         self.inserirTabela(add)
 
         self.ui.txtQuantidade.clear()
@@ -196,7 +212,10 @@ class CadastroEmpresa(QtGui.QDialog):
             linha += 1
 
     def delDescricaoProduto(self):
-            self.ui.tbProduto.removeRow(self.ui.tbProduto.currentRow())
+        index = self.ui.tbProduto.currentRow()
+        self.ui.tbProduto.removeRow(index)
+        del self.desc[index]
+
 
     def cadastrarNotaFiscal(self):
         __notaFiscal = NotaFiscalRomanieo()
@@ -204,8 +223,9 @@ class CadastroEmpresa(QtGui.QDialog):
         __idEmpresa = self.ui.txtIdDestinatario.text()
         __idMotorista = self.ui.txtidMotorista.text()
         __numeroNotaFiscal = self.ui.txtNumeroNotaFiscal.text()
-        __dataEmissao = self.formatarDataRetorno(self.ui.txtDataEmissao.text())
-        __valorTotal = self.removerCaracter(self.ui.txtValorTotal.text())
+        __data = self.removerCaracter(self.ui.txtDataEmissao.text())
+        __dataEmissao = self.formatarData(__data)
+        __valorTotal = self.removerCaracterDinheiro(self.ui.txtValorTotal.text())
 
         __dadosNota = NotaFiscal(None, __idFornecedor, __idEmpresa, __idMotorista, __numeroNotaFiscal, __dataEmissao, __valorTotal)
         __notaFiscal.cadastrarNotaFiscal(__dadosNota)
@@ -216,9 +236,10 @@ class CadastroEmpresa(QtGui.QDialog):
         __idFornecedor = self.ui.txtIdEmitente.text()
         __idEmpresa = self.ui.txtIdDestinatario.text()
         __idMotorista = self.ui.txtidMotorista.text()
-        __numeroNotaFiscal = self.ui.txtNumeroNotaFiscal.text()
-        __dataEmissao = self.formatarDataRetorno(self.ui.txtDataEmissao.text())
-        __valorTotal = self.removerCaracter(self.ui.txtValorTotal.text())
+        __numeroNotaFiscal = str(self.ui.txtNumeroNotaFiscal.text())
+        __data = self.removerCaracter(self.ui.txtDataEmissao.text())
+        __dataEmissao = str(self.formatarData(__data))
+        __valorTotal = self.removerCaracterDinheiro(self.ui.txtValorTotal.text())
 
         __dadosNota = NotaFiscal(None, __idFornecedor, __idEmpresa, __idMotorista, __numeroNotaFiscal, __dataEmissao, __valorTotal)
 
@@ -226,32 +247,80 @@ class CadastroEmpresa(QtGui.QDialog):
         __idNotaFiscal = __notaFiscalRomaneio.pesquisarIdNotaFiscal(__dadosNota)
         __numeroRomaneio = self.ui.txtNumeroRomaneio.text()
         __metragem = __notaFiscalRomaneio.pesquisarIdMetragem(self.ui.txtMetragemMadeira.currentText())
-        if self.ui.txtCertificada.isChecked() == True:
-            __certificada = True
+        if self.ui.txtCertificada.isChecked():
+            __certificada = 1
         else:
-            __certificada = False
+            __certificada = 0
+
 
         __dadosRomaneio = Romaneio(None, __idNotaFiscal, __numeroRomaneio, __metragem, __certificada)
         __notaFiscalRomaneio.cadastrarRomaneio(__dadosRomaneio)
 
-    def cadastroDescricaoProduto(self):
+    def cadastrarDescricaoProduto(self):
+        __notaFiscalRomaneio = NotaFiscalRomanieo()
+        __idFornecedor = self.ui.txtIdEmitente.text()
+        __idEmpresa = self.ui.txtIdDestinatario.text()
+        __idMotorista = self.ui.txtidMotorista.text()
+        __numeroNotaFiscal = str(self.ui.txtNumeroNotaFiscal.text())
+        __data = self.removerCaracter(self.ui.txtDataEmissao.text())
+        __dataEmissao = str(self.formatarData(__data))
+        __valorTotal = self.removerCaracterDinheiro(self.ui.txtValorTotal.text())
 
-        itens = []
-        self.ui.tbProduto.selectAll()
+        __dadosNota = NotaFiscal(None, __idFornecedor, __idEmpresa, __idMotorista, __numeroNotaFiscal, __dataEmissao, __valorTotal)
 
-        for item in self.ui.tbProduto.selectedItems():
-                itens.append(item.text())
+        __idNotaFiscal = __notaFiscalRomaneio.pesquisarIdNotaFiscal(__dadosNota)
 
         i = 0
-        col = self.ui.tbProduto.horizontalHeader().count()
-        print(col)
-        for i in range(col):
-            pedido = self.ui.tbProduto.model().data(self.ui.tbProduto.model().index(i, 0))
-            i += 1
+        for lista in self.desc:
+            a = self.desc[i]
+
+            __carga = __notaFiscalRomaneio.pesquisarIdTipoCarga(a[0])
+            __produto = __notaFiscalRomaneio.pesquisarIdProduto(a[1])
+            __idCargaProduto = __notaFiscalRomaneio.pesquisarIdCargaProduto(__carga, __produto)
+            __unidade = a[2]
+            __qtd = a[3]
+            __valor = a[4]
+
+
+
+            __descricao = DescricaoProduto(None, __idCargaProduto, __idNotaFiscal, __unidade, __qtd, __valor)
+            __notaFiscalRomaneio.cadastrarDescricaoProduto(__descricao)
+
+            i+=1
+
+        '''
+        self.ui.tbProduto.selectAll()
+        itens = []
+        inde = []
+        i= 0
+        print(self.ui.tbProduto.rowCount())
+        print(self.ui.tbProduto.model())
+        for item in self.ui.tbProduto.selectedItems():
+            itens.append(item.text())
+
 
         print(itens)
-        print(pedido)
+        print(self.desc)
 
+        
+        i = 0
+        col = self.ui.tbProduto.horizontalHeader().count()
+
+        for i in range(col):
+            pedido = self.ui.tbProduto.model().data(self.ui.tbProduto.model().index(i, 0))
+            headertext = self.ui.tbProduto.horizontalHeaderItem(i)
+            i += 1
+
+        print(self.ui.tbProduto.takeHorizontalHeaderItem(0))
+
+        self.signalsHeader = []
+        for j in range(col):
+
+            self.signalsHeader.append(str(self.ui.tbProduto.takeHorizontalHeaderItem(j)))
+
+        
+        print(self.signalsHeader)
+        '''
 
 
 
@@ -261,3 +330,15 @@ class CadastroEmpresa(QtGui.QDialog):
         ano = data[:4]
 
         return QtCore.QDate(int(ano), int(mes), int(dia))
+
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s-%s-%s" % (ano, mes, dia))
+
+    def cadastrar(self):
+        self.cadastrarNotaFiscal()
+        self.cadastrarRomaneio()
+        self.cadastrarDescricaoProduto()

@@ -34,11 +34,44 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
-    def pesquisarIdMetragem(self):
+    def pesquisarIdMetragem(self, metragem):
         try:
-            _sql = "SELECT id_metragem FROM metragem"
+            _sql = "SELECT id_metragem FROM metragem WHERE descricao = '"+metragem+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarIdTipoCarga(self, carga):
+        try:
+            _sql = "SELECT id_tipo_carga FROM tipo_carga WHERE descricao = '"+carga+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarIdProduto(self, produto):
+        try:
+            _sql = "SELECT id_produto FROM produto WHERE descricao = '"+produto+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarIdCargaProduto(self, carga, produto):
+        try:
+            _sql = "SELECT a.id_carga_produto FROM carga_produto a INNER JOIN tipo_carga c ON c.id_tipo_carga = a.id_tipo_carga INNER JOIN produto p ON p.id_produto = a.id_produto WHERE a.id_produto = %s AND a.id_tipo_carga = %s"
+            _valores = (produto,carga)
+            print(_valores)
+            self.__cursor.execute(_sql, _valores)
+            result = self.__cursor.fetchone()[0]
+            print(result)
             #self.__cursor.close()
             return result
         except BaseException as os:
@@ -84,11 +117,22 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
+    def removerCaracter(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('/', '')
+        i = i.replace('-', '')
+        i = i.replace('(', '')
+        i = i.replace(')', '')
+        i = i.replace('\\', '')
+        return i
+
     def pesquisarIdNotaFiscal(self, nota):
         try:
-            _sql = "SELECT n.id_entrada_notas_fiscais FROM notas_fiscais n INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista WHERE n.numero_nota = %s AND n.data_emissao = %s AND n.valor_total = %s AND n.id_fornecedor = %s AND n.id_fornecedor = %s AND n.id_motorista = %s;"
-            _valores = (nota.getNumNotaFiscal, nota.getDataEmissao, nota.getValorTotal, nota.getIdFornecedor, nota.getIdEmpresa, nota.getIdEmpresa)
-            self.__cursor.execute(_sql)
+            _sql = "SELECT n.id_entrada_notas_fiscais FROM notas_fiscais n INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista WHERE n.numero_nota = %s AND n.data_emissao = %s AND n.valor_total = %s AND n.id_fornecedor = %s AND n.id_empresa = %s AND n.id_motorista = %s"
+            _valores = (nota.getNumNotaFiscal, self.removerCaracter(nota.getDataEmissao), nota.getValorTotal, nota.getIdFornecedor, nota.getIdEmpresa, nota.getIdEmpresa)
+            self.__cursor.execute(_sql, _valores)
             result = self.__cursor.fetchone()[0]
             #self.__cursor.close()
             return result
@@ -97,7 +141,7 @@ class NotaFiscalRomanieo(object):
 
     def cadastrarNotaFiscal(self, nota):
             try:
-                _sql = "INSERT INTO notas_fiscais (numero_nota, data_emissao, valor_total, cadastrado, id_fornecedor, id_empresa, id_motorista) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+                _sql = "INSERT INTO notas_fiscais(numero_nota,data_emissao,valor_total,cadastrado,id_fornecedor,id_empresa,id_motorista) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 _valores = (nota.getNumNotaFiscal, nota.getDataEmissao, nota.getValorTotal, self.__dataHora, nota.getIdFornecedor, nota.getIdEmpresa, nota.getIdEmpresa)
                 self.__cursor.execute(_sql, _valores)
                 self.__conexao.conn.commit()
@@ -114,6 +158,21 @@ class NotaFiscalRomanieo(object):
             try:
                 _sql = "INSERT INTO romaneios(numer_romaneio, certificada, cadastrado, id_entrada_notas_fiscais, id_metragem) VALUES (%s, %s, %s, %s, %s)"
                 _valores = (romaneio.getNumRomaneio, romaneio.getCertifica, self.__dataHora, romaneio.getIdNotaFiscal, romaneio.getIdMetragem)
+                self.__cursor.execute(_sql, _valores)
+                self.__conexao.conn.commit()
+                # self.__cursor.close()
+                QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+            except mysql.connector.Error as e:
+                w = QWidget()
+                QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+                self.__conexao.conn.rollback()
+                return False
+
+    def cadastrarDescricaoProduto(self, descricao):
+            try:
+                _sql = "INSERT INTO descricao_produto_nota_fiscal(id_carga_produto, id_notas_fiscais, unidade_medida, quantidade, valor_unitario) VALUES (%s, %s, %s, %s, %s)"
+                _valores = (descricao.getCargaProduto, descricao.getNotaFiscal, descricao.getUnidade, descricao.getQuantidade, descricao.getValor)
                 self.__cursor.execute(_sql, _valores)
                 self.__conexao.conn.commit()
                 # self.__cursor.close()
