@@ -2,6 +2,7 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from decimal import Decimal
 
 from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetNotaFiscal import NotaFiscal
@@ -16,13 +17,9 @@ class CadastroEmpresa(QtGui.QDialog):
         self.ui.setupUi(self)
         self.desc = []
 
-        self.unidadeMedida()
-        self.pesquisarTiposCarga()
-        self.pesquisarMetragem()
-
-        self.ui.txtNomeEmitente.returnPressed.connect(self.pesquisarFornecedor)
-        self.ui.txtFantasiaDestinatario.returnPressed.connect(self.pesquisarEmpresa)
-        self.ui.txtNomeMotorista.returnPressed.connect(self.pesquisarMotorista)
+        self.ui.txtNomeEmitente.editingFinished.connect(self.pesquisarFornecedor)
+        self.ui.txtFantasiaDestinatario.editingFinished.connect(self.pesquisarEmpresa)
+        self.ui.txtNomeMotorista.editingFinished.connect(self.pesquisarMotorista)
 
         self.ui.txtNomeEmitente.returnPressed.connect(self.focusEmpresa)
         self.ui.txtFantasiaDestinatario.returnPressed.connect(self.focusMotorista)
@@ -37,8 +34,9 @@ class CadastroEmpresa(QtGui.QDialog):
 
         self.ui.txtTipoCargaServico.currentIndexChanged.connect(self.pesquisaProduto)
 
-        #self.ui.btnNovo.clicked.connect(self.cadastroDescricaoProduto)
+        self.ui.btnNovo.clicked.connect(self.botoesNovo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
+        self.ui.btnCancelar.clicked.connect(self.cancelarCad)
 
     def focusEmpresa(self):
         self.ui.txtFantasiaDestinatario.setFocus()
@@ -69,7 +67,8 @@ class CadastroEmpresa(QtGui.QDialog):
 
 
     def unidadeMedida(self):
-        lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML"]
+        #lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML"]
+        lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
         for i in lista:
             self.ui.txtUn.addItem(i)
 
@@ -101,8 +100,9 @@ class CadastroEmpresa(QtGui.QDialog):
     def pesquisarFornecedor(self):
         __notaRomaneio = NotaFiscalRomanieo()
         __fornecedor = __notaRomaneio.pesquisarFornecedor(str(self.ui.txtNomeEmitente.text()))
-        if __fornecedor == False:
+        if len(__fornecedor) == 0:
             self.limparCamposEmitente()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Informação de emitente esta incorreto")
         else:
             self.limparCamposEmitente()
             for i in __fornecedor:
@@ -120,8 +120,9 @@ class CadastroEmpresa(QtGui.QDialog):
     def pesquisarEmpresa(self):
         __notaRomaneio = NotaFiscalRomanieo()
         __fornecedor = __notaRomaneio.pesquisarEmpresa(str(self.ui.txtFantasiaDestinatario.text()))
-        if __fornecedor == False:
+        if len(__fornecedor) == 0:
             self.limparCamposDestinatario()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Informação de destinatario esta incorreto")
         else:
             self.limparCamposDestinatario()
             for i in __fornecedor:
@@ -142,8 +143,9 @@ class CadastroEmpresa(QtGui.QDialog):
     def pesquisarMotorista(self):
         __notaRomaneio = NotaFiscalRomanieo()
         __motorista = __notaRomaneio.pesquisarMotorista(str(self.ui.txtNomeMotorista.text()))
-        if __motorista == False:
+        if len(__motorista) == 0:
             self.limparCamposMotorista()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Informação de motorista esta incorreto")
         else:
             self.limparCamposMotorista()
             for i in __motorista:
@@ -277,52 +279,21 @@ class CadastroEmpresa(QtGui.QDialog):
             __carga = __notaFiscalRomaneio.pesquisarIdTipoCarga(a[0])
             __produto = __notaFiscalRomaneio.pesquisarIdProduto(a[1])
             __idCargaProduto = __notaFiscalRomaneio.pesquisarIdCargaProduto(__carga, __produto)
-            __unidade = a[2]
+            __unidade = self.substituirCaracterMetros(a[2])
             __qtd = a[3]
             __valor = a[4]
-
-
 
             __descricao = DescricaoProduto(None, __idCargaProduto, __idNotaFiscal, __unidade, __qtd, __valor)
             __notaFiscalRomaneio.cadastrarDescricaoProduto(__descricao)
 
             i+=1
 
-        '''
-        self.ui.tbProduto.selectAll()
-        itens = []
-        inde = []
-        i= 0
-        print(self.ui.tbProduto.rowCount())
-        print(self.ui.tbProduto.model())
-        for item in self.ui.tbProduto.selectedItems():
-            itens.append(item.text())
+    def substituirCaracterMetros(self, i):
+        i = str(i)
+        i = i.replace('²', '2')
+        i = i.replace('³', '3')
 
-
-        print(itens)
-        print(self.desc)
-
-        
-        i = 0
-        col = self.ui.tbProduto.horizontalHeader().count()
-
-        for i in range(col):
-            pedido = self.ui.tbProduto.model().data(self.ui.tbProduto.model().index(i, 0))
-            headertext = self.ui.tbProduto.horizontalHeaderItem(i)
-            i += 1
-
-        print(self.ui.tbProduto.takeHorizontalHeaderItem(0))
-
-        self.signalsHeader = []
-        for j in range(col):
-
-            self.signalsHeader.append(str(self.ui.tbProduto.takeHorizontalHeaderItem(j)))
-
-        
-        print(self.signalsHeader)
-        '''
-
-
+        return i
 
     def formatarDataRetorno(self, data):
         dia = data[8:10]
@@ -338,7 +309,127 @@ class CadastroEmpresa(QtGui.QDialog):
 
         return ("%s-%s-%s" % (ano, mes, dia))
 
+    def limparCamposNotafical(self):
+        self.ui.txtNumeroNotaFiscal.clear()
+        self.ui.txtDataEmissao.setDate(QDate.currentDate())
+        self.ui.txtValorTotal.clear()
+
+    def limparCamposRomaneio(self):
+        self.ui.txtNumeroRomaneio.clear()
+        self.ui.txtMetragemMadeira.clear()
+        self.ui.txtCertificada.setChecked(False)
+
+    def limparCamposDescricao(self):
+        self.ui.txtTipoCargaServico.clear()
+        self.ui.txtTipoProdutoServico.clear()
+        self.ui.txtUn.clear()
+        self.ui.txtQuantidade.clear()
+        self.ui.txtValorUnitario.clear()
+
     def cadastrar(self):
-        self.cadastrarNotaFiscal()
-        self.cadastrarRomaneio()
-        self.cadastrarDescricaoProduto()
+        if self.ui.txtIdEmitente.text() != "" and self.ui.txtNomeEmitente.text() != "" and self.ui.txtCnpjEmitente.text() != "" and self.ui.txtCnpjEmitente.text() != "" and self.ui.txtInscricaoEstaduaEmitente.text() != "" and self.ui.txtIdDestinatario.text() != "" and self.ui.txtFantasiaDestinatario.text() != "" and self.ui.txtRazaoSocialDestinatario.text() != "" and self.ui.txtCnpjDestinatario.text() != "" and self.ui.txtInscricaoEstaduaDestinatario.text() != "" and self.ui.txtNomeMotorista.text() != "" and self.ui.txtCpf.text() != "" and self.ui.txtRg.text() != "" and self.ui.txtNumeroRomaneio.text() != "" :
+
+            __valiUnidade = self.calUnidade()
+            if __valiUnidade == True:
+                __nota = self.cadastrarNotaFiscal()
+                __romaneio = self.cadastrarRomaneio()
+                __desc = self.cadastrarDescricaoProduto()
+                if __nota and __romaneio and __desc == True:
+                    QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+                    self.limparCamposEmitente()
+                    self.limparCamposDestinatario()
+                    self.limparCamposMotorista()
+                    self.limparCamposNotafical()
+                    self.limparCamposRomaneio()
+                    self.limparCamposDescricao()
+                    self.botoesCancelar()
+
+
+    def calUnidade(self):
+        __valTotal = 0
+        i = 0
+        for lista in self.desc:
+            a = self.desc[i]
+            __qtd = int(a[3])
+            __valor = Decimal(a[4])
+            __valTotal += (__qtd * __valor)
+
+            i += 1
+        if __valTotal == Decimal(self.removerCaracterDinheiro(self.ui.txtValorTotal.text())):
+            return True
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "O valor descriminado não confere com o valor total!")
+            return False
+
+    def unidadeMedidaCalculo(self):
+        if self.ui.txtUn.currentText() == "UN":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "M":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "M²":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "M³":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "T":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "ST":
+            self.calUnidade()
+        elif self.ui.txtUn.currentText() == "L":
+            self.calUnidade()
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Erro ao calcular unidade e valor")
+
+    def cancelarCad(self):
+        self.limparCamposEmitente()
+        self.limparCamposDestinatario()
+        self.limparCamposMotorista()
+        self.limparCamposNotafical()
+        self.limparCamposRomaneio()
+        self.limparCamposDescricao()
+        self.botoesCancelar()
+
+    def botoesNovo(self):
+        self.ui.btnNovo.setEnabled(False)
+
+        self.ui.grbDadosDestinatario.setEnabled(True)
+        self.ui.grbDadosEmitente.setEnabled(True)
+        self.ui.grbDadosMotorista.setEnabled(True)
+        self.ui.grbDadosNotaFiscal.setEnabled(True)
+        self.ui.grbDadosRomaneio.setEnabled(True)
+        self.ui.grbDadosProduto.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
+        self.unidadeMedida()
+        self.pesquisarTiposCarga()
+        self.pesquisarMetragem()
+
+    def botoesEditar(self):
+        self.ui.btnNovo.setEnabled(False)
+
+        self.ui.grbDadosDestinatario.setEnabled(True)
+        self.ui.grbDadosEmitente.setEnabled(True)
+        self.ui.grbDadosMotorista.setEnabled(True)
+        self.ui.grbDadosNotaFiscal.setEnabled(True)
+        self.ui.grbDadosRomaneio.setEnabled(True)
+        self.ui.grbDadosProduto.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(True)
+
+    def botoesCancelar(self):
+        self.ui.btnNovo.setEnabled(True)
+
+        self.ui.grbDadosDestinatario.setEnabled(False)
+        self.ui.grbDadosEmitente.setEnabled(False)
+        self.ui.grbDadosMotorista.setEnabled(False)
+        self.ui.grbDadosNotaFiscal.setEnabled(False)
+        self.ui.grbDadosRomaneio.setEnabled(False)
+        self.ui.grbDadosProduto.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)

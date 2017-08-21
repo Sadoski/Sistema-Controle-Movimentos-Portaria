@@ -10241,12 +10241,10 @@ descricao varchar(30)
 /******************************************************************************/
 
 INSERT INTO tipo_veiculo (id_tipo_veiculo, descricao) VALUES
-(1, 'BICILETA'),
-(2, 'MOTOCICLETA'),
-(3, 'AUTOMOVEL'),
-(4, 'CAMINHÃO'),
-(5, 'EMBARCAÇÃO'),
-(6, 'AERONAVES');
+(1, 'MOTOCICLETA'),
+(2, 'AUTOMOVEL'),
+(3, 'CAMINHÃO'),
+
 
 
 /* ************************************************************************** */
@@ -10299,15 +10297,15 @@ descricao varchar(50),
 /*                                   PRODUTO                                  */
 /******************************************************************************/
 
-INSERT INTO produto (id_produto, id_tipo_carga, descricao) VALUES
-(1,1, ''),
-(1,2, ''),
-(1,3, ''),
-(1,4, ''),
-(1,5, ''),
-(1,6, ''),
-(1,7, ''),
-(1,10, '');
+INSERT INTO produto (id_produto, descricao) VALUES
+(1, ''),
+(2, ''),
+(3, ''),
+(4, ''),
+(5, ''),
+(6, ''),
+(7, ''),
+(8, '');
 
 
 /* ************************************************************************** */
@@ -10626,27 +10624,64 @@ FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
 );
 
 /* ************************************************************************** */
-DROP TABLE IF EXISTS notas_romaneio;
-/* ***************************** NOTAS FISCAIS E ROMANEIOS ****************************** */
+DROP TABLE IF EXISTS metragem;
+/* ***************************** METRAGEM ****************************** */
 
-CREATE TABLE IF NOT EXISTS notas_romaneio (
-id_entrada_notas_romaneios integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS metragem (
+id_metragem integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+descricao varchar(10)
+);
+
+/* ************************************************************************** */
+DROP TABLE IF EXISTS notas_fiscais;
+/* ***************************** NOTAS FISCAIS ****************************** */
+
+CREATE TABLE IF NOT EXISTS notas_fiscais (
+id_entrada_notas_fiscais integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
 numero_nota varchar(11) ,
-numero_romaneio varchar(11) ,
-data_lancamento date ,
-observacao varchar(255) ,
+data_emissao date ,
 cadastrado timestamp,
 alterado timestamp,
 id_fornecedor integer NOT NULL,
 id_produto integer NOT NULL,
 id_empresa integer NOT NULL,
-id_cidades integer NOT NULL,
 id_motorista integer NOT NULL,
 FOREIGN KEY(id_fornecedor) REFERENCES fornecedor (id_fornecedor),
 FOREIGN KEY(id_produto) REFERENCES produto (id_produto),
 FOREIGN KEY(id_empresa) REFERENCES empresa (id_empresa),
-FOREIGN KEY(id_cidade) REFERENCES cidade (id_cidade),
 FOREIGN KEY(id_motorista) REFERENCES motorista (id_motorista)
+);
+
+
+/* ************************************************************************** */
+DROP TABLE IF EXISTS descricao_produto_nota_fiscal
+/* ***************************** DESCRIÇÃO PRODUTO NOTA FISCAL ****************************** */
+
+CREATE TABLE IF NOT EXISTS descricao_produto_nota_fiscal (
+id_desc_pro_nota integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+unidade_medida varchar(5) ,
+quantidade integer ,
+valor_unitario decimal(5,2)
+id_notas_fiscais integer NOT NULL,
+id_carga_produto integer NOT NULL,
+FOREIGN KEY(id_notas_fiscais) REFERENCES notas_fiscais (id_notas_fiscais),
+FOREIGN KEY(id_carga_produto) REFERENCES carga_produto (id_carga_produto)
+);
+
+/* ************************************************************************** */
+DROP TABLE IF EXISTS romaneios;
+/* ***************************** ROMANEIOS ****************************** */
+
+CREATE TABLE IF NOT EXISTS romaneios (
+id_romaneios integer NOT NULL AUTO_INCREMENT PRIMARY KEY,
+numero_romaneios varchar(11) ,
+certificada  tinyint(1),
+cadastrado timestamp,
+alterado timestamp,
+id_entrada_notas_fiscais integer NOT NULL,
+id_metragem integer NOT NULL,
+FOREIGN KEY(id_entrada_notas_fiscais) REFERENCES notas_fiscais (id_entrada_notas_fiscais),
+FOREIGN KEY(id_metragem) REFERENCES metragem (id_metragem),
 );
 
 /* ************************************************************************** */
