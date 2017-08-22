@@ -54,13 +54,24 @@ class PesquisarNotaFiscalRomaneioDao(object):
 
     def pesquisarCnpjEmit(self, cnpj):
         try:
-            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where f.inscricao_estadual = '" + cnpj + "'"
+            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where f.cnpj = '" + cnpj + "'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
             return result
         except BaseException as os:
             return False
+
+    def pesquisarInsEstadualEmit(self, inscricacao):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where f.inscricao_estadual = '" + inscricacao + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
 
     def pesquisarFantasiaDest(self, fantasia):
         try:
@@ -84,7 +95,17 @@ class PesquisarNotaFiscalRomaneioDao(object):
 
     def pesquisarCnpjDest(self, cnpj):
         try:
-            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where e.inscricao_estadual = '" + cnpj + "'"
+            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where e.cnpj = '" + cnpj + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarInsEstadualDest(self, inscricacao):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, n.numero_nota, n.data_emissao, n.valor_total, f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, e.id_empresa, e.fantasia, e.razao_social, e.cnpj, e.inscricao_estadual, m.id_motorista, m.nome, m.rg, m.cpf, r.id_romaneios, r.numer_romaneio, r.certificada, q.descricao FROM romaneios r INNER JOIN notas_fiscais n ON n.id_entrada_notas_fiscais = r.id_entrada_notas_fiscais INNER JOIN fornecedor f ON f.id_fornecedor = n.id_fornecedor INNER JOIN empresa e ON e.id_empresa = n.id_empresa INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN metragem q ON q.id_metragem = r.id_metragem  where e.inscricao_estadual = '" + inscricacao + "'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
