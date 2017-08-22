@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from decimal import Decimal
 
+from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetNotaFiscal import NotaFiscal
 from controller.getSetRomaneio import Romaneio
@@ -177,21 +178,24 @@ class CadastroEmpresa(QtGui.QDialog):
         return i
 
     def addDescricaoProduto(self):
-        __carga = str(self.ui.txtTipoCargaServico.currentText())
-        __produto = str(self.ui.txtTipoProdutoServico.currentText())
-        __un = str(self.ui.txtUn.currentText())
-        __qtd = str(self.ui.txtQuantidade.text())
-        __valorUni = str(self.removerCaracterDinheiro(self.ui.txtValorUnitario.text()))
+        if self.ui.txtQuantidade.text() != "" and self.ui.txtValorUnitario.text() != "":
+            __carga = str(self.ui.txtTipoCargaServico.currentText())
+            __produto = str(self.ui.txtTipoProdutoServico.currentText())
+            __un = str(self.ui.txtUn.currentText())
+            __qtd = str(self.ui.txtQuantidade.text())
+            __valorUni = str(self.removerCaracterDinheiro(self.ui.txtValorUnitario.text()))
 
 
-        add = [(__carga, __produto, __un, __qtd, __valorUni)]
-        self.desc.append([__carga, __produto, __un, __qtd, __valorUni])
-        self.inserirTabela(add)
+            add = [(__carga, __produto, __un, __qtd, __valorUni)]
+            self.desc.append([__carga, __produto, __un, __qtd, __valorUni])
+            self.inserirTabela(add)
 
-        self.ui.txtQuantidade.clear()
-        self.ui.txtValorUnitario.clear()
+            self.ui.txtQuantidade.clear()
+            self.ui.txtValorUnitario.clear()
 
-        self.ui.txtTipoCargaServico.setFocus()
+            self.ui.txtTipoCargaServico.setFocus()
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de quantidade e valorunitario")
 
     def inserirTabela(self, dado):
 
@@ -433,3 +437,16 @@ class CadastroEmpresa(QtGui.QDialog):
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
+
+        self.desc.clear()
+        self.deletarDescricaoProduto()
+
+    def deletarDescricaoProduto(self):
+        for i in reversed(range(self.ui.tbProduto.rowCount())):
+            self.ui.tbProduto.removeRow(i)
+
+    def keyPressEvent(self, keyEvent):
+        if keyEvent.key() == (QtCore.Qt.Key_F12):
+           __pesc = PesquisarNotaFiscal()
+           __pesc.show()
+           __pesc.exec_()
