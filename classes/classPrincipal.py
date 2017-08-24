@@ -8,7 +8,7 @@ from .classCadFuncionarios import CadastroFuncionario
 from .classCadFornecedor import CadastroFornecedores
 from .classCadCliente import CadastroClientes
 from .classCadMotorista import CadastroMotoristas
-from .classNotasFiscal import CadastroEmpresa
+from .classNotasFiscal import CadastroNotaFiscal
 '''
 from classes.classConsulEmpresas import ConsultarEmpresas
 from classes.classConsulFuncionarios import ConsultarFuncionarios
@@ -161,7 +161,7 @@ class Principal(QtGui.QMainWindow):
         _motoristas.exec_()
 
     def _entradaNotasTeca(self):
-        _notas = CadastroEmpresa()
+        _notas = CadastroNotaFiscal()
         _notas.show()
         _notas.exec_()
 

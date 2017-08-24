@@ -35,49 +35,66 @@ class Ui_frmConsultarNotasFiscais(object):
         self.grbTipoPesquisa = QtGui.QGroupBox(frmConsultarNotasFiscais)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 341, 141))
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
+
         self.radBtnFantasiaEmitente = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnFantasiaEmitente.setGeometry(QtCore.QRect(10, 55, 131, 23))
         self.radBtnFantasiaEmitente.setObjectName(_fromUtf8("radBtnFantasiaEmitente"))
+
         self.radBtnRazaoSocialEmitente = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnRazaoSocialEmitente.setGeometry(QtCore.QRect(10, 75, 161, 23))
         self.radBtnRazaoSocialEmitente.setObjectName(_fromUtf8("radBtnRazaoSocialEmitente"))
+
         self.radBtnCnpjEmitente = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnCnpjEmitente.setGeometry(QtCore.QRect(10, 95, 111, 23))
         self.radBtnCnpjEmitente.setObjectName(_fromUtf8("radBtnCnpjEmitente"))
+
         self.radBtnIncrisaoEstadualEmitente = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnIncrisaoEstadualEmitente.setGeometry(QtCore.QRect(10, 115, 161, 23))
         self.radBtnIncrisaoEstadualEmitente.setObjectName(_fromUtf8("radBtnIncrisaoEstadualEmitente"))
+
         self.radBtnNumNotaFiscal = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnNumNotaFiscal.setGeometry(QtCore.QRect(10, 15, 111, 23))
         self.radBtnNumNotaFiscal.setObjectName(_fromUtf8("radBtnNumNotaFiscal"))
+
         self.radBtnRomaneio = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnRomaneio.setGeometry(QtCore.QRect(10, 35, 111, 23))
         self.radBtnRomaneio.setObjectName(_fromUtf8("radBtnRomaneio"))
+
         self.radBtnRazaoSocialDestinatario = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnRazaoSocialDestinatario.setGeometry(QtCore.QRect(180, 34, 151, 23))
         self.radBtnRazaoSocialDestinatario.setObjectName(_fromUtf8("radBtnRazaoSocialDestinatario"))
+
         self.radBtnCnpjDestinatario = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnCnpjDestinatario.setGeometry(QtCore.QRect(180, 54, 101, 23))
         self.radBtnCnpjDestinatario.setObjectName(_fromUtf8("radBtnCnpjDestinatario"))
+
         self.radBtnFantasiaDestinatario = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnFantasiaDestinatario.setGeometry(QtCore.QRect(180, 14, 121, 23))
         self.radBtnFantasiaDestinatario.setObjectName(_fromUtf8("radBtnFantasiaDestinatario"))
+
         self.radBtnIncrisaoEstadualDestinatario = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnIncrisaoEstadualDestinatario.setGeometry(QtCore.QRect(180, 74, 151, 23))
         self.radBtnIncrisaoEstadualDestinatario.setObjectName(_fromUtf8("radBtnIncrisaoEstadualDestinatario"))
+
         self.radBtnDataLanamento = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnDataLanamento.setGeometry(QtCore.QRect(180, 95, 141, 23))
         self.radBtnDataLanamento.setObjectName(_fromUtf8("radBtnDataLanamento"))
+
         self.radBtnDataPeriodos = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnDataPeriodos.setGeometry(QtCore.QRect(180, 115, 111, 23))
         self.radBtnDataPeriodos.setObjectName(_fromUtf8("radBtnDataPeriodos"))
+
         self.txtPesquisar = QtGui.QLineEdit(frmConsultarNotasFiscais)
+        self.txtPesquisar.setEnabled(False)
         self.txtPesquisar.setGeometry(QtCore.QRect(360, 120, 381, 25))
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))
+
         self.lblPesquisar = QtGui.QLabel(frmConsultarNotasFiscais)
         self.lblPesquisar.setGeometry(QtCore.QRect(360, 100, 71, 19))
         self.lblPesquisar.setObjectName(_fromUtf8("lblPesquisar"))
+
         self.btnPesquisar = QtGui.QPushButton(frmConsultarNotasFiscais)
+        self.btnPesquisar.setEnabled(False)
         self.btnPesquisar.setGeometry(QtCore.QRect(750, 120, 31, 27))
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
@@ -99,25 +116,33 @@ class Ui_frmConsultarNotasFiscais(object):
         self.btnImprimir.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnImprimir.setText(_fromUtf8(""))
         self.btnImprimir.setObjectName(_fromUtf8("btnImprimir"))
+
         self.btnLimpar = QtGui.QPushButton(frmConsultarNotasFiscais)
         self.btnLimpar.setGeometry(QtCore.QRect(670, 550, 51, 51))
         self.btnLimpar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnLimpar.setText(_fromUtf8(""))
         self.btnLimpar.setObjectName(_fromUtf8("btnLimpar"))
+
         self.txtDataInicial = QtGui.QDateEdit(frmConsultarNotasFiscais)
+        self.txtDataInicial.setEnabled(False)
         self.txtDataInicial.setGeometry(QtCore.QRect(430, 10, 110, 25))
         self.txtDataInicial.setCalendarPopup(True)
         self.txtDataInicial.setObjectName(_fromUtf8("txtDataInicial"))
+
         self.txtDataFinal = QtGui.QDateEdit(frmConsultarNotasFiscais)
+        self.txtDataFinal.setEnabled(False)
         self.txtDataFinal.setGeometry(QtCore.QRect(430, 60, 110, 25))
         self.txtDataFinal.setCalendarPopup(True)
         self.txtDataFinal.setObjectName(_fromUtf8("txtDataFinal"))
+
         self.lblDataInicio = QtGui.QLabel(frmConsultarNotasFiscais)
         self.lblDataInicio.setGeometry(QtCore.QRect(360, 13, 66, 19))
         self.lblDataInicio.setObjectName(_fromUtf8("lblDataInicio"))
+
         self.lblDataFinal = QtGui.QLabel(frmConsultarNotasFiscais)
         self.lblDataFinal.setGeometry(QtCore.QRect(360, 63, 66, 19))
         self.lblDataFinal.setObjectName(_fromUtf8("lblDataFinal"))
+
         self.lblPesquisar.setBuddy(self.txtPesquisar)
         self.lblDataInicio.setBuddy(self.txtDataInicial)
         self.lblDataFinal.setBuddy(self.txtDataFinal)

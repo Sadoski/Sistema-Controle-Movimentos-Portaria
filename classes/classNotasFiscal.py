@@ -11,7 +11,7 @@ from controller.getSetRomaneio import Romaneio
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
 from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
 
-class CadastroEmpresa(QtGui.QDialog):
+class CadastroNotaFiscal(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaNotaRomaneios()
@@ -195,7 +195,7 @@ class CadastroEmpresa(QtGui.QDialog):
 
             self.ui.txtTipoCargaServico.setFocus()
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de quantidade e valorunitario")
+            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de quantidade e valor unitario")
 
     def inserirTabela(self, dado):
 
@@ -385,8 +385,11 @@ class CadastroEmpresa(QtGui.QDialog):
 
     def cancelarCad(self):
         self.limparCamposEmitente()
+        self.ui.txtNomeEmitente.clear()
         self.limparCamposDestinatario()
+        self.ui.txtFantasiaDestinatario.clear()
         self.limparCamposMotorista()
+        self.ui.txtNomeMotorista.clear()
         self.limparCamposNotafical()
         self.limparCamposRomaneio()
         self.limparCamposDescricao()
@@ -450,3 +453,24 @@ class CadastroEmpresa(QtGui.QDialog):
            __pesc = PesquisarNotaFiscal()
            __pesc.show()
            __pesc.exec_()
+
+    def setCampos(self, campos):
+        self.botoesEditar()
+        self.ui.txtIdEmitente.setText(campos.getCodEmitente)
+        self.ui.txtNomeEmitente.setText(campos.getFantasiaEmitente)
+        self.ui.txtRazaoSocialEmitente.setText(campos.getRazaoSocialEmitente)
+        self.ui.txtCnpjEmitente.setText(campos.getCnpjEmitente)
+        self.ui.txtInscricaoEstaduaEmitente.setText(campos.getInsEstadualEmitente)
+        self.ui.txtIdDestinatario.setText(campos.getCodDestinatario)
+        self.ui.txtFantasiaDestinatario.setText(campos.getFantasiaDestinatario)
+        self.ui.txtRazaoSocialDestinatario.setText(campos.getRazaoSocialDestinatario)
+        self.ui.txtCnpjDestinatario.setText(campos.getCnpjDestinatario)
+        self.ui.txtInscricaoEstaduaDestinatario.setText(campos.getInsEstadualDestinatario)
+        self.ui.txtidMotorista.setText(campos.getCodMotorista)
+        self.ui.txtNomeMotorista.setText(campos.getNomeMotorista)
+        self.ui.txtRg.setText(campos.getRg)
+        self.ui.txtCpf.setText(campos.getCpf)
+        self.codRomaneio = campos.getCodRomaneio
+        self.ui.txtNumeroRomaneio.setText(campos.getNumRomaneio)
+        self.ui.txtMetragemMadeira.addItem(campos.getMetragem)
+        self.ui.txtCertificada.setCheckable(campos.getCetificada)
