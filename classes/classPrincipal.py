@@ -9,6 +9,7 @@ from .classCadFornecedor import CadastroFornecedores
 from .classCadCliente import CadastroClientes
 from .classCadMotorista import CadastroMotoristas
 from .classNotasFiscal import CadastroNotaFiscal
+from .classSobre import Sobre
 '''
 from classes.classConsulEmpresas import ConsultarEmpresas
 from classes.classConsulFuncionarios import ConsultarFuncionarios
@@ -68,6 +69,7 @@ class Principal(QtGui.QMainWindow):
         self.ui.subMenuCadastroClintes.triggered.connect(self._cadastroClintes)
         self.ui.subMenuCadastroMotoristas.triggered.connect(self._cadastroMotoristas)
         self.ui.subMenuEntradaNotasTeca.triggered.connect(self._entradaNotasTeca)
+        self.ui.subMenuSobre.triggered.connect(self._sobre)
         '''
         #Menu Cosultas
         self.ui.subMenuConsultasEmpresas.triggered.connect(self.__consultasEmpresas)
@@ -164,6 +166,11 @@ class Principal(QtGui.QMainWindow):
         _notas = CadastroNotaFiscal()
         _notas.show()
         _notas.exec_()
+
+    def _sobre(self):
+        _sobre = Sobre()
+        _sobre.show()
+        _sobre.exec_()
 
     def closeEvent(self, event):
         w = QWidget()
