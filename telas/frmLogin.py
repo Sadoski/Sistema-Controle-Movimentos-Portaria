@@ -26,6 +26,9 @@ class Ui_frmLogin(object):
     def setupUi(self, frmLogin):
         frmLogin.setObjectName(_fromUtf8("frmLogin"))
         frmLogin.resize(400, 326)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmLogin.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setPointSize(11)
         frmLogin.setFont(font)
@@ -57,7 +60,7 @@ class Ui_frmLogin(object):
         self.lblImagem = QtGui.QLabel(frmLogin)
         self.lblImagem.setGeometry(QtCore.QRect(30, 10, 341, 71))
         self.lblImagem.setText(_fromUtf8(""))
-        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp.jpg")))
+        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp-login.jpg")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
         
         self.btnEsqueciSenha = QtGui.QPushButton(frmLogin)

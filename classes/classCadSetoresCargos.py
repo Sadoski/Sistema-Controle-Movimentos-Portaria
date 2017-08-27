@@ -937,6 +937,7 @@ class SetoresCargos(QtGui.QDialog):
         else:
             result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
 
+
     def tablePesquisaSetor(self, pesquisa):
         if self.__ui.txtCadSetoresCodigo.text() == '' and self.__ui.txtCadSetoresNomeFantasia.text() == '' and self.__ui.txtCadSetoresRazaoSocial.text() == '' and self.__ui.txtCadSetoresTipoEmpresa.text() == '' and self.__ui.txtCadSetoresInscricaoEstadual.text() == '' :
             self.setarCamposSetor()
@@ -1054,6 +1055,24 @@ class SetoresCargos(QtGui.QDialog):
                 self.__ui.txtRelacaoSetor.setEnabled(True)
                 self.__ui.txtRelacaoCargo.setEnabled(True)
 
+
+    def setRelacaoSetorAtualizacao(self, dados):
+        _setor = SetoresCargosDao()
+        lista = _setor.pesquisaSetor()
+
+        for setores in lista:
+            if setores[0] != dados:
+                self.__ui.txtRelacaoSetor.addItem(setores[0])
+
+    def setRelacaoCargoAtualizacao(self, dados):
+        _cargo = SetoresCargosDao()
+        lista = _cargo.pesquisaCargo()
+
+        for cargos in lista:
+            if cargos[0] != dados:
+                self.__ui.txtRelacaoCargo.addItem(cargos[0])
+
+
     def setarCamposRelacao(self):
 
         itens = []
@@ -1063,8 +1082,12 @@ class SetoresCargos(QtGui.QDialog):
             self.__botoesRelacao()
             self.__botoesEditarRelacao()
             self.__ui.txtRelacaoCodigo.setText(str(itens[0]))
-            self.__ui.txtRelacaoSetor.addItem(str(itens[1]))
-            self.__ui.txtRelacaoCargo.addItem(str(itens[2]))
+            setor = str(itens[1])
+            self.__ui.txtRelacaoSetor.addItem(setor)
+            self.setRelacaoSetorAtualizacao(setor)
+            cargo = str(itens[2])
+            self.__ui.txtRelacaoCargo.addItem(cargo)
+            self.setRelacaoCargoAtualizacao(cargo)
             self.__ui.txtRelacaoNomeFantasia.setText(str(itens[3]))
             self.__ui.txtRelacaoRazaoSocial.setText(str(itens[4]))
             self.__ui.txtRelacaoCnpj.setText(str(itens[5]))

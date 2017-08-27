@@ -10412,6 +10412,31 @@ FOREIGN KEY(id_cargo) REFERENCES cargo (id_cargo),
 FOREIGN KEY(id_setores) REFERENCES setores (id_setores)
 );
 
+/* ************************************************************************** */
+DROP TABLE IF EXISTS saida_funcionario;
+/* ***************************** SAÍDA FUNCIONARIO ****************************** */
+
+CREATE TABLE IF NOT EXISTS saida_funcionario(
+id_saida_funcionario integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+data date,
+hora time,
+id_funcionario integer,
+id_funcao integer,
+FOREIGN KEY (id_funcionario) REFERENCES funcionario (id_funcionario),
+FOREIGN KEY (id_funcao) REFERENCES funcionario (id_funcao)
+);
+
+/* ************************************************************************** */
+DROP TABLE IF EXISTS entrada_funcionario;
+/* ***************************** ENTRADA FUNCIONARIO ****************************** */
+
+CREATE TABLE IF NOT EXISTS entrada_funcionario(
+id_entrada_funcionario integer PRIMARY KEY NOT NULL AUTO_INCREMENT,
+data date,
+hora time,
+id_saida_funcionario integer,
+FOREIGN KEY (id_saida_funcionario) REFERENCES saida_funcionario (id_saida_funcionario)
+);
 
 /* ************************************************************************** */
 DROP TABLE IF EXISTS veiculos_empresa;

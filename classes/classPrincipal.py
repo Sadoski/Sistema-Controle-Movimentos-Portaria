@@ -2,6 +2,7 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
@@ -9,6 +10,8 @@ from .classCadFornecedor import CadastroFornecedores
 from .classCadCliente import CadastroClientes
 from .classCadMotorista import CadastroMotoristas
 from .classNotasFiscal import CadastroNotaFiscal
+from .classSaidaFuncionario import SaidaFuncionario
+from .classEntradaFuncionario import EntradaFuncionario
 from .classSobre import Sobre
 '''
 from classes.classConsulEmpresas import ConsultarEmpresas
@@ -69,6 +72,8 @@ class Principal(QtGui.QMainWindow):
         self.ui.subMenuCadastroClintes.triggered.connect(self._cadastroClintes)
         self.ui.subMenuCadastroMotoristas.triggered.connect(self._cadastroMotoristas)
         self.ui.subMenuEntradaNotasTeca.triggered.connect(self._entradaNotasTeca)
+        self.ui.entSaiFuncSubMenuEntrada.triggered.connect(self._entradaFuncionrio)
+        self.ui.entSaiFuncSubMenuSaida.triggered.connect(self._saidaFuncionrio)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
         '''
         #Menu Cosultas
@@ -166,6 +171,16 @@ class Principal(QtGui.QMainWindow):
         _notas = CadastroNotaFiscal()
         _notas.show()
         _notas.exec_()
+
+    def _entradaFuncionrio(self):
+        _entFun = EntradaFuncionario()
+        _entFun.show()
+        _entFun.exec_()
+
+    def _saidaFuncionrio(self):
+        _entFun = SaidaFuncionario()
+        _entFun.show()
+        _entFun.exec_()
 
     def _sobre(self):
         _sobre = Sobre()

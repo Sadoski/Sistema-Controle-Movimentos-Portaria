@@ -719,6 +719,22 @@ class CadastroFuncionario(QtGui.QDialog):
                     self.setarCampos()
                     self.botaoEditarCadastro()
 
+    def pesquisarSetorAtualizar(self, dado):
+        __setor = SetoresCargosDao()
+        setores = __setor.pesquisaSetor()
+
+        for sett in setores:
+            if sett[0] != dado:
+                self.__ui.txtSetor.addItem(sett[0])
+
+    def pesquisarCargoAtualizar(self, dado, pesquisa):
+
+        __cargo = SetoresCargosDao()
+        cargos = __cargo.pesquisarFuncao(pesquisa)
+        for carg in cargos:
+            if carg[0] != dado:
+                self.__ui.txtCargo.addItem(carg[0])
+
     def setarCampos(self):
 
         itens = []
@@ -749,8 +765,14 @@ class CadastroFuncionario(QtGui.QDialog):
             self.__ui.txtEstados.setText(str(itens[15]))
             self.__ui.txtTelefone.setText(str(itens[16]))
             self.__ui.txtCelular.setText(str(itens[17]))
-            self.__ui.txtSetor.addItem(str(itens[18]))
-            self.__ui.txtCargo.addItem(str(itens[19]))
+            #self.__ui.txtSetor.addItem(str(itens[18]))
+            setor = str(itens[18])
+            self.__ui.txtSetor.addItem(setor)
+            self.pesquisarSetorAtualizar(setor)
+            self.__ui.txtCargo.clear()
+            cargo = str(itens[19])
+            self.__ui.txtCargo.addItem(cargo)
+            self.pesquisarCargoAtualizar(cargo, setor)
             self.__ui.txtFantasia.setText(str(itens[20]))
             self.__ui.txtRazaoSocial.setText(str(itens[21]))
             self.__ui.txtCnpj.setText(str(itens[22]))
@@ -783,6 +805,8 @@ class CadastroFuncionario(QtGui.QDialog):
             __funDao.deletarFuncionario(self.__ui.txtidFuncionario.text())
             self.botaoCancelar()
             self.limparCampos()
+
+
 
     def atualizarFuncionario(self):
         if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":

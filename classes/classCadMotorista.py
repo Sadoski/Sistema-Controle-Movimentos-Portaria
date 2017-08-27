@@ -123,9 +123,6 @@ class CadastroMotoristas(QtGui.QDialog):
 
         self.ui.txtNomeMotorista.setFocus()
 
-        self.addCategoria()
-        self.addTipoVeiculo()
-
     def botaoCancelar(self):
         self.ui.btnCadNovo.setEnabled(True)
         self.ui.btnCadSalvar.setEnabled(False)
@@ -740,6 +737,21 @@ class CadastroMotoristas(QtGui.QDialog):
         else:
             result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
 
+    def addCategoriaAtualizacao(self, dados):
+        __motoDao = MotoristaDao()
+        __categoria = __motoDao.pesquisarCategoria()
+        for cate in __categoria:
+            if cate[0] != dados:
+                self.ui.txtCategoriaCnh.addItem(cate[0])
+
+    def addTipoVeiculoAtualizacao(self, dados):
+        __motoDao = MotoristaDao()
+        __tipo = __motoDao.pesquisarTipoVeiculo()
+        for cate in __tipo:
+            if cate[0] != dados:
+                self.ui.txtTipoVeiculo.addItem(cate[0])
+
+
     def tablePesquisa(self, pesquisa):
         if self.ui.txtNomeMotorista.text() != "" and self.ui.txtNomeMotorista.text() != "" and self.ui.txtCnh.text() != "" and self.ui.txtEndereco.text() != "" and self.ui.txtNumero.text() != "" and self.ui.txtBairro.text() != "" and self.ui.txtCidades.text() != "" and self.ui.txtEstados.text():
                 self.setarCampos()
@@ -764,7 +776,9 @@ class CadastroMotoristas(QtGui.QDialog):
             self.ui.txtCpf.setText(str(itens[5]))
             self.ui.txtPis.setText(str(itens[6]))
             self.ui.txtCnh.setText(str(itens[7]))
-            self.ui.txtCategoriaCnh.addItem(str(itens[8]))
+            categoria = str(itens[8])
+            self.ui.txtCategoriaCnh.addItem(categoria)
+            self.addCategoriaAtualizacao(categoria)
             if str(itens[9]) == 'MASCULINO':
                 self.ui.radBtnMasculino.setChecked(True)
             elif str(itens[9]) == 'FEMININO':
@@ -780,7 +794,9 @@ class CadastroMotoristas(QtGui.QDialog):
             self.ui.txtCep.setText(str(itens[16]))
             self.ui.txtCidades.setText(str(itens[17]))
             self.ui.txtEstados.setText(str(itens[18]))
-            self.ui.txtTipoVeiculo.addItem(str(itens[19]))
+            tipo = str(itens[19])
+            self.ui.txtTipoVeiculo.addItem(tipo)
+            self.addTipoVeiculoAtualizacao(tipo)
             self.ui.txtMarca.setText(str(itens[20]))
             self.ui.txtModelo.setText(str(itens[21]))
             self.ui.txtPlaca.setText(str(itens[22]))

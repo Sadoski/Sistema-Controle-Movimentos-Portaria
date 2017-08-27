@@ -560,6 +560,14 @@ class Empresa(QtGui.QDialog):
         else:
             result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
 
+    def _setTipoEmpresaAtualizar(self, dados):
+
+        lista = self._empresa.tipoEmpresa()
+
+        for tipo in lista:
+            if tipo[0] != dados:
+                self._ui.txtTipoEmpresa.addItem(tipo[0])
+
     def tablePesquisa(self, pesquisa):
         _cnpj = self.removerCaracter(self._ui.txtCnpj.text())
         _cep = self.removerCaracter(self._ui.txtCep.text())
@@ -582,7 +590,9 @@ class Empresa(QtGui.QDialog):
             self._botoes()
             self._botoesEditar()
             self._ui.txtId.setText(str(itens[0]))
-            self._ui.txtTipoEmpresa.addItem(str(itens[1]))
+            tipo = str(itens[1])
+            self._ui.txtTipoEmpresa.addItem(tipo)
+            self._setTipoEmpresaAtualizar(tipo)
             self._ui.txtCnpj.setText(str(itens[2]))
             self._ui.txtInscricaoEstadua.setText(str(itens[3]))
             self._ui.txtInscricaoMunicipal.setText(str(itens[4]))
