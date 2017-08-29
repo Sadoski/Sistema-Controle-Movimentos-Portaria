@@ -14,7 +14,7 @@ from .classCadCliente import CadastroClientes
 from .classCadMotorista import CadastroMotoristas
 from .classNotasFiscal import CadastroNotaFiscal
 from .classSaidaFuncionario import SaidaFuncionario
-from .classEntradaFuncionario import EntradaFuncionario
+from .classEntradaFuncionario import EntradaFuncionarios
 from .classSobre import Sobre
 '''
 from classes.classConsulEmpresas import ConsultarEmpresas
@@ -187,7 +187,7 @@ class Principal(QtGui.QMainWindow):
         _notas.exec_()
 
     def _entradaFuncionrio(self):
-        _entFun = EntradaFuncionario()
+        _entFun = EntradaFuncionarios()
         _entFun.show()
         _entFun.exec_()
 

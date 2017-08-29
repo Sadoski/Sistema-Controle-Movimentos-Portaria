@@ -204,7 +204,8 @@ class Ui_frmSaidaFuncionario(object):
         self.tbPesquisaFuncionario.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tbPesquisaFuncionario.setObjectName(_fromUtf8("tbPesquisaFuncionario"))
         self.tbPesquisaFuncionario.setColumnCount(6)
-        self.tbPesquisaFuncionario.setRowCount(0)
+        self.tbPes
+        quisaFuncionario.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -220,7 +221,6 @@ class Ui_frmSaidaFuncionario(object):
         self.tbPesquisaFuncionario.setHorizontalHeaderItem(4, item)
         item = QtGui.QTableWidgetItem()
         self.tbPesquisaFuncionario.setHorizontalHeaderItem(5, item)
-
         self.txtPesquisaFuncionario = QtGui.QLineEdit(self.grbPesquisa)
         self.txtPesquisaFuncionario.setGeometry(QtCore.QRect(10, 50, 451, 25))
         self.txtPesquisaFuncionario.setFocusPolicy(QtCore.Qt.ClickFocus)
