@@ -1,8 +1,11 @@
 import sys
+import time
+import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
@@ -64,6 +67,10 @@ class Principal(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.ui = Ui_frmMainHouse()
         self.ui.setupUi(self)
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.displayTime)
+        self.timer.start()
 
         self.ui.menuSair.triggered.connect(self._sair)
         self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
@@ -136,6 +143,13 @@ class Principal(QtGui.QMainWindow):
         #Menu Sobre
         self.ui.subMenuSobre.triggered.connect(self.__sobre)
         '''
+
+    def status(self, nome):
+        self.ui.statusbar.showMessage("Bem-Vindo "+nome)
+
+    def displayTime(self):
+        self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
+
     def _sair(self):
         w = QWidget()
         result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)

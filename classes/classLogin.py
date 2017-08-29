@@ -2,6 +2,8 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
 from classes.classPrincipal import Principal
@@ -35,6 +37,10 @@ class Login(QtGui.QDialog):
 
         if _empresa:
             for log in _empresa:
+                id = int(log[0])
+                nome = str(log[1])
+                DadosUsuario(id, nome)
+                principal.status(nome)
                 principal.show()
                 self.close()
 

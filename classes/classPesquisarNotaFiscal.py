@@ -909,7 +909,12 @@ class PesquisarNotaFiscal(QtGui.QDialog):
             print(metragem)
 
 
-            __dados = PesquisaNotaFiscal(codNotaFiscal, numeroNotaFiscal, dataNota, valorTotl, codEmitente, fantasiaEmitente, razaoSocialEmitente, cnpjEmitente, insEstadualEmitente, codDestinatario, fantasiaDestinatario, razaoSocialDestinatario, cnpjDestinatario, insEstadualDestinatario, codMotorista, nomeMotorista, rg, cpf, codRomaneio, numRomaneio, certificada, metragem)
+            self.__dados = PesquisaNotaFiscal(codNotaFiscal, numeroNotaFiscal, dataNota, valorTotl, codEmitente, fantasiaEmitente, razaoSocialEmitente, cnpjEmitente, insEstadualEmitente, codDestinatario, fantasiaDestinatario, razaoSocialDestinatario, cnpjDestinatario, insEstadualDestinatario, codMotorista, nomeMotorista, rg, cpf, codRomaneio, numRomaneio, certificada, metragem)
 
 
+            from classes.classNotasFiscal import CadastroNotaFiscal
+            __ca = CadastroNotaFiscal()
+            __ca.setCampos(codNotaFiscal)
             self.close()
+
+

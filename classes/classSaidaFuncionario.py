@@ -3,8 +3,11 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
 from controller.saidaFuncionario import FuncionarioSaida
+from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
 from dao.saidaFuncionarioDao import SaidaFuncionarioDao
+from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 from telas.frmSaidaFuncionario import Ui_frmSaidaFuncionario
 
 class SaidaFuncionario(QtGui.QDialog):
@@ -28,6 +31,9 @@ class SaidaFuncionario(QtGui.QDialog):
         self.ui.txtPesquisaFuncionario.returnPressed.connect(self.pesquisarSaidaFuncionario)
 
         self.ui.tbPesquisaFuncionario.doubleClicked.connect(self.tablePesquisa)
+
+        self.ui.btnPesquisar.clicked.connect(self.pesquisarFuncionario)
+
 
     def focusData(self):
         self.ui.txtDataSaida.setFocus()
@@ -273,7 +279,7 @@ class SaidaFuncionario(QtGui.QDialog):
         return QtCore.QTime(int(horas), int(minutos), int(segundos))
 
     def tablePesquisa(self):
-        if self.ui.txtidFuncionario.text() == "" and self.ui.txtNomeFuncionario.text() == ""  and self.ui.txtCargos.text() == "" and self.ui.txtSetor.text() == "":
+        if self.ui.txtidFuncionario.text() == "" and self.ui.txtNomeFuncionario.text() == "" and self.ui.txtCargos.text() == "" and self.ui.txtSetor.text() == "":
                 self.setarCampos()
                 self.botaoEditarCadastro()
         else:
