@@ -5,6 +5,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classCarreSaida import CarregamentoSaida
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
@@ -15,6 +16,7 @@ from .classCadMotorista import CadastroMotoristas
 from .classNotasFiscal import CadastroNotaFiscal
 from .classSaidaFuncionario import SaidaFuncionario
 from .classEntradaFuncionario import EntradaFuncionarios
+from .classCarreEntrada import CarregamentoEntrada
 from .classSobre import Sobre
 '''
 from classes.classConsulEmpresas import ConsultarEmpresas
@@ -81,6 +83,8 @@ class Principal(QtGui.QMainWindow):
         self.ui.subMenuEntradaNotasTeca.triggered.connect(self._entradaNotasTeca)
         self.ui.entSaiFuncSubMenuEntrada.triggered.connect(self._entradaFuncionrio)
         self.ui.entSaiFuncSubMenuSaida.triggered.connect(self._saidaFuncionrio)
+        self.ui.menuCarregEntrada.triggered.connect(self._entradaCarregamento)
+        self.ui.menuCarregSaida.triggered.connect(self._saidaCarregamento)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
         '''
         #Menu Cosultas
@@ -195,6 +199,16 @@ class Principal(QtGui.QMainWindow):
         _entFun = SaidaFuncionario()
         _entFun.show()
         _entFun.exec_()
+
+    def _entradaCarregamento(self):
+        _entCarre = CarregamentoEntrada()
+        _entCarre.show()
+        _entCarre.exec_()
+
+    def _saidaCarregamento(self):
+        _saiCarre = CarregamentoSaida()
+        _saiCarre.show()
+        _saiCarre.exec_()
 
     def _sobre(self):
         _sobre = Sobre()
