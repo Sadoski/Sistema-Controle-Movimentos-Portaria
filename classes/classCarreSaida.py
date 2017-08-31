@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from controller.getSetSaidaCarre import SaidaCarre
 from dao.carregamentoSaidaDao import CarregamentoSaidaDao
 from telas.frmSaidaVeiculosCarregamentos import Ui_frmSaidaVeiculosCarregamento
 
@@ -14,6 +15,7 @@ class CarregamentoSaida(QtGui.QDialog):
         self.idEntrada = None
 
         self.ui.btnNovo.clicked.connect(self.botoesNovoCadastro)
+        self.ui.btnSalvar.clicked.connect(self.cadastrosEntradaVazio)
         self.ui.btnCancelar.clicked.connect(self.cancelarCadastro)
 
         self.ui.radbtnEntrouVazio.clicked.connect(self.operacao)
@@ -92,237 +94,108 @@ class CarregamentoSaida(QtGui.QDialog):
         self.ui.txtPesquisar.setEnabled(True)
         self.ui.btnPesquisar.setEnabled(True)
 
+
+    def dados(self, pesquisa):
+        qtde_registros = len(pesquisa)
+        self.ui.tabPesquisa.setRowCount(qtde_registros)
+        linha = 0
+        for pesqui in pesquisa:
+            # capturando os dados da tupla
+
+            idEntrada = str(pesqui[0])
+            codMotorista = str(pesqui[1])
+            nomeMotorista = pesqui[2]
+            marcaVeiculo = pesqui[3]
+            modeloVeiculo = pesqui[4]
+            placaVeiculo = pesqui[5]
+            data = str(pesqui[6])
+            hora = str(pesqui[7])
+            carga = pesqui[8]
+            produto = pesqui[9]
+            codDestinatario = str(pesqui[10])
+            nomeDestinatario = pesqui[11]
+            razaoDestinatario = pesqui[12]
+            cnpjDestinatario = str(pesqui[13])
+            insEstaDestinatario = str(pesqui[14])
+            codEmpresa = str(pesqui[15])
+            nomeEmpresa = pesqui[16]
+            razaoEmpresa = pesqui[17]
+            cnpjEmpresa = str(pesqui[18])
+            insEstaEmpresa = str(pesqui[19])
+
+            # preenchendo o grid de pesquisa
+            self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idEntrada)))
+            self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codMotorista)))
+            self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nomeMotorista)))
+            self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(marcaVeiculo)))
+            self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(modeloVeiculo)))
+            self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(placaVeiculo)))
+            self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(data)))
+            self.ui.tabPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(hora)))
+            self.ui.tabPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(carga)))
+            self.ui.tabPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(produto)))
+            self.ui.tabPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(codDestinatario)))
+            self.ui.tabPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(nomeDestinatario)))
+            self.ui.tabPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(razaoDestinatario)))
+            self.ui.tabPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cnpjDestinatario)))
+            self.ui.tabPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(insEstaDestinatario)))
+            self.ui.tabPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(codEmpresa)))
+            self.ui.tabPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(nomeEmpresa)))
+            self.ui.tabPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmpresa)))
+            self.ui.tabPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmpresa)))
+            self.ui.tabPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEstaEmpresa)))
+
+            linha += 1
+
+
     def pesquisarEntrada(self):
-        self.ui.tabPesquisa.setEnabled(True)
-        if self.ui.radbtnMotorista.isChecked():
+        if self.ui.radbtnMotorista.isChecked() and self.ui.radbtnEntrouVazio.isChecked():
             __carrSaida = CarregamentoSaidaDao()
-            _pesquisar = __carrSaida.pesquisarNomeMotorista(self.ui.txtPesquisar.text())
-            print(_pesquisar)
-            qtde_registros = len(_pesquisar)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
+            _pesquisar = __carrSaida.pesquisarNomeMotoristaVazio(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-            linha = 0
-            for pesqui in _pesquisar:
-                # capturando os dados da tupla
-
-                idEntrada = str(pesqui[0])
-                codMotorista = str(pesqui[1])
-                nomeMotorista = pesqui[2]
-                marcaVeiculo = pesqui[3]
-                modeloVeiculo = pesqui[4]
-                placaVeiculo = pesqui[5]
-                data = str(pesqui[6])
-                hora = str(pesqui[7])
-                carga = pesqui[8]
-                produto = pesqui[9]
-                codDestinatario = str(pesqui[10])
-                nomeDestinatario = pesqui[11]
-                razaoDestinatario = pesqui[12]
-                cnpjDestinatario = str(pesqui[13])
-                insEstaDestinatario = str(pesqui[14])
-                codEmpresa = str(pesqui[15])
-                nomeEmpresa = pesqui[16]
-                razaoEmpresa = pesqui[17]
-                cnpjEmpresa = str(pesqui[18])
-                insEstaEmpresa = str(pesqui[19])
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idEntrada)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(marcaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(modeloVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(placaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(hora)))
-                self.ui.tabPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(carga)))
-                self.ui.tabPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(produto)))
-                self.ui.tabPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(codDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(nomeDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(razaoDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cnpjDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(insEstaDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(nomeEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEstaEmpresa)))
-
-
-                linha += 1
-
-        elif self.ui.radbtnMarcaVeiculo.isChecked():
+        elif self.ui.radbtnMarcaVeiculo.isChecked() and self.ui.radbtnEntrouVazio.isChecked():
             __carrSaida = CarregamentoSaidaDao()
-            _pesquisar = __carrSaida.pesquisarNomeMotorista(self.ui.txtPesquisar.text())
+            _pesquisar = __carrSaida.pesquisarMarcaVazio(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-            qtde_registros = len(_pesquisar)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisar:
-
-                # capturando os dados da tupla
-
-                idEntrada = str(pesqui[0])
-                codMotorista = str(pesqui[1])
-                nomeMotorista = pesqui[2]
-                marcaVeiculo = pesqui[3]
-                modeloVeiculo = pesqui[4]
-                placaVeiculo = pesqui[5]
-                data = str(pesqui[6])
-                hora = str(pesqui[7])
-                carga = pesqui[8]
-                produto = pesqui[9]
-                codDestinatario = str(pesqui[10])
-                nomeDestinatario = pesqui[11]
-                razaoDestinatario = pesqui[12]
-                cnpjDestinatario = str(pesqui[13])
-                insEstaDestinatario = str(pesqui[14])
-                codEmpresa = str(pesqui[15])
-                nomeEmpresa = pesqui[16]
-                razaoEmpresa = pesqui[17]
-                cnpjEmpresa = str(pesqui[18])
-                insEstaEmpresa = str(pesqui[19])
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idEntrada)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(marcaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(modeloVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(placaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(hora)))
-                self.ui.tabPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(carga)))
-                self.ui.tabPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(produto)))
-                self.ui.tabPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(codDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(nomeDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(razaoDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cnpjDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(insEstaDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(nomeEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEstaEmpresa)))
-
-                linha += 1
-
-        elif self.ui.radbtnModeloVeiculo.isChecked():
+        elif self.ui.radbtnModeloVeiculo.isChecked() and self.ui.radbtnEntrouVazio.isChecked():
             __carrSaida = CarregamentoSaidaDao()
-            _pesquisar = __carrSaida.pesquisarNomeMotorista(self.ui.txtPesquisar.text())
+            _pesquisar = __carrSaida.pesquisarModeloVazio(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-            qtde_registros = len(_pesquisar)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisar:
-
-                # capturando os dados da tupla
-
-                idEntrada = str(pesqui[0])
-                codMotorista = str(pesqui[1])
-                nomeMotorista = pesqui[2]
-                marcaVeiculo = pesqui[3]
-                modeloVeiculo = pesqui[4]
-                placaVeiculo = pesqui[5]
-                data = str(pesqui[6])
-                hora = str(pesqui[7])
-                carga = pesqui[8]
-                produto = pesqui[9]
-                codDestinatario = str(pesqui[10])
-                nomeDestinatario = pesqui[11]
-                razaoDestinatario = pesqui[12]
-                cnpjDestinatario = str(pesqui[13])
-                insEstaDestinatario = str(pesqui[14])
-                codEmpresa = str(pesqui[15])
-                nomeEmpresa = pesqui[16]
-                razaoEmpresa = pesqui[17]
-                cnpjEmpresa = str(pesqui[18])
-                insEstaEmpresa = str(pesqui[19])
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idEntrada)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(marcaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(modeloVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(placaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(hora)))
-                self.ui.tabPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(carga)))
-                self.ui.tabPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(produto)))
-                self.ui.tabPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(codDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(nomeDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(razaoDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cnpjDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(insEstaDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(nomeEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEstaEmpresa)))
-
-                linha += 1
-
-        elif self.ui.radbtnPlacaVeiculo.isChecked():
+        elif self.ui.radbtnPlacaVeiculo.isChecked() and self.ui.radbtnEntrouVazio.isChecked():
             __carrSaida = CarregamentoSaidaDao()
-            _pesquisar = __carrSaida.pesquisarNomeMotorista(self.ui.txtPesquisar.text())
+            _pesquisar = __carrSaida.pesquisarPlacaVazio(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-            qtde_registros = len(_pesquisar)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
+        if self.ui.radbtnMotorista.isChecked() and self.ui.radbtnEntrouCarregado.isChecked():
+            __carrSaida = CarregamentoSaidaDao()
+            _pesquisar = __carrSaida.pesquisarNomeMotoristaCarregado(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-            linha = 0
-            for pesqui in _pesquisar:
+        elif self.ui.radbtnMarcaVeiculo.isChecked() and self.ui.radbtnEntrouCarregado.isChecked():
+            __carrSaida = CarregamentoSaidaDao()
+            _pesquisar = __carrSaida.pesquisarMarcaCarregado(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-                # capturando os dados da tupla
+        elif self.ui.radbtnModeloVeiculo.isChecked() and self.ui.radbtnEntrouCarregado.isChecked():
+            __carrSaida = CarregamentoSaidaDao()
+            _pesquisar = __carrSaida.pesquisarModeloCarregado(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
-                idEntrada = str(pesqui[0])
-                codMotorista = str(pesqui[1])
-                nomeMotorista = pesqui[2]
-                marcaVeiculo = pesqui[3]
-                modeloVeiculo = pesqui[4]
-                placaVeiculo = pesqui[5]
-                data = str(pesqui[6])
-                hora = str(pesqui[7])
-                carga = pesqui[8]
-                produto = pesqui[9]
-                codDestinatario = str(pesqui[10])
-                nomeDestinatario = pesqui[11]
-                razaoDestinatario = pesqui[12]
-                cnpjDestinatario = str(pesqui[13])
-                insEstaDestinatario = str(pesqui[14])
-                codEmpresa = str(pesqui[15])
-                nomeEmpresa = pesqui[16]
-                razaoEmpresa = pesqui[17]
-                cnpjEmpresa = str(pesqui[18])
-                insEstaEmpresa = str(pesqui[19])
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idEntrada)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(marcaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(modeloVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(placaVeiculo)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(hora)))
-                self.ui.tabPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(carga)))
-                self.ui.tabPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(produto)))
-                self.ui.tabPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(codDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(nomeDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(razaoDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cnpjDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(insEstaDestinatario)))
-                self.ui.tabPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(nomeEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmpresa)))
-                self.ui.tabPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEstaEmpresa)))
-
-                linha += 1
-
-
+        elif self.ui.radbtnPlacaVeiculo.isChecked() and self.ui.radbtnEntrouCarregado.isChecked():
+            __carrSaida = CarregamentoSaidaDao()
+            _pesquisar = __carrSaida.pesquisarPlacaCarregado(self.ui.txtPesquisar.text())
+            self.dados(_pesquisar)
+            self.ui.tabPesquisa.setEnabled(True)
 
 
     def habilitarCampos(self):
@@ -340,7 +213,7 @@ class CarregamentoSaida(QtGui.QDialog):
         self.ui.txtTipoCarga.clear()
         self.ui.txtProduto.clear()
 
-        self.ui.txtidFuncionario.clear()
+        self.ui.txtidMotorista.clear()
         self.ui.txtNomeMotorista.clear()
         self.ui.txtModeloMotorista.clear()
         self.ui.txtMarcaMotorista.clear()
@@ -357,8 +230,7 @@ class CarregamentoSaida(QtGui.QDialog):
         self.ui.txtInscricaoEstaduaEmpresaOrigem.clear()
 
     def cancelarCadastro(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja cancelar essa operação?",
-                                      QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja cancelar essa operação?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             self.botoesCancelarCadastro()
             self.limparCampos()
@@ -392,11 +264,12 @@ class CarregamentoSaida(QtGui.QDialog):
             tipoCarga = str(itens[8])
             self.ui.txtTipoCarga.addItem(tipoCarga)
             self.addtTipoCargaAtualizacao(tipoCarga)
-            self.ui.txtTipoCarga.setEnabled(True)
+            #self.ui.txtTipoCarga.setEnabled(True)
             produto = str(itens[9])
+            self.ui.txtProduto.clear()
             self.ui.txtProduto.addItem(produto)
             self.addtProdutoAtualizacao(produto)
-            self.ui.txtProduto.setEnabled(True)
+            #self.ui.txtProduto.setEnabled(True)
             self.ui.txtIdClienteDestinatario.setText(itens[10])
             self.ui.txtNomeClienteDestinatario.setText(itens[11])
             self.ui.txtRazaoSocialClienteDestinatario.setText(itens[12])
@@ -434,6 +307,13 @@ class CarregamentoSaida(QtGui.QDialog):
         i = i.replace(':', '')
         return i
 
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s-%s-%s" % (ano, mes, dia))
+
     def addtTipoCargaAtualizacao(self, dados):
         __carrSaida = CarregamentoSaidaDao()
         __tipoCarga = __carrSaida.pesquisarTipoCarga()
@@ -444,6 +324,26 @@ class CarregamentoSaida(QtGui.QDialog):
     def addtProdutoAtualizacao(self, dados):
         __carrSaida = CarregamentoSaidaDao()
         __produto = __carrSaida.pesquisarProduto(str(self.ui.txtTipoCarga.currentText()))
-        for produto in __produto:
-            if produto[0] != dados:
-                self.ui.txtProduto.addItem(produto[0])
+        for produtos in __produto:
+            if produtos[0] != dados:
+                self.ui.txtProduto.addItem(produtos[0])
+
+    def cadastrosEntradaVazio(self):
+        if self.ui.radbtnMotorista.isChecked() or self.ui.radbtnMarcaVeiculo.isChecked() or self.ui.radbtnModeloVeiculo.isChecked() or self.ui.radbtnPlacaVeiculo.isChecked() and self.ui.radbtnEntrouVazio.isChecked():
+            if self.ui.txtidMotorista.text() and self.ui.txtNomeMotorista.text() and self.ui.txtMarcaMotorista.text() and self.ui.txtModeloMotorista.text() and self.ui.txtIdClienteDestinatario.text() and self.ui.txtNomeClienteDestinatario.text() and self.ui.txtRazaoSocialClienteDestinatario.text() and self.ui.txtInscricaoEstaduaClienteDestinatario and self.ui.txtIdEmpresaOrigem.text() and self.ui.txtNomeEmpresaOrigem.text() and self.ui.txtRazaoSocialEmpresaOrigem.text() and self.ui.txtInscricaoEstaduaEmpresaOrigem.text() != "":
+
+                __idEntrada = self.idEntrada
+                __data = self.formatarData(self.removerCaracter(self.ui.txtData.text()))
+                __hora = self.ui.txtHora.text()
+                __dados = SaidaCarre(__idEntrada, __data, __hora)
+                __carrSaida = CarregamentoSaidaDao()
+                __cad = __carrSaida.cadastrarVazio(__dados)
+                if __cad == True:
+                    self.limparCampos()
+                    self.botoesCancelarCadastro()
+                    self.ui.txtPesquisar.clear()
+                    self.deletarDescricaoProduto()
+
+    def deletarDescricaoProduto(self):
+        for i in reversed(range(self.ui.tabPesquisa.rowCount())):
+            self.ui.tabPesquisa.removeRow(i)

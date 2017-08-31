@@ -97,8 +97,8 @@ class CarregamentoEntradaDao(object):
 
     def cadastrar(self, entrada):
         try:
-            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_carga_produto, id_motorista, id_cliente, id_empresa) VALUES (%s, %s, %s, %s, %s, %s)"
-            _valores = (entrada.getData, entrada.getHora, entrada.getCargaProduto, entrada.getIdMotorista, entrada.getIdCliente, entrada.getIdEmpresa)
+            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_carga_produto, id_motorista, id_cliente, id_empresa, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            _valores = (entrada.getData, entrada.getHora, entrada.getCargaProduto, entrada.getIdMotorista, entrada.getIdCliente, entrada.getIdEmpresa, 'Aberto')
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
