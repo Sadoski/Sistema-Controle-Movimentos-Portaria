@@ -457,15 +457,15 @@ class CadastroNotaFiscal(QtGui.QDialog):
             __pesquisar = PesquisarNotaFiscal()
             __pesquisar.show()
             __pesquisar.exec()
-            self.botoesEditar()
+
+
+             #self.botoesEditar()
 
 
 
     def setCampos(self, campos):
 
-        codEmitente = str(campos.getCodEmitente)
-        self.ui.txtIdEmitente.setText(codEmitente)
-        print(codEmitente)
+        self.ui.txtIdEmitente.setText(str(campos.getCodEmitente))
         self.ui.txtNomeEmitente.setText(campos.getFantasiaEmitente)
         self.ui.txtRazaoSocialEmitente.setText(campos.getRazaoSocialEmitente)
         self.ui.txtCnpjEmitente.setText(str(campos.getCnpjEmitente))

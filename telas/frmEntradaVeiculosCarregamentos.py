@@ -32,10 +32,12 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmEntradaVeiculosCarregamento.setFont(font)
+
         self.grbDadosMotorista = QtGui.QGroupBox(frmEntradaVeiculosCarregamento)
         self.grbDadosMotorista.setEnabled(False)
         self.grbDadosMotorista.setGeometry(QtCore.QRect(10, 50, 871, 114))
         self.grbDadosMotorista.setObjectName(_fromUtf8("grbDadosMotorista"))
+
         self.txtModeloMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtModeloMotorista.setEnabled(False)
         self.txtModeloMotorista.setGeometry(QtCore.QRect(10, 80, 291, 25))
@@ -52,9 +54,11 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtModeloMotorista.setPalette(palette)
         self.txtModeloMotorista.setMaxLength(50)
         self.txtModeloMotorista.setObjectName(_fromUtf8("txtModeloMotorista"))
+
         self.lblMarcaMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblMarcaMotorista.setGeometry(QtCore.QRect(310, 62, 51, 19))
         self.lblMarcaMotorista.setObjectName(_fromUtf8("lblMarcaMotorista"))
+
         self.txtMarcaMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtMarcaMotorista.setEnabled(False)
         self.txtMarcaMotorista.setGeometry(QtCore.QRect(310, 82, 331, 25))
@@ -71,6 +75,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtMarcaMotorista.setPalette(palette)
         self.txtMarcaMotorista.setMaxLength(50)
         self.txtMarcaMotorista.setObjectName(_fromUtf8("txtMarcaMotorista"))
+
         self.txtNomeMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtNomeMotorista.setGeometry(QtCore.QRect(180, 36, 621, 25))
         palette = QtGui.QPalette()
@@ -86,9 +91,11 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtNomeMotorista.setPalette(palette)
         self.txtNomeMotorista.setMaxLength(70)
         self.txtNomeMotorista.setObjectName(_fromUtf8("txtNomeMotorista"))
+
         self.lblNomeMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblNomeMotorista.setGeometry(QtCore.QRect(180, 16, 151, 19))
         self.lblNomeMotorista.setObjectName(_fromUtf8("lblNomeMotorista"))
+
         self.txtPlacaMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtPlacaMotorista.setEnabled(False)
         self.txtPlacaMotorista.setGeometry(QtCore.QRect(650, 82, 211, 25))
@@ -104,12 +111,14 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtPlacaMotorista.setPalette(palette)
         self.txtPlacaMotorista.setObjectName(_fromUtf8("txtPlacaMotorista"))
+
         self.lblModeloMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblModeloMotorista.setGeometry(QtCore.QRect(10, 60, 51, 19))
         self.lblModeloMotorista.setObjectName(_fromUtf8("lblModeloMotorista"))
-        self.txtidFuncionario = QtGui.QLineEdit(self.grbDadosMotorista)
-        self.txtidFuncionario.setEnabled(False)
-        self.txtidFuncionario.setGeometry(QtCore.QRect(10, 36, 161, 25))
+
+        self.txtidMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
+        self.txtidMotorista.setEnabled(False)
+        self.txtidMotorista.setGeometry(QtCore.QRect(10, 36, 161, 25))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -120,15 +129,18 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        self.txtidFuncionario.setPalette(palette)
-        self.txtidFuncionario.setMaxLength(11)
-        self.txtidFuncionario.setObjectName(_fromUtf8("txtidFuncionario"))
+        self.txtidMotorista.setPalette(palette)
+        self.txtidMotorista.setMaxLength(11)
+        self.txtidMotorista.setObjectName(_fromUtf8("txtidMotorista"))
+
         self.lblCodigoMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblCodigoMotorista.setGeometry(QtCore.QRect(10, 16, 121, 19))
         self.lblCodigoMotorista.setObjectName(_fromUtf8("lblCodigoMotorista"))
+
         self.lblPlacaMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblPlacaMotorista.setGeometry(QtCore.QRect(650, 62, 51, 19))
         self.lblPlacaMotorista.setObjectName(_fromUtf8("lblPlacaMotorista"))
+
         self.btnPesquisarMotorista = QtGui.QPushButton(self.grbDadosMotorista)
         self.btnPesquisarMotorista.setGeometry(QtCore.QRect(820, 35, 31, 26))
         font = QtGui.QFont()
@@ -138,13 +150,15 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.btnPesquisarMotorista.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarMotorista.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("C:/Users/JEFFERSON/Faculdade/Estagio I/Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarMotorista.setIcon(icon)
         self.btnPesquisarMotorista.setObjectName(_fromUtf8("btnPesquisarMotorista"))
+
         self.grbDadosClienteDestinatario = QtGui.QGroupBox(frmEntradaVeiculosCarregamento)
         self.grbDadosClienteDestinatario.setEnabled(False)
         self.grbDadosClienteDestinatario.setGeometry(QtCore.QRect(10, 165, 871, 111))
         self.grbDadosClienteDestinatario.setObjectName(_fromUtf8("grbDadosClienteDestinatario"))
+
         self.txtIdClienteDestinatario = QtGui.QLineEdit(self.grbDadosClienteDestinatario)
         self.txtIdClienteDestinatario.setEnabled(False)
         self.txtIdClienteDestinatario.setGeometry(QtCore.QRect(10, 35, 181, 25))
@@ -161,8 +175,8 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtIdClienteDestinatario.setPalette(palette)
         self.txtIdClienteDestinatario.setMaxLength(11)
         self.txtIdClienteDestinatario.setObjectName(_fromUtf8("txtIdClienteDestinatario"))
+
         self.txtNomeClienteDestinatario = QtGui.QLineEdit(self.grbDadosClienteDestinatario)
-        self.txtNomeClienteDestinatario.setEnabled(False)
         self.txtNomeClienteDestinatario.setGeometry(QtCore.QRect(201, 35, 601, 25))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -177,12 +191,15 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtNomeClienteDestinatario.setPalette(palette)
         self.txtNomeClienteDestinatario.setMaxLength(70)
         self.txtNomeClienteDestinatario.setObjectName(_fromUtf8("txtNomeClienteDestinatario"))
+
         self.lblCodigoClienteDestinatario = QtGui.QLabel(self.grbDadosClienteDestinatario)
         self.lblCodigoClienteDestinatario.setGeometry(QtCore.QRect(10, 15, 171, 21))
         self.lblCodigoClienteDestinatario.setObjectName(_fromUtf8("lblCodigoClienteDestinatario"))
+
         self.lblNomeClienteDestinatario = QtGui.QLabel(self.grbDadosClienteDestinatario)
         self.lblNomeClienteDestinatario.setGeometry(QtCore.QRect(201, 15, 231, 16))
         self.lblNomeClienteDestinatario.setObjectName(_fromUtf8("lblNomeClienteDestinatario"))
+
         self.txtInscricaoEstaduaClienteDestinatario = QtGui.QLineEdit(self.grbDadosClienteDestinatario)
         self.txtInscricaoEstaduaClienteDestinatario.setEnabled(False)
         self.txtInscricaoEstaduaClienteDestinatario.setGeometry(QtCore.QRect(688, 80, 173, 25))
@@ -200,6 +217,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtInscricaoEstaduaClienteDestinatario.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtInscricaoEstaduaClienteDestinatario.setMaxLength(8)
         self.txtInscricaoEstaduaClienteDestinatario.setObjectName(_fromUtf8("txtInscricaoEstaduaClienteDestinatario"))
+
         self.txtRazaoSocialClienteDestinatario = QtGui.QLineEdit(self.grbDadosClienteDestinatario)
         self.txtRazaoSocialClienteDestinatario.setEnabled(False)
         self.txtRazaoSocialClienteDestinatario.setGeometry(QtCore.QRect(10, 80, 481, 25))
@@ -217,15 +235,19 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtRazaoSocialClienteDestinatario.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtRazaoSocialClienteDestinatario.setMaxLength(70)
         self.txtRazaoSocialClienteDestinatario.setObjectName(_fromUtf8("txtRazaoSocialClienteDestinatario"))
+
         self.lblRazaoSocialClienteDestinatario = QtGui.QLabel(self.grbDadosClienteDestinatario)
         self.lblRazaoSocialClienteDestinatario.setGeometry(QtCore.QRect(10, 60, 81, 19))
         self.lblRazaoSocialClienteDestinatario.setObjectName(_fromUtf8("lblRazaoSocialClienteDestinatario"))
+
         self.lblCnpjClienteDestinatario = QtGui.QLabel(self.grbDadosClienteDestinatario)
         self.lblCnpjClienteDestinatario.setGeometry(QtCore.QRect(500, 60, 41, 19))
         self.lblCnpjClienteDestinatario.setObjectName(_fromUtf8("lblCnpjClienteDestinatario"))
+
         self.lblInscricaoClienteDestinatario = QtGui.QLabel(self.grbDadosClienteDestinatario)
         self.lblInscricaoClienteDestinatario.setGeometry(QtCore.QRect(688, 60, 121, 19))
         self.lblInscricaoClienteDestinatario.setObjectName(_fromUtf8("lblInscricaoClienteDestinatario"))
+
         self.txtCnpjClienteDestinatario = QtGui.QLineEdit(self.grbDadosClienteDestinatario)
         self.txtCnpjClienteDestinatario.setEnabled(False)
         self.txtCnpjClienteDestinatario.setGeometry(QtCore.QRect(500, 80, 182, 25))
@@ -244,6 +266,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtCnpjClienteDestinatario.setText(_fromUtf8("../-"))
         self.txtCnpjClienteDestinatario.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpjClienteDestinatario.setObjectName(_fromUtf8("txtCnpjClienteDestinatario"))
+
         self.btnPesquisarClienteDestinatario = QtGui.QPushButton(self.grbDadosClienteDestinatario)
         self.btnPesquisarClienteDestinatario.setGeometry(QtCore.QRect(820, 34, 31, 26))
         font = QtGui.QFont()
@@ -254,6 +277,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.btnPesquisarClienteDestinatario.setText(_fromUtf8(""))
         self.btnPesquisarClienteDestinatario.setIcon(icon)
         self.btnPesquisarClienteDestinatario.setObjectName(_fromUtf8("btnPesquisarClienteDestinatario"))
+
         self.lblHoraEntrada = QtGui.QLabel(frmEntradaVeiculosCarregamento)
         self.lblHoraEntrada.setGeometry(QtCore.QRect(150, 6, 91, 16))
         self.lblHoraEntrada.setObjectName(_fromUtf8("lblHoraEntrada"))
@@ -274,10 +298,12 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.lblDataEntrada = QtGui.QLabel(frmEntradaVeiculosCarregamento)
         self.lblDataEntrada.setGeometry(QtCore.QRect(20, 6, 101, 16))
         self.lblDataEntrada.setObjectName(_fromUtf8("lblDataEntrada"))
+
         self.grbDadosEmpresaOrigem = QtGui.QGroupBox(frmEntradaVeiculosCarregamento)
         self.grbDadosEmpresaOrigem.setEnabled(False)
         self.grbDadosEmpresaOrigem.setGeometry(QtCore.QRect(10, 276, 871, 111))
         self.grbDadosEmpresaOrigem.setObjectName(_fromUtf8("grbDadosEmpresaOrigem"))
+
         self.txtIdEmpresaOrigem = QtGui.QLineEdit(self.grbDadosEmpresaOrigem)
         self.txtIdEmpresaOrigem.setEnabled(False)
         self.txtIdEmpresaOrigem.setGeometry(QtCore.QRect(10, 35, 181, 25))
@@ -294,7 +320,9 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtIdEmpresaOrigem.setPalette(palette)
         self.txtIdEmpresaOrigem.setMaxLength(11)
         self.txtIdEmpresaOrigem.setObjectName(_fromUtf8("txtIdEmpresaOrigem"))
+
         self.txtNomeEmpresaOrigem = QtGui.QLineEdit(self.grbDadosEmpresaOrigem)
+        self.txtNomeEmpresaOrigem.setEnabled(True)
         self.txtNomeEmpresaOrigem.setGeometry(QtCore.QRect(201, 35, 601, 25))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
@@ -309,12 +337,15 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtNomeEmpresaOrigem.setPalette(palette)
         self.txtNomeEmpresaOrigem.setMaxLength(70)
         self.txtNomeEmpresaOrigem.setObjectName(_fromUtf8("txtNomeEmpresaOrigem"))
+
         self.lblCodigoEmpresaOrigem = QtGui.QLabel(self.grbDadosEmpresaOrigem)
         self.lblCodigoEmpresaOrigem.setGeometry(QtCore.QRect(10, 15, 161, 21))
         self.lblCodigoEmpresaOrigem.setObjectName(_fromUtf8("lblCodigoEmpresaOrigem"))
+
         self.lblNomeEmpresaOrigem = QtGui.QLabel(self.grbDadosEmpresaOrigem)
         self.lblNomeEmpresaOrigem.setGeometry(QtCore.QRect(201, 15, 211, 16))
         self.lblNomeEmpresaOrigem.setObjectName(_fromUtf8("lblNomeEmpresaOrigem"))
+
         self.txtInscricaoEstaduaEmpresaOrigem = QtGui.QLineEdit(self.grbDadosEmpresaOrigem)
         self.txtInscricaoEstaduaEmpresaOrigem.setEnabled(False)
         self.txtInscricaoEstaduaEmpresaOrigem.setGeometry(QtCore.QRect(688, 80, 173, 25))
@@ -332,6 +363,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtInscricaoEstaduaEmpresaOrigem.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtInscricaoEstaduaEmpresaOrigem.setMaxLength(8)
         self.txtInscricaoEstaduaEmpresaOrigem.setObjectName(_fromUtf8("txtInscricaoEstaduaEmpresaOrigem"))
+
         self.txtRazaoSocialEmpresaOrigem = QtGui.QLineEdit(self.grbDadosEmpresaOrigem)
         self.txtRazaoSocialEmpresaOrigem.setEnabled(False)
         self.txtRazaoSocialEmpresaOrigem.setGeometry(QtCore.QRect(10, 80, 481, 25))
@@ -349,15 +381,19 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtRazaoSocialEmpresaOrigem.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtRazaoSocialEmpresaOrigem.setMaxLength(70)
         self.txtRazaoSocialEmpresaOrigem.setObjectName(_fromUtf8("txtRazaoSocialEmpresaOrigem"))
+
         self.lblRazaoSocialEmpresaOrigem = QtGui.QLabel(self.grbDadosEmpresaOrigem)
         self.lblRazaoSocialEmpresaOrigem.setGeometry(QtCore.QRect(10, 60, 81, 19))
         self.lblRazaoSocialEmpresaOrigem.setObjectName(_fromUtf8("lblRazaoSocialEmpresaOrigem"))
+
         self.lblCnpjEmpresaOrigem = QtGui.QLabel(self.grbDadosEmpresaOrigem)
         self.lblCnpjEmpresaOrigem.setGeometry(QtCore.QRect(500, 60, 41, 19))
         self.lblCnpjEmpresaOrigem.setObjectName(_fromUtf8("lblCnpjEmpresaOrigem"))
+
         self.lblInscricaoEstadualEmpresaOrigem = QtGui.QLabel(self.grbDadosEmpresaOrigem)
         self.lblInscricaoEstadualEmpresaOrigem.setGeometry(QtCore.QRect(688, 60, 121, 19))
         self.lblInscricaoEstadualEmpresaOrigem.setObjectName(_fromUtf8("lblInscricaoEstadualEmpresaOrigem"))
+
         self.txtCnpjEmpresaOrigem = QtGui.QLineEdit(self.grbDadosEmpresaOrigem)
         self.txtCnpjEmpresaOrigem.setEnabled(False)
         self.txtCnpjEmpresaOrigem.setGeometry(QtCore.QRect(500, 80, 182, 25))
@@ -376,6 +412,7 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtCnpjEmpresaOrigem.setText(_fromUtf8("../-"))
         self.txtCnpjEmpresaOrigem.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpjEmpresaOrigem.setObjectName(_fromUtf8("txtCnpjEmpresaOrigem"))
+
         self.btnPesquisarEmpresaOrigem = QtGui.QPushButton(self.grbDadosEmpresaOrigem)
         self.btnPesquisarEmpresaOrigem.setGeometry(QtCore.QRect(820, 32, 31, 26))
         font = QtGui.QFont()
@@ -386,52 +423,63 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.btnPesquisarEmpresaOrigem.setText(_fromUtf8(""))
         self.btnPesquisarEmpresaOrigem.setIcon(icon)
         self.btnPesquisarEmpresaOrigem.setObjectName(_fromUtf8("btnPesquisarEmpresaOrigem"))
+
         self.grbBotoes = QtGui.QGroupBox(frmEntradaVeiculosCarregamento)
         self.grbBotoes.setGeometry(QtCore.QRect(10, 390, 871, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))
         self.grbBotoes.setObjectName(_fromUtf8("grbBotoes"))
+
         self.btnDeletar = QtGui.QPushButton(self.grbBotoes)
         self.btnDeletar.setEnabled(False)
         self.btnDeletar.setGeometry(QtCore.QRect(780, 10, 81, 61))
         self.btnDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
+
         self.btnCancelar = QtGui.QPushButton(self.grbBotoes)
         self.btnCancelar.setEnabled(False)
         self.btnCancelar.setGeometry(QtCore.QRect(680, 10, 81, 61))
         self.btnCancelar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCancelar.setObjectName(_fromUtf8("btnCancelar"))
+
         self.btnSalvar = QtGui.QPushButton(self.grbBotoes)
         self.btnSalvar.setEnabled(False)
         self.btnSalvar.setGeometry(QtCore.QRect(480, 10, 81, 61))
         self.btnSalvar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnSalvar.setObjectName(_fromUtf8("btnSalvar"))
+
         self.btnNovo = QtGui.QPushButton(self.grbBotoes)
         self.btnNovo.setGeometry(QtCore.QRect(380, 10, 81, 61))
         self.btnNovo.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnNovo.setObjectName(_fromUtf8("btnNovo"))
+
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)
         self.btnEditar.setEnabled(False)
         self.btnEditar.setGeometry(QtCore.QRect(580, 10, 81, 61))
         self.btnEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
+
         self.txtTipoCarga = QtGui.QComboBox(frmEntradaVeiculosCarregamento)
         self.txtTipoCarga.setEnabled(False)
         self.txtTipoCarga.setGeometry(QtCore.QRect(290, 26, 241, 25))
         self.txtTipoCarga.setObjectName(_fromUtf8("txtTipoCarga"))
+
         self.lblTipoCarga = QtGui.QLabel(frmEntradaVeiculosCarregamento)
         self.lblTipoCarga.setGeometry(QtCore.QRect(290, 4, 101, 16))
         self.lblTipoCarga.setObjectName(_fromUtf8("lblTipoCarga"))
+
         self.txtProduto = QtGui.QComboBox(frmEntradaVeiculosCarregamento)
         self.txtProduto.setEnabled(False)
         self.txtProduto.setGeometry(QtCore.QRect(540, 26, 241, 25))
         self.txtProduto.setObjectName(_fromUtf8("txtProduto"))
+
         self.lblProduto = QtGui.QLabel(frmEntradaVeiculosCarregamento)
         self.lblProduto.setGeometry(QtCore.QRect(540, 4, 51, 16))
         self.lblProduto.setObjectName(_fromUtf8("lblProduto"))
+
         self.lblMarcaMotorista.setBuddy(self.txtMarcaMotorista)
         self.lblNomeMotorista.setBuddy(self.txtNomeMotorista)
         self.lblModeloMotorista.setBuddy(self.txtModeloMotorista)
-        self.lblCodigoMotorista.setBuddy(self.txtidFuncionario)
+        self.lblCodigoMotorista.setBuddy(self.txtidMotorista)
         self.lblPlacaMotorista.setBuddy(self.txtPlacaMotorista)
         self.lblCodigoClienteDestinatario.setBuddy(self.txtIdClienteDestinatario)
         self.lblNomeClienteDestinatario.setBuddy(self.txtNomeClienteDestinatario)
@@ -467,8 +515,8 @@ class Ui_frmEntradaVeiculosCarregamento(object):
         self.txtPlacaMotorista.setInputMask(_translate("frmEntradaVeiculosCarregamento", "nnn-0000; ", None))
         self.txtPlacaMotorista.setText(_translate("frmEntradaVeiculosCarregamento", "-", None))
         self.lblModeloMotorista.setText(_translate("frmEntradaVeiculosCarregamento", "Modelo", None))
-        self.txtidFuncionario.setToolTip(_translate("frmEntradaVeiculosCarregamento", "Codigo Motorista", None))
-        self.txtidFuncionario.setWhatsThis(_translate("frmEntradaVeiculosCarregamento", "Campo do Codigo de identificação do Motorista", None))
+        self.txtidMotorista.setToolTip(_translate("frmEntradaVeiculosCarregamento", "Codigo Motorista", None))
+        self.txtidMotorista.setWhatsThis(_translate("frmEntradaVeiculosCarregamento", "Campo do Codigo de identificação do Motorista", None))
         self.lblCodigoMotorista.setText(_translate("frmEntradaVeiculosCarregamento", "Codigo Motorista", None))
         self.lblPlacaMotorista.setText(_translate("frmEntradaVeiculosCarregamento", "Placa", None))
         self.grbDadosClienteDestinatario.setTitle(_translate("frmEntradaVeiculosCarregamento", "Cliente Destinatario", None))
