@@ -914,7 +914,9 @@ class PesquisarNotaFiscal(QtGui.QDialog):
 
             from .classNotasFiscal import CadastroNotaFiscal
             __ca = CadastroNotaFiscal()
-            __ca.setCampos(self.__dados)
+            #__ca.setCampos(self.__dados)
+
+            __ca.ui.txtFantasiaDestinatario.setText(str(numeroNotaFiscal))
             self.close()
 
 

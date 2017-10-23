@@ -216,7 +216,7 @@ class Ui_frmSobre(object):
         self.lblCelular.setText(_translate("frmSobre", "Celular:", None))
         self.lblJeffersonAparecidoSadoski.setText(_translate("frmSobre", "Jefferson Aparecido Sadoski", None))
         self.lblRodneyGasparPereira.setText(_translate("frmSobre", "Rodney Gaspar Pereira", None))
-        self.lblEmanoelFranciscoDosSantos.setText(_translate("frmSobre", "Emanoel Francisco dos Santos", None))
+        self.lblEmanoelFranciscoDosSantos.setText(_translate("frmSobre", "Manoel Francisco dos Santos", None))
         self.lblJeffersonSadoskiHotmailCom.setText(_translate("frmSobre", "jefferson_sadoski@hotmail.com", None))
         self.lbl5565996977055.setText(_translate("frmSobre", "+55 65 99697-7055", None))
 

@@ -6,6 +6,12 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from classes.classCarreSaida import CarregamentoSaida
+from classes.classEntraVeiEmpTer import EntradaVeiculoEmpresaTerceiro
+from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
+from classes.classEntradaVeiEmpresa import EntradaVeiEmpresa
+from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
+from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
+from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
@@ -17,51 +23,10 @@ from .classNotasFiscal import CadastroNotaFiscal
 from .classSaidaFuncionario import SaidaFuncionario
 from .classEntradaFuncionario import EntradaFuncionarios
 from .classCarreEntrada import CarregamentoEntrada
+from .classDescaEntrada import DescaEntrada
+from .classDescaSaida import DescaSaida
 from .classSobre import Sobre
-'''
-from classes.classConsulEmpresas import ConsultarEmpresas
-from classes.classConsulFuncionarios import ConsultarFuncionarios
-from classes.classConsulFornecedor import ConsultarFornecedor
-from classes.classConsulClientes import ConsultarClientes
-from classes.classConsulMotoristas import ConsultarMotoristas
-from classes.classConsulNotas import ConsultarNotas
-from classes.classConsulMadeira import ConsultarMadeira
-from classes.classConsulCavacoSerragem import ConsultarCavacoSerragem
-from classes.classConsulTeca import ConsultarTeca
-from classes.classConsulCavacoSerragem import ConsultarCavacoSerragem
-from classes.classConsulOutros import ConsultarOutros
-from classes.classConsulVeicEmpresa import ConsultarVeicEmpresa
-from classes.classConsulVeicTerceiros import ConsultarVeicTerceiros
-from classes.classConsulCaminEmpresa import ConsultarCaminEmpresa
-from classes.classConsulCaminTerceiros import ConsultarCaminTerceiros
-from classes.classConsulMaquinas import ConsultarMaquinas
-from classes.classConsulEntSaiFuncionarios import ConsultarEntSaiFuncionarios
-
-from classes.classCarreMadeiraEntrada import CarreMadeiraEntrada
-from classes.classCarreMadeiraSaida import CarreMadeiraSaida
-from classes.classCarreCavacoPoSerragemEntrada import CarreCavacoPoSerragemEntrada
-from classes.classCarreCavacoPoSerragemSaida import CarreCavacoPoSerragemSaida
-from classes.classDescTecaEntrada import DescTecaEntrada
-from classes.classDescTecaSaida import DescTecaSaida
-from classes.classDescCavacoPoSerragemEntrada import DescCavacoPoSerragemEntrada
-from classes.classDescCavacoPoSerragemSaida import DescCavacoPoSerragemSaida
-from classes.classVeicEmpEntrada import VeicEmpEntrada
-from classes.classVeicEmpSaida import VeicEmpSaida
-from classes.classVeiTerEntrada import VeiTerEntrada
-from classes.classVeiTerSaida import VeiTerSaida
-from classes.classCamiEmpEntrada import CamiEmpEntrada
-from classes.classCamiEmpSaida import CamiEmpSaida
-from classes.classCamiTerEntrada import CamiTerEntrada
-from classes.classCamiTerSaida import CamiTerSaida
-from classes.classMaquinaEntrada import MaquinaEntrada
-from classes.classMaquinaSaida import MaquinaSaida
-from classes.classFuncionarioEntrada import FuncionarioEntrada
-from classes.classFuncionarioSaida import FuncionarioSaida
-
-from classes.classRelatorios import Relatorios
-from classes.classGraficos import Graficos
-'''
-
+from .classEmail import Email
 
 
 class Principal(QtGui.QMainWindow):
@@ -74,7 +39,8 @@ class Principal(QtGui.QMainWindow):
         self.timer.timeout.connect(self.displayTime)
         self.timer.start()
 
-        self.ui.menuSair.triggered.connect(self._sair)
+        self.ui.menuSair.triggered.connect(self._mensagem)
+        self.ui.menuLogout.triggered.connect(self._logout)
         self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
         self.ui.subMenuCadastroFuncionarios.triggered.connect(self._cadastroFuncionario)
         self.ui.subMenuCadastroFornecedor.triggered.connect(self._cadastroFornecedor)
@@ -85,6 +51,14 @@ class Principal(QtGui.QMainWindow):
         self.ui.entSaiFuncSubMenuSaida.triggered.connect(self._saidaFuncionrio)
         self.ui.menuCarregEntrada.triggered.connect(self._entradaCarregamento)
         self.ui.menuCarregSaida.triggered.connect(self._saidaCarregamento)
+        self.ui.menuDescaEntrada.triggered.connect(self._entradaDescarregamento)
+        self.ui.menuDescaSaida.triggered.connect(self._saidaDescarregamento)
+        self.ui.veiTerSubMenuEntrada.triggered.connect(self._entradaVeiEmpTer)
+        self.ui.veicTerSubMenuSaida.triggered.connect(self._saidaVeiEmpTer)
+        self.ui.veicEmpSubMenuEntrada.triggered.connect(self._entradaVeiEmpresa)
+        self.ui.veicEmpSaida.triggered.connect(self._saidaVeiEmpresa)
+        self.ui.camiEmpSubMenuEntrada.triggered.connect(self._entradaCaminEmp)
+        self.ui.camiEmpSubMenuSaida.triggered.connect(self._saidaCaminEmp)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
         '''
         #Menu Cosultas
@@ -143,9 +117,6 @@ class Principal(QtGui.QMainWindow):
         #Menu Relatorios
         self.ui.subMenuRelatorios.triggered.connect(self.__relatorios)
         self.ui.subMenuGraficos.connect(self.__graficos)
-
-        #Menu Sobre
-        self.ui.subMenuSobre.triggered.connect(self.__sobre)
         '''
 
     def status(self, nome):
@@ -154,11 +125,35 @@ class Principal(QtGui.QMainWindow):
     def displayTime(self):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
 
+    def _mensagem(self):
+        msgBox = QMessageBox()
+        msgBox.iconPixmap()
+        msgBox.setIcon(QMessageBox.Question)
+        msgBox.setWindowTitle('Mensagem')
+        msgBox.setText('Deseja sair do Programa')
+        sim = msgBox.addButton(QtGui.QPushButton('Sim'), QtGui.QMessageBox.YesRole)
+        nao = msgBox.addButton(QtGui.QPushButton('Não'), QtGui.QMessageBox.NoRole)
+        ret = msgBox.exec_()
+        if ret == sim:
+            sys.exit(0)
+
+
+
     def _sair(self):
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        result.addButton(QtGui.QPushButton('Sim'), QMessageBox.YesRole)
         if result == QMessageBox.Yes:
             sys.exit(0)
+
+    def _logout(self):
+        w = QWidget()
+        sair = QtGui.QMessageBox.question(w, 'Atenção', "Você tem certeza que deseja trocar de usuário", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if sair == QtGui.QMessageBox.Yes:
+            from classes.classLogin import Login
+            self.close()
+            _login = Login()
+            _login.show()
+            _login.exec_()
 
     def _cadastroEmpresa(self):
         _empresa = Empresa()
@@ -210,11 +205,56 @@ class Principal(QtGui.QMainWindow):
         _saiCarre.show()
         _saiCarre.exec_()
 
+    def _entradaDescarregamento(self):
+        _entDesca = DescaEntrada()
+        _entDesca.show()
+        _entDesca.exec_()
+
+    def _saidaDescarregamento(self):
+        _saiDesca = DescaSaida()
+        _saiDesca.show()
+        _saiDesca.exec_()
+
+    def _entradaVeiEmpTer(self):
+        _entrada = EntradaVeiculoEmpresaTerceiro()
+        _entrada.show()
+        _entrada.exec_()
+
+    def _saidaVeiEmpTer(self):
+        _saida = SaidaVeiEmpTer()
+        _saida.show()
+        _saida.exec_()
+
+    def _entradaVeiEmpresa(self):
+        _entrada = EntradaVeiEmpresa()
+        _entrada.show()
+        _entrada.exec_()
+
+    def _saidaVeiEmpresa(self):
+        _saida = SaidaVeiEmpresa()
+        _saida.show()
+        _saida.exec_()
+
+    def _entradaCaminEmp(self):
+        _entrada = EntradaCaminhaoEmpresa()
+        _entrada.show()
+        _entrada.exec_()
+
+    def _saidaCaminEmp(self):
+        _saida = SaidaCaminhaoEmpresa()
+        _saida.show()
+        _saida.exec_()
+
     def _sobre(self):
         _sobre = Sobre()
         _sobre.show()
         _sobre.exec_()
 
+    def _email(self):
+        _email = Email()
+        _email.show()
+        _email.exec_()
+    '''
     def closeEvent(self, event):
         w = QWidget()
         sair = QtGui.QMessageBox.question(w, 'Atenção', "Você tem certeza que deseja sair", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
@@ -222,3 +262,4 @@ class Principal(QtGui.QMainWindow):
             event.accept()
         else:
             event.ignore()
+    '''
