@@ -7,6 +7,8 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -30,35 +32,46 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmEntradaVeiculosDescarregamento.setFont(font)
+
         self.grbTipoOperacao = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbTipoOperacao.setEnabled(False)
         self.grbTipoOperacao.setGeometry(QtCore.QRect(5, 0, 631, 41))
         self.grbTipoOperacao.setObjectName(_fromUtf8("grbTipoOperacao"))
+
         self.radbtnDescarregamentoComNotaFiscal = QtGui.QRadioButton(self.grbTipoOperacao)
         self.radbtnDescarregamentoComNotaFiscal.setGeometry(QtCore.QRect(4, 20, 291, 17))
         self.radbtnDescarregamentoComNotaFiscal.setObjectName(_fromUtf8("radbtnDescarregamentoComNotaFiscal"))
+
         self.radbtnDescarregamentoSemNotaFiscal = QtGui.QRadioButton(self.grbTipoOperacao)
         self.radbtnDescarregamentoSemNotaFiscal.setGeometry(QtCore.QRect(320, 20, 291, 17))
         self.radbtnDescarregamentoSemNotaFiscal.setObjectName(_fromUtf8("radbtnDescarregamentoSemNotaFiscal"))
+
         self.txtData = QtGui.QDateEdit(frmEntradaVeiculosDescarregamento)
         self.txtData.setEnabled(False)
+        self.txtData.setDate(QDate.currentDate())
         self.txtData.setGeometry(QtCore.QRect(15, 105, 110, 22))
         self.txtData.setCalendarPopup(True)
         self.txtData.setObjectName(_fromUtf8("txtData"))
+
         self.txtHora = QtGui.QTimeEdit(frmEntradaVeiculosDescarregamento)
+        self.txtHora.setTime(QTime.currentTime())
         self.txtHora.setEnabled(False)
         self.txtHora.setGeometry(QtCore.QRect(139, 105, 118, 22))
         self.txtHora.setObjectName(_fromUtf8("txtHora"))
+
         self.lblDataEntrada = QtGui.QLabel(frmEntradaVeiculosDescarregamento)
         self.lblDataEntrada.setGeometry(QtCore.QRect(15, 85, 101, 16))
         self.lblDataEntrada.setObjectName(_fromUtf8("lblDataEntrada"))
+
         self.lblHoraEntrada = QtGui.QLabel(frmEntradaVeiculosDescarregamento)
         self.lblHoraEntrada.setGeometry(QtCore.QRect(139, 85, 91, 16))
         self.lblHoraEntrada.setObjectName(_fromUtf8("lblHoraEntrada"))
+
         self.grbDadosDestinatario = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbDadosDestinatario.setEnabled(False)
         self.grbDadosDestinatario.setGeometry(QtCore.QRect(5, 337, 1001, 156))
         self.grbDadosDestinatario.setObjectName(_fromUtf8("grbDadosDestinatario"))
+
         self.txtCnpjDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtCnpjDestinatario.setGeometry(QtCore.QRect(4, 78, 171, 25))
         palette = QtGui.QPalette()
@@ -76,15 +89,19 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCnpjDestinatario.setText(_fromUtf8("../-"))
         self.txtCnpjDestinatario.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpjDestinatario.setObjectName(_fromUtf8("txtCnpjDestinatario"))
+
         self.lblCodigoDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblCodigoDestinatario.setGeometry(QtCore.QRect(4, 14, 151, 19))
         self.lblCodigoDestinatario.setObjectName(_fromUtf8("lblCodigoDestinatario"))
+
         self.lblNomeFantasiaDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblNomeFantasiaDestinatario.setGeometry(QtCore.QRect(198, 14, 181, 19))
         self.lblNomeFantasiaDestinatario.setObjectName(_fromUtf8("lblNomeFantasiaDestinatario"))
+
         self.lblCnpjDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblCnpjDestinatario.setGeometry(QtCore.QRect(4, 58, 41, 19))
         self.lblCnpjDestinatario.setObjectName(_fromUtf8("lblCnpjDestinatario"))
+
         self.txtFantasiaDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtFantasiaDestinatario.setGeometry(QtCore.QRect(198, 34, 401, 25))
         palette = QtGui.QPalette()
@@ -101,6 +118,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtFantasiaDestinatario.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtFantasiaDestinatario.setMaxLength(70)
         self.txtFantasiaDestinatario.setObjectName(_fromUtf8("txtFantasiaDestinatario"))
+
         self.txtRazaoSocialDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtRazaoSocialDestinatario.setGeometry(QtCore.QRect(610, 34, 381, 25))
         palette = QtGui.QPalette()
@@ -117,9 +135,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtRazaoSocialDestinatario.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtRazaoSocialDestinatario.setMaxLength(70)
         self.txtRazaoSocialDestinatario.setObjectName(_fromUtf8("txtRazaoSocialDestinatario"))
+
         self.lblRazaoSocialDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblRazaoSocialDestinatario.setGeometry(QtCore.QRect(610, 14, 81, 19))
         self.lblRazaoSocialDestinatario.setObjectName(_fromUtf8("lblRazaoSocialDestinatario"))
+
         self.txtIdDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtIdDestinatario.setGeometry(QtCore.QRect(4, 34, 181, 25))
         palette = QtGui.QPalette()
@@ -136,6 +156,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtIdDestinatario.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtIdDestinatario.setMaxLength(11)
         self.txtIdDestinatario.setObjectName(_fromUtf8("txtIdDestinatario"))
+
         self.txtInscricaoEstaduaDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtInscricaoEstaduaDestinatario.setGeometry(QtCore.QRect(184, 78, 161, 25))
         palette = QtGui.QPalette()
@@ -152,15 +173,19 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtInscricaoEstaduaDestinatario.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtInscricaoEstaduaDestinatario.setMaxLength(8)
         self.txtInscricaoEstaduaDestinatario.setObjectName(_fromUtf8("txtInscricaoEstaduaDestinatario"))
+
         self.lblInscricaoEstadualDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblInscricaoEstadualDestinatario.setGeometry(QtCore.QRect(184, 58, 121, 19))
         self.lblInscricaoEstadualDestinatario.setObjectName(_fromUtf8("lblInscricaoEstadualDestinatario"))
+
         self.lblCepDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblCepDestinatario.setGeometry(QtCore.QRect(794, 104, 61, 16))
         self.lblCepDestinatario.setObjectName(_fromUtf8("lblCepDestinatario"))
+
         self.lblComplementoDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblComplementoDestinatario.setGeometry(QtCore.QRect(790, 60, 91, 16))
         self.lblComplementoDestinatario.setObjectName(_fromUtf8("lblComplementoDestinatario"))
+
         self.txtComplementoDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtComplementoDestinatario.setGeometry(QtCore.QRect(790, 80, 201, 25))
         palette = QtGui.QPalette()
@@ -176,9 +201,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtComplementoDestinatario.setPalette(palette)
         self.txtComplementoDestinatario.setMaxLength(50)
         self.txtComplementoDestinatario.setObjectName(_fromUtf8("txtComplementoDestinatario"))
+
         self.lblCidadeDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblCidadeDestinatario.setGeometry(QtCore.QRect(284, 105, 61, 16))
         self.lblCidadeDestinatario.setObjectName(_fromUtf8("lblCidadeDestinatario"))
+
         self.txtEnderecoDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtEnderecoDestinatario.setGeometry(QtCore.QRect(360, 78, 271, 25))
         palette = QtGui.QPalette()
@@ -194,6 +221,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtEnderecoDestinatario.setPalette(palette)
         self.txtEnderecoDestinatario.setMaxLength(50)
         self.txtEnderecoDestinatario.setObjectName(_fromUtf8("txtEnderecoDestinatario"))
+
         self.txtNumeroDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtNumeroDestinatario.setGeometry(QtCore.QRect(640, 80, 141, 25))
         palette = QtGui.QPalette()
@@ -209,9 +237,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNumeroDestinatario.setPalette(palette)
         self.txtNumeroDestinatario.setMaxLength(11)
         self.txtNumeroDestinatario.setObjectName(_fromUtf8("txtNumeroDestinatario"))
+
         self.lblEnderecoDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblEnderecoDestinatario.setGeometry(QtCore.QRect(360, 58, 61, 16))
         self.lblEnderecoDestinatario.setObjectName(_fromUtf8("lblEnderecoDestinatario"))
+
         self.txtBairroDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtBairroDestinatario.setGeometry(QtCore.QRect(4, 125, 271, 25))
         palette = QtGui.QPalette()
@@ -227,6 +257,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtBairroDestinatario.setPalette(palette)
         self.txtBairroDestinatario.setMaxLength(50)
         self.txtBairroDestinatario.setObjectName(_fromUtf8("txtBairroDestinatario"))
+
         self.txtCidadeDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtCidadeDestinatario.setGeometry(QtCore.QRect(284, 125, 299, 25))
         palette = QtGui.QPalette()
@@ -242,9 +273,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCidadeDestinatario.setPalette(palette)
         self.txtCidadeDestinatario.setMaxLength(70)
         self.txtCidadeDestinatario.setObjectName(_fromUtf8("txtCidadeDestinatario"))
+
         self.lblNumeroDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblNumeroDestinatario.setGeometry(QtCore.QRect(640, 60, 61, 16))
         self.lblNumeroDestinatario.setObjectName(_fromUtf8("lblNumeroDestinatario"))
+
         self.txtEstadoDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtEstadoDestinatario.setGeometry(QtCore.QRect(588, 124, 195, 25))
         palette = QtGui.QPalette()
@@ -260,6 +293,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtEstadoDestinatario.setPalette(palette)
         self.txtEstadoDestinatario.setMaxLength(50)
         self.txtEstadoDestinatario.setObjectName(_fromUtf8("txtEstadoDestinatario"))
+
         self.txtCepDestinatario = QtGui.QLineEdit(self.grbDadosDestinatario)
         self.txtCepDestinatario.setGeometry(QtCore.QRect(794, 124, 161, 25))
         palette = QtGui.QPalette()
@@ -274,12 +308,15 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtCepDestinatario.setPalette(palette)
         self.txtCepDestinatario.setObjectName(_fromUtf8("txtCepDestinatario"))
+
         self.lblBairroDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblBairroDestinatario.setGeometry(QtCore.QRect(4, 105, 61, 16))
         self.lblBairroDestinatario.setObjectName(_fromUtf8("lblBairroDestinatario"))
+
         self.lblEstadoDestinatario = QtGui.QLabel(self.grbDadosDestinatario)
         self.lblEstadoDestinatario.setGeometry(QtCore.QRect(588, 104, 61, 16))
         self.lblEstadoDestinatario.setObjectName(_fromUtf8("lblEstadoDestinatario"))
+
         self.btnPesquisarDestinatario = QtGui.QPushButton(self.grbDadosDestinatario)
         self.btnPesquisarDestinatario.setGeometry(QtCore.QRect(960, 122, 31, 26))
         font = QtGui.QFont()
@@ -289,13 +326,15 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.btnPesquisarDestinatario.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarDestinatario.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("C:/Users/JEFFERSON/Faculdade/Estagio I/Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarDestinatario.setIcon(icon)
         self.btnPesquisarDestinatario.setObjectName(_fromUtf8("btnPesquisarDestinatario"))
+
         self.grbDadosEmitente = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbDadosEmitente.setEnabled(False)
         self.grbDadosEmitente.setGeometry(QtCore.QRect(5, 189, 1001, 151))
         self.grbDadosEmitente.setObjectName(_fromUtf8("grbDadosEmitente"))
+
         self.txtIdEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtIdEmitente.setGeometry(QtCore.QRect(4, 32, 181, 25))
         palette = QtGui.QPalette()
@@ -311,6 +350,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtIdEmitente.setPalette(palette)
         self.txtIdEmitente.setMaxLength(11)
         self.txtIdEmitente.setObjectName(_fromUtf8("txtIdEmitente"))
+
         self.txtNomeEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtNomeEmitente.setGeometry(QtCore.QRect(195, 32, 411, 25))
         palette = QtGui.QPalette()
@@ -326,12 +366,15 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNomeEmitente.setPalette(palette)
         self.txtNomeEmitente.setMaxLength(70)
         self.txtNomeEmitente.setObjectName(_fromUtf8("txtNomeEmitente"))
+
         self.lblCodigoEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblCodigoEmitente.setGeometry(QtCore.QRect(4, 12, 131, 21))
         self.lblCodigoEmitente.setObjectName(_fromUtf8("lblCodigoEmitente"))
+
         self.lblNomeEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblNomeEmitente.setGeometry(QtCore.QRect(195, 12, 151, 16))
         self.lblNomeEmitente.setObjectName(_fromUtf8("lblNomeEmitente"))
+
         self.txtEnderecoEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtEnderecoEmitente.setGeometry(QtCore.QRect(354, 75, 271, 25))
         palette = QtGui.QPalette()
@@ -347,6 +390,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtEnderecoEmitente.setPalette(palette)
         self.txtEnderecoEmitente.setMaxLength(50)
         self.txtEnderecoEmitente.setObjectName(_fromUtf8("txtEnderecoEmitente"))
+
         self.txtNumeroEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtNumeroEmitente.setGeometry(QtCore.QRect(630, 75, 141, 25))
         palette = QtGui.QPalette()
@@ -362,6 +406,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNumeroEmitente.setPalette(palette)
         self.txtNumeroEmitente.setMaxLength(11)
         self.txtNumeroEmitente.setObjectName(_fromUtf8("txtNumeroEmitente"))
+
         self.txtComplementoEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtComplementoEmitente.setGeometry(QtCore.QRect(780, 75, 211, 25))
         palette = QtGui.QPalette()
@@ -377,6 +422,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtComplementoEmitente.setPalette(palette)
         self.txtComplementoEmitente.setMaxLength(50)
         self.txtComplementoEmitente.setObjectName(_fromUtf8("txtComplementoEmitente"))
+
         self.txtCidadeEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtCidadeEmitente.setGeometry(QtCore.QRect(286, 119, 291, 25))
         palette = QtGui.QPalette()
@@ -392,6 +438,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCidadeEmitente.setPalette(palette)
         self.txtCidadeEmitente.setMaxLength(70)
         self.txtCidadeEmitente.setObjectName(_fromUtf8("txtCidadeEmitente"))
+
         self.txtEstadoEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtEstadoEmitente.setGeometry(QtCore.QRect(584, 119, 201, 25))
         palette = QtGui.QPalette()
@@ -407,6 +454,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtEstadoEmitente.setPalette(palette)
         self.txtEstadoEmitente.setMaxLength(50)
         self.txtEstadoEmitente.setObjectName(_fromUtf8("txtEstadoEmitente"))
+
         self.txtCepEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtCepEmitente.setGeometry(QtCore.QRect(794, 119, 161, 25))
         palette = QtGui.QPalette()
@@ -421,6 +469,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtCepEmitente.setPalette(palette)
         self.txtCepEmitente.setObjectName(_fromUtf8("txtCepEmitente"))
+
         self.txtBairroEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtBairroEmitente.setGeometry(QtCore.QRect(4, 119, 271, 25))
         palette = QtGui.QPalette()
@@ -436,27 +485,35 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtBairroEmitente.setPalette(palette)
         self.txtBairroEmitente.setMaxLength(50)
         self.txtBairroEmitente.setObjectName(_fromUtf8("txtBairroEmitente"))
+
         self.lblEnderecoEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblEnderecoEmitente.setGeometry(QtCore.QRect(354, 55, 61, 16))
         self.lblEnderecoEmitente.setObjectName(_fromUtf8("lblEnderecoEmitente"))
+
         self.lblNumeroEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblNumeroEmitente.setGeometry(QtCore.QRect(630, 55, 61, 16))
         self.lblNumeroEmitente.setObjectName(_fromUtf8("lblNumeroEmitente"))
+
         self.lblComplementoEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblComplementoEmitente.setGeometry(QtCore.QRect(780, 55, 91, 16))
         self.lblComplementoEmitente.setObjectName(_fromUtf8("lblComplementoEmitente"))
+
         self.lblBairroEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblBairroEmitente.setGeometry(QtCore.QRect(6, 99, 61, 16))
         self.lblBairroEmitente.setObjectName(_fromUtf8("lblBairroEmitente"))
+
         self.lblCidadeEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblCidadeEmitente.setGeometry(QtCore.QRect(284, 99, 61, 16))
         self.lblCidadeEmitente.setObjectName(_fromUtf8("lblCidadeEmitente"))
+
         self.lblEstadoEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblEstadoEmitente.setGeometry(QtCore.QRect(584, 99, 61, 16))
         self.lblEstadoEmitente.setObjectName(_fromUtf8("lblEstadoEmitente"))
+
         self.lblCepEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblCepEmitente.setGeometry(QtCore.QRect(794, 99, 61, 16))
         self.lblCepEmitente.setObjectName(_fromUtf8("lblCepEmitente"))
+
         self.txtInscricaoEstaduaEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtInscricaoEstaduaEmitente.setGeometry(QtCore.QRect(184, 75, 161, 25))
         palette = QtGui.QPalette()
@@ -473,6 +530,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtInscricaoEstaduaEmitente.setInputMethodHints(QtCore.Qt.ImhPreferNumbers|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtInscricaoEstaduaEmitente.setMaxLength(8)
         self.txtInscricaoEstaduaEmitente.setObjectName(_fromUtf8("txtInscricaoEstaduaEmitente"))
+
         self.txtRazaoSocialEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtRazaoSocialEmitente.setGeometry(QtCore.QRect(610, 32, 381, 25))
         palette = QtGui.QPalette()
@@ -489,15 +547,19 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtRazaoSocialEmitente.setInputMethodHints(QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
         self.txtRazaoSocialEmitente.setMaxLength(70)
         self.txtRazaoSocialEmitente.setObjectName(_fromUtf8("txtRazaoSocialEmitente"))
+
         self.lblRazaoSocialEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblRazaoSocialEmitente.setGeometry(QtCore.QRect(610, 12, 81, 19))
         self.lblRazaoSocialEmitente.setObjectName(_fromUtf8("lblRazaoSocialEmitente"))
+
         self.lblCnpjEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblCnpjEmitente.setGeometry(QtCore.QRect(5, 55, 41, 19))
         self.lblCnpjEmitente.setObjectName(_fromUtf8("lblCnpjEmitente"))
+
         self.lblInscricaoEstadualEmitente = QtGui.QLabel(self.grbDadosEmitente)
         self.lblInscricaoEstadualEmitente.setGeometry(QtCore.QRect(184, 55, 121, 19))
         self.lblInscricaoEstadualEmitente.setObjectName(_fromUtf8("lblInscricaoEstadualEmitente"))
+
         self.txtCnpjEmitente = QtGui.QLineEdit(self.grbDadosEmitente)
         self.txtCnpjEmitente.setGeometry(QtCore.QRect(5, 75, 171, 25))
         palette = QtGui.QPalette()
@@ -515,6 +577,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCnpjEmitente.setText(_fromUtf8("../-"))
         self.txtCnpjEmitente.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpjEmitente.setObjectName(_fromUtf8("txtCnpjEmitente"))
+
         self.btnPesquisarEmitente = QtGui.QPushButton(self.grbDadosEmitente)
         self.btnPesquisarEmitente.setGeometry(QtCore.QRect(960, 117, 31, 26))
         font = QtGui.QFont()
@@ -525,6 +588,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.btnPesquisarEmitente.setText(_fromUtf8(""))
         self.btnPesquisarEmitente.setIcon(icon)
         self.btnPesquisarEmitente.setObjectName(_fromUtf8("btnPesquisarEmitente"))
+
         self.btnPesquisarNotaFiscal = QtGui.QPushButton(frmEntradaVeiculosDescarregamento)
         self.btnPesquisarNotaFiscal.setEnabled(False)
         self.btnPesquisarNotaFiscal.setGeometry(QtCore.QRect(970, 19, 31, 27))
@@ -536,16 +600,20 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.btnPesquisarNotaFiscal.setText(_fromUtf8(""))
         self.btnPesquisarNotaFiscal.setIcon(icon)
         self.btnPesquisarNotaFiscal.setObjectName(_fromUtf8("btnPesquisarNotaFiscal"))
+
         self.lblPesquisa = QtGui.QLabel(frmEntradaVeiculosDescarregamento)
         self.lblPesquisa.setGeometry(QtCore.QRect(640, 0, 141, 16))
         self.lblPesquisa.setObjectName(_fromUtf8("lblPesquisa"))
+
         self.grbNotaFiscal = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbNotaFiscal.setEnabled(False)
         self.grbNotaFiscal.setGeometry(QtCore.QRect(5, 128, 1001, 63))
         self.grbNotaFiscal.setObjectName(_fromUtf8("grbNotaFiscal"))
+
         self.lblNumeroRomaneio = QtGui.QLabel(self.grbNotaFiscal)
         self.lblNumeroRomaneio.setGeometry(QtCore.QRect(580, 13, 131, 16))
         self.lblNumeroRomaneio.setObjectName(_fromUtf8("lblNumeroRomaneio"))
+
         self.txtMetragemMadeira = QtGui.QLineEdit(self.grbNotaFiscal)
         self.txtMetragemMadeira.setGeometry(QtCore.QRect(810, 33, 181, 25))
         palette = QtGui.QPalette()
@@ -561,6 +629,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtMetragemMadeira.setPalette(palette)
         self.txtMetragemMadeira.setMaxLength(50)
         self.txtMetragemMadeira.setObjectName(_fromUtf8("txtMetragemMadeira"))
+
         self.txtNumeroRomaneio = QtGui.QLineEdit(self.grbNotaFiscal)
         self.txtNumeroRomaneio.setGeometry(QtCore.QRect(580, 33, 221, 25))
         palette = QtGui.QPalette()
@@ -576,9 +645,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNumeroRomaneio.setPalette(palette)
         self.txtNumeroRomaneio.setMaxLength(11)
         self.txtNumeroRomaneio.setObjectName(_fromUtf8("txtNumeroRomaneio"))
+
         self.lblMetragemMadeira = QtGui.QLabel(self.grbNotaFiscal)
         self.lblMetragemMadeira.setGeometry(QtCore.QRect(810, 13, 131, 16))
         self.lblMetragemMadeira.setObjectName(_fromUtf8("lblMetragemMadeira"))
+
         self.txtNumeroNotaFiscal = QtGui.QLineEdit(self.grbNotaFiscal)
         self.txtNumeroNotaFiscal.setGeometry(QtCore.QRect(4, 33, 181, 25))
         palette = QtGui.QPalette()
@@ -594,9 +665,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNumeroNotaFiscal.setPalette(palette)
         self.txtNumeroNotaFiscal.setMaxLength(11)
         self.txtNumeroNotaFiscal.setObjectName(_fromUtf8("txtNumeroNotaFiscal"))
+
         self.lblTipoProduto = QtGui.QLabel(self.grbNotaFiscal)
         self.lblTipoProduto.setGeometry(QtCore.QRect(194, 13, 111, 16))
         self.lblTipoProduto.setObjectName(_fromUtf8("lblTipoProduto"))
+
         self.txtTipoProduto = QtGui.QLineEdit(self.grbNotaFiscal)
         self.txtTipoProduto.setGeometry(QtCore.QRect(194, 33, 201, 25))
         palette = QtGui.QPalette()
@@ -612,6 +685,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtTipoProduto.setPalette(palette)
         self.txtTipoProduto.setMaxLength(50)
         self.txtTipoProduto.setObjectName(_fromUtf8("txtTipoProduto"))
+
         self.txtCertificada = QtGui.QLineEdit(self.grbNotaFiscal)
         self.txtCertificada.setGeometry(QtCore.QRect(400, 33, 171, 25))
         palette = QtGui.QPalette()
@@ -627,16 +701,20 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCertificada.setPalette(palette)
         self.txtCertificada.setMaxLength(25)
         self.txtCertificada.setObjectName(_fromUtf8("txtCertificada"))
+
         self.lblNumeroNotaFiscal = QtGui.QLabel(self.grbNotaFiscal)
         self.lblNumeroNotaFiscal.setGeometry(QtCore.QRect(4, 13, 131, 16))
         self.lblNumeroNotaFiscal.setObjectName(_fromUtf8("lblNumeroNotaFiscal"))
+
         self.lblCertificada = QtGui.QLabel(self.grbNotaFiscal)
         self.lblCertificada.setGeometry(QtCore.QRect(400, 13, 81, 16))
         self.lblCertificada.setObjectName(_fromUtf8("lblCertificada"))
+
         self.grbDadosMotorista = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbDadosMotorista.setEnabled(False)
         self.grbDadosMotorista.setGeometry(QtCore.QRect(5, 491, 1001, 109))
         self.grbDadosMotorista.setObjectName(_fromUtf8("grbDadosMotorista"))
+
         self.txtModelo = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtModelo.setGeometry(QtCore.QRect(710, 34, 281, 25))
         palette = QtGui.QPalette()
@@ -652,9 +730,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtModelo.setPalette(palette)
         self.txtModelo.setMaxLength(50)
         self.txtModelo.setObjectName(_fromUtf8("txtModelo"))
+
         self.lblMarca = QtGui.QLabel(self.grbDadosMotorista)
         self.lblMarca.setGeometry(QtCore.QRect(4, 58, 51, 19))
         self.lblMarca.setObjectName(_fromUtf8("lblMarca"))
+
         self.txtMarca = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtMarca.setGeometry(QtCore.QRect(4, 78, 331, 25))
         palette = QtGui.QPalette()
@@ -670,6 +750,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtMarca.setPalette(palette)
         self.txtMarca.setMaxLength(50)
         self.txtMarca.setObjectName(_fromUtf8("txtMarca"))
+
         self.txtNomeFuncionario = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtNomeFuncionario.setGeometry(QtCore.QRect(174, 34, 521, 25))
         palette = QtGui.QPalette()
@@ -685,9 +766,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtNomeFuncionario.setPalette(palette)
         self.txtNomeFuncionario.setMaxLength(70)
         self.txtNomeFuncionario.setObjectName(_fromUtf8("txtNomeFuncionario"))
+
         self.lblNomeMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblNomeMotorista.setGeometry(QtCore.QRect(174, 14, 171, 19))
         self.lblNomeMotorista.setObjectName(_fromUtf8("lblNomeMotorista"))
+
         self.txtPlaca = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtPlaca.setGeometry(QtCore.QRect(344, 78, 211, 25))
         palette = QtGui.QPalette()
@@ -702,9 +785,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtPlaca.setPalette(palette)
         self.txtPlaca.setObjectName(_fromUtf8("txtPlaca"))
+
         self.lblModelo = QtGui.QLabel(self.grbDadosMotorista)
         self.lblModelo.setGeometry(QtCore.QRect(710, 14, 51, 19))
         self.lblModelo.setObjectName(_fromUtf8("lblModelo"))
+
         self.txtidFuncionario = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtidFuncionario.setGeometry(QtCore.QRect(5, 34, 161, 25))
         palette = QtGui.QPalette()
@@ -720,12 +805,15 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtidFuncionario.setPalette(palette)
         self.txtidFuncionario.setMaxLength(11)
         self.txtidFuncionario.setObjectName(_fromUtf8("txtidFuncionario"))
+
         self.lblCodigoMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblCodigoMotorista.setGeometry(QtCore.QRect(4, 14, 121, 19))
         self.lblCodigoMotorista.setObjectName(_fromUtf8("lblCodigoMotorista"))
+
         self.lblPlaca = QtGui.QLabel(self.grbDadosMotorista)
         self.lblPlaca.setGeometry(QtCore.QRect(344, 58, 51, 19))
         self.lblPlaca.setObjectName(_fromUtf8("lblPlaca"))
+
         self.btnPesquisarMotorista = QtGui.QPushButton(self.grbDadosMotorista)
         self.btnPesquisarMotorista.setGeometry(QtCore.QRect(582, 76, 31, 26))
         font = QtGui.QFont()
@@ -736,53 +824,66 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.btnPesquisarMotorista.setText(_fromUtf8(""))
         self.btnPesquisarMotorista.setIcon(icon)
         self.btnPesquisarMotorista.setObjectName(_fromUtf8("btnPesquisarMotorista"))
+
         self.grbBotoes = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbBotoes.setGeometry(QtCore.QRect(5, 603, 1001, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))
         self.grbBotoes.setObjectName(_fromUtf8("grbBotoes"))
+
         self.btnSalvar = QtGui.QPushButton(self.grbBotoes)
         self.btnSalvar.setEnabled(False)
         self.btnSalvar.setGeometry(QtCore.QRect(600, 10, 81, 61))
         self.btnSalvar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnSalvar.setObjectName(_fromUtf8("btnSalvar"))
+
         self.btnNovo = QtGui.QPushButton(self.grbBotoes)
         self.btnNovo.setGeometry(QtCore.QRect(500, 10, 81, 61))
         self.btnNovo.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnNovo.setObjectName(_fromUtf8("btnNovo"))
+
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)
         self.btnEditar.setEnabled(False)
         self.btnEditar.setGeometry(QtCore.QRect(700, 10, 81, 61))
         self.btnEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
+
         self.btnCancelar = QtGui.QPushButton(self.grbBotoes)
         self.btnCancelar.setEnabled(False)
         self.btnCancelar.setGeometry(QtCore.QRect(800, 10, 81, 61))
         self.btnCancelar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnCancelar.setObjectName(_fromUtf8("btnCancelar"))
+
         self.btnDeletar = QtGui.QPushButton(self.grbBotoes)
         self.btnDeletar.setEnabled(False)
         self.btnDeletar.setGeometry(QtCore.QRect(900, 10, 81, 61))
         self.btnDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
+
         self.grbTipoPesquisa = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbTipoPesquisa.setEnabled(False)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(5, 40, 631, 39))
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
+
         self.radbtnNumeroNota = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radbtnNumeroNota.setGeometry(QtCore.QRect(4, 19, 151, 17))
         self.radbtnNumeroNota.setObjectName(_fromUtf8("radbtnNumeroNota"))
+
         self.radbtnNumeroRomaneio = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radbtnNumeroRomaneio.setGeometry(QtCore.QRect(170, 19, 141, 17))
         self.radbtnNumeroRomaneio.setObjectName(_fromUtf8("radbtnNumeroRomaneio"))
+
         self.radbtnEmitente = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radbtnEmitente.setGeometry(QtCore.QRect(326, 19, 81, 17))
         self.radbtnEmitente.setObjectName(_fromUtf8("radbtnEmitente"))
+
         self.radbtnDstinatario = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radbtnDstinatario.setGeometry(QtCore.QRect(416, 19, 101, 17))
         self.radbtnDstinatario.setObjectName(_fromUtf8("radbtnDstinatario"))
+
         self.radbtnMotorista = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radbtnMotorista.setGeometry(QtCore.QRect(536, 19, 81, 17))
         self.radbtnMotorista.setObjectName(_fromUtf8("radbtnMotorista"))
+
         self.txtPesquisar = QtGui.QLineEdit(frmEntradaVeiculosDescarregamento)
         self.txtPesquisar.setEnabled(False)
         self.txtPesquisar.setGeometry(QtCore.QRect(640, 20, 311, 25))
@@ -799,9 +900,14 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtPesquisar.setPalette(palette)
         self.txtPesquisar.setMaxLength(70)
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))
+
         self.tabPesquisar = QtGui.QTableWidget(frmEntradaVeiculosDescarregamento)
         self.tabPesquisar.setEnabled(False)
         self.tabPesquisar.setGeometry(QtCore.QRect(640, 50, 361, 81))
+        self.tabPesquisar.setColumnCount(4)
+        self.tabPesquisar.setHorizontalHeaderLabels(['Num. NF', 'Num Romaneio', 'Certificada', 'Metragem'])
+        self.tabPesquisar.setEditTriggers(self.tabPesquisar.NoEditTriggers)
+        self.tabPesquisar.setSelectionBehavior(self.tabPesquisar.SelectRows)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -817,8 +923,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         font.setPointSize(7)
         self.tabPesquisar.setFont(font)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
-        self.tabPesquisar.setColumnCount(0)
-        self.tabPesquisar.setRowCount(0)
+
         self.lblDataEntrada.setBuddy(self.txtData)
         self.lblHoraEntrada.setBuddy(self.txtHora)
         self.lblCodigoDestinatario.setBuddy(self.txtIdDestinatario)

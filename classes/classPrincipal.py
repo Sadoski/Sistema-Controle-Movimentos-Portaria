@@ -9,6 +9,7 @@ from classes.classCarreSaida import CarregamentoSaida
 from classes.classEntraVeiEmpTer import EntradaVeiculoEmpresaTerceiro
 from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
 from classes.classEntradaVeiEmpresa import EntradaVeiEmpresa
+from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
 from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
 from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
@@ -131,11 +132,16 @@ class Principal(QtGui.QMainWindow):
         msgBox.setIcon(QMessageBox.Question)
         msgBox.setWindowTitle('Mensagem')
         msgBox.setText('Deseja sair do Programa')
-        sim = msgBox.addButton(QtGui.QPushButton('Sim'), QtGui.QMessageBox.YesRole)
-        nao = msgBox.addButton(QtGui.QPushButton('Não'), QtGui.QMessageBox.NoRole)
+        msgBox.setStandardButtons(QMessageBox.Yes)
+        #msgBox.addButton(QtGui.QPushButton('Sim'), QtGui.QMessageBox.YesRole)
+        #msgBox.addButton(QtGui.QPushButton('Não'), QtGui.QMessageBox.NoRole)
+        msgBox.buttonClicked.connect(self.fechar)
         ret = msgBox.exec_()
-        if ret == sim:
-            sys.exit(0)
+        if ret == QMessageBox.Yes:
+            self.fechar()
+
+    def fechar(self):
+        sys.exit(0)
 
 
 

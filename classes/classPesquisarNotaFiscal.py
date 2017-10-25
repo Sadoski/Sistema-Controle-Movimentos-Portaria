@@ -1,11 +1,10 @@
-import sys
 from PyQt4 import QtGui, QtCore
-from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
 from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
 from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
+
 
 class PesquisarNotaFiscal(QtGui.QDialog):
     def __init__(self):
@@ -908,15 +907,13 @@ class PesquisarNotaFiscal(QtGui.QDialog):
             metragem = itens[21]
             print(metragem)
 
-
-            self.__dados = PesquisaNotaFiscal(codNotaFiscal, numeroNotaFiscal, dataNota, valorTotl, codEmitente, fantasiaEmitente, razaoSocialEmitente, cnpjEmitente, insEstadualEmitente, codDestinatario, fantasiaDestinatario, razaoSocialDestinatario, cnpjDestinatario, insEstadualDestinatario, codMotorista, nomeMotorista, rg, cpf, codRomaneio, numRomaneio, certificada, metragem)
-
-
             from .classNotasFiscal import CadastroNotaFiscal
-            __ca = CadastroNotaFiscal()
-            #__ca.setCampos(self.__dados)
+            __dados = PesquisaNotaFiscal(codNotaFiscal, numeroNotaFiscal, dataNota, valorTotl, codEmitente, fantasiaEmitente, razaoSocialEmitente, cnpjEmitente, insEstadualEmitente, codDestinatario, fantasiaDestinatario, razaoSocialDestinatario, cnpjDestinatario, insEstadualDestinatario, codMotorista, nomeMotorista, rg, cpf, codRomaneio, numRomaneio, certificada, metragem)
 
+            __ca = CadastroNotaFiscal()
+            __ca.setCampos(__dados)
             __ca.ui.txtFantasiaDestinatario.setText(str(numeroNotaFiscal))
+            __ca.window()
             self.close()
 
 

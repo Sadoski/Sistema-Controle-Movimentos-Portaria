@@ -1,49 +1,27 @@
 class PesquisaNotaFiscal():
     def __init__(self, idNotaFiscal, numNotaFiscal, dataEmissao, valorTotal, codEmitente, fantasiaEmitente, razaoSocialEmitente, cnpjEmitente, insEstadualEmitente, codDestinatario, fantasiaDestinatario, razaoSocialDestinatario, cnpjDestinatario, insEstadualDestinatario, codMotorista, nomeMotorista, rg, cpf, codRomaneio, numRomaneio, certificada, metragem):
         self.__idNotaFiscal = idNotaFiscal
-        print(self.__idNotaFiscal)
         self.__numNotaFiscal = numNotaFiscal
-        print(self.__numNotaFiscal)
         self.__dataEmissao = dataEmissao
-        print(self.__dataEmissao)
         self.__valorTotal = valorTotal
-        print(self.__valorTotal)
         self.__codEmitente = codEmitente
-        print(self.__codEmitente)
         self.__fantasiaEmitente = fantasiaEmitente
-        print(self.__fantasiaEmitente)
         self.__razaoSocialEmitente = razaoSocialEmitente
-        print(self.__razaoSocialEmitente)
         self.__cnpjEmitente = cnpjEmitente
-        print(self.__cnpjEmitente)
         self.__insEstadualEmitente = insEstadualEmitente
-        print(self.__insEstadualEmitente)
         self.__codDestinatario = codDestinatario
-        print(self.__codDestinatario)
         self.__fantasiaDestinatario = fantasiaDestinatario
-        print(self.__fantasiaDestinatario)
         self.__razaoSocialDestinatario = razaoSocialDestinatario
-        print(self.__razaoSocialDestinatario)
         self.__cnpjDestinatario = cnpjDestinatario
-        print(self.__cnpjDestinatario)
         self.__insEstadualDestinatario= insEstadualDestinatario
-        print(self.__insEstadualDestinatario)
         self.__codMotorista = codMotorista
-        print(self.__codMotorista)
         self.__nomeMotorista = nomeMotorista
-        print(self.__nomeMotorista)
         self.__rg = rg
-        print(self.__rg)
         self.__cpf = cpf
-        print(self.__cpf)
         self.__codRomaneio = codRomaneio
-        print(self.__codRomaneio)
         self.__numRomaneio = numRomaneio
-        print(self.__numRomaneio)
         self.__certificada = certificada
-        print(self.__certificada)
         self.__metragem = metragem
-        print(self.__metragem)
 
     @property
     def getIdNotaFiscal(self):
