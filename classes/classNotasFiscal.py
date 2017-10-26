@@ -4,14 +4,19 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from decimal import Decimal
 
-from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetNotaFiscal import NotaFiscal
 from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
 from controller.getSetRomaneio import Romaneio
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
+from dao.pesquisaEmpresa import PesquisaEmpresaDao
+from dao.pesquisarFornecedor import PesquisarFornecedorDao
+from dao.pesquisarMotorista import PesquisarMotoristaDao
 from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
 from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
+from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
+from telas.frmPesquisarFornecedor import Ui_frmConsultarFornecedores
+from telas.frmPesquisarMotorista import Ui_frmConsultarMotoristas
 from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 
 
@@ -33,6 +38,10 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorTotal.returnPressed.connect(self.focusNumRomaneio)
         self.ui.txtNumeroRomaneio.returnPressed.connect(self.focusMetragem)
         self.ui.txtQuantidade.returnPressed.connect(self.focusValorUnitario)
+
+        self.ui.btnPesquisarDestinatario.clicked.connect(self.consultarEmpresa)
+        self.ui.btnPesquisarEmitente.clicked.connect(self.consultarFornecedor)
+        self.ui.btnPesquisarMotorista.clicked.connect(self.consultarMotorista)
 
         self.ui.btnAdicionar.clicked.connect(self.addDescricaoProduto)
         self.ui.btnExcluir.clicked.connect(self.delDescricaoProduto)
@@ -464,7 +473,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
             self.__pesquisar.radBtnDataLanamento.clicked.connect(self.ativarDataLancamento)
             self.__pesquisar.radBtnDataPeriodos.clicked.connect(self.ativarData)
             self.__pesquisar.radBtnFantasiaEmitente.clicked.connect(self.ativarPesquisa)
-            self. __pesquisar.radBtnRazaoSocialEmitente.clicked.connect(self.ativarPesquisa)
+            self.__pesquisar.radBtnRazaoSocialEmitente.clicked.connect(self.ativarPesquisa)
             self.__pesquisar.radBtnCnpjEmitente.clicked.connect(self.ativarPesquisa)
             self.__pesquisar.radBtnIncrisaoEstadualEmitente.clicked.connect(self.ativarPesquisa)
             self.__pesquisar.radBtnFantasiaDestinatario.clicked.connect(self.ativarPesquisa)
@@ -479,8 +488,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
             self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCampos)
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
             self.dialog.exec_()
-
-
 
 
     def ativarDataLancamento(self):
@@ -535,704 +542,77 @@ class CadastroNotaFiscal(QtGui.QDialog):
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarNumeroNota(__nunNota)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnRomaneio.isChecked():
             __numRomaneio = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarNumeroRomaneio(__numRomaneio)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnFantasiaDestinatario.isChecked():
             __fantasiaDestinatario = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarFantasiaDest(__fantasiaDestinatario)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnRazaoSocialDestinatario.isChecked():
             __razaoSocialDestinatario = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarRozaoSocialDest(__razaoSocialDestinatario)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnCnpjDestinatario.isChecked():
             __cnpjDestinatario = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarCnpjDest(__cnpjDestinatario)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnIncrisaoEstadualDestinatario.isChecked():
             __insDestinatario = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarInsEstadualDest(__insDestinatario)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnFantasiaEmitente.isChecked():
             __fantasiaEmitente = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarFantasiaEmit(__fantasiaEmitente)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnRazaoSocialEmitente.isChecked():
             __razaoSocialEmitente = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarRozaoSocialEmit(__razaoSocialEmitente)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnCnpjEmitente.isChecked():
             __cnpjEmitente = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarCnpjEmit(__cnpjEmitente)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnIncrisaoEstadualEmitente.isChecked():
             __insEmitente = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarInsEstadualEmit(__insEmitente)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnDataLanamento.isChecked():
             __dataLancamento = self.formatarData(self.removerCaracter(self.__pesquisar.txtDataInicial.text()))
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarDataLancamento(__dataLancamento)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
 
         elif self.__pesquisar.radBtnDataPeriodos.isChecked():
             __dataIni = self.formatarData(self.removerCaracter(self.__pesquisar.txtDataInicial.text()))
@@ -1240,67 +620,70 @@ class CadastroNotaFiscal(QtGui.QDialog):
             __pesDao = PesquisarNotaFiscalRomaneioDao()
             __retorno = __pesDao.pesquisarDataPeriodo(__dataIni, __dataFim)
 
-            qtde_registros = len(__retorno)
-            self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __retorno:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                numNotaFiscal = pesqui[1]
-                data = pesqui[2]
-                valorTotal = pesqui[3]
-                codFornecedor = pesqui[4]
-                forneFantasia = pesqui[5]
-                forneRazaoSocial = pesqui[6]
-                forneCnpj = pesqui[7]
-                forneInsEstadual = pesqui[8]
-                codEmpresa = pesqui[9]
-                emprFantasia = pesqui[10]
-                emprRazaoSocial = pesqui[11]
-                emprCnpj = pesqui[12]
-                emprInsEstadual = pesqui[13]
-                codMotorista = pesqui[14]
-                nomeMotorista = pesqui[15]
-                rg = pesqui[16]
-                cpf = pesqui[17]
-                codRomaneio = pesqui[18]
-                numRomaneio = pesqui[19]
-                if pesqui[20] == 1:
-                    certificada = "Certificada"
-                else:
-                    certificada = "Não Certificada"
-                metragem = pesqui[21]
-
-                # preenchendo o grid de pesquisa
-                self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
-                self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
-
-                linha += 1
+            self.setarTabelaPesquisa(__retorno)
         else:
             QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
 
+
+    def setarTabelaPesquisa(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            numNotaFiscal = pesqui[1]
+            data = pesqui[2]
+            valorTotal = pesqui[3]
+            codFornecedor = pesqui[4]
+            forneFantasia = pesqui[5]
+            forneRazaoSocial = pesqui[6]
+            forneCnpj = pesqui[7]
+            forneInsEstadual = pesqui[8]
+            codEmpresa = pesqui[9]
+            emprFantasia = pesqui[10]
+            emprRazaoSocial = pesqui[11]
+            emprCnpj = pesqui[12]
+            emprInsEstadual = pesqui[13]
+            codMotorista = pesqui[14]
+            nomeMotorista = pesqui[15]
+            rg = pesqui[16]
+            cpf = pesqui[17]
+            codRomaneio = pesqui[18]
+            numRomaneio = pesqui[19]
+            if pesqui[20] == 1:
+                certificada = "Certificada"
+            else:
+                certificada = "Não Certificada"
+            metragem = pesqui[21]
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(numNotaFiscal)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(data)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(valorTotal)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(codFornecedor)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(forneFantasia)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(forneRazaoSocial)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(forneCnpj)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(forneInsEstadual)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(codEmpresa)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(emprFantasia)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(emprRazaoSocial)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(emprCnpj)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(emprInsEstadual)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(codMotorista)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(nomeMotorista)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(codRomaneio)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(numRomaneio)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(certificada)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(metragem)))
+
+            linha += 1
 
     def formatarDataRetorno(self, data):
         dia = data[8:10]
@@ -1353,9 +736,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.botoesEditar()
         self.dialog.close()
 
-
-
-
     def setCampos(self, campos):
         self.unidadeMedida()
         self.pesquisarTiposCarga()
@@ -1381,15 +761,18 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtCertificada.setCheckable(campos.getCetificada)
         self.ui.txtDataEmissao.setDate(campos.getData)
         self.ui.txtValorTotal.setText(campos.getValorTotal)
+        if campos.getCetificada == True:
+            self.ui.txtCertificada.setChecked(True)
+        elif campos.getCetificada == False:
+            self.ui.txtCertificada.setChecked(False)
+
 
         data = self.formatarData(self.removerCaracter(self.ui.txtDataEmissao.text()))
-        print(data)
 
         dao = PesquisarNotaFiscalRomaneioDao()
         a = dao.pesquisarVeiculoMotorista(campos.getNomeMotorista, campos.getRg, campos.getCpf)
         b = dao.pesquisarDescricaoProduto(campos.getNumNotaFiscal, data, campos.getValorTotal)
         self.setCamposDescricao(b)
-        print(b)
         for i in a:
             self.ui.txtMarca.setText(str(i[0]))
             self.ui.txtModelo.setText(str(i[1]))
@@ -1420,3 +803,297 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
             linha += 1
 
+    def consultarEmpresa(self):
+        self.dialogEmp = QDialog(self)
+        self.__pesEmp = Ui_frmConsultarEmpresa()
+        self.__pesEmp.setupUi(self.dialogEmp)
+
+        self.__pesEmp.txtPesquisar.returnPressed.connect(self.pesquisarEmitente)
+        self.__pesEmp.btnPesquisar.clicked.connect(self.pesquisarEmitente)
+        self.__pesEmp.tabPesquisar.doubleClicked.connect(self.setarEmpresa)
+
+        self.dialogEmp.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogEmp.exec_()
+
+    def pesquisarEmitente(self):
+
+        if self.__pesEmp.radBtnCodigo.isChecked():
+            dao = PesquisaEmpresaDao()
+            empresa = dao.pesquisaCodigo(self.__pesEmp.txtPesquisar.text())
+            self.setarTabelaPesquisaEmp(empresa)
+
+        elif self.__pesEmp.radBtnFantasia.isChecked():
+            dao = PesquisaEmpresaDao()
+            empresa = dao.pesquisaFantasia(self.__pesEmp.txtPesquisar.text())
+            self.setarTabelaPesquisaEmp(empresa)
+
+        elif self.__pesEmp.radBtnRazaoSocial.isChecked():
+            dao = PesquisaEmpresaDao()
+            empresa = dao.pesquisaRazaoSocial(self.__pesEmp.txtPesquisar.text())
+            self.setarTabelaPesquisaEmp(empresa)
+
+        elif self.__pesEmp.radBtnCnpj.isChecked():
+            dao = PesquisaEmpresaDao()
+            empresa = dao.pesquisaCnpj(self.__pesEmp.txtPesquisar.text())
+            self.setarTabelaPesquisaEmp(empresa)
+
+        elif self.__pesEmp.radBtnIncrisaoEstadual.isChecked():
+            dao = PesquisaEmpresaDao()
+            empresa = dao.pesquisaInscEstadual(self.__pesEmp.txtPesquisar.text())
+            self.setarTabelaPesquisaEmp(empresa)
+        else:
+            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+
+
+    def setarTabelaPesquisaEmp(self, empresa):
+        qtde_registros = len(empresa)
+        self.__pesEmp.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in empresa:
+            # capturando os dados da tupla
+
+            cod = pesqui[0]
+            fantasia = pesqui[1]
+            razao = pesqui[2]
+            cpnj = pesqui[3]
+            inscricao = pesqui[4]
+            tipo = pesqui[5]
+            endereco = pesqui[6]
+            numero = pesqui[7]
+            bairro = pesqui[8]
+            cidade = pesqui[9]
+            estado = pesqui[10]
+            cep = pesqui[11]
+
+            # preenchendo o grid de pesquisa
+            self.__pesEmp.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(cod)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpnj)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscricao)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(tipo)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesEmp.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cep)))
+
+            linha += 1
+
+    def setarEmpresa(self):
+        itens = []
+        for item in self.__pesEmp.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codEmpresa = str(itens[0])
+        fantasia = str(itens[1])
+        razao = str(itens[2])
+        cpnj = str(itens[3])
+        inscricao = str(itens[4])
+
+        self.ui.txtIdDestinatario.setText(codEmpresa)
+        self.ui.txtFantasiaDestinatario.setText(fantasia)
+        self.ui.txtRazaoSocialDestinatario.setText(razao)
+        self.ui.txtCnpjDestinatario.setText(cpnj)
+        self.ui.txtInscricaoEstaduaDestinatario.setText(inscricao)
+
+        self.dialogEmp.close()
+
+
+    def consultarFornecedor(self):
+        self.dialogFun = QDialog(self)
+        self.__pesFun = Ui_frmConsultarFornecedores()
+        self.__pesFun.setupUi(self.dialogFun)
+
+        self.__pesFun.txtPesquisar.returnPressed.connect(self.pesquisarFornecedor)
+        self.__pesFun.btnPesquisar.clicked.connect(self.pesquisarFornecedor)
+        self.__pesFun.tabPesquisar.doubleClicked.connect(self.setarFornecedor)
+
+        self.dialogFun.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogFun.exec_()
+
+    def pesquisarFornecedor(self):
+        dao = PesquisarFornecedorDao()
+        if self.__pesFun.radBtnCodigo.isChecked():
+
+            empresa = dao.pesquisaCodigo(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(empresa)
+            print(empresa)
+
+        elif self.__pesFun.radBtnFantasia.isChecked():
+            empresa = dao.pesquisaFantasia(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(empresa)
+
+        elif self.__pesFun.radBtnRazaoSocial.isChecked():
+            empresa = dao.pesquisaRazaoSocial(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(empresa)
+
+        elif self.__pesFun.radBtnCnpj.isChecked():
+            empresa = dao.pesquisaCnpj(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(empresa)
+
+        elif self.__pesFun.radBtnIncrisaoEstadual.isChecked():
+            empresa = dao.pesquisaInscEstadual(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(empresa)
+        else:
+            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+
+
+    def setarTabelaPesquisaFun(self, empresa):
+        qtde_registros = len(empresa)
+        self.__pesFun.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in empresa:
+            # capturando os dados da tupla
+
+            cod = pesqui[0]
+            fantasia = pesqui[1]
+            razao = pesqui[2]
+            cpnj = pesqui[3]
+            inscricao = pesqui[4]
+            endereco = pesqui[5]
+            numero = pesqui[6]
+            bairro = pesqui[7]
+            cidade = pesqui[8]
+            estado = pesqui[9]
+            cep = pesqui[10]
+
+            # preenchendo o grid de pesquisa
+            self.__pesFun.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(cod)))
+            self.__pesFun.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
+            self.__pesFun.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesFun.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpnj)))
+            self.__pesFun.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscricao)))
+            self.__pesFun.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesFun.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesFun.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesFun.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesFun.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesFun.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(cep)))
+
+            linha += 1
+
+    def setarFornecedor(self):
+        itens = []
+        for item in self.__pesFun.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codEmpresa = str(itens[0])
+        fantasia = str(itens[1])
+        razao = str(itens[2])
+        cpnj = str(itens[3])
+        inscricao = str(itens[4])
+
+        self.ui.txtIdEmitente.setText(codEmpresa)
+        self.ui.txtNomeEmitente.setText(fantasia)
+        self.ui.txtRazaoSocialEmitente.setText(razao)
+        self.ui.txtCnpjEmitente.setText(cpnj)
+        self.ui.txtInscricaoEstaduaEmitente.setText(inscricao)
+
+        self.dialogFun.close()
+
+    def consultarMotorista(self):
+        self.dialogMot = QDialog(self)
+        self.__pesMot = Ui_frmConsultarMotoristas()
+        self.__pesMot.setupUi(self.dialogMot)
+
+        self.__pesMot.txtPesquisar.returnPressed.connect(self.pesquisarMotorista)
+        self.__pesMot.btnPesquisar.clicked.connect(self.pesquisarMotorista)
+        self.__pesMot.tabPesquisar.doubleClicked.connect(self.setarMotorista)
+
+        self.dialogMot.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogMot.exec_()
+
+    def pesquisarMotorista(self):
+        dao = PesquisarMotoristaDao()
+        if self.__pesMot.radBtnCodigo.isChecked():
+
+            empresa = dao.pesquisarCodigoMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(empresa)
+            print(empresa)
+
+        elif self.__pesMot.radBtnNome.isChecked():
+            empresa = dao.pesquisarNomeMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(empresa)
+
+        elif self.__pesMot.radBtnRg.isChecked():
+            empresa = dao.pesquisarRgMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(empresa)
+
+        elif self.__pesMot.radBtnCpf.isChecked():
+            empresa = dao.pesquisarCpfMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(empresa)
+
+        elif self.__pesMot.radBtnNumCarteira.isChecked():
+            empresa = dao.pesquisarCnhMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(empresa)
+        else:
+            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+
+
+    def setarTabelaPesquisaMot(self, empresa):
+        qtde_registros = len(empresa)
+        self.__pesMot.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in empresa:
+            # capturando os dados da tupla
+
+            cod = pesqui[0]
+            nome = pesqui[1]
+            rg = pesqui[2]
+            cpf = pesqui[3]
+            endereco = pesqui[4]
+            numero = pesqui[5]
+            bairro = pesqui[6]
+            cidade = pesqui[7]
+            estado = pesqui[8]
+            cep = pesqui[9]
+            marca = pesqui[10]
+            modelo = pesqui[11]
+            placa = pesqui[12]
+
+            # preenchendo o grid de pesquisa
+            self.__pesMot.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(cod)))
+            self.__pesMot.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesMot.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesMot.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesMot.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesMot.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesMot.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesMot.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesMot.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesMot.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesMot.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(marca)))
+            self.__pesMot.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(modelo)))
+            self.__pesMot.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(placa)))
+
+
+            linha += 1
+
+    def setarMotorista(self):
+        itens = []
+        for item in self.__pesFun.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        cod = str(itens[0])
+        nome = str(itens[1])
+        rg = str(itens[2])
+        cpf = str(itens[3])
+        marca = str(itens[4])
+        modelo = str(itens[4])
+        placa = str(itens[4])
+
+
+        self.ui.txtidMotorista.setText(cod)
+        self.ui.txtNomeMotorista.setText(nome)
+        self.ui.txtRg.setText(rg)
+        self.ui.txtCpf.setText(cpf)
+        self.ui.txtMarca.setText(marca)
+        self.ui.txtModelo.setText(modelo)
+        self.ui.txtPlaca.setText(placa)
+
+        self.dialogMot.close()
