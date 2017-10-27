@@ -389,8 +389,7 @@ class Ui_frmEntradaNotaRomaneios(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtValorTotal.setPalette(palette)
         self.txtValorTotal.setFocusPolicy(QtCore.Qt.StrongFocus)
-        self.txtValorTotal.setMaxLength(17)
-        self.txtValorTotal.setCursorPosition(17)
+        self.txtValorTotal.setMaxLength(14)
         self.txtValorTotal.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorTotal.setObjectName(_fromUtf8("txtValorTotal"))
 
@@ -814,7 +813,7 @@ class Ui_frmEntradaNotaRomaneios(object):
         self.lblDataEmissao.setText(_translate("frmEntradaNotaRomaneios", "Data Emissão", None))
         self.txtValorTotal.setToolTip(_translate("frmEntradaNotaRomaneios", "Valor Total Nota Fiscal", None))
         self.txtValorTotal.setWhatsThis(_translate("frmEntradaNotaRomaneios", "Campo do valor total da Nota Fiscal", None))
-        self.txtValorTotal.setInputMask(_translate("frmEntradaNotaRomaneios", "R$ 00000000000,00; ", None))
+        self.txtValorTotal.setInputMask(_translate("frmEntradaNotaRomaneios", "00000000000,00; ", None))
         self.lblValorTotal.setText(_translate("frmEntradaNotaRomaneios", "Valor Total Nota Fiscal", None))
         self.txtDataEmissao.setToolTip(_translate("frmEntradaNotaRomaneios", "Data Emissão", None))
         self.txtDataEmissao.setWhatsThis(_translate("frmEntradaNotaRomaneios", "Campo de data da emissão da Nota Fiscal", None))

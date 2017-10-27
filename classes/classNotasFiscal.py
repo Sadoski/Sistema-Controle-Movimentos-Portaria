@@ -31,6 +31,10 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtFantasiaDestinatario.editingFinished.connect(self.pesquisarEmpresa)
         self.ui.txtNomeMotorista.editingFinished.connect(self.pesquisarMotorista)
 
+        self.ui.txtNomeEmitente.textChanged.connect(self.upperCaseEmitente)
+        self.ui.txtFantasiaDestinatario.textChanged.connect(self.upperCaseDestinatario)
+        self.ui.txtNomeMotorista.textChanged.connect(self.upperCaseMotorista)
+
         self.ui.txtNomeEmitente.returnPressed.connect(self.focusEmpresa)
         self.ui.txtFantasiaDestinatario.returnPressed.connect(self.focusMotorista)
         self.ui.txtNomeMotorista.returnPressed.connect(self.focusNumNota)
@@ -38,6 +42,9 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorTotal.returnPressed.connect(self.focusNumRomaneio)
         self.ui.txtNumeroRomaneio.returnPressed.connect(self.focusMetragem)
         self.ui.txtQuantidade.returnPressed.connect(self.focusValorUnitario)
+
+        self.ui.txtValorTotal.cursorPositionChanged.connect(self.positionCursor)
+        self.ui.txtValorTotal.textChanged.connect(self.positionCursor)
 
         self.ui.btnPesquisarDestinatario.clicked.connect(self.consultarEmpresa)
         self.ui.btnPesquisarEmitente.clicked.connect(self.consultarFornecedor)
@@ -51,6 +58,49 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.btnNovo.clicked.connect(self.botoesNovo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelarCad)
+
+    def upperCaseEmitente(self):
+        text = self.ui.txtNomeEmitente.text().upper()
+        self.ui.txtNomeEmitente.setText(text)
+
+    def upperCaseDestinatario(self):
+        text = self.ui.txtFantasiaDestinatario.text().upper()
+        self.ui.txtFantasiaDestinatario.setText(text)
+
+    def upperCaseMotorista(self):
+        text = self.ui.txtNomeMotorista.text().upper()
+        self.ui.txtNomeMotorista.setText(text)
+
+    def removerCaracterDin(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace('R', '')
+        i = i.replace('$', '')
+        i = i.replace(',', '')
+        i = i.replace(' ', '')
+        return i
+
+    def validate(self, input, pos):
+        sep = self.locale().decimalPoint()
+        if pos and (input[pos - 1] == sep) and (sep in input[pos:]):
+            # When we're left of the separator, and separator is entered again,
+            # remove the inserted separator and move right of the old separator.
+            input = input[:pos - 1] + input[pos:]
+            pos = input.find(sep) + 1
+        elif sep in input[:pos] and (len(input.split(sep)[1]) > self.decimals()):
+            # When we're right of the separator, and all decimal places are used already,
+            # go into overwrite mode (by removing the old digit)
+            input = input[:pos] + input[pos + 1:]
+        return QDoubleValidator.validate(self, input, pos)
+
+
+
+    def positionCursor(self):
+        texto = self.removerCaracterDin(self.ui.txtValorTotal.text())
+        a = self.ui.txtValorTotal.cursorPosition()
+        if texto == '' or texto != '':
+            self.ui.txtValorTotal.setCursorPosition(14)
+
 
 
 
@@ -808,14 +858,14 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.__pesEmp = Ui_frmConsultarEmpresa()
         self.__pesEmp.setupUi(self.dialogEmp)
 
-        self.__pesEmp.txtPesquisar.returnPressed.connect(self.pesquisarEmitente)
-        self.__pesEmp.btnPesquisar.clicked.connect(self.pesquisarEmitente)
+        self.__pesEmp.txtPesquisar.returnPressed.connect(self.pesquisarEmpresas)
+        self.__pesEmp.btnPesquisar.clicked.connect(self.pesquisarEmpresas)
         self.__pesEmp.tabPesquisar.doubleClicked.connect(self.setarEmpresa)
 
         self.dialogEmp.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogEmp.exec_()
 
-    def pesquisarEmitente(self):
+    def pesquisarEmpresas(self):
 
         if self.__pesEmp.radBtnCodigo.isChecked():
             dao = PesquisaEmpresaDao()
@@ -901,45 +951,41 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
         self.dialogEmp.close()
 
-
     def consultarFornecedor(self):
         self.dialogFun = QDialog(self)
         self.__pesFun = Ui_frmConsultarFornecedores()
         self.__pesFun.setupUi(self.dialogFun)
 
-        self.__pesFun.txtPesquisar.returnPressed.connect(self.pesquisarFornecedor)
-        self.__pesFun.btnPesquisar.clicked.connect(self.pesquisarFornecedor)
+        self.__pesFun.txtPesquisar.returnPressed.connect(self.pesquisarFornecedo)
+        self.__pesFun.btnPesquisar.clicked.connect(self.pesquisarFornecedo)
         self.__pesFun.tabPesquisar.doubleClicked.connect(self.setarFornecedor)
 
         self.dialogFun.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogFun.exec_()
 
-    def pesquisarFornecedor(self):
+    def pesquisarFornecedo(self):
         dao = PesquisarFornecedorDao()
         if self.__pesFun.radBtnCodigo.isChecked():
-
-            empresa = dao.pesquisaCodigo(self.__pesFun.txtPesquisar.text())
-            self.setarTabelaPesquisaFun(empresa)
-            print(empresa)
+            fornecedor = dao.pesquisaCodigo(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(fornecedor)
 
         elif self.__pesFun.radBtnFantasia.isChecked():
-            empresa = dao.pesquisaFantasia(self.__pesFun.txtPesquisar.text())
-            self.setarTabelaPesquisaFun(empresa)
+            fornecedor = dao.pesquisaFantasia(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(fornecedor)
 
         elif self.__pesFun.radBtnRazaoSocial.isChecked():
-            empresa = dao.pesquisaRazaoSocial(self.__pesFun.txtPesquisar.text())
-            self.setarTabelaPesquisaFun(empresa)
+            fornecedor = dao.pesquisaRazaoSocial(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(fornecedor)
 
         elif self.__pesFun.radBtnCnpj.isChecked():
-            empresa = dao.pesquisaCnpj(self.__pesFun.txtPesquisar.text())
-            self.setarTabelaPesquisaFun(empresa)
+            fornecedor = dao.pesquisaCnpj(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(fornecedor)
 
         elif self.__pesFun.radBtnIncrisaoEstadual.isChecked():
-            empresa = dao.pesquisaInscEstadual(self.__pesFun.txtPesquisar.text())
-            self.setarTabelaPesquisaFun(empresa)
+            fornecedor = dao.pesquisaInscEstadual(self.__pesFun.txtPesquisar.text())
+            self.setarTabelaPesquisaFun(fornecedor)
         else:
             QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
-
 
     def setarTabelaPesquisaFun(self, empresa):
         qtde_registros = len(empresa)
@@ -995,41 +1041,37 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
         self.dialogFun.close()
 
+
     def consultarMotorista(self):
         self.dialogMot = QDialog(self)
         self.__pesMot = Ui_frmConsultarMotoristas()
         self.__pesMot.setupUi(self.dialogMot)
 
-        self.__pesMot.txtPesquisar.returnPressed.connect(self.pesquisarMotorista)
-        self.__pesMot.btnPesquisar.clicked.connect(self.pesquisarMotorista)
+        self.__pesMot.txtPesquisar.returnPressed.connect(self.pesquisarMotoristas)
+        self.__pesMot.btnPesquisar.clicked.connect(self.pesquisarMotoristas)
         self.__pesMot.tabPesquisar.doubleClicked.connect(self.setarMotorista)
 
         self.dialogMot.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogMot.exec_()
 
-    def pesquisarMotorista(self):
+    def pesquisarMotoristas(self):
         dao = PesquisarMotoristaDao()
-        if self.__pesMot.radBtnCodigo.isChecked():
 
-            empresa = dao.pesquisarCodigoMotorista(self.__pesMot.txtPesquisar.text())
-            self.setarTabelaPesquisaMot(empresa)
-            print(empresa)
-
-        elif self.__pesMot.radBtnNome.isChecked():
-            empresa = dao.pesquisarNomeMotorista(self.__pesMot.txtPesquisar.text())
-            self.setarTabelaPesquisaMot(empresa)
+        if self.__pesMot.radBtnNome.isChecked():
+            motorista = dao.pesquisarNomeMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(motorista)
 
         elif self.__pesMot.radBtnRg.isChecked():
-            empresa = dao.pesquisarRgMotorista(self.__pesMot.txtPesquisar.text())
-            self.setarTabelaPesquisaMot(empresa)
+            motorista = dao.pesquisarRgMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(motorista)
 
         elif self.__pesMot.radBtnCpf.isChecked():
-            empresa = dao.pesquisarCpfMotorista(self.__pesMot.txtPesquisar.text())
-            self.setarTabelaPesquisaMot(empresa)
+            motorista = dao.pesquisarCpfMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(motorista)
 
         elif self.__pesMot.radBtnNumCarteira.isChecked():
-            empresa = dao.pesquisarCnhMotorista(self.__pesMot.txtPesquisar.text())
-            self.setarTabelaPesquisaMot(empresa)
+            motorista = dao.pesquisarCnhMotorista(self.__pesMot.txtPesquisar.text())
+            self.setarTabelaPesquisaMot(motorista)
         else:
             QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
 
@@ -1076,16 +1118,22 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
     def setarMotorista(self):
         itens = []
-        for item in self.__pesFun.tabPesquisar.selectedItems():
+        for item in self.__pesMot.tabPesquisar.selectedItems():
             itens.append(item.text())
 
-        cod = str(itens[0])
-        nome = str(itens[1])
-        rg = str(itens[2])
-        cpf = str(itens[3])
-        marca = str(itens[4])
-        modelo = str(itens[4])
-        placa = str(itens[4])
+        cod = itens[0]
+        nome = itens[1]
+        rg = itens[2]
+        cpf = itens[3]
+        endereco = itens[4]
+        numero = itens[5]
+        bairro = itens[6]
+        cidade = itens[7]
+        estado = itens[8]
+        cep = itens[9]
+        marca = itens[10]
+        modelo = itens[11]
+        placa = itens[12]
 
 
         self.ui.txtidMotorista.setText(cod)

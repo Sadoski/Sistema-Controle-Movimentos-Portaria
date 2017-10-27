@@ -31,7 +31,6 @@ class Ui_frmConsultarFornecedores(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmConsultarFornecedores.setFont(font)
-
         self.txtPesquisar = QtGui.QLineEdit(frmConsultarFornecedores)
         self.txtPesquisar.setGeometry(QtCore.QRect(300, 70, 441, 25))
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))
@@ -54,7 +53,7 @@ class Ui_frmConsultarFornecedores(object):
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
 
         self.radBtnFantasia = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnFantasia.setGeometry(QtCore.QRect(10, 38, 81, 23))
+        self.radBtnFantasia.setGeometry(QtCore.QRect(10, 40, 81, 23))
         self.radBtnFantasia.setObjectName(_fromUtf8("radBtnFantasia"))
 
         self.radBtnRazaoSocial = QtGui.QRadioButton(self.grbTipoPesquisa)
@@ -62,15 +61,15 @@ class Ui_frmConsultarFornecedores(object):
         self.radBtnRazaoSocial.setObjectName(_fromUtf8("radBtnRazaoSocial"))
 
         self.radBtnCnpj = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnCnpj.setGeometry(QtCore.QRect(130, 13, 61, 23))
+        self.radBtnCnpj.setGeometry(QtCore.QRect(130, 17, 61, 23))
         self.radBtnCnpj.setObjectName(_fromUtf8("radBtnCnpj"))
 
         self.radBtnIncrisaoEstadual = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnIncrisaoEstadual.setGeometry(QtCore.QRect(130, 37, 141, 23))
+        self.radBtnIncrisaoEstadual.setGeometry(QtCore.QRect(130, 41, 141, 23))
         self.radBtnIncrisaoEstadual.setObjectName(_fromUtf8("radBtnIncrisaoEstadual"))
 
         self.radBtnCodigo = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnCodigo.setGeometry(QtCore.QRect(10, 15, 81, 23))
+        self.radBtnCodigo.setGeometry(QtCore.QRect(10, 20, 82, 17))
         self.radBtnCodigo.setObjectName(_fromUtf8("radBtnCodigo"))
 
         self.tabPesquisar = QtGui.QTableWidget(frmConsultarFornecedores)
@@ -78,7 +77,6 @@ class Ui_frmConsultarFornecedores(object):
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
         self.tabPesquisar.setColumnCount(11)
-        self.tabPesquisar.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(0, item)
         item = QtGui.QTableWidgetItem()
@@ -105,7 +103,6 @@ class Ui_frmConsultarFornecedores(object):
         self.tabPesquisar.setSelectionBehavior(self.tabPesquisar.SelectRows)
         self.tabPesquisar.setSelectionMode(self.tabPesquisar.SingleSelection)
         self.lblPesquisar.setBuddy(self.txtPesquisar)
-
         self.retranslateUi(frmConsultarFornecedores)
         QtCore.QMetaObject.connectSlotsByName(frmConsultarFornecedores)
         frmConsultarFornecedores.setTabOrder(self.txtPesquisar, self.btnPesquisar)
@@ -124,7 +121,6 @@ class Ui_frmConsultarFornecedores(object):
         self.radBtnCnpj.setText(_translate("frmConsultarFornecedores", "CNPJ", None))
         self.radBtnIncrisaoEstadual.setToolTip(_translate("frmConsultarFornecedores", "Inscrição Estadual", None))
         self.radBtnIncrisaoEstadual.setText(_translate("frmConsultarFornecedores", "Inscrição Estadual", None))
-        self.radBtnCodigo.setToolTip(_translate("frmConsultarFornecedores", "Fantasia", None))
         self.radBtnCodigo.setText(_translate("frmConsultarFornecedores", "Cod.", None))
         item = self.tabPesquisar.horizontalHeaderItem(0)
         item.setText(_translate("frmConsultarFornecedores", "Cod.", None))

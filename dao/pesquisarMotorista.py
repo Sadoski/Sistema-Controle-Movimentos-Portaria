@@ -17,7 +17,7 @@ class PesquisarMotoristaDao(object):
 
     def pesquisarCodigoMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.expeditor, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.id_motorista = '"+motorista+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()
@@ -29,7 +29,7 @@ class PesquisarMotoristaDao(object):
 
     def pesquisarNomeMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.expeditor, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.nome = '"+motorista+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()
@@ -41,7 +41,7 @@ class PesquisarMotoristaDao(object):
 
     def pesquisarCpfMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.expeditor, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cpf = '"+motorista+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()
@@ -53,7 +53,7 @@ class PesquisarMotoristaDao(object):
 
     def pesquisarRgMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.expeditor, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.rg = '"+motorista+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()
@@ -65,7 +65,7 @@ class PesquisarMotoristaDao(object):
 
     def pesquisarCnhMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.expeditor, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, m.nome, m.rg, m.cpf, m.endereco, m.numero, m.bairro,  c.nome, e.nome, c.cep, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.cnh = '"+motorista+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()

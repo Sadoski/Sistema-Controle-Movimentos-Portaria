@@ -16,12 +16,22 @@ class Login(QtGui.QDialog):
         self._ui.setupUi(self)
         self._logarDao = LogarDao()
 
+        self._ui.txtUsuario.textChanged.connect(self.upperCaseUsuario)
+        self._ui.txtSenha.textChanged.connect(self.upperCaseSenha)
 
         self._ui.btnLogin.clicked.connect(self._login)
         self._ui.btnSair.clicked.connect(self._sair)
         self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
 
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
+
+    def upperCaseUsuario(self):
+        text = self._ui.txtUsuario.text()
+        self._ui.txtUsuario.setText(text.upper())
+
+    def upperCaseSenha(self):
+        text = self._ui.txtSenha.text()
+        self._ui.txtSenha.setText(text.upper())
 
     def focusSenha(self):
         self._ui.txtSenha.setFocus()
