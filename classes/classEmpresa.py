@@ -49,6 +49,54 @@ class Empresa(QtGui.QDialog):
 
         self._ui.tbPesquisa.doubleClicked.connect(self.tablePesquisa)
 
+        self._ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
+        self._ui.txtTelefone.cursorPositionChanged.connect(self.positionCursorTelefone)
+        self._ui.txtCnpj.cursorPositionChanged.connect(self.positionCursorCnpj)
+
+        self._ui.txtFantasia.textChanged.connect(self.upperFantasia)
+        self._ui.txtRazaoSocial.textChanged.connect(self.upperRazao)
+        self._ui.txtEndereco.textChanged.connect(self.upperEndereco)
+        self._ui.txtNumero.textChanged.connect(self.upperNumero)
+        self._ui.txtComplemento.textChanged.connect(self.upperComplemento)
+        self._ui.txtBairro.textChanged.connect(self.upperBairro)
+
+
+    def upperFantasia(self):
+        self._ui.txtFantasia.setText(self._ui.txtFantasia.text().upper())
+
+    def upperRazao(self):
+        self._ui.txtRazaoSocial.setText(self._ui.txtRazaoSocial.text().upper())
+
+    def upperEndereco(self):
+        self._ui.txtEndereco.setText(self._ui.txtEndereco.text().upper())
+
+    def upperNumero(self):
+        self._ui.txtNumero.setText(self._ui.txtNumero.text().upper())
+
+    def upperComplemento(self):
+        self._ui.txtComplemento.setText(self._ui.txtComplemento.text().upper())
+
+    def upperBairro(self):
+        self._ui.txtBairro.setText(self._ui.txtBairro.text().upper())
+
+
+    def positionCursorCep(self):
+        texto = self.removerCaracter(self._ui.txtCep.text())
+        a = self._ui.txtCep.cursorPosition()
+        if texto == '' :
+            self._ui.txtCep.setCursorPosition(0)
+
+    def positionCursorTelefone(self):
+        texto = self.removerCaracter(self._ui.txtTelefone.text())
+        self._ui.txtTelefone.cursorPosition()
+        if texto == '' :
+            self._ui.txtTelefone.setCursorPosition(1)
+
+    def positionCursorCnpj(self):
+        texto = self.removerCaracter(self._ui.txtCnpj.text())
+        a = self._ui.txtCnpj.cursorPosition()
+        if texto == '' :
+            self._ui.txtCnpj.setCursorPosition(0)
 
     def focusCnpj(self):
         self._ui.txtCnpj.setFocus()

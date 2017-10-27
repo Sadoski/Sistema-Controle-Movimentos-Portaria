@@ -42,6 +42,54 @@ class CadastroFornecedores(QtGui.QDialog):
 
         self.ui.tbPesquisa.doubleClicked.connect(self.tablePesquisa)
 
+        self.ui.txtFantasiaFornecedor.textChanged.connect(self.upperFantasia)
+        self.ui.txtRazaoSocialFornecedor.textChanged.connect(self.upperRazao)
+        self.ui.txtEnderecoFornecedor.textChanged.connect(self.upperEndereco)
+        self.ui.txtNumeroFornecedor.textChanged.connect(self.upperNumero)
+        self.ui.txtComplementoFornecedor.textChanged.connect(self.upperComplemento)
+        self.ui.txtBairroFornecedor.textChanged.connect(self.upperBairro)
+
+        self.ui.txtCepFornecedor.cursorPositionChanged.connect(self.positionCursorCep)
+        self.ui.txtTelefoneFornecedor.cursorPositionChanged.connect(self.positionCursorTelefone)
+        self.ui.txtCnpjFornecedor.cursorPositionChanged.connect(self.positionCursorCnpj)
+
+    def upperFantasia(self):
+        self.ui.txtFantasiaFornecedor.setText(self.ui.txtFantasiaFornecedor.text().upper())
+
+    def upperRazao(self):
+        self.ui.txtRazaoSocialFornecedor.setText(self.ui.txtRazaoSocialFornecedor.text().upper())
+
+    def upperEndereco(self):
+        self.ui.txtEnderecoFornecedor.setText(self.ui.txtEnderecoFornecedor.text().upper())
+
+    def upperNumero(self):
+        self.ui.txtNumeroFornecedor.setText(self.ui.txtNumeroFornecedor.text().upper())
+
+    def upperComplemento(self):
+        self.ui.txtComplementoFornecedor.setText(self.ui.txtComplementoFornecedor.text().upper())
+
+    def upperBairro(self):
+        self.ui.txtBairroFornecedor.setText(self.ui.txtBairroFornecedor.text().upper())
+
+    def positionCursorCnpj(self):
+        texto = self.removerCaracter(self.ui.txtCnpjFornecedor.text())
+        a = self.ui.txtCnpjFornecedor.cursorPosition()
+        print(a)
+        if texto == '':
+            self.ui.txtCnpjFornecedor.setCursorPosition(0)
+
+    def positionCursorCep(self):
+        texto = self.removerCaracter(self.ui.txtCepFornecedor.text())
+        a = self.ui.txtCepFornecedor.cursorPosition()
+        if texto == '':
+            self.ui.txtCepFornecedor.setCursorPosition(0)
+
+
+    def positionCursorTelefone(self):
+        texto = self.removerCaracter(self.ui.txtTelefoneFornecedor.text())
+        a = self.ui.txtTelefoneFornecedor.cursorPosition()
+        if texto == '':
+            self.ui.txtTelefoneFornecedor.setCursorPosition(1)
 
     def focusCnpjFornecedor(self):
         self.ui.txtCnpjFornecedor.setFocus()

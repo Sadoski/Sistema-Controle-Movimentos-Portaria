@@ -44,6 +44,73 @@ class CadastroMotoristas(QtGui.QDialog):
 
         self.ui.tbPesquisa.doubleClicked.connect(self.tablePesquisa)
 
+        self.ui.txtNomeMotorista.textChanged.connect(self.upperNome)
+        self.ui.txtExpeditor.textChanged.connect(self.upperExpeditor)
+        self.ui.txtEndereco.textChanged.connect(self.upperEndereco)
+        self.ui.txtNumero.textChanged.connect(self.upperNumero)
+        self.ui.txtComplemento.textChanged.connect(self.upperComplemento)
+        self.ui.txtBairro.textChanged.connect(self.upperBairro)
+        self.ui.txtMarca.textChanged.connect(self.upperMarca)
+        self.ui.txtModelo.textChanged.connect(self.upperModelo)
+        self.ui.txtPlaca.textChanged.connect(self.upperPlaca)
+
+        self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
+        self.ui.txtTelefone.cursorPositionChanged.connect(self.positionCursorTelefone)
+        self.ui.txtCelular.cursorPositionChanged.connect(self.positionCursorCelular)
+        self.ui.txtPlaca.cursorPositionChanged.connect(self.positionCursorPlaca)
+
+
+    def positionCursorCep(self):
+        texto = self.removerCaracter(self.ui.txtCep.text())
+        a = self.ui.txtCep.cursorPosition()
+        if texto == '':
+            self.ui.txtCep.setCursorPosition(0)
+
+    def positionCursorTelefone(self):
+        texto = self.removerCaracter(self.ui.txtTelefone.text())
+        a = self.ui.txtTelefone.cursorPosition()
+        if texto == '':
+            self.ui.txtTelefone.setCursorPosition(1)
+
+    def positionCursorCelular(self):
+        texto = self.removerCaracter(self.ui.txtCelular.text())
+        a = self.ui.txtCelular.cursorPosition()
+        if texto == '':
+            self.ui.txtCelular.setCursorPosition(1)
+
+    def positionCursorPlaca(self):
+        texto = self.removerCaracter(self.ui.txtPlaca.text())
+        a = self.ui.txtPlaca.cursorPosition()
+        if texto == '':
+            self.ui.txtPlaca.setCursorPosition(0)
+
+    def upperNome(self):
+        self.ui.txtNomeMotorista.setText(self.ui.txtNomeMotorista.text().upper())
+
+    def upperExpeditor(self):
+        self.ui.txtExpeditor.setText(self.ui.txtExpeditor.text().upper())
+
+    def upperEndereco(self):
+        self.ui.txtEndereco.setText(self.ui.txtEndereco.text().upper())
+
+    def upperNumero(self):
+        self.ui.txtNumero.setText(self.ui.txtNumero.text().upper())
+
+    def upperComplemento(self):
+        self.ui.txtComplemento.setText(self.ui.txtComplemento.text().upper())
+
+    def upperMarca(self):
+        self.ui.txtMarca.setText(self.ui.txtMarca.text().upper())
+
+    def upperModelo(self):
+        self.ui.txtModelo.setText(self.ui.txtModelo.text().upper())
+
+    def upperPlaca(self):
+        self.ui.txtPlaca.setText(self.ui.txtPlaca.text().upper())
+
+    def upperBairro(self):
+        self.ui.txtBairro.setText(self.ui.txtBairro.text().upper())
+
     def focusDataNacimento(self):
         self.ui.txtDataNascimento.setFocus()
 

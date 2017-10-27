@@ -642,7 +642,7 @@ class Ui_frmCadastroFornecedor(object):
         self.lblComplementoFornecedor.setText(_translate("frmCadastroFornecedor", "Complemento", None))
         self.txtTelefoneFornecedor.setToolTip(_translate("frmCadastroFornecedor", "Telefone fornecedor", None))
         self.txtTelefoneFornecedor.setWhatsThis(_translate("frmCadastroFornecedor", "Campo do numero de cantato de telefone da fornecedor", None))
-        self.txtTelefoneFornecedor.setInputMask(_translate("frmCadastroFornecedor", "(00) 00000-0000; ", None))
+        self.txtTelefoneFornecedor.setInputMask(_translate("frmCadastroFornecedor", "(00)00000-0000; ", None))
         self.txtCnpjFornecedor.setToolTip(_translate("frmCadastroFornecedor", "CNPJ fornecedor", None))
         self.txtCnpjFornecedor.setWhatsThis(_translate("frmCadastroFornecedor", "Campo do numero do CNPJ da fornecedor", None))
         self.txtCnpjFornecedor.setInputMask(_translate("frmCadastroFornecedor", "00.000.000/0000-00; ", None))

@@ -15,6 +15,8 @@ from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
 from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
+from telas.frmMesagemSair import Ui_frmMensagemSair
+from telas.frmMesagemTrocaUsuario import Ui_frmMensagemTrocaUsuario
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
 from .classCadFornecedor import CadastroFornecedores
@@ -40,8 +42,8 @@ class Principal(QtGui.QMainWindow):
         self.timer.timeout.connect(self.displayTime)
         self.timer.start()
 
-        self.ui.menuSair.triggered.connect(self._mensagem)
-        self.ui.menuLogout.triggered.connect(self._logout)
+        self.ui.menuSair.triggered.connect(self._sair)
+        self.ui.menuLogout.triggered.connect(self._trocarUsuario)
         self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
         self.ui.subMenuCadastroFuncionarios.triggered.connect(self._cadastroFuncionario)
         self.ui.subMenuCadastroFornecedor.triggered.connect(self._cadastroFornecedor)
@@ -126,40 +128,46 @@ class Principal(QtGui.QMainWindow):
     def displayTime(self):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
 
-    def _mensagem(self):
-        msgBox = QMessageBox()
-        msgBox.iconPixmap()
-        msgBox.setIcon(QMessageBox.Question)
-        msgBox.setWindowTitle('Mensagem')
-        msgBox.setText('Deseja sair do Programa')
-        msgBox.setStandardButtons(QMessageBox.Yes)
-        #msgBox.addButton(QtGui.QPushButton('Sim'), QtGui.QMessageBox.YesRole)
-        #msgBox.addButton(QtGui.QPushButton('Não'), QtGui.QMessageBox.NoRole)
-        msgBox.buttonClicked.connect(self.fechar)
-        ret = msgBox.exec_()
-        if ret == QMessageBox.Yes:
-            self.fechar()
+    def _sair(self):
+        self.dialogMensagem = QDialog(self)
+        self.__mesagem = Ui_frmMensagemSair()
+        self.__mesagem.setupUi(self.dialogMensagem)
+
+        self.__mesagem.btnSim.clicked.connect(self.fechar)
+        self.__mesagem.btnNao.clicked.connect(self.closeMesagem)
+
+
+        self.dialogMensagem.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogMensagem.exec_()
 
     def fechar(self):
         sys.exit(0)
 
+    def closeMesagem(self):
+        self.dialogMensagem.close()
+
+    def _trocarUsuario(self):
+        self.dialogTrocaUsuario = QDialog(self)
+        self.__trocaUsuario = Ui_frmMensagemTrocaUsuario()
+        self.__trocaUsuario.setupUi(self.dialogTrocaUsuario)
+
+        self.__trocaUsuario.btnSim.clicked.connect(self._logout)
+        self.__trocaUsuario.btnNao.clicked.connect(self.closeTrocaUsuario)
 
 
-    def _sair(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        result.addButton(QtGui.QPushButton('Sim'), QMessageBox.YesRole)
-        if result == QMessageBox.Yes:
-            sys.exit(0)
+        self.dialogTrocaUsuario.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogTrocaUsuario.exec_()
 
     def _logout(self):
-        w = QWidget()
-        sair = QtGui.QMessageBox.question(w, 'Atenção', "Você tem certeza que deseja trocar de usuário", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if sair == QtGui.QMessageBox.Yes:
+            self.dialogTrocaUsuario.close()
             from classes.classLogin import Login
             self.close()
             _login = Login()
             _login.show()
             _login.exec_()
+
+    def closeTrocaUsuario(self):
+        self.dialogTrocaUsuario.close()
 
     def _cadastroEmpresa(self):
         _empresa = Empresa()

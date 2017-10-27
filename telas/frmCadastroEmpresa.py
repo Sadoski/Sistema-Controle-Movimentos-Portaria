@@ -122,7 +122,7 @@ class Ui_frmCadastroEmpresa(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtTelefone.setPalette(palette)
         self.txtTelefone.setInputMethodHints(QtCore.Qt.ImhFormattedNumbersOnly|QtCore.Qt.ImhHiddenText|QtCore.Qt.ImhPreferUppercase|QtCore.Qt.ImhUppercaseOnly)
-        self.txtTelefone.setCursorPosition(1)
+        self.txtTelefone.setInputMask(_fromUtf8("(00)00000-0000; "))
         self.txtTelefone.setObjectName(_fromUtf8("txtTelefone"))
 
         self.txtCnpj = QtGui.QLineEdit(self.grubTextos)
@@ -566,7 +566,7 @@ class Ui_frmCadastroEmpresa(object):
         self.lblComplemento.setText(_translate("frmCadastroEmpresa", "Complemento", None))
         self.txtTelefone.setToolTip(_translate("frmCadastroEmpresa", "Telefone", None))
         self.txtTelefone.setWhatsThis(_translate("frmCadastroEmpresa", "Campo do numero de cantato de telefone da empresa", None))
-        self.txtTelefone.setInputMask(_translate("frmCadastroEmpresa", "(00) 00000-0000; ", None))
+        self.txtTelefone.setInputMask(_translate("frmCadastroEmpresa", "(00)00000-0000; ", None))
         self.txtCnpj.setToolTip(_translate("frmCadastroEmpresa", "CNPJ", None))
         self.txtCnpj.setWhatsThis(_translate("frmCadastroEmpresa", "Campo do numero do CNPJ da empresa", None))
         self.txtCnpj.setInputMask(_translate("frmCadastroEmpresa", "00.000.000/0000-00; ", None))

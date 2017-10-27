@@ -7,6 +7,7 @@ from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
 from classes.classPrincipal import Principal
+from telas.frmMesagemSair import Ui_frmMensagemSair
 
 
 class Login(QtGui.QDialog):
@@ -26,12 +27,10 @@ class Login(QtGui.QDialog):
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
 
     def upperCaseUsuario(self):
-        text = self._ui.txtUsuario.text()
-        self._ui.txtUsuario.setText(text.upper())
+        self._ui.txtUsuario.setText(self._ui.txtUsuario.text().upper())
 
     def upperCaseSenha(self):
-        text = self._ui.txtSenha.text()
-        self._ui.txtSenha.setText(text.upper())
+        self._ui.txtSenha.setText(self._ui.txtSenha.text().upper())
 
     def focusSenha(self):
         self._ui.txtSenha.setFocus()
@@ -56,12 +55,23 @@ class Login(QtGui.QDialog):
 
 
     def _sair(self):
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Deseja sair do Programa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            sys.exit(0)
+        self.dialogMensagem = QDialog(self)
+        self.__mesagem = Ui_frmMensagemSair()
+        self.__mesagem.setupUi(self.dialogMensagem)
 
-            
+        self.__mesagem.btnSim.clicked.connect(self.fechar)
+        self.__mesagem.btnNao.clicked.connect(self.closeMesagem)
+
+
+        self.dialogMensagem.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogMensagem.exec_()
+
+    def fechar(self):
+        sys.exit(0)
+
+    def closeMesagem(self):
+        self.dialogMensagem.close()
+
     def _esqueciSenha(self):
         pass
 

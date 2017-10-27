@@ -60,12 +60,10 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.btnCancelar.clicked.connect(self.cancelarCad)
 
     def upperCaseEmitente(self):
-        text = self.ui.txtNomeEmitente.text().upper()
-        self.ui.txtNomeEmitente.setText(text)
+        self.ui.txtNomeEmitente.setText(self.ui.txtNomeEmitente.text().upper())
 
     def upperCaseDestinatario(self):
-        text = self.ui.txtFantasiaDestinatario.text().upper()
-        self.ui.txtFantasiaDestinatario.setText(text)
+        self.ui.txtFantasiaDestinatario.setText(self.ui.txtFantasiaDestinatario.text().upper())
 
     def upperCaseMotorista(self):
         text = self.ui.txtNomeMotorista.text().upper()
@@ -80,28 +78,12 @@ class CadastroNotaFiscal(QtGui.QDialog):
         i = i.replace(' ', '')
         return i
 
-    def validate(self, input, pos):
-        sep = self.locale().decimalPoint()
-        if pos and (input[pos - 1] == sep) and (sep in input[pos:]):
-            # When we're left of the separator, and separator is entered again,
-            # remove the inserted separator and move right of the old separator.
-            input = input[:pos - 1] + input[pos:]
-            pos = input.find(sep) + 1
-        elif sep in input[:pos] and (len(input.split(sep)[1]) > self.decimals()):
-            # When we're right of the separator, and all decimal places are used already,
-            # go into overwrite mode (by removing the old digit)
-            input = input[:pos] + input[pos + 1:]
-        return QDoubleValidator.validate(self, input, pos)
-
-
 
     def positionCursor(self):
         texto = self.removerCaracterDin(self.ui.txtValorTotal.text())
         a = self.ui.txtValorTotal.cursorPosition()
         if texto == '' or texto != '':
             self.ui.txtValorTotal.setCursorPosition(14)
-
-
 
 
     def focusEmpresa(self):
@@ -284,8 +266,11 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
     def delDescricaoProduto(self):
         index = self.ui.tbProduto.currentRow()
-        self.ui.tbProduto.removeRow(index)
-        del self.desc[index]
+        a = self.ui.tbProduto.removeRow(index)
+        if index >= 0:
+            del self.desc[index]
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
 
     def cadastrarNotaFiscal(self):
