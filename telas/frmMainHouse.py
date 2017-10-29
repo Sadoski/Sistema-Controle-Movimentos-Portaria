@@ -69,9 +69,15 @@ class Ui_frmMainHouse(object):
         self.menuMovimentoPortaria.setObjectName(_fromUtf8("menuMovimentoPortaria"))
 
         self.subMenuDescarregamento = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/descarregamento.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuDescarregamento.setIcon(icon)
         self.subMenuDescarregamento.setObjectName(_fromUtf8("subMenuDescarregamento"))
 
         self.subMenuCarregamentos = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carregamento.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCarregamentos.setIcon(icon)
         self.subMenuCarregamentos.setObjectName(_fromUtf8("subMenuCarregamentos"))
 
         self.submMenuEntradaSaidaVeiculosLeves = QtGui.QMenu(self.menuMovimentoPortaria)
@@ -115,15 +121,27 @@ class Ui_frmMainHouse(object):
         frmMainHouse.setStatusBar(self.statusbar)
         self.subMenuCadastroEmpresa = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroEmpresa.setEnabled(True)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/company.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCadastroEmpresa.setIcon(icon)
         self.subMenuCadastroEmpresa.setObjectName(_fromUtf8("subMenuCadastroEmpresa"))
 
         self.subMenuCadastroFuncionarios = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/funcionario.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCadastroFuncionarios.setIcon(icon)
         self.subMenuCadastroFuncionarios.setObjectName(_fromUtf8("subMenuCadastroFuncionarios"))
 
         self.subMenuCadastroFornecedor = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/supplier.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCadastroFornecedor.setIcon(icon)
         self.subMenuCadastroFornecedor.setObjectName(_fromUtf8("subMenuCadastroFornecedor"))
 
         self.subMenuCadastroClintes = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/clientes.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCadastroClintes.setIcon(icon)
         self.subMenuCadastroClintes.setObjectName(_fromUtf8("subMenuCadastroClintes"))
 
         self.veicEmpSubMenuEntrada = QtGui.QAction(frmMainHouse)
@@ -157,17 +175,29 @@ class Ui_frmMainHouse(object):
         self.entSadMaquiSubMenuSaida.setObjectName(_fromUtf8("entSadMaquiSubMenuSaida"))
 
         self.menuSair = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/logout.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuSair.setIcon(icon)
         self.menuSair.setObjectName(_fromUtf8("menuSair"))
 
         self.subMenuSobre = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/info-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuSobre.setIcon(icon)
         self.subMenuSobre.setObjectName(_fromUtf8("subMenuSobre"))
 
         self.subMenuRelatorios = QtGui.QAction(frmMainHouse)
         self.subMenuRelatorios.setEnabled(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/relatorio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuRelatorios.setIcon(icon)
         self.subMenuRelatorios.setObjectName(_fromUtf8("subMenuRelatorios"))
 
         self.subMenuGraficos = QtGui.QAction(frmMainHouse)
         self.subMenuGraficos.setEnabled(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/garfico_linha.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuGraficos.setIcon(icon)
         self.subMenuGraficos.setObjectName(_fromUtf8("subMenuGraficos"))
 
         self.subMenuConsultasEmpresas = QtGui.QAction(frmMainHouse)
@@ -187,9 +217,15 @@ class Ui_frmMainHouse(object):
         self.subMenuConsultasMotoristas.setObjectName(_fromUtf8("subMenuConsultasMotoristas"))
 
         self.subMenuCadastroMotoristas = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/motorista.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuCadastroMotoristas.setIcon(icon)
         self.subMenuCadastroMotoristas.setObjectName(_fromUtf8("subMenuCadastroMotoristas"))
 
         self.subMenuEntradaNotasTeca = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/NF.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuEntradaNotasTeca.setIcon(icon)
         self.subMenuEntradaNotasTeca.setObjectName(_fromUtf8("subMenuEntradaNotasTeca"))
 
         self.subMenuConsultasNotas = QtGui.QAction(frmMainHouse)
@@ -268,18 +304,33 @@ class Ui_frmMainHouse(object):
         self.menuDescaOutrSaida.setObjectName(_fromUtf8("menuDescaOutrSaida"))
 
         self.menuDescaEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuDescaEntrada.setIcon(icon)
         self.menuDescaEntrada.setObjectName(_fromUtf8("menuDescaEntrada"))
 
         self.menuDescaSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuDescaSaida.setIcon(icon)
         self.menuDescaSaida.setObjectName(_fromUtf8("menuDescaSaida"))
 
         self.menuCarregEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuCarregEntrada.setIcon(icon)
         self.menuCarregEntrada.setObjectName(_fromUtf8("menuCarregEntrada"))
 
         self.menuCarregSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuCarregSaida.setIcon(icon)
         self.menuCarregSaida.setObjectName(_fromUtf8("menuCarregSaida"))
 
         self.menuLogout = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/peer_to_peer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuLogout.setIcon(icon)
         self.menuLogout.setObjectName(_fromUtf8("menuLogout"))
 
         self.menuSistema.addAction(self.menuLogout)

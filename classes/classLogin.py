@@ -25,6 +25,7 @@ class Login(QtGui.QDialog):
         #self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
 
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
+        self._ui.txtSenha.returnPressed.connect(self._login)
 
     def upperCaseUsuario(self):
         self._ui.txtUsuario.setText(self._ui.txtUsuario.text().upper())
