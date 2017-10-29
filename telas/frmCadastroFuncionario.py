@@ -32,6 +32,9 @@ class Ui_frmCadastroFuncionario(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFuncionario.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/funcionario.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmCadastroFuncionario.setWindowIcon(icon)
         frmCadastroFuncionario.setSizeGripEnabled(False)
         frmCadastroFuncionario.setModal(True)
 

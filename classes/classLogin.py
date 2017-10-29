@@ -22,7 +22,7 @@ class Login(QtGui.QDialog):
 
         self._ui.btnLogin.clicked.connect(self._login)
         self._ui.btnSair.clicked.connect(self._sair)
-        self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
+        #self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
 
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
 
@@ -55,7 +55,8 @@ class Login(QtGui.QDialog):
 
 
     def _sair(self):
-        self.dialogMensagem = QDialog(self)
+        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
+        self.dialogMensagem.setWindowModality(Qt.NonModal)
         self.__mesagem = Ui_frmMensagemSair()
         self.__mesagem.setupUi(self.dialogMensagem)
 

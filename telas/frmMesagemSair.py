@@ -31,6 +31,9 @@ class Ui_frmMensagemSair(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         frmMensagemSair.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmMensagemSair.setWindowIcon(icon)
 
         self.btnSim = QtGui.QPushButton(frmMensagemSair)
         self.btnSim.setGeometry(QtCore.QRect(33, 59, 75, 23))
@@ -56,7 +59,7 @@ class Ui_frmMensagemSair(object):
         QtCore.QMetaObject.connectSlotsByName(frmMensagemSair)
 
     def retranslateUi(self, frmMensagemSair):
-        frmMensagemSair.setWindowTitle(_translate("frmMensagemSair", "Atenção", None))
+        frmMensagemSair.setWindowTitle(_translate("frmMensagemSair", "Mensagem", None))
         self.btnSim.setText(_translate("frmMensagemSair", "Sim", None))
         self.btnNao.setText(_translate("frmMensagemSair", "Não", None))
         self.lblTexto.setText(_translate("frmMensagemSair", "Deseja sair do Programa?", None))

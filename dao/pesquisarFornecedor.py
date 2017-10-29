@@ -57,7 +57,7 @@ class PesquisarFornecedorDao(object):
 
     def pesquisaInscEstadual(self, pesquisa):
         try:
-            _sql = "SELECT f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, f.endereco, f.numero_endereco, f.bairro, c.nome, s.nome, c.cep FROM fornecedor f INNER JOIN cidade c ON c.id_cidade = f.id_cidades INNER JOIN estado s ON s.id_estado = c.id_estado INNER JOIN empresa e ON e.id_empresa = f.id_empresa WHERE f.cnpj, f.inscricao_estadual = '"+pesquisa+"'"
+            _sql = "SELECT f.id_fornecedor, f.fantasia, f.razao_social, f.cnpj, f.inscricao_estadual, f.endereco, f.numero_endereco, f.bairro, c.nome, s.nome, c.cep FROM fornecedor f INNER JOIN cidade c ON c.id_cidade = f.id_cidades INNER JOIN estado s ON s.id_estado = c.id_estado INNER JOIN empresa e ON e.id_empresa = f.id_empresa WHERE f.inscricao_estadual = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()

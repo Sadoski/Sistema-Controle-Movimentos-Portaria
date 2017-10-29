@@ -129,7 +129,7 @@ class Principal(QtGui.QMainWindow):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
 
     def _sair(self):
-        self.dialogMensagem = QDialog(self)
+        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.__mesagem = Ui_frmMensagemSair()
         self.__mesagem.setupUi(self.dialogMensagem)
 
@@ -147,7 +147,7 @@ class Principal(QtGui.QMainWindow):
         self.dialogMensagem.close()
 
     def _trocarUsuario(self):
-        self.dialogTrocaUsuario = QDialog(self)
+        self.dialogTrocaUsuario = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.__trocaUsuario = Ui_frmMensagemTrocaUsuario()
         self.__trocaUsuario.setupUi(self.dialogTrocaUsuario)
 
@@ -160,8 +160,8 @@ class Principal(QtGui.QMainWindow):
 
     def _logout(self):
             self.dialogTrocaUsuario.close()
-            from classes.classLogin import Login
             self.close()
+            from classes.classLogin import Login
             _login = Login()
             _login.show()
             _login.exec_()

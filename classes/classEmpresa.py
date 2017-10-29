@@ -82,21 +82,52 @@ class Empresa(QtGui.QDialog):
 
     def positionCursorCep(self):
         texto = self.removerCaracter(self._ui.txtCep.text())
-        a = self._ui.txtCep.cursorPosition()
-        if texto == '' :
+        if len(texto) == 0:
             self._ui.txtCep.setCursorPosition(0)
+        elif len(texto) <= 4:
+            b = len(texto)
+            self._ui.txtCep.setCursorPosition(b)
+        elif len(texto) >= 5 and len(texto) < 9:
+            b = len(texto) + 1
+            self._ui.txtCep.setCursorPosition(b)
+
 
     def positionCursorTelefone(self):
         texto = self.removerCaracter(self._ui.txtTelefone.text())
-        self._ui.txtTelefone.cursorPosition()
-        if texto == '' :
+        if len(texto) == 0:
             self._ui.txtTelefone.setCursorPosition(1)
+        elif len(texto) <= 1:
+            b = len(texto) + 1
+            self._ui.txtTelefone.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) < 7:
+            b = len(texto) + 2
+            self._ui.txtTelefone.setCursorPosition(b)
+        elif len(texto) >= 7 and len(texto) < 12:
+            b = len(texto) + 3
+            self._ui.txtTelefone.setCursorPosition(b)
+
 
     def positionCursorCnpj(self):
         texto = self.removerCaracter(self._ui.txtCnpj.text())
-        a = self._ui.txtCnpj.cursorPosition()
-        if texto == '' :
+
+        if len(texto) == 0:
             self._ui.txtCnpj.setCursorPosition(0)
+        elif len(texto) <= 1:
+            b = len(texto)
+            self._ui.txtCnpj.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) < 5:
+            b = len(texto) + 1
+            self._ui.txtCnpj.setCursorPosition(b)
+        elif len(texto) >= 5 and len(texto) < 8:
+            b = len(texto) + 2
+            self._ui.txtCnpj.setCursorPosition(b)
+        elif len(texto) >= 8 and len(texto) < 12:
+            b = len(texto) + 3
+            self._ui.txtCnpj.setCursorPosition(b)
+        elif len(texto) >= 12:
+            b = len(texto) + 4
+            self._ui.txtCnpj.setCursorPosition(b)
+
 
     def focusCnpj(self):
         self._ui.txtCnpj.setFocus()

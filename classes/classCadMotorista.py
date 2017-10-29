@@ -14,6 +14,7 @@ class CadastroMotoristas(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroMotorista()
         self.ui.setupUi(self)
+        self.ui.txtPlaca.setCursorPosition(0)
 
         self.ui.txtNomeMotorista.returnPressed.connect(self.focusDataNacimento)
         self.ui.txtRg.returnPressed.connect(self.focusExpeditor)
@@ -54,35 +55,97 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtModelo.textChanged.connect(self.upperModelo)
         self.ui.txtPlaca.textChanged.connect(self.upperPlaca)
 
+        self.ui.txtRg.cursorPositionChanged.connect(self.positionCursorRg)
+        self.ui.txtCpf.cursorPositionChanged.connect(self.positionCursorCpf)
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtTelefone.cursorPositionChanged.connect(self.positionCursorTelefone)
         self.ui.txtCelular.cursorPositionChanged.connect(self.positionCursorCelular)
         self.ui.txtPlaca.cursorPositionChanged.connect(self.positionCursorPlaca)
 
+    def positionCursorCpf(self):
+        texto = self.removerCaracter(self.ui.txtCpf.text())
+        if len(texto) == 0:
+            self.ui.txtCpf.setCursorPosition(0)
+        elif len(texto) <= 2:
+            b = len(texto)
+            self.ui.txtCpf.setCursorPosition(b)
+        elif len(texto) >= 3 and len(texto) <6:
+            b = len(texto)+1
+            self.ui.txtCpf.setCursorPosition(b)
+        elif len(texto) >= 6 and len(texto) <9:
+            b = len(texto)+2
+            self.ui.txtCpf.setCursorPosition(b)
+        elif len(texto) >= 9 and len(texto) <12:
+            b = len(texto)+3
+            self.ui.txtCpf.setCursorPosition(b)
+
+    def positionCursorRg(self):
+        texto = self.removerCaracter(self.ui.txtRg.text())
+        if len(texto) == 0:
+            self.ui.txtRg.setCursorPosition(0)
+        elif len(texto) <= 6:
+            b = len(texto)
+            self.ui.txtRg.setCursorPosition(b)
+        elif len(texto) >= 7 and len(texto) < 10:
+            b = len(texto) + 1
+            self.ui.txtRg.setCursorPosition(b)
 
     def positionCursorCep(self):
         texto = self.removerCaracter(self.ui.txtCep.text())
-        a = self.ui.txtCep.cursorPosition()
-        if texto == '':
+        if len(texto) == 0:
             self.ui.txtCep.setCursorPosition(0)
+        elif len(texto) <= 4:
+            b = len(texto)
+            self.ui.txtCep.setCursorPosition(b)
+        elif len(texto) >= 5 and len(texto) < 9:
+            b = len(texto) + 1
+            self.ui.txtCep.setCursorPosition(b)
+
 
     def positionCursorTelefone(self):
         texto = self.removerCaracter(self.ui.txtTelefone.text())
-        a = self.ui.txtTelefone.cursorPosition()
-        if texto == '':
+        if len(texto) == 0:
             self.ui.txtTelefone.setCursorPosition(1)
+        elif len(texto) <= 1:
+            b = len(texto) + 1
+            self.ui.txtTelefone.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) < 6:
+            b = len(texto) + 2
+            self.ui.txtTelefone.setCursorPosition(b)
+        elif len(texto) >= 6 and len(texto) < 11:
+            b = len(texto) + 3
+            self.ui.txtTelefone.setCursorPosition(b)
+
 
     def positionCursorCelular(self):
         texto = self.removerCaracter(self.ui.txtCelular.text())
-        a = self.ui.txtCelular.cursorPosition()
-        if texto == '':
+        if len(texto) == 0:
             self.ui.txtCelular.setCursorPosition(1)
+        elif len(texto) <= 1:
+            b = len(texto) + 1
+            self.ui.txtCelular.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) < 7:
+            b = len(texto) + 2
+            self.ui.txtCelular.setCursorPosition(b)
+        elif len(texto) >= 7 and len(texto) < 12:
+            b = len(texto) + 3
+            self.ui.txtCelular.setCursorPosition(b)
+
 
     def positionCursorPlaca(self):
         texto = self.removerCaracter(self.ui.txtPlaca.text())
         a = self.ui.txtPlaca.cursorPosition()
-        if texto == '':
+        print(a)
+        if len(texto) == 0:
             self.ui.txtPlaca.setCursorPosition(0)
+        elif len(texto) <= 2:
+            b = len(texto)
+            self.ui.txtPlaca.setCursorPosition(b)
+        elif len(texto) >= 3 and len(texto) <9:
+            b = len(texto)+1
+            self.ui.txtPlaca.setCursorPosition(b)
+
+
 
     def upperNome(self):
         self.ui.txtNomeMotorista.setText(self.ui.txtNomeMotorista.text().upper())

@@ -29,6 +29,9 @@ class Ui_frmCadastroFornecedor(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFornecedor.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/supplier.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmCadastroFornecedor.setWindowIcon(icon)
         frmCadastroFornecedor.setSizeGripEnabled(False)
         frmCadastroFornecedor.setModal(True)
 

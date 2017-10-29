@@ -29,6 +29,9 @@ class Ui_frmMensagemTrocaUsuario(object):
         font = QtGui.QFont()
         font.setPointSize(10)
         frmMensagemTrocaUsuario.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmMensagemTrocaUsuario.setWindowIcon(icon)
 
         self.btnSim = QtGui.QPushButton(frmMensagemTrocaUsuario)
         self.btnSim.setGeometry(QtCore.QRect(100, 59, 75, 23))
@@ -54,7 +57,7 @@ class Ui_frmMensagemTrocaUsuario(object):
         QtCore.QMetaObject.connectSlotsByName(frmMensagemTrocaUsuario)
 
     def retranslateUi(self, frmMensagemTrocaUsuario):
-        frmMensagemTrocaUsuario.setWindowTitle(_translate("frmMensagemTrocaUsuario", "Atenção", None))
+        frmMensagemTrocaUsuario.setWindowTitle(_translate("frmMensagemTrocaUsuario", "Mensagem", None))
         self.btnSim.setText(_translate("frmMensagemTrocaUsuario", "Sim", None))
         self.btnNao.setText(_translate("frmMensagemTrocaUsuario", "Não", None))
         self.lblTexto.setText(_translate("frmMensagemTrocaUsuario", "Você tem certeza que deseja trocar de usuário?", None))

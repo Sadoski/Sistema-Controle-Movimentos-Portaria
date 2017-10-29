@@ -25,15 +25,13 @@ except AttributeError:
 class Ui_frmLogin(object):
     def setupUi(self, frmLogin):
         frmLogin.setObjectName(_fromUtf8("frmLogin"))
-        frmLogin.setWindowModality(QtCore.Qt.ApplicationModal)
-        frmLogin.resize(400, 300)
+        frmLogin.resize(400, 326)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/scmp.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmLogin.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setPointSize(11)
         frmLogin.setFont(font)
-        
         self.txtUsuario = QtGui.QLineEdit(frmLogin)
         self.txtUsuario.setGeometry(QtCore.QRect(90, 110, 251, 25))
         self.txtUsuario.setObjectName(_fromUtf8("txtUsuario"))
@@ -43,32 +41,44 @@ class Ui_frmLogin(object):
         self.txtSenha.setEchoMode(QtGui.QLineEdit.Password)
         self.txtSenha.setObjectName(_fromUtf8("txtSenha"))
         
+        self.lblUsuario = QtGui.QLabel(frmLogin)
+        self.lblUsuario.setGeometry(QtCore.QRect(90, 90, 66, 19))
+        self.lblUsuario.setObjectName(_fromUtf8("lblUsuario"))
+        
+        self.lblSenha = QtGui.QLabel(frmLogin)
+        self.lblSenha.setGeometry(QtCore.QRect(90, 160, 66, 19))
+        self.lblSenha.setObjectName(_fromUtf8("lblSenha"))
+        
         self.btnLogin = QtGui.QPushButton(frmLogin)
         self.btnLogin.setGeometry(QtCore.QRect(200, 240, 61, 27))
-        self.btnLogin.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnLogin.setObjectName(_fromUtf8("btnLogin"))
         
         self.btnSair = QtGui.QPushButton(frmLogin)
         self.btnSair.setGeometry(QtCore.QRect(280, 240, 61, 27))
-        self.btnSair.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnSair.setObjectName(_fromUtf8("btnSair"))
         
         self.lblImagem = QtGui.QLabel(frmLogin)
         self.lblImagem.setGeometry(QtCore.QRect(30, 10, 341, 71))
         self.lblImagem.setText(_fromUtf8(""))
-        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("imagens/sispor.jpg")))
+        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/scmp-login.jpg")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
+        
+        self.btnEsqueciSenha = QtGui.QPushButton(frmLogin)
+        self.btnEsqueciSenha.setGeometry(QtCore.QRect(120, 300, 151, 23))
+        self.btnEsqueciSenha.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnEsqueciSenha.setFlat(True)
+        self.btnEsqueciSenha.setObjectName(_fromUtf8("btnEsqueciSenha"))
         
         self.lblImagemUsuario = QtGui.QLabel(frmLogin)
         self.lblImagemUsuario.setGeometry(QtCore.QRect(50, 100, 31, 41))
         self.lblImagemUsuario.setText(_fromUtf8(""))
-        self.lblImagemUsuario.setPixmap(QtGui.QPixmap(_fromUtf8("imagens/User.png")))
+        self.lblImagemUsuario.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/User.png")))
         self.lblImagemUsuario.setObjectName(_fromUtf8("lblImagemUsuario"))
         
         self.lblImagemSenha = QtGui.QLabel(frmLogin)
         self.lblImagemSenha.setGeometry(QtCore.QRect(50, 167, 34, 41))
         self.lblImagemSenha.setText(_fromUtf8(""))
-        self.lblImagemSenha.setPixmap(QtGui.QPixmap(_fromUtf8("imagens/password.png")))
+        self.lblImagemSenha.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/password.png")))
         self.lblImagemSenha.setObjectName(_fromUtf8("lblImagemSenha"))
 
         self.retranslateUi(frmLogin)
@@ -76,8 +86,9 @@ class Ui_frmLogin(object):
 
     def retranslateUi(self, frmLogin):
         frmLogin.setWindowTitle(_translate("frmLogin", "Log-in", None))
-        self.txtUsuario.setPlaceholderText(_translate("frmLogin", "Usuário", None))
-        self.txtSenha.setPlaceholderText(_translate("frmLogin", "Senha", None))
+        self.lblUsuario.setText(_translate("frmLogin", "Usuario :", None))
+        self.lblSenha.setText(_translate("frmLogin", "Senha :", None))
         self.btnLogin.setText(_translate("frmLogin", "Log-in", None))
         self.btnSair.setText(_translate("frmLogin", "Sair", None))
+        self.btnEsqueciSenha.setText(_translate("frmLogin", "Esqueci minha senha", None))
 

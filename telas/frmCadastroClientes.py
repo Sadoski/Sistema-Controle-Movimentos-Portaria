@@ -29,6 +29,9 @@ class Ui_frmCadastroClientes(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroClientes.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/clientes.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmCadastroClientes.setWindowIcon(icon)
         frmCadastroClientes.setSizeGripEnabled(False)
         frmCadastroClientes.setModal(True)
 

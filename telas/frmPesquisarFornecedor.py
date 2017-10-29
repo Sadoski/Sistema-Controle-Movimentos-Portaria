@@ -31,6 +31,10 @@ class Ui_frmConsultarFornecedores(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmConsultarFornecedores.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmConsultarFornecedores.setWindowIcon(icon)
+
         self.txtPesquisar = QtGui.QLineEdit(frmConsultarFornecedores)
         self.txtPesquisar.setGeometry(QtCore.QRect(300, 70, 441, 25))
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))

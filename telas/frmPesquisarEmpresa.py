@@ -31,6 +31,9 @@ class Ui_frmConsultarEmpresa(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmConsultarEmpresa.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmConsultarEmpresa.setWindowIcon(icon)
 
         self.grbTipoPesquisa = QtGui.QGroupBox(frmConsultarEmpresa)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 281, 91))

@@ -35,6 +35,9 @@ class Ui_frmEntradaNotaRomaneios(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmEntradaNotaRomaneios.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/NF.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmEntradaNotaRomaneios.setWindowIcon(icon)
         frmEntradaNotaRomaneios.setSizeGripEnabled(False)
         frmEntradaNotaRomaneios.setModal(True)
 

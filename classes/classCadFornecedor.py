@@ -73,23 +73,51 @@ class CadastroFornecedores(QtGui.QDialog):
 
     def positionCursorCnpj(self):
         texto = self.removerCaracter(self.ui.txtCnpjFornecedor.text())
-        a = self.ui.txtCnpjFornecedor.cursorPosition()
-        print(a)
-        if texto == '':
+
+        if len(texto) == 0:
             self.ui.txtCnpjFornecedor.setCursorPosition(0)
+        elif len(texto) <= 1:
+            b = len(texto)
+            self.ui.txtCnpjFornecedor.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) <5:
+            b = len(texto)+1
+            self.ui.txtCnpjFornecedor.setCursorPosition(b)
+        elif len(texto) >= 5 and len(texto) <8:
+            b = len(texto)+2
+            self.ui.txtCnpjFornecedor.setCursorPosition(b)
+        elif len(texto) >= 8 and len(texto) <12:
+            b = len(texto)+3
+            self.ui.txtCnpjFornecedor.setCursorPosition(b)
+        elif len(texto) >= 12 :
+            b = len(texto)+4
+            self.ui.txtCnpjFornecedor.setCursorPosition(b)
+
 
     def positionCursorCep(self):
         texto = self.removerCaracter(self.ui.txtCepFornecedor.text())
-        a = self.ui.txtCepFornecedor.cursorPosition()
-        if texto == '':
+        if len(texto) == 0:
             self.ui.txtCepFornecedor.setCursorPosition(0)
+        elif len(texto) <= 4:
+            b = len(texto)
+            self.ui.txtCepFornecedor.setCursorPosition(b)
+        elif len(texto) >= 5 and len(texto) <9:
+            b = len(texto)+1
+            self.ui.txtCepFornecedor.setCursorPosition(b)
 
 
     def positionCursorTelefone(self):
         texto = self.removerCaracter(self.ui.txtTelefoneFornecedor.text())
-        a = self.ui.txtTelefoneFornecedor.cursorPosition()
-        if texto == '':
+        if len(texto) == 0:
             self.ui.txtTelefoneFornecedor.setCursorPosition(1)
+        elif len(texto) <= 1:
+            b = len(texto)+1
+            self.ui.txtTelefoneFornecedor.setCursorPosition(b)
+        elif len(texto) >= 2 and len(texto) <7:
+            b = len(texto)+2
+            self.ui.txtTelefoneFornecedor.setCursorPosition(b)
+        elif len(texto) >= 7 and len(texto) <12:
+            b = len(texto)+3
+            self.ui.txtTelefoneFornecedor.setCursorPosition(b)
 
     def focusCnpjFornecedor(self):
         self.ui.txtCnpjFornecedor.setFocus()

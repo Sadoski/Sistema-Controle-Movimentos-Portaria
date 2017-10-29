@@ -81,7 +81,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
     def positionCursor(self):
         texto = self.removerCaracterDin(self.ui.txtValorTotal.text())
-        a = self.ui.txtValorTotal.cursorPosition()
         if texto == '' or texto != '':
             self.ui.txtValorTotal.setCursorPosition(14)
 

@@ -28,6 +28,9 @@ class Ui_frmSobre(object):
         frmSobre.resize(462, 389)
         frmSobre.setSizeGripEnabled(False)
         frmSobre.setModal(True)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/info.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSobre.setWindowIcon(icon)
 
         self.btnOk = QtGui.QPushButton(frmSobre)
         self.btnOk.setGeometry(QtCore.QRect(370, 350, 75, 23))
