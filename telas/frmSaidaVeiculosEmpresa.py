@@ -28,9 +28,13 @@ class Ui_frmSaidaVeiculosEmpresa(object):
         frmSaidaVeiculosEmpresa.resize(572, 478)
         frmSaidaVeiculosEmpresa.setMinimumSize(QtCore.QSize(572, 478))
         frmSaidaVeiculosEmpresa.setMaximumSize(QtCore.QSize(572, 478))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carro.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSaidaVeiculosEmpresa.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setPointSize(11)
         frmSaidaVeiculosEmpresa.setFont(font)
+
         self.grbBotoes = QtGui.QGroupBox(frmSaidaVeiculosEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(4, 390, 562, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))

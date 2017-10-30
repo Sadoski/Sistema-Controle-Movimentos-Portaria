@@ -26,10 +26,16 @@ class Ui_frmSaidaVeiculoDescarregamento(object):
     def setupUi(self, frmSaidaVeiculoDescarregamento):
         frmSaidaVeiculoDescarregamento.setObjectName(_fromUtf8("frmSaidaVeiculoDescarregamento"))
         frmSaidaVeiculoDescarregamento.resize(917, 525)
+        frmSaidaVeiculoDescarregamento.setMinimumSize(QtCore.QSize(917, 525))
+        frmSaidaVeiculoDescarregamento.setMaximumSize(QtCore.QSize(917, 525))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/descarregamento.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSaidaVeiculoDescarregamento.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmSaidaVeiculoDescarregamento.setFont(font)
+
         self.grbTipoPesquisa = QtGui.QGroupBox(frmSaidaVeiculoDescarregamento)
         self.grbTipoPesquisa.setEnabled(False)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 351, 81))

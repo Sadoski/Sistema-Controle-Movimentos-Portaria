@@ -26,6 +26,8 @@ class Ui_frmCadastroUsuarios(object):
     def setupUi(self, frmCadastroUsuarios):
         frmCadastroUsuarios.setObjectName(_fromUtf8("frmCadastroUsuarios"))
         frmCadastroUsuarios.resize(598, 418)
+        frmCadastroUsuarios.setMinimumSize(QtCore.QSize(598, 418))
+        frmCadastroUsuarios.setMaximumSize(QtCore.QSize(598, 418))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroUsuarios.setFont(font)

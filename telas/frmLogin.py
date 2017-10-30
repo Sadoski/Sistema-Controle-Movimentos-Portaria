@@ -27,6 +27,8 @@ class Ui_frmLogin(object):
         frmLogin.setObjectName(_fromUtf8("frmLogin"))
         frmLogin.setWindowModality(QtCore.Qt.ApplicationModal)
         frmLogin.resize(400, 300)
+        frmLogin.setMinimumSize(QtCore.QSize(400, 300))
+        frmLogin.setMaximumSize(QtCore.QSize(400, 300))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/scmp.jpg")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmLogin.setWindowIcon(icon)

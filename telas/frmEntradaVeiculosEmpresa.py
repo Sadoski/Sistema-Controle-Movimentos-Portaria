@@ -26,12 +26,18 @@ class Ui_frmEntradaVeiculosEmpresa(object):
     def setupUi(self, frmEntradaVeiculosEmpresa):
         frmEntradaVeiculosEmpresa.setObjectName(_fromUtf8("frmEntradaVeiculosEmpresa"))
         frmEntradaVeiculosEmpresa.resize(570, 607)
+        frmEntradaVeiculosEmpresa.setMinimumSize(QtCore.QSize(570, 607))
+        frmEntradaVeiculosEmpresa.setMaximumSize(QtCore.QSize(570, 607))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carro.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmEntradaVeiculosEmpresa.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         font.setBold(False)
         font.setWeight(50)
         frmEntradaVeiculosEmpresa.setFont(font)
+
         self.txtPesquisar = QtGui.QLineEdit(frmEntradaVeiculosEmpresa)
         self.txtPesquisar.setGeometry(QtCore.QRect(170, 40, 341, 25))
         self.txtPesquisar.setMaxLength(70)

@@ -26,6 +26,11 @@ class Ui_frmSaidaVeiculosTerceiros(object):
     def setupUi(self, frmSaidaVeiculosTerceiros):
         frmSaidaVeiculosTerceiros.setObjectName(_fromUtf8("frmSaidaVeiculosTerceiros"))
         frmSaidaVeiculosTerceiros.resize(879, 686)
+        frmSaidaVeiculosTerceiros.setMinimumSize(QtCore.QSize(879, 686))
+        frmSaidaVeiculosTerceiros.setMaximumSize(QtCore.QSize(879, 686))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carro.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSaidaVeiculosTerceiros.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

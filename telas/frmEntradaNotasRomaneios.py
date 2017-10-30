@@ -31,6 +31,8 @@ class Ui_frmEntradaNotaRomaneios(object):
     def setupUi(self, frmEntradaNotaRomaneios):
         frmEntradaNotaRomaneios.setObjectName(_fromUtf8("frmEntradaNotaRomaneios"))
         frmEntradaNotaRomaneios.resize(1003, 689)
+        frmEntradaNotaRomaneios.setMinimumSize(QtCore.QSize(1003, 689))
+        frmEntradaNotaRomaneios.setMaximumSize(QtCore.QSize(1003, 689))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

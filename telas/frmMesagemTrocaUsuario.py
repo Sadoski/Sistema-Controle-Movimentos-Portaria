@@ -26,6 +26,8 @@ class Ui_frmMensagemTrocaUsuario(object):
     def setupUi(self, frmMensagemTrocaUsuario):
         frmMensagemTrocaUsuario.setObjectName(_fromUtf8("frmMensagemTrocaUsuario"))
         frmMensagemTrocaUsuario.resize(344, 95)
+        frmMensagemTrocaUsuario.setMinimumSize(QtCore.QSize(344, 95))
+        frmMensagemTrocaUsuario.setMaximumSize(QtCore.QSize(344, 95))
         font = QtGui.QFont()
         font.setPointSize(10)
         frmMensagemTrocaUsuario.setFont(font)

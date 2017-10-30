@@ -26,6 +26,8 @@ class Ui_frmCadastroEmpresa(object):
     def setupUi(self, frmCadastroEmpresa):
         frmCadastroEmpresa.setObjectName(_fromUtf8("frmCadastroEmpresa"))
         frmCadastroEmpresa.resize(889, 695)
+        frmCadastroEmpresa.setMinimumSize(QtCore.QSize(889, 695))
+        frmCadastroEmpresa.setMaximumSize(QtCore.QSize(889, 695))
         font = QtGui.QFont()
         font.setPointSize(11)
         icon = QtGui.QIcon()

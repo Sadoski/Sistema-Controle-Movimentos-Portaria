@@ -26,6 +26,8 @@ class Ui_frmCadastroFornecedor(object):
     def setupUi(self, frmCadastroFornecedor):
         frmCadastroFornecedor.setObjectName(_fromUtf8("frmCadastroFornecedor"))
         frmCadastroFornecedor.resize(895, 695)
+        frmCadastroFornecedor.setMinimumSize(QtCore.QSize(895, 695))
+        frmCadastroFornecedor.setMaximumSize(QtCore.QSize(895, 695))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFornecedor.setFont(font)

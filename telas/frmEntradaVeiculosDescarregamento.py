@@ -28,6 +28,11 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
     def setupUi(self, frmEntradaVeiculosDescarregamento):
         frmEntradaVeiculosDescarregamento.setObjectName(_fromUtf8("frmEntradaVeiculosDescarregamento"))
         frmEntradaVeiculosDescarregamento.resize(1012, 687)
+        frmEntradaVeiculosDescarregamento.setMinimumSize(QtCore.QSize(1012, 687))
+        frmEntradaVeiculosDescarregamento.setMaximumSize(QtCore.QSize(1012, 687))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/descarregamento.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmEntradaVeiculosDescarregamento.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

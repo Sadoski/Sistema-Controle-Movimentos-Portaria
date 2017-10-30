@@ -28,11 +28,16 @@ class Ui_frmSaidaVeiculosCarregamento(object):
     def setupUi(self, frmSaidaVeiculosCarregamento):
         frmSaidaVeiculosCarregamento.setObjectName(_fromUtf8("frmSaidaVeiculosCarregamento"))
         frmSaidaVeiculosCarregamento.resize(1004, 658)
+        frmSaidaVeiculosCarregamento.setMinimumSize(QtCore.QSize(1004, 658))
+        frmSaidaVeiculosCarregamento.setMaximumSize(QtCore.QSize(1004, 658))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carregamento.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSaidaVeiculosCarregamento.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
-
         font.setPointSize(11)
         frmSaidaVeiculosCarregamento.setFont(font)
+
         self.grbBotoes = QtGui.QGroupBox(frmSaidaVeiculosCarregamento)
         self.grbBotoes.setGeometry(QtCore.QRect(6, 573, 991, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))

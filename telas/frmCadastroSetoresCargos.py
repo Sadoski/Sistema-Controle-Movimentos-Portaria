@@ -26,6 +26,8 @@ class Ui_frmCadastroSetoresCargos(object):
     def setupUi(self, frmCadastroSetoresCargos):
         frmCadastroSetoresCargos.setObjectName(_fromUtf8("frmCadastroSetoresCargos"))
         frmCadastroSetoresCargos.resize(874, 487)
+        frmCadastroSetoresCargos.setMinimumSize(QtCore.QSize(874, 487))
+        frmCadastroSetoresCargos.setMaximumSize(QtCore.QSize(874, 487))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroSetoresCargos.setFont(font)

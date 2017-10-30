@@ -85,3 +85,4 @@ class LogarDao(object):
         btnQS.clicked.connect(self.fechar)
         self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.msgBox.exec_()
+

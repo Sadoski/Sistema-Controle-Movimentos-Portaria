@@ -29,6 +29,8 @@ class Ui_frmCadastroMotorista(object):
     def setupUi(self, frmCadastroMotorista):
         frmCadastroMotorista.setObjectName(_fromUtf8("frmCadastroMotorista"))
         frmCadastroMotorista.resize(828, 690)
+        frmCadastroMotorista.setMinimumSize(QtCore.QSize(828, 690))
+        frmCadastroMotorista.setMaximumSize(QtCore.QSize(828, 690))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroMotorista.setFont(font)

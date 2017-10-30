@@ -28,8 +28,13 @@ class Ui_frmCadastroEntradaFuncionario(object):
     def setupUi(self, frmCadastroEntradaFuncionario):
         frmCadastroEntradaFuncionario.setObjectName(_fromUtf8("frmCadastroEntradaFuncionario"))
         frmCadastroEntradaFuncionario.resize(662, 539)
+        frmCadastroEntradaFuncionario.setMinimumSize(QtCore.QSize(662, 539))
+        frmCadastroEntradaFuncionario.setMaximumSize(QtCore.QSize(662, 539))
         frmCadastroEntradaFuncionario.setSizeGripEnabled(False)
         frmCadastroEntradaFuncionario.setModal(True)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/funcionario-saida.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmCadastroEntradaFuncionario.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

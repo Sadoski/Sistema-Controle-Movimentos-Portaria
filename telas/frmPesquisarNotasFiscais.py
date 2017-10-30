@@ -26,6 +26,8 @@ class Ui_frmConsultarNotasFiscais(object):
     def setupUi(self, frmConsultarNotasFiscais):
         frmConsultarNotasFiscais.setObjectName(_fromUtf8("frmConsultarNotasFiscais"))
         frmConsultarNotasFiscais.resize(793, 606)
+        frmConsultarNotasFiscais.setMinimumSize(QtCore.QSize(793, 606))
+        frmConsultarNotasFiscais.setMaximumSize(QtCore.QSize(793, 606))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmConsultarNotasFiscais.setFont(font)

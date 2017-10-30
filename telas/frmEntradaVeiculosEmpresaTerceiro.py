@@ -26,6 +26,11 @@ class Ui_frmEntradaVeiculosEmpresaTerceiros(object):
     def setupUi(self, frmEntradaVeiculosEmpresaTerceiros):
         frmEntradaVeiculosEmpresaTerceiros.setObjectName(_fromUtf8("frmEntradaVeiculosEmpresaTerceiros"))
         frmEntradaVeiculosEmpresaTerceiros.resize(891, 686)
+        frmEntradaVeiculosEmpresaTerceiros.setMinimumSize(QtCore.QSize(891, 686))
+        frmEntradaVeiculosEmpresaTerceiros.setMaximumSize(QtCore.QSize(891, 686))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carro.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmEntradaVeiculosEmpresaTerceiros.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

@@ -29,6 +29,8 @@ class Ui_frmCadastroFuncionario(object):
     def setupUi(self, frmCadastroFuncionario):
         frmCadastroFuncionario.setObjectName(_fromUtf8("frmCadastroFuncionario"))
         frmCadastroFuncionario.resize(850, 653)
+        frmCadastroFuncionario.setMinimumSize(QtCore.QSize(850, 653))
+        frmCadastroFuncionario.setMaximumSize(QtCore.QSize(850, 653))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroFuncionario.setFont(font)

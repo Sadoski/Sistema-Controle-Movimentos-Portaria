@@ -81,6 +81,9 @@ class Ui_frmMainHouse(object):
         self.subMenuCarregamentos.setObjectName(_fromUtf8("subMenuCarregamentos"))
 
         self.submMenuEntradaSaidaVeiculosLeves = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/carro.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.submMenuEntradaSaidaVeiculosLeves.setIcon(icon)
         self.submMenuEntradaSaidaVeiculosLeves.setObjectName(_fromUtf8("submMenuEntradaSaidaVeiculosLeves"))
 
         self.entSaiVeicLevSubMenuVeiculosEmpresa = QtGui.QMenu(self.submMenuEntradaSaidaVeiculosLeves)
@@ -90,6 +93,9 @@ class Ui_frmMainHouse(object):
         self.entSaiVeicLevSubmenuVeiculosTerceiros.setObjectName(_fromUtf8("entSaiVeicLevSubmenuVeiculosTerceiros"))
 
         self.subMenuEntradaSaidaCaminhoes = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/caminhao.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuEntradaSaidaCaminhoes.setIcon(icon)
         self.subMenuEntradaSaidaCaminhoes.setObjectName(_fromUtf8("subMenuEntradaSaidaCaminhoes"))
 
         self.entSaiCamiSubMenuCaminhoesEmpresa = QtGui.QMenu(self.subMenuEntradaSaidaCaminhoes)
@@ -99,9 +105,15 @@ class Ui_frmMainHouse(object):
         self.entSaiCamiSubMenuCaminhoesTerceiros.setObjectName(_fromUtf8("entSaiCamiSubMenuCaminhoesTerceiros"))
 
         self.subMenuEntradaSaidaMaquinas = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/maquina.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuEntradaSaidaMaquinas.setIcon(icon)
         self.subMenuEntradaSaidaMaquinas.setObjectName(_fromUtf8("subMenuEntradaSaidaMaquinas"))
 
         self.subMenuEntradaSaidaFuncionario = QtGui.QMenu(self.menuMovimentoPortaria)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/funcionario-saida.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.subMenuEntradaSaidaFuncionario.setIcon(icon)
         self.subMenuEntradaSaidaFuncionario.setObjectName(_fromUtf8("subMenuEntradaSaidaFuncionario"))
 
         self.menuRelatorios = QtGui.QMenu(self.menubar)
@@ -145,33 +157,63 @@ class Ui_frmMainHouse(object):
         self.subMenuCadastroClintes.setObjectName(_fromUtf8("subMenuCadastroClintes"))
 
         self.veicEmpSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.veicEmpSubMenuEntrada.setIcon(icon)
         self.veicEmpSubMenuEntrada.setObjectName(_fromUtf8("veicEmpSubMenuEntrada"))
 
         self.veicEmpSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.veicEmpSaida.setIcon(icon)
         self.veicEmpSaida.setObjectName(_fromUtf8("veicEmpSaida"))
 
         self.veiTerSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.veiTerSubMenuEntrada.setIcon(icon)
         self.veiTerSubMenuEntrada.setObjectName(_fromUtf8("veiTerSubMenuEntrada"))
 
         self.veicTerSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.veicTerSubMenuSaida.setIcon(icon)
         self.veicTerSubMenuSaida.setObjectName(_fromUtf8("veicTerSubMenuSaida"))
 
         self.camiEmpSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.camiEmpSubMenuEntrada.setIcon(icon)
         self.camiEmpSubMenuEntrada.setObjectName(_fromUtf8("camiEmpSubMenuEntrada"))
 
         self.camiEmpSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.camiEmpSubMenuSaida.setIcon(icon)
         self.camiEmpSubMenuSaida.setObjectName(_fromUtf8("camiEmpSubMenuSaida"))
 
         self.camiTerSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.camiTerSubMenuEntrada.setIcon(icon)
         self.camiTerSubMenuEntrada.setObjectName(_fromUtf8("camiTerSubMenuEntrada"))
 
         self.camiTerSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.camiTerSubMenuSaida.setIcon(icon)
         self.camiTerSubMenuSaida.setObjectName(_fromUtf8("camiTerSubMenuSaida"))
 
         self.entSadMaquiSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.entSadMaquiSubMenuEntrada.setIcon(icon)
         self.entSadMaquiSubMenuEntrada.setObjectName(_fromUtf8("entSadMaquiSubMenuEntrada"))
 
         self.entSadMaquiSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.entSadMaquiSubMenuSaida.setIcon(icon)
         self.entSadMaquiSubMenuSaida.setObjectName(_fromUtf8("entSadMaquiSubMenuSaida"))
 
         self.menuSair = QtGui.QAction(frmMainHouse)
@@ -232,9 +274,15 @@ class Ui_frmMainHouse(object):
         self.subMenuConsultasNotas.setObjectName(_fromUtf8("subMenuConsultasNotas"))
 
         self.entSaiFuncSubMenuEntrada = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-azul-direita.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.entSaiFuncSubMenuEntrada.setIcon(icon)
         self.entSaiFuncSubMenuEntrada.setObjectName(_fromUtf8("entSaiFuncSubMenuEntrada"))
 
         self.entSaiFuncSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.entSaiFuncSubMenuSaida.setIcon(icon)
         self.entSaiFuncSubMenuSaida.setObjectName(_fromUtf8("entSaiFuncSubMenuSaida"))
 
         self.consEntSaidSubMenuMaquinas = QtGui.QAction(frmMainHouse)

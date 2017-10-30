@@ -26,6 +26,8 @@ class Ui_frmCadastroClientes(object):
     def setupUi(self, frmCadastroClientes):
         frmCadastroClientes.setObjectName(_fromUtf8("frmCadastroClientes"))
         frmCadastroClientes.resize(895, 695)
+        frmCadastroClientes.setMinimumSize(QtCore.QSize(895, 695))
+        frmCadastroClientes.setMaximumSize(QtCore.QSize(895, 695))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroClientes.setFont(font)

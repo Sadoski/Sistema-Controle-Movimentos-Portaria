@@ -28,6 +28,8 @@ class Ui_frmCadastroEntradaFuncionario(object):
     def setupUi(self, frmCadastroEntradaFuncionario):
         frmCadastroEntradaFuncionario.setObjectName(_fromUtf8("frmCadastroEntradaFuncionario"))
         frmCadastroEntradaFuncionario.resize(662, 539)
+        frmCadastroEntradaFuncionario.setMinimumSize(QtCore.QSize(662, 539))
+        frmCadastroEntradaFuncionario.setMaximumSize(QtCore.QSize(662, 539))
         frmCadastroEntradaFuncionario.setSizeGripEnabled(False)
         frmCadastroEntradaFuncionario.setModal(True)
         font = QtGui.QFont()

@@ -26,6 +26,8 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
     def setupUi(self, frmSaidaCaminhoaEmpresa):
         frmSaidaCaminhoaEmpresa.setObjectName(_fromUtf8("frmSaidaCaminhoaEmpresa"))
         frmSaidaCaminhoaEmpresa.resize(899, 686)
+        frmSaidaCaminhoaEmpresa.setMinimumSize(QtCore.QSize(899, 686))
+        frmSaidaCaminhoaEmpresa.setMaximumSize(QtCore.QSize(899, 686))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

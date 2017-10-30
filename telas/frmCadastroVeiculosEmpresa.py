@@ -26,6 +26,8 @@ class Ui_frmCadastroVeiculosEmpresa(object):
     def setupUi(self, frmCadastroVeiculosEmpresa):
         frmCadastroVeiculosEmpresa.setObjectName(_fromUtf8("frmCadastroVeiculosEmpresa"))
         frmCadastroVeiculosEmpresa.resize(591, 420)
+        frmCadastroVeiculosEmpresa.setMinimumSize(QtCore.QSize(591, 420))
+        frmCadastroVeiculosEmpresa.setMaximumSize(QtCore.QSize(591, 420))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroVeiculosEmpresa.setFont(font)

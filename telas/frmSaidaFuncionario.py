@@ -28,8 +28,13 @@ class Ui_frmSaidaFuncionario(object):
     def setupUi(self, frmSaidaFuncionario):
         frmSaidaFuncionario.setObjectName(_fromUtf8("frmSaidaFuncionario"))
         frmSaidaFuncionario.resize(661, 510)
+        frmSaidaFuncionario.setMinimumSize(QtCore.QSize(661, 510))
+        frmSaidaFuncionario.setMaximumSize(QtCore.QSize(661, 510))
         frmSaidaFuncionario.setSizeGripEnabled(False)
         frmSaidaFuncionario.setModal(True)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/funcionario-saida.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmSaidaFuncionario.setWindowIcon(icon)
         font = QtGui.QFont()
         font.setPointSize(11)
         frmSaidaFuncionario.setFont(font)

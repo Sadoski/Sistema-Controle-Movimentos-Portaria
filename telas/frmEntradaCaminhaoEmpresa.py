@@ -26,6 +26,8 @@ class Ui_frmEntradaCaminhoaEmpresa(object):
     def setupUi(self, frmEntradaCaminhoaEmpresa):
         frmEntradaCaminhoaEmpresa.setObjectName(_fromUtf8("frmEntradaCaminhoaEmpresa"))
         frmEntradaCaminhoaEmpresa.resize(890, 500)
+        frmEntradaCaminhoaEmpresa.setMinimumSize(QtCore.QSize(890, 500))
+        frmEntradaCaminhoaEmpresa.setMaximumSize(QtCore.QSize(890, 500))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)

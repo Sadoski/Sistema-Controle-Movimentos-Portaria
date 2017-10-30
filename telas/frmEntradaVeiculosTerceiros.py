@@ -26,6 +26,8 @@ class Ui_frmEntradaVeiculosTerceiros(object):
     def setupUi(self, frmEntradaVeiculosTerceiros):
         frmEntradaVeiculosTerceiros.setObjectName(_fromUtf8("frmEntradaVeiculosTerceiros"))
         frmEntradaVeiculosTerceiros.resize(891, 686)
+        frmEntradaVeiculosTerceiros.setMinimumSize(QtCore.QSize(891, 686))
+        frmEntradaVeiculosTerceiros.setMaximumSize(QtCore.QSize(891, 686))
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
