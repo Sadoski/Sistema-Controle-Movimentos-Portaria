@@ -523,7 +523,11 @@ class Ui_frmCadastroClientes(object):
         self.lblInscricaoEstadualEmpresa.setObjectName(_fromUtf8("lblInscricaoEstadualEmpresa"))
 
         self.btnPesquisar = QtGui.QPushButton(self.grbPesquisarEmpresa)
+        self.btnPesquisar.setEnabled(False)
         self.btnPesquisar.setGeometry(QtCore.QRect(837, 37, 31, 27))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisar.setIcon(icon)
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
@@ -553,6 +557,9 @@ class Ui_frmCadastroClientes(object):
 
         self.btnPesquisarFornecedor = QtGui.QPushButton(self.grbPesquisa)
         self.btnPesquisarFornecedor.setGeometry(QtCore.QRect(830, 12, 41, 31))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisarFornecedor.setIcon(icon)
         self.btnPesquisarFornecedor.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarFornecedor.setText(_fromUtf8(""))
         self.btnPesquisarFornecedor.setObjectName(_fromUtf8("btnPesquisarFornecedor"))

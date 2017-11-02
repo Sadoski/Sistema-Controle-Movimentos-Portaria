@@ -252,6 +252,7 @@ class CadastroFornecedores(QtGui.QDialog):
         self.ui.btnSalvar.setEnabled(True)
         self.ui.btnCancelar.setEnabled(True)
 
+        self.ui.btnPesquisar.setEnabled(True)
         self.ui.txtFantasiaEmpresa.setEnabled(True)
         self.ui.grbDadosFornecedor.setEnabled(True)
 
@@ -264,6 +265,7 @@ class CadastroFornecedores(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
 
+        self.ui.btnPesquisar.setEnabled(False)
         self.ui.txtFantasiaEmpresa.setEnabled(False)
         self.ui.grbDadosFornecedor.setEnabled(False)
 

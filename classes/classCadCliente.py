@@ -172,6 +172,7 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.btnSalvar.setEnabled(True)
         self.ui.btnCancelar.setEnabled(True)
 
+        self.ui.btnPesquisar.setEnabled(True)
         self.ui.txtFantasiaEmpresa.setEnabled(True)
         self.ui.grbDadosCliente.setEnabled(True)
 
@@ -184,6 +185,7 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
 
+        self.ui.btnPesquisar.setEnabled(False)
         self.ui.txtFantasiaEmpresa.setEnabled(False)
         self.ui.grbDadosCliente.setEnabled(False)
 

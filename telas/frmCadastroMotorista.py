@@ -593,6 +593,9 @@ class Ui_frmCadastroMotorista(object):
 
         self.btnPesquisar = QtGui.QPushButton(self.grbPesquisa)
         self.btnPesquisar.setGeometry(QtCore.QRect(760, 12, 41, 31))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisar.setIcon(icon)
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))

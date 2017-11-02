@@ -13,6 +13,7 @@ from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
 from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
 from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
+from classes.classUsuarioPermissao import UsuarioPermissao
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
 from telas.frmMesagemSair import Ui_frmMensagemSair
@@ -46,6 +47,7 @@ class Principal(QtGui.QMainWindow):
         self.ui.menuLogout.triggered.connect(self._trocarUsuario)
         self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
         self.ui.subMenuCadastroFuncionarios.triggered.connect(self._cadastroFuncionario)
+        self.ui.menuCadUsuario.triggered.connect(self._cadastroUsuarioPermissao)
         self.ui.subMenuCadastroFornecedor.triggered.connect(self._cadastroFornecedor)
         self.ui.subMenuCadastroClintes.triggered.connect(self._cadastroClintes)
         self.ui.subMenuCadastroMotoristas.triggered.connect(self._cadastroMotoristas)
@@ -129,7 +131,8 @@ class Principal(QtGui.QMainWindow):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
 
     def _sair(self):
-        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
+        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
+)
         self.__mesagem = Ui_frmMensagemSair()
         self.__mesagem.setupUi(self.dialogMensagem)
 
@@ -147,7 +150,7 @@ class Principal(QtGui.QMainWindow):
         self.dialogMensagem.close()
 
     def _trocarUsuario(self):
-        self.dialogTrocaUsuario = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
+        self.dialogTrocaUsuario = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint )
         self.__trocaUsuario = Ui_frmMensagemTrocaUsuario()
         self.__trocaUsuario.setupUi(self.dialogTrocaUsuario)
 
@@ -178,6 +181,11 @@ class Principal(QtGui.QMainWindow):
         _funcionario = CadastroFuncionario()
         _funcionario.show()
         _funcionario.exec_()
+
+    def _cadastroUsuarioPermissao(self):
+        _usuario = UsuarioPermissao()
+        _usuario.show()
+        _usuario.exec_()
 
     def _cadastroFornecedor(self):
         _fornecedor = CadastroFornecedores()
@@ -270,8 +278,7 @@ class Principal(QtGui.QMainWindow):
         _email.exec_()
     '''
     def closeEvent(self, event):
-        w = QWidget()
-        sair = QtGui.QMessageBox.question(w, 'Atenção', "Você tem certeza que deseja sair", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        sair = QtGui.QMessageBox.question(QWidget(), 'Atenção', "Você tem certeza que deseja sair", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if sair == QtGui.QMessageBox.Yes:
             event.accept()
         else:

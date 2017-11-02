@@ -23,9 +23,11 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_frmSobre(object):
-    def setupUi(self, frmSobre):
+    def setupUi(self,  frmSobre):
         frmSobre.setObjectName(_fromUtf8("frmSobre"))
         frmSobre.resize(462, 389)
+        frmSobre.setMinimumSize(QtCore.QSize(462, 389))
+        frmSobre.setMaximumSize(QtCore.QSize(462, 389))
         frmSobre.setSizeGripEnabled(False)
         frmSobre.setModal(True)
         icon = QtGui.QIcon()

@@ -456,6 +456,7 @@ class Ui_frmCadastroEmpresa(object):
         self.txtPesquisa.setObjectName(_fromUtf8("txtPesquisa"))
 
         self.btnPesquisar = QtGui.QPushButton(self.grbPesquisa)
+        self.btnPesquisar.setEnabled(False)
         self.btnPesquisar.setGeometry(QtCore.QRect(830, 12, 41, 31))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

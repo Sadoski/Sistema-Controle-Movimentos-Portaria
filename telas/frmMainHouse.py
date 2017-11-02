@@ -65,6 +65,12 @@ class Ui_frmMainHouse(object):
         self.menuCadastros = QtGui.QMenu(self.menubar)
         self.menuCadastros.setObjectName(_fromUtf8("menuCadastros"))
 
+        self.menuCadUsuario = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/tag_user_card.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.menuCadUsuario.setIcon(icon)
+        self.menuCadUsuario.setObjectName(_fromUtf8("menuCadUsuario"))
+
         self.menuMovimentoPortaria = QtGui.QMenu(self.menubar)
         self.menuMovimentoPortaria.setObjectName(_fromUtf8("menuMovimentoPortaria"))
 
@@ -131,6 +137,7 @@ class Ui_frmMainHouse(object):
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
 
         frmMainHouse.setStatusBar(self.statusbar)
+
         self.subMenuCadastroEmpresa = QtGui.QAction(frmMainHouse)
         self.subMenuCadastroEmpresa.setEnabled(True)
         icon = QtGui.QIcon()
@@ -389,6 +396,7 @@ class Ui_frmMainHouse(object):
         self.menuCadastros.addAction(self.subMenuCadastroFornecedor)
         self.menuCadastros.addAction(self.subMenuCadastroClintes)
         self.menuCadastros.addAction(self.subMenuCadastroMotoristas)
+        self.menuCadastros.addAction(self.menuCadUsuario)
         self.menuCadastros.addSeparator()
         self.menuCadastros.addAction(self.subMenuEntradaNotasTeca)
         self.subMenuDescarregamento.addAction(self.menuDescaEntrada)
@@ -436,6 +444,7 @@ class Ui_frmMainHouse(object):
         self.lblControlePortaria.setText(_translate("frmMainHouse", "Controle Movimentos Portaria", None))
         self.menuSistema.setTitle(_translate("frmMainHouse", "Sistema", None))
         self.menuCadastros.setTitle(_translate("frmMainHouse", "Cadastros", None))
+        self.menuCadUsuario.setText(_translate("frmMainHouse", "Usuario / Permissão", None))
         self.menuMovimentoPortaria.setTitle(_translate("frmMainHouse", "Movimentos", None))
         self.subMenuDescarregamento.setTitle(_translate("frmMainHouse", "Descarregamento", None))
         self.subMenuCarregamentos.setTitle(_translate("frmMainHouse", "Carregamentos", None))

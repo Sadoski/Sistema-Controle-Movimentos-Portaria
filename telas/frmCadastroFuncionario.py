@@ -160,7 +160,11 @@ class Ui_frmCadastroFuncionario(object):
         self.txtFantasia.setObjectName(_fromUtf8("txtFantasia"))
 
         self.btnPesquisar = QtGui.QPushButton(frmCadastroFuncionario)
+        self.btnPesquisar.setEnabled(False)
         self.btnPesquisar.setGeometry(QtCore.QRect(644, 20, 31, 27))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisar.setIcon(icon)
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
@@ -695,6 +699,9 @@ class Ui_frmCadastroFuncionario(object):
 
         self.btnPesquisarFuncionario = QtGui.QPushButton(frmCadastroFuncionario)
         self.btnPesquisarFuncionario.setGeometry(QtCore.QRect(810, 423, 31, 27))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisarFuncionario.setIcon(icon)
         self.btnPesquisarFuncionario.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarFuncionario.setText(_fromUtf8(""))
         self.btnPesquisarFuncionario.setObjectName(_fromUtf8("btnPesquisarFuncionario"))
