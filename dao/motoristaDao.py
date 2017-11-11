@@ -67,7 +67,7 @@ class MotoristaDao(object):
 
     def cadastrarMotorista(self, motorista):
         try:
-            _sql = "INSERT INTO motorista (nome,data_nascimento,rg,expeditor,cpf,pis,cnh,id_categoria_cnh,endereco,numero,complemento,bairro,tefefone,celular,sexo,id_cidade,cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            _sql = "INSERT INTO motorista (nome, data_nascimento, rg, expeditor, cpf, pis, cnh, id_categoria_cnh, endereco, numero, complemento, bairro, tefefone, celular, sexo, id_cidade, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             _valores = (motorista.getNome, motorista.getNascimento, motorista.getRg, motorista.getExpeditor, motorista.getCpf, motorista.getPis, motorista.getCnh, motorista.getCategoria, motorista.getEndereco, motorista.getNumero, motorista.getComplemento, motorista.getBairro, motorista.getTelefone, motorista.getCelular, motorista.getSexo, motorista.getCidade, self.__dataHora)
             print(_valores)
             self.__cursor.execute(_sql, _valores)

@@ -366,14 +366,14 @@ class CadastroMotoristas(QtGui.QDialog):
             self.limparCampos()
 
     def cadastrarCadastro(self):
-        if self.ui.txtNomeMotorista.text() != "" and self.ui.txtNomeMotorista.text() != "" and self.ui.txtCnh.text() != "" and self.ui.txtEndereco.text() != "" and self.ui.txtNumero.text() != "" and self.ui.txtBairro.text() != "" and self.ui.txtCidades.text() != "" and self.ui.txtEstados.text():
+        if self.ui.txtNomeMotorista.text() != "" and self.ui.txtNomeMotorista.text() != "" and self.ui.txtCnh.text() != "" and self.ui.txtEndereco.text() != "" and self.ui.txtNumero.text() != "" and self.ui.txtBairro.text() != "" and self.ui.txtCidades.text() != "" and self.ui.txtEstados.text() and self.ui.txtMarca.text() != "" and self.ui.txtModelo.text() != "":
             _cidade = CidadesEstadosDao()
             __motoDao = MotoristaDao()
 
             nome = self.ui.txtNomeMotorista.text()
             nascimento = self.formatarData(self.removerCaracter(self.ui.txtDataNascimento.text()))
             rg = self.removerCaracter(self.ui.txtRg.text())
-            expeditor = self.ui.txtNomeMotorista.text()
+            expeditor = self.ui.txtExpeditor.text()
             cpf = self.removerCaracter(self.ui.txtCpf.text())
             pis = self.ui.txtPis.text()
             cnh = self.ui.txtCnh.text()

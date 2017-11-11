@@ -566,6 +566,8 @@ class Ui_frmCadastroClientes(object):
 
         self.tbPesquisa = QtGui.QTableWidget(self.grbPesquisa)
         self.tbPesquisa.setGeometry(QtCore.QRect(10, 50, 861, 141))
+        self.tbPesquisa.horizontalHeader().setStretchLastSection(True)
+        self.tbPesquisa.verticalHeader().setVisible(False)
         self.tbPesquisa.setColumnCount(20)
         self.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Fornecedor', 'Razão Social', 'CNPJ', 'Ins. Estadual', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Telefone', 'Site', 'E-mail', 'Cep', 'Cidade', 'Estado', 'COD', 'Empresa', 'Razão Social', 'CNPJ', 'Ins. Estadua'])
         self.tbPesquisa.setEditTriggers(self.tbPesquisa.NoEditTriggers)

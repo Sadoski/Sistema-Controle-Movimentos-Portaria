@@ -649,6 +649,8 @@ class Ui_frmCadastroFuncionario(object):
         self.btnCadNovo.setObjectName(_fromUtf8("btnCadNovo"))
 
         self.tbPesquisaFuncionario = QtGui.QTableWidget(frmCadastroFuncionario)
+        self.tbPesquisaFuncionario.horizontalHeader().setStretchLastSection(True)
+        self.tbPesquisaFuncionario.verticalHeader().setVisible(False)
         self.tbPesquisaFuncionario.setColumnCount(24)
         self.tbPesquisaFuncionario.setHorizontalHeaderLabels(['COD.', 'Funcionario', 'RG', 'Expeditor', 'CPF', 'Data Nasc.', 'Sexo', 'Mae', 'Pai', 'Endereço', 'Numero', 'Complemento', 'Bairro', 'Cep', 'Cidade', 'Estado', 'Telefone', 'Celular', 'Setor', 'Cargo', 'Fantasia', 'Razão Social', 'CNPJ', 'Ins. Estadual'])
         self.tbPesquisaFuncionario.setGeometry(QtCore.QRect(5, 454, 840, 121))

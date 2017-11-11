@@ -602,6 +602,8 @@ class Ui_frmCadastroMotorista(object):
 
         self.tbPesquisa = QtGui.QTableWidget(self.grbPesquisa)
         self.tbPesquisa.setGeometry(QtCore.QRect(10, 51, 796, 111))
+        self.tbPesquisa.horizontalHeader().setStretchLastSection(True)
+        self.tbPesquisa.verticalHeader().setVisible(False)
         self.tbPesquisa.setColumnCount(23)
         self.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Motorista', 'Nascimento', 'RG', 'Expeditor', 'CPF', 'PIS/PASEP', 'CNH', 'Categoria', 'Sexo', 'Endereco', 'Numero',  'Complemento', 'Bairro', 'Telefone', 'Celular', 'Cep', 'Cidade', 'Estado',  'Tipo Veiculo', 'Marca', 'Modelo', 'Placa'])
         self.tbPesquisa.setEditTriggers(self.tbPesquisa.NoEditTriggers)

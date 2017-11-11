@@ -222,6 +222,8 @@ class Ui_frmCadastroSetoresCargos(object):
 
         self.tbSetorPesquisa = QtGui.QTableWidget(self.grbSetorPesquisa)
         self.tbSetorPesquisa.setGeometry(QtCore.QRect(4, 50, 860, 121))
+        self.tbSetorPesquisa.horizontalHeader().setStretchLastSection(True)
+        self.tbSetorPesquisa.verticalHeader().setVisible(False)
         self.tbSetorPesquisa.setColumnCount(7)
         self.tbSetorPesquisa.setHorizontalHeaderLabels(['COD.', 'Setor', 'Fantasia', 'Razao Socil', 'CNPJ', 'Ins. Estadual', 'Tipo Empresa'])
         self.tbSetorPesquisa.setEditTriggers(self.tbSetorPesquisa.NoEditTriggers)
@@ -499,6 +501,8 @@ class Ui_frmCadastroSetoresCargos(object):
 
         self.tbCargoPesquisa = QtGui.QTableWidget(self.grbCargoPesquisa)
         self.tbCargoPesquisa.setGeometry(QtCore.QRect(4, 50, 860, 121))
+        self.tbCargoPesquisa.horizontalHeader().setStretchLastSection(True)
+        self.tbCargoPesquisa.verticalHeader().setVisible(False)
         self.tbCargoPesquisa.setColumnCount(7)
         self.tbCargoPesquisa.setHorizontalHeaderLabels(['COD.', 'Cargo', 'Fantasia', 'Razao Socil', 'CNPJ', 'Ins. Estadual', 'Tipo Empresa'])
         self.tbCargoPesquisa.setEditTriggers(self.tbCargoPesquisa.NoEditTriggers)

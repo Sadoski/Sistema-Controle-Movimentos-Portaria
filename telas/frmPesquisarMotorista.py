@@ -74,6 +74,8 @@ class Ui_frmConsultarMotoristas(object):
 
         self.tabPesquisar = QtGui.QTableWidget(frmConsultarMotoristas)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 100, 771, 381))
+        self.tabPesquisar.horizontalHeader().setStretchLastSection(True)
+        self.tabPesquisar.verticalHeader().setVisible(False)
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
         self.tabPesquisar.setColumnCount(13)

@@ -107,6 +107,8 @@ class Ui_frmConsultarNotasFiscais(object):
 
         self.tabPesquisar = QtGui.QTableWidget(frmConsultarNotasFiscais)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 160, 771, 381))
+        self.tabPesquisar.horizontalHeader().setStretchLastSection(True)
+        self.tabPesquisar.verticalHeader().setVisible(False)
         self.tabPesquisar.setColumnCount(22)
         self.tabPesquisar.setHorizontalHeaderLabels(['COD.', 'Num Nota Fiscal', 'Data', 'Valor Total', 'COD.', 'Desti. Fantasia', 'Desti. Razao Socil', 'Desti. CNPJ', 'Desti. Ins. Estadual', 'COD.', 'Empr. Fantasia', 'Empr. Razao Socil', 'Empr. CNPJ', 'Empr. Ins. Estadual', 'COD.', 'Nome Motorista', 'RG', 'CPF', 'COD.', 'Num. Romaneio', 'Certificada', 'Metragem'])
         self.tabPesquisar.setEditTriggers(self.tabPesquisar.NoEditTriggers)

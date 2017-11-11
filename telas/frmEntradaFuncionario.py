@@ -74,6 +74,8 @@ class Ui_frmCadastroEntradaFuncionario(object):
         self.tabPesquisa = QtGui.QTableWidget(frmCadastroEntradaFuncionario)
         self.tabPesquisa.setEnabled(False)
         self.tabPesquisa.setGeometry(QtCore.QRect(10, 81, 641, 191))
+        self.tabPesquisa.horizontalHeader().setStretchLastSection(True)
+        self.tabPesquisa.verticalHeader().setVisible(False)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)

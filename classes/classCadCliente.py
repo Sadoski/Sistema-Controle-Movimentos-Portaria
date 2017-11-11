@@ -290,8 +290,7 @@ class CadastroClientes(QtGui.QDialog):
             QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
 
     def cancelarCadastro(self):
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             self.botaoCancelar()
             self.limparCampos()
