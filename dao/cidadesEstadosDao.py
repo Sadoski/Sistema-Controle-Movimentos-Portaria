@@ -13,7 +13,7 @@ class CidadesEstadosDao(object):
 
     def cidade(self, cep):
         try:
-            _sql = "SELECT c.nome, e.nome FROM cidade c INNER JOIN estado e ON e.id_estado = c.id_estado WHERE c.cep = '"+cep+"'"
+            _sql = "SELECT c.id_cidade, c.nome, e.nome FROM cidade c INNER JOIN estado e ON e.id_estado = c.id_estado WHERE c.cep = '"+cep+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             self.__cursor.close()

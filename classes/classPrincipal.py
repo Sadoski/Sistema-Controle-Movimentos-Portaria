@@ -5,11 +5,13 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classCadPessoaFisica import CadastroPessoaFisica
 from classes.classCarreSaida import CarregamentoSaida
 from classes.classEntraVeiEmpTer import EntradaVeiculoEmpresaTerceiro
 from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
 from classes.classEntradaVeiEmpresa import EntradaVeiEmpresa
 from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
+from classes.classCadPessoaJuridica import CadastroPessoaJuridica
 from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
 from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
 from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
@@ -45,6 +47,8 @@ class Principal(QtGui.QMainWindow):
 
         self.ui.menuSair.triggered.connect(self._sair)
         self.ui.menuLogout.triggered.connect(self._trocarUsuario)
+        self.ui.menuCadPesFisica.triggered.connect(self._cadastroPessoaFisica)
+        self.ui.menuCadPesJuridica.triggered.connect(self._cadastroPessoaJurisdica)
         self.ui.subMenuCadastroEmpresa.triggered.connect(self._cadastroEmpresa)
         self.ui.subMenuCadastroFuncionarios.triggered.connect(self._cadastroFuncionario)
         self.ui.menuCadUsuario.triggered.connect(self._cadastroUsuarioPermissao)
@@ -171,6 +175,16 @@ class Principal(QtGui.QMainWindow):
 
     def closeTrocaUsuario(self):
         self.dialogTrocaUsuario.close()
+
+    def _cadastroPessoaFisica(self):
+        _fisica = CadastroPessoaFisica()
+        _fisica.show()
+        _fisica.exec_()
+
+    def _cadastroPessoaJurisdica(self):
+        _juridica = CadastroPessoaJuridica()
+        _juridica.show()
+        _juridica.exec_()
 
     def _cadastroEmpresa(self):
         _empresa = Empresa()

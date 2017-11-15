@@ -6,7 +6,12 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+import datetime
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -52,6 +57,8 @@ class Ui_frmEntradaNF(object):
         self.lblFornecedor.setObjectName(_fromUtf8("lblFornecedor"))
         
         self.txtFornecedor = QtGui.QLineEdit(self.grbFornecedor)
+        self.txtFornecedor.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.txtFornecedor.setAcceptDrops(False)
         self.txtFornecedor.setGeometry(QtCore.QRect(130, 20, 351, 25))
         self.txtFornecedor.setObjectName(_fromUtf8("txtFornecedor"))
         
@@ -60,7 +67,7 @@ class Ui_frmEntradaNF(object):
         self.btnPesquisarFornecedor.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarFornecedor.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarFornecedor.setIcon(icon)
         self.btnPesquisarFornecedor.setDefault(False)
         self.btnPesquisarFornecedor.setFlat(True)
@@ -168,11 +175,13 @@ class Ui_frmEntradaNF(object):
         self.lblEntrada.setObjectName(_fromUtf8("lblEntrada"))
         
         self.dateDataEntrada = QtGui.QDateEdit(self.grbData)
+        self.dateDataEntrada.setDate(QDate.currentDate())
         self.dateDataEntrada.setGeometry(QtCore.QRect(136, 20, 115, 25))
         self.dateDataEntrada.setCalendarPopup(True)
         self.dateDataEntrada.setObjectName(_fromUtf8("dateDataEntrada"))
         
         self.dateDataEmissao = QtGui.QDateEdit(self.grbData)
+        self.dateDataEmissao.setDate(QDate.currentDate())
         self.dateDataEmissao.setGeometry(QtCore.QRect(10, 20, 116, 25))
         self.dateDataEmissao.setCalendarPopup(True)
         self.dateDataEmissao.setObjectName(_fromUtf8("dateDataEmissao"))
@@ -381,7 +390,6 @@ class Ui_frmEntradaNF(object):
         
         self.txtQtd = QtGui.QLineEdit(self.grbDescricaoProduto)
         self.txtQtd.setGeometry(QtCore.QRect(410, 20, 171, 25))
-        self.txtQtd.setStyleSheet(_fromUtf8("0"))
         self.txtQtd.setAlignment(QtCore.Qt.AlignCenter)
         self.txtQtd.setObjectName(_fromUtf8("txtQtd"))
         
@@ -398,12 +406,18 @@ class Ui_frmEntradaNF(object):
         self.btnAdd.setGeometry(QtCore.QRect(934, 20, 31, 27))
         self.btnAdd.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnAdd.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnAdd.setIcon(icon1)
         self.btnAdd.setObjectName(_fromUtf8("btnAdd"))
         
         self.btnRemove = QtGui.QPushButton(self.grbDescricaoProduto)
         self.btnRemove.setGeometry(QtCore.QRect(934, 194, 31, 27))
         self.btnRemove.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnRemove.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/delete.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnRemove.setIcon(icon1)
         self.btnRemove.setObjectName(_fromUtf8("btnRemove"))
         
         self.SomatoriaTotalValor = QtGui.QLabel(self.grbDescricaoProduto)
@@ -580,6 +594,8 @@ class Ui_frmEntradaNF(object):
         self.lblMotorista.setObjectName(_fromUtf8("lblMotorista"))
         
         self.txtMotorista = QtGui.QLineEdit(self.grbTransportadoraMotorista)
+        self.txtMotorista.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.txtMotorista.setAcceptDrops(False)
         self.txtMotorista.setGeometry(QtCore.QRect(130, 20, 351, 25))
         self.txtMotorista.setObjectName(_fromUtf8("txtMotorista"))
         
@@ -587,6 +603,8 @@ class Ui_frmEntradaNF(object):
         self.btnPesquisarMotorista.setGeometry(QtCore.QRect(117, 35, 16, 16))
         self.btnPesquisarMotorista.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarMotorista.setText(_fromUtf8(""))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarMotorista.setIcon(icon)
         self.btnPesquisarMotorista.setDefault(False)
         self.btnPesquisarMotorista.setFlat(True)
@@ -618,9 +636,12 @@ class Ui_frmEntradaNF(object):
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
         
         self.btnImportXml = QtGui.QPushButton(frmEntradaNF)
+        #icon2 = QtGui.QIcon()
+        #icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/xml.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        #self.btnImportXml.setIcon(icon2)
         self.btnImportXml.setGeometry(QtCore.QRect(940, 15, 31, 27))
         self.btnImportXml.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.btnImportXml.setText(_fromUtf8(""))
+        self.btnImportXml.setText(_fromUtf8("XML"))
         self.btnImportXml.setObjectName(_fromUtf8("btnImportXml"))
         
         self.lblCodigo.setBuddy(self.txtCodig)
@@ -864,6 +885,7 @@ class Ui_frmEntradaNF(object):
         item.setText(_translate("frmEntradaNF", "Alicota IPI", None))
         self.txtQtd.setToolTip(_translate("frmEntradaNF", "Quantidade", None))
         self.txtQtd.setWhatsThis(_translate("frmEntradaNF", "Campo de quantidade do produto", None))
+        self.txtQtd.setPlaceholderText(_translate("frmEntradaNF", "0", None))
         self.lblValorTotal.setText(_translate("frmEntradaNF", "Valor Total", None))
         self.txtValorTotal.setToolTip(_translate("frmEntradaNF", "Valor Total", None))
         self.txtValorTotal.setWhatsThis(_translate("frmEntradaNF", "Campo do valor total do produto", None))

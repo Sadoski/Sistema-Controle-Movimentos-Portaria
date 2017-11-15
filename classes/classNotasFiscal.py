@@ -13,6 +13,7 @@ from dao.pesquisaEmpresa import PesquisaEmpresaDao
 from dao.pesquisarFornecedor import PesquisarFornecedorDao
 from dao.pesquisarMotorista import PesquisarMotoristaDao
 from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
+from telas.frmEntradaNF import Ui_frmEntradaNF
 from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
 from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
 from telas.frmPesquisarFornecedor import Ui_frmConsultarFornecedores
@@ -23,10 +24,129 @@ from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 class CadastroNotaFiscal(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.ui = Ui_frmEntradaNotaRomaneios()
+        self.ui = Ui_frmEntradaNF()
         self.ui.setupUi(self)
         self.desc = []
 
+        self.unidadeMedida()
+        self.tiposNF()
+
+        self.ui.btnImportXml.clicked.connect(self.set)
+
+    def set(self):
+        self.ui.txtFornecedor.setText("Jefferson")
+
+    def upperCaseDestinatario(self):
+        self.ui.txtFornecedor.setText(self.ui.txtFornecedor.text().upper())
+
+    def upperCaseMotorista(self):
+        self.ui.txtMotorista.setText(self.ui.txtMotorista.text().upper())
+
+    def unidadeMedida(self):
+        lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
+        #lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
+        for i in lista:
+            self.ui.cBoxUn.addItem(i)
+
+    def tiposNF(self):
+        lista = ["NF", "NF-e", "NFC-e", "NFS-e", "CT-e", "DANFE"]
+        for i in lista:
+            self.ui.cboxTipos.addItem(i)
+
+    def substituirCaracterMetros(self, i):
+        i = str(i)
+        i = i.replace('²', '2')
+        i = i.replace('³', '3')
+
+        return i
+
+    def formatarDataRetorno(self, data):
+        dia = data[8:10]
+        mes = data[5:7]
+        ano = data[:4]
+
+        return QtCore.QDate(int(ano), int(mes), int(dia))
+
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s-%s-%s" % (ano, mes, dia))
+
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s%s%s" % (ano, mes, dia))
+
+    def removerCaracter(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('/', '')
+        i = i.replace('-', '')
+        i = i.replace('(', '')
+        i = i.replace(')', '')
+        i = i.replace('\\', '')
+        return i
+
+    def removerCaracterDin(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace('R', '')
+        i = i.replace('$', '')
+        i = i.replace(',', '')
+        i = i.replace(' ', '')
+        return i
+
+    def limparCampos(self):
+        self.ui.txtCodig.clear()
+        self.ui.txtFornecedor.clear()
+        self.ui.txtCodigoMotorista.clear()
+        self.ui.txtMotorista.clear()
+        self.ui.txtSerie.clear()
+        self.ui.txtModelo.clear()
+        self.ui.txtNumNF.clear()
+        self.ui.txtIcmsPorcento.clear()
+        self.ui.txtICMSRed.clear()
+        self.ui.txtChaveAcessoNF.clear()
+        self.ui.txtProtocoloAuto.clear()
+        self.ui.dateDataEmissao.setDate(QDate.currentDate())
+        self.ui.dateDataEntrada.setDate(QDate.currentDate())
+
+        self.ui.txtBaseICMS.clear()
+        self.ui.txtValorICMS.clear()
+        self.ui.txtBaseICMSST.clear()
+        self.ui.txtValorICMSSub.clear()
+        self.ui.txtValorPIS.clear()
+        self.ui.txtValorConfins.clear()
+        self.ui.txtValorProduto.clear()
+        self.ui.txtValorFrete.clear()
+        self.ui.txtValorSeguro.clear()
+        self.ui.txtValorDesconto.clear()
+        self.ui.txtOutrasDespesas.clear()
+        self.ui.txtValorIPI.clear()
+        self.ui.txtValorNF.clear()
+
+        self.ui.txtQtd.clear()
+        self.ui.txtValorUnotario.clear()
+        self.ui.txtValorTotal.clear()
+
+        self.ui.txtSomatoriaTotalValor.clear()
+        self.ui.txtSomatoriaTotalQtd.clear()
+
+        self.ui.txtInsMunicipal.clear()
+        self.ui.txtValorTotalServico.clear()
+        self.ui.txtBaseIssqn.clear()
+        self.ui.txtValorIssqn.clear()
+
+    def deletarDescricaoProduto(self):
+        for i in reversed(range(self.ui.tabDescricaoProduto.rowCount())):
+            self.ui.tabDescricaoProduto.removeRow(i)
+
+        '''
         self.ui.txtNomeEmitente.editingFinished.connect(self.pesquisarFornecedor)
         self.ui.txtFantasiaDestinatario.editingFinished.connect(self.pesquisarEmpresa)
         self.ui.txtNomeMotorista.editingFinished.connect(self.pesquisarMotorista)
@@ -59,65 +179,11 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelarCad)
 
-    def upperCaseEmitente(self):
-        self.ui.txtNomeEmitente.setText(self.ui.txtNomeEmitente.text().upper())
-
-    def upperCaseDestinatario(self):
-        self.ui.txtFantasiaDestinatario.setText(self.ui.txtFantasiaDestinatario.text().upper())
-
-    def upperCaseMotorista(self):
-        text = self.ui.txtNomeMotorista.text().upper()
-        self.ui.txtNomeMotorista.setText(text)
-
-    def removerCaracterDin(self, i):
-        i = str(i)
-        i = i.replace('.', '')
-        i = i.replace('R', '')
-        i = i.replace('$', '')
-        i = i.replace(',', '')
-        i = i.replace(' ', '')
-        return i
-
-
+        
     def positionCursor(self):
         texto = self.removerCaracterDin(self.ui.txtValorTotal.text())
         if texto == '' or texto != '':
             self.ui.txtValorTotal.setCursorPosition(14)
-
-
-    def focusEmpresa(self):
-        self.ui.txtFantasiaDestinatario.setFocus()
-
-    def focusMotorista(self):
-        self.ui.txtNomeMotorista.setFocus()
-
-    def focusNumNota(self):
-        self.ui.txtNumeroNotaFiscal.setFocus()
-
-    def focusDataEmissao(self):
-        self.ui.txtDataEmissao.setFocus()
-
-    def focusValorTotal(self):
-        self.ui.txtValorTotal.setFocus()
-
-    def focusNumRomaneio(self):
-        self.ui.txtNumeroRomaneio.setFocus()
-
-    def focusMetragem(self):
-        self.ui.txtMetragemMadeira.setFocus()
-
-    def focusQuantidade(self):
-        self.ui.txtQuantidade.setFocus()
-
-    def focusValorUnitario(self):
-        self.ui.txtValorUnitario.setFocus()
-
-
-    def unidadeMedida(self):
-        #lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML"]
-        lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
-        for i in lista:
-            self.ui.txtUn.addItem(i)
 
     def pesquisarTiposCarga(self):
         __notaRomaneio = NotaFiscalRomanieo()
@@ -341,26 +407,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
             i+=1
 
-    def substituirCaracterMetros(self, i):
-        i = str(i)
-        i = i.replace('²', '2')
-        i = i.replace('³', '3')
-
-        return i
-
-    def formatarDataRetorno(self, data):
-        dia = data[8:10]
-        mes = data[5:7]
-        ano = data[:4]
-
-        return QtCore.QDate(int(ano), int(mes), int(dia))
-
-    def formatarData(self, data):
-        dia = data[:2]
-        mes = data[2:4]
-        ano = data[4:8]
-
-        return ("%s-%s-%s" % (ano, mes, dia))
+    
 
     def limparCamposNotafical(self):
         self.ui.txtNumeroNotaFiscal.clear()
@@ -493,9 +540,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.desc.clear()
         self.deletarDescricaoProduto()
 
-    def deletarDescricaoProduto(self):
-        for i in reversed(range(self.ui.tbProduto.rowCount())):
-            self.ui.tbProduto.removeRow(i)
+   
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -550,24 +595,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.__pesquisar.btnPesquisar.setEnabled(True)
 
 
-    def formatarData(self, data):
-        dia = data[:2]
-        mes = data[2:4]
-        ano = data[4:8]
-
-        return ("%s%s%s" % (ano, mes, dia))
-
-
-    def removerCaracter(self, i):
-        i = str(i)
-        i = i.replace('.', '')
-        i = i.replace(',', '')
-        i = i.replace('/', '')
-        i = i.replace('-', '')
-        i = i.replace('(', '')
-        i = i.replace(')', '')
-        i = i.replace('\\', '')
-        return i
+   
 
 
     def pesquisar(self):
@@ -1129,3 +1157,4 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtPlaca.setText(placa)
 
         self.dialogMot.close()
+        '''
