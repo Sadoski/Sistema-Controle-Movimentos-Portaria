@@ -378,8 +378,7 @@ class CadastroFornecedores(QtGui.QDialog):
 
     def deletarEmpresa(self):
 
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja excluir essa empresa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja excluir essa empresa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
             __forDao = FornecedorDao()
             __dao = __forDao.deletarFornecedor(self.ui.txtIdFornecedor.text())

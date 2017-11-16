@@ -32,7 +32,7 @@ class PessoaFisica():
 
     @getNome.setter
     def setNome(self, Nome):
-        self.__Nome = Nome
+        self.__nome = Nome
 
     @property
     def getCpf(self):

@@ -16,11 +16,14 @@ class CadastroPessoaFisica(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroPessoaFisica()
         self.ui.setupUi(self)
+        self.pessoa = ''
         self.idCidade=''
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
+        self.ui.btnEditar.clicked.connect(self.editar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
+        self.ui.btnDeletar.clicked.connect(self.deletar)
 
         self.ui.txtCep.returnPressed.connect(self.pesquisarCidade)
         self.ui.txtCep.editingFinished.connect(self.pesquisarCidade)
@@ -38,6 +41,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtCpf.cursorPositionChanged.connect(self.positionCursorCpf)
+
+
 
     def upperNome(self):
         self.ui.txtNome.setText(self.ui.txtNome.text().upper())
@@ -114,22 +119,29 @@ class CadastroPessoaFisica(QtGui.QDialog):
     def novo(self):
         self.limparCampos()
         self.ui.grbDados.setEnabled(True)
+        self.ui.radBtnMasculino.setCheckable(True)
+        self.ui.radBtnFeminino.setCheckable(True)
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(True)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(True)
         self.ui.btnDeletar.setEnabled(False)
 
+    def desativarCampos(self):
+        self.limparCampos()
+        self.ui.grbDados.setEnabled(False)
+        self.ui.radBtnMasculino.setCheckable(True)
+        self.ui.radBtnFeminino.setCheckable(True)
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
     def cancelar(self):
         result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja realmente cancelar a operação", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if result == QMessageBox.Yes:
-            self.limparCampos()
-            self.ui.grbDados.setEnabled(False)
-            self.ui.btnNovo.setEnabled(True)
-            self.ui.btnSalvar.setEnabled(False)
-            self.ui.btnEditar.setEnabled(False)
-            self.ui.btnCancelar.setEnabled(False)
-            self.ui.btnDeletar.setEnabled(False)
+            self.desativarCampos()
 
     def limparCampos(self):
         self.ui.txtNome.clear()
@@ -148,6 +160,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.txtEstado.clear()
         self.ui.txtMae.clear()
         self.ui.txtPai.clear()
+        self.pessoa=''
         self.idCidade=''
 
     def removerCaracter(self, i):
@@ -211,35 +224,42 @@ class CadastroPessoaFisica(QtGui.QDialog):
         return bool(cpf == selfcpf)
 
     def cadastrar(self):
-        nome = self.ui.txtNome.text()
-        cpf = self.removerCaracter(self.ui.txtCpf.text())
-        rg = self.ui.txtRg.text()
-        expeditor = self.ui.txtExpeditor.text()
-        data = self.removerCaracter(self.ui.dateData.text())
-        if self.ui.radBtnMasculino.isChecked():
-            sexo = '1'
-        elif self.ui.radBtnFeminino.isChecked():
-            sexo = '2'
-        else:
-            return None
-        nascimento = self.formatarData(data)
-        endereco = self.ui.txtEndereco.text()
-        numero = self.ui.txtNumero.text()
-        complemento = self.ui.txtComplemento.text()
-        bairro = self.ui.txtBairro.text()
-        mae = self.ui.txtMae.text()
-        pai = self.ui.txtPai.text()
-        cidade = self.idCidade
+        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() and self.ui.txtPai.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
+            if self.removerCaracter(self.ui.txtCpf.text()) != '':
+                if self.ui.radBtnMasculino.isChecked() or self.ui.radBtnFeminino.isChecked():
+                    nome = self.ui.txtNome.text()
+                    cpf = self.removerCaracter(self.ui.txtCpf.text())
+                    rg = self.ui.txtRg.text()
+                    expeditor = self.ui.txtExpeditor.text()
+                    data = self.removerCaracter(self.ui.dateData.text())
+                    if self.ui.radBtnMasculino.isChecked():
+                        sexo = '1'
+                    elif self.ui.radBtnFeminino.isChecked():
+                        sexo = '2'
+                    else:
+                        return None
+                    nascimento = self.formatarData(data)
+                    endereco = self.ui.txtEndereco.text()
+                    numero = self.ui.txtNumero.text()
+                    complemento = self.ui.txtComplemento.text()
+                    bairro = self.ui.txtBairro.text()
+                    mae = self.ui.txtMae.text()
+                    pai = self.ui.txtPai.text()
+                    cidade = self.idCidade
 
 
-        pessocaFisico = PessoaFisica(None, nome, cpf, rg, expeditor, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
-        fisicaDao = PessoaFisicaDao()
-        pes = fisicaDao.pesquisarPessoaFisica(pessocaFisico)
-        if pes == []:
-            fisicaDao.cadastrarPessoaFisica(pessocaFisico)
-            self.novo()
-        else:
-            QMessageBox.critical(QWidget(), 'Atenção', "Já existe um registro desta Pessoa")
+                    pessocaFisico = PessoaFisica(None, nome, cpf, rg, expeditor, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                    fisicaDao = PessoaFisicaDao()
+                    pes = fisicaDao.pesquisarPessoaFisica(pessocaFisico)
+                    if pes == []:
+                        fisicaDao.cadastrarPessoaFisica(pessocaFisico)
+                        self.desativarCampos()
+                    else:
+                        QMessageBox.critical(QWidget(), 'Atenção', "Já existe um registro desta Pessoa")
+                else:
+                    QMessageBox.critical(QWidget(), 'Atenção', "Selecione o sexo da pessoa")
+            else:
+                QMessageBox.critical(QWidget(), 'Atenção', "Insira o CPF")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -257,7 +277,14 @@ class CadastroPessoaFisica(QtGui.QDialog):
             self.dialog.exec_()
 
     def pesquisar(self):
-        if self.__pesquisar.radBtnNome.isChecked():
+        if self.__pesquisar.radBtnCodigo.isChecked():
+            __nome = self.__pesquisar.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaCodigo(__nome)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisar.radBtnNome.isChecked():
             __nome = self.__pesquisar.txtPesquisar.text()
             __pesDao = PesquisarPessoaFisicaDao()
             __retorno = __pesDao.pesquisaNome(__nome)
@@ -379,6 +406,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.dialog.close()
 
     def setCampos(self, campos):
+        self.pessoa = campos.getIdPesFisica
         self.ui.txtNome.setText(campos.getNome)
         self.ui.txtCpf.setText(campos.getCpf)
         self.ui.txtRg.setText(campos.getRg)
@@ -405,3 +433,48 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.btnEditar.setEnabled(True)
         self.ui.btnCancelar.setEnabled(True)
         self.ui.btnDeletar.setEnabled(True)
+
+    def editar(self):
+        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() and self.ui.txtPai.text() != '' and self.removerCaracter(self.ui.txtCep.text()) != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
+            if self.removerCaracter(self.ui.txtCpf.text()) != '':
+                if self.ui.radBtnMasculino.isChecked() or self.ui.radBtnFeminino.isChecked():
+                    nome = self.ui.txtNome.text()
+                    cpf = self.removerCaracter(self.ui.txtCpf.text())
+                    rg = self.ui.txtRg.text()
+                    expeditor = self.ui.txtExpeditor.text()
+                    data = self.removerCaracter(self.ui.dateData.text())
+                    if self.ui.radBtnMasculino.isChecked():
+                        sexo = '1'
+                    elif self.ui.radBtnFeminino.isChecked():
+                        sexo = '2'
+                    else:
+                        return None
+                    nascimento = self.formatarData(data)
+                    endereco = self.ui.txtEndereco.text()
+                    numero = self.ui.txtNumero.text()
+                    complemento = self.ui.txtComplemento.text()
+                    bairro = self.ui.txtBairro.text()
+                    mae = self.ui.txtMae.text()
+                    pai = self.ui.txtPai.text()
+                    pessoa = self.pessoa
+                    cid = CidadesEstadosDao()
+                    cidade = cid.idCidade(self.removerCaracter(self.ui.txtCep.text()), self.ui.txtCidade.text(), self.ui.txtEstado.text())
+
+                    pessocaFisico = PessoaFisica(pessoa, nome, cpf, rg, expeditor, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                    fisicaDao = PessoaFisicaDao()
+                    fisicaDao.atualizarPessoaFisica(pessocaFisico)
+                    self.self.desativarCampos()
+                else:
+                    QMessageBox.critical(QWidget(), 'Atenção', "Selecione o sexo da pessoa")
+
+            else:
+                QMessageBox.critical(QWidget(), 'Atenção', "Insira o CPF")
+        else:
+            QMessageBox.critical(QWidget(), 'Atenção', "Por Favor, preencham os campos obrigtorios ")
+
+    def deletar(self):
+        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja excluir esse registro", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if result == QMessageBox.Yes:
+            fisicaDao = PessoaFisicaDao()
+            fisicaDao.deletarPessoaFisica(self.pessoa)
+            self.desativarCampos()

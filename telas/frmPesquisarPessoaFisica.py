@@ -33,30 +33,36 @@ class Ui_frmPesquisarPessoaFisica(object):
         frmPesquisarPessoaFisica.setFont(font)
         frmPesquisarPessoaFisica.setSizeGripEnabled(True)
         frmPesquisarPessoaFisica.setModal(True)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmPesquisarPessoaFisica.setWindowIcon(icon)
 
         self.grbTipoPesquisa = QtGui.QGroupBox(frmPesquisarPessoaFisica)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 161, 91))
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
 
         self.radBtnNome = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnNome.setGeometry(QtCore.QRect(20, 20, 61, 23))
+        self.radBtnNome.setGeometry(QtCore.QRect(20, 40, 61, 23))
         self.radBtnNome.setObjectName(_fromUtf8("radBtnNome"))
 
         self.radBtncPF = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtncPF.setGeometry(QtCore.QRect(20, 40, 51, 23))
+        self.radBtncPF.setGeometry(QtCore.QRect(20, 60, 51, 23))
         self.radBtncPF.setObjectName(_fromUtf8("radBtncPF"))
 
         self.radBtnRg = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnRg.setGeometry(QtCore.QRect(20, 60, 51, 23))
+        self.radBtnRg.setGeometry(QtCore.QRect(90, 20, 51, 23))
         self.radBtnRg.setObjectName(_fromUtf8("radBtnRg"))
 
         self.radBtnMae = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnMae.setGeometry(QtCore.QRect(90, 20, 51, 23))
+        self.radBtnMae.setGeometry(QtCore.QRect(90, 40, 51, 23))
         self.radBtnMae.setObjectName(_fromUtf8("radBtnMae"))
-
         self.radBtnPai = QtGui.QRadioButton(self.grbTipoPesquisa)
-        self.radBtnPai.setGeometry(QtCore.QRect(90, 40, 51, 23))
+        self.radBtnPai.setGeometry(QtCore.QRect(90, 60, 51, 23))
         self.radBtnPai.setObjectName(_fromUtf8("radBtnPai"))
+
+        self.radBtnCodigo = QtGui.QRadioButton(self.grbTipoPesquisa)
+        self.radBtnCodigo.setGeometry(QtCore.QRect(20, 20, 63, 23))
+        self.radBtnCodigo.setObjectName(_fromUtf8("radBtnCodigo"))
 
         self.txtPesquisar = QtGui.QLineEdit(frmPesquisarPessoaFisica)
         self.txtPesquisar.setGeometry(QtCore.QRect(180, 70, 441, 25))
@@ -72,16 +78,11 @@ class Ui_frmPesquisarPessoaFisica(object):
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
 
         self.tabPesquisar = QtGui.QTableWidget(frmPesquisarPessoaFisica)
-        self.tabPesquisar.horizontalHeader().setStretchLastSection(True)
-        self.tabPesquisar.verticalHeader().setVisible(False)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 110, 771, 381))
-        self.tabPesquisar.setEditTriggers(self.tabPesquisar.NoEditTriggers)
-        self.tabPesquisar.setSelectionBehavior(self.tabPesquisar.SelectRows)
-        self.tabPesquisar.setSelectionMode(self.tabPesquisar.SingleSelection)
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
-
+        self.tabPesquisar.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.tabPesquisar.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
-
         self.tabPesquisar.setColumnCount(16)
         self.tabPesquisar.setRowCount(0)
         item = QtGui.QTableWidgetItem()
@@ -116,8 +117,8 @@ class Ui_frmPesquisarPessoaFisica(object):
         self.tabPesquisar.setHorizontalHeaderItem(14, item)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(15, item)
-        self.tabPesquisar.horizontalHeader().setStretchLastSection(True)
         self.tabPesquisar.verticalHeader().setVisible(False)
+        self.tabPesquisar.verticalHeader().setCascadingSectionResizes(True)
 
         self.retranslateUi(frmPesquisarPessoaFisica)
         QtCore.QMetaObject.connectSlotsByName(frmPesquisarPessoaFisica)
@@ -146,6 +147,9 @@ class Ui_frmPesquisarPessoaFisica(object):
         self.radBtnPai.setToolTip(_translate("frmPesquisarPessoaFisica", "Pai", None))
         self.radBtnPai.setWhatsThis(_translate("frmPesquisarPessoaFisica", "Item de seleção para a pesquisa por pai", None))
         self.radBtnPai.setText(_translate("frmPesquisarPessoaFisica", "Pai", None))
+        self.radBtnCodigo.setToolTip(_translate("frmPesquisarPessoaFisica", "RG", None))
+        self.radBtnCodigo.setWhatsThis(_translate("frmPesquisarPessoaFisica", "Item de seleção para a pesquisa por RG", None))
+        self.radBtnCodigo.setText(_translate("frmPesquisarPessoaFisica", "Codigo", None))
         self.txtPesquisar.setToolTip(_translate("frmPesquisarPessoaFisica", "Pesquisar", None))
         self.txtPesquisar.setWhatsThis(_translate("frmPesquisarPessoaFisica", "Campo de inserir os dados para pesquisar", None))
         self.txtPesquisar.setPlaceholderText(_translate("frmPesquisarPessoaFisica", "Pesquisa", None))

@@ -15,6 +15,7 @@ class Login(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self._ui = Ui_frmLogin()
         self._ui.setupUi(self)
+        self._ui.lblImagem.setFocus()
         self._logarDao = LogarDao()
 
         self._ui.txtUsuario.textChanged.connect(self.upperCaseUsuario)
@@ -38,6 +39,9 @@ class Login(QtGui.QDialog):
 
     def focusBotaoLogar(self):
         self._ui.btnLogin.setFocus()
+
+    def focusBotaoSair(self):
+        self._ui.btnSair.setFocus()
 
     def _login(self):
         _login = self._ui.txtUsuario.text()

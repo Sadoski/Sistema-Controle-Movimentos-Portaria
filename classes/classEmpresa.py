@@ -5,7 +5,7 @@ from PyQt4.QtGui import *
 from controller.getSetTipoEmpresa import TipoEmpresa
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.tipoEmpresaDao import TipoEmpresaDao
-from telas.frmCadastroEmpresa import Ui_frmCadastroEmpresa
+from telas.frmCadEmpresa import Ui_frmCadastroEmpresa
 from dao.empresaDao import EmpresaDao
 from controller.getSetEmpresa import Empresas
 from .classCadSetoresCargos import SetoresCargos
@@ -15,11 +15,150 @@ class Empresa(QtGui.QDialog):
 
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self._ui = Ui_frmCadastroEmpresa()
-        self._ui.setupUi(self)
-        self._empresa = EmpresaDao()
+        self.ui = Ui_frmCadastroEmpresa()
+        self.ui.setupUi(self)
+        self.contatoAdd = []
+        self.contatoRemove = []
+
+        self.ui.btnNovo.clicked.connect(self.novo)
+
+        self.ui.btnAddTelefone.clicked.connect(self.addDescricaoProduto)
+        self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
+
+        self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
+
+    def numberTelefone(self):
+
+        if self.ui.txtNumeroTelefone.text().isnumeric() == False:
+            if len(self.ui.txtNumeroTelefone.text()) > 0:
+                self.ui.txtNumeroTelefone.undo()
 
 
+    def novo(self):
+        self.limparCampos()
+        self.ui.grbDadosPessoaJuridica.setEnabled(True)
+        self.ui.grbTipoEmpresa.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
+        self.setTipoEmpresa()
+
+    def limparCampos(self):
+        self.ui.txtCodigo.clear()
+        self.ui.txtCnpj.clear()
+        self.ui.txtInscricaoEstadua.clear()
+        self.ui.txtRazaoSocial.clear()
+        self.ui.txtFantasia.clear()
+        self.ui.cBoxTipoEmpresa.clear()
+        self.ui.txtInscricaoMunicipal.clear()
+
+        self.ui.txtContatoTelefone.clear()
+        self.ui.txtContatoEmail.clear()
+
+        self.ui.txtCadSetoresSetor.clear()
+        self.ui.txtCadCargoCargo.clear()
+        self.ui.txtRelacaoSetor.clear()
+        self.ui.txtRelacaoCargo.clear()
+
+        self.contatoAdd.clear()
+        self.contatoRemove.clear()
+
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+        self.deletarSetor()
+        self.deletarCargo()
+        self.deletarRelacao()
+
+    def deletarContatoTelefone(self):
+        for i in reversed(range(self.ui.tabContatoTelefone.rowCount())):
+            self.ui.tabContatoTelefone.removeRow(i)
+
+    def deletarContatoEmail(self):
+        for i in reversed(range(self.ui.tabContatoEmail.rowCount())):
+            self.ui.tabContatoEmail.removeRow(i)
+
+    def deletarSetor(self):
+        for i in reversed(range(self.ui.tabSetores.rowCount())):
+            self.ui.tabSetores.removeRow(i)
+
+    def deletarCargo(self):
+        for i in reversed(range(self.ui.tabCargos.rowCount())):
+            self.ui.tabCargos.removeRow(i)
+
+    def deletarRelacao(self):
+        for i in reversed(range(self.ui.tabRelacao.rowCount())):
+            self.ui.tabRelacao.removeRow(i)
+
+    def desativarCampos(self):
+        self.ui.grbDadosPessoaJuridica.setEnabled(False)
+        self.ui.grbTipoEmpresa.setEnabled(False)
+        self.ui.tabWiAdicionais.setEnabled(False)
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
+    def setTipoEmpresa(self):
+        empresa = EmpresaDao()
+        lista = empresa.tipoEmpresa()
+
+        for tipo in lista:
+            self.ui.cBoxTipoEmpresa.addItem(tipo[0])
+
+    def addDescricaoProduto(self):
+        if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
+            __contato = str(self.ui.txtContatoTelefone.text())
+            __telefone = str(self.ui.txtNumeroTelefone.text())
+
+            add = [(__contato, __telefone)]
+            self.contatoAdd.append([__contato, __telefone])
+            self.inserirTabela(add)
+
+            self.ui.txtContatoTelefone.clear()
+            self.ui.txtNumeroTelefone.clear()
+
+            self.ui.txtContatoTelefone.setFocus()
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def inserirTabela(self, dado):
+
+        linha = self.ui.tabContatoTelefone.rowCount()
+        for info in dado:
+            self.ui.tabContatoTelefone.insertRow(linha)
+            __contato = info[0]
+            __telefone = info[1]
+
+
+            self.ui.tabContatoTelefone.setItem(linha, 0, QtGui.QTableWidgetItem(str(__contato)))
+            self.ui.tabContatoTelefone.setItem(linha, 1, QtGui.QTableWidgetItem(str(__telefone)))
+
+
+            linha += 1
+        print(self.contatoAdd)
+
+    def contatoRemovido(self):
+        itens = []
+        for item in self.ui.tabContatoTelefone.selectedItems():
+            itens.append(item.text())
+        self.contatoRemove.append(itens)
+
+    def delContatoTelefone(self):
+        self.contatoRemovido()
+        index = self.ui.tabContatoTelefone.currentRow()
+        self.ui.tabContatoTelefone.removeRow(index)
+
+        if index >= 0:
+            del self.contatoAdd[index]
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+    '''
         self._ui.btnPesquisar.clicked.connect(self.pesquisar)
         self._ui.txtPesquisa.returnPressed.connect(self.pesquisar)
 
@@ -696,3 +835,4 @@ class Empresa(QtGui.QDialog):
         self._ui.tbPesquisa.clear()
         self._ui.tbPesquisa.setColumnCount(17)
         self._ui.tbPesquisa.setHorizontalHeaderLabels(['COD.', 'Tipo Empresa', 'CNPJ', 'Ins. Estadual', 'Insc. Municipal', 'Fantasia', 'Razao Socil', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Telefone', 'Site', 'Cep', 'Cidade', 'Estado', 'Situação'])
+    '''
