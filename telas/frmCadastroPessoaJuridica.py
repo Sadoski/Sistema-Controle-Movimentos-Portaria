@@ -239,9 +239,7 @@ class Ui_frmCadastroPessoaJuridica(object):
         frmCadastroPessoaJuridica.setTabOrder(self.txtNumero, self.txtComplemento)
         frmCadastroPessoaJuridica.setTabOrder(self.txtComplemento, self.txtBairro)
         frmCadastroPessoaJuridica.setTabOrder(self.txtBairro, self.txtCep)
-        frmCadastroPessoaJuridica.setTabOrder(self.txtCep, self.txtCidade)
-        frmCadastroPessoaJuridica.setTabOrder(self.txtCidade, self.txtEstado)
-        frmCadastroPessoaJuridica.setTabOrder(self.txtEstado, self.txtSite)
+        frmCadastroPessoaJuridica.setTabOrder(self.txtCep, self.txtSite)
 
     def retranslateUi(self, frmCadastroPessoaJuridica):
         frmCadastroPessoaJuridica.setWindowTitle(_translate("frmCadastroPessoaJuridica", "Cadastro Pessoa Jurídica", None))

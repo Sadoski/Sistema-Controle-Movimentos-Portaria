@@ -25,6 +25,18 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         self.ui.btnDeletar.clicked.connect(self.deletar)
 
+        self.ui.txtNome.returnPressed.connect(self.focusCpf)
+        self.ui.txtCpf.returnPressed.connect(self.focusRg)
+        self.ui.txtRg.returnPressed.connect(self.focusExpeditor)
+        self.ui.txtExpeditor.returnPressed.connect(self.focusData)
+        self.ui.dateData.returnPressed.connect(self.focusEndereco)
+        self.ui.txtEndereco.returnPressed.connect(self.focusNumero)
+        self.ui.txtNumero.returnPressed.connect(self.focusComplemento)
+        self.ui.txtComplemento.returnPressed.connect(self.focusBairro)
+        self.ui.txtBairro.returnPressed.connect(self.focusCep)
+        self.ui.txtCep.returnPressed.connect(self.focusMae)
+        self.ui.txtMae.returnPressed.connect(self.focusPai)
+
         self.ui.txtCep.returnPressed.connect(self.pesquisarCidade)
         self.ui.txtCep.editingFinished.connect(self.pesquisarCidade)
 
@@ -42,7 +54,41 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtCpf.cursorPositionChanged.connect(self.positionCursorCpf)
 
+    def focusNome(self):
+        self.ui.txtNome.setFocus()
 
+    def focusCpf(self):
+        self.ui.txtCpf.setFocus()
+
+    def focusRg(self):
+        self.ui.txtRg.setFocus()
+
+    def focusExpeditor(self):
+        self.ui.txtExpeditor.setFocus()
+
+    def focusData(self):
+        self.ui.dateData.setFocus()
+
+    def focusEndereco(self):
+        self.ui.txtEndereco.setFocus()
+
+    def focusNumero(self):
+        self.ui.txtNumero.setFocus()
+
+    def focusComplemento(self):
+        self.ui.txtComplemento.setFocus()
+
+    def focusBairro(self):
+        self.ui.txtBairro.setFocus()
+
+    def focusCep(self):
+        self.ui.txtCep.setFocus()
+
+    def focusMae(self):
+        self.ui.txtMae.setFocus()
+
+    def focusPai(self):
+        self.ui.txtPai.setFocus()
 
     def upperNome(self):
         self.ui.txtNome.setText(self.ui.txtNome.text().upper())

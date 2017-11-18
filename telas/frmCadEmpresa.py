@@ -174,7 +174,7 @@ class Ui_frmCadastroEmpresa(object):
 
         self.btnAddTelefone = QtGui.QPushButton(self.contatos)
         self.btnAddTelefone.setGeometry(QtCore.QRect(340, 66, 31, 27))
-        self.btnAddTelefone.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnAddTelefone.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnAddTelefone.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -199,7 +199,7 @@ class Ui_frmCadastroEmpresa(object):
         self.tabContatoTelefone.verticalHeader().setVisible(False)
         self.btnAddEmail = QtGui.QPushButton(self.contatos)
         self.btnAddEmail.setGeometry(QtCore.QRect(820, 66, 31, 27))
-        self.btnAddEmail.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnAddEmail.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnAddEmail.setText(_fromUtf8(""))
         self.btnAddEmail.setIcon(icon1)
         self.btnAddEmail.setObjectName(_fromUtf8("btnAddEmail"))
@@ -240,7 +240,7 @@ class Ui_frmCadastroEmpresa(object):
 
         self.btnRemoverTelefone = QtGui.QPushButton(self.contatos)
         self.btnRemoverTelefone.setGeometry(QtCore.QRect(340, 293, 31, 27))
-        self.btnRemoverTelefone.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnRemoverTelefone.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnRemoverTelefone.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/delete.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -249,7 +249,7 @@ class Ui_frmCadastroEmpresa(object):
 
         self.btnRemoverEmail = QtGui.QPushButton(self.contatos)
         self.btnRemoverEmail.setGeometry(QtCore.QRect(820, 293, 31, 27))
-        self.btnRemoverEmail.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnRemoverEmail.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnRemoverEmail.setText(_fromUtf8(""))
         self.btnRemoverEmail.setIcon(icon2)
         self.btnRemoverEmail.setObjectName(_fromUtf8("btnRemoverEmail"))

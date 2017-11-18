@@ -2,6 +2,9 @@ import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+
+from controller.ContatoEmail import ContatoEmail
+from controller.ContatoTelefone import ContatoTelefone
 from controller.getSetTipoEmpresa import TipoEmpresa
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.tipoEmpresaDao import TipoEmpresaDao
@@ -19,20 +22,33 @@ class Empresa(QtGui.QDialog):
         self.ui.setupUi(self)
         self.contatoAdd = []
         self.contatoRemove = []
+        self.emailAdd = []
+        self.emailRemove = []
 
         self.ui.btnNovo.clicked.connect(self.novo)
+        self.ui.btnCancelar.clicked.connect(self.cancelar)
+
 
         self.ui.btnAddTelefone.clicked.connect(self.addDescricaoProduto)
         self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
 
+        self.ui.txtCodigo.returnPressed.connect(self.setEmpresa)
+
+        self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
         self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
+        self.ui.txtInscricaoMunicipal.textChanged.connect(self.numberInscricaoMunicipal)
+
+    def numberCodigo(self):
+        if self.ui.txtCodigo.text().isnumeric() == False:
+            self.ui.txtCodigo.backspace()
 
     def numberTelefone(self):
-
         if self.ui.txtNumeroTelefone.text().isnumeric() == False:
-            if len(self.ui.txtNumeroTelefone.text()) > 0:
-                self.ui.txtNumeroTelefone.undo()
+            self.ui.txtNumeroTelefone.backspace()
 
+    def numberInscricaoMunicipal(self):
+        if self.ui.txtInscricaoMunicipal.text().isnumeric() == False:
+            self.ui.txtInscricaoMunicipal.backspace()
 
     def novo(self):
         self.limparCampos()
@@ -46,6 +62,23 @@ class Empresa(QtGui.QDialog):
         self.ui.btnDeletar.setEnabled(False)
 
         self.setTipoEmpresa()
+
+    def cancelar(self):
+        self.limparCampos()
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+        self.deletarSetor()
+        self.deletarCargo()
+        self.deletarRelacao()
+        self.ui.grbDadosPessoaJuridica.setEnabled(False)
+        self.ui.grbTipoEmpresa.setEnabled(False)
+        self.ui.tabWiAdicionais.setEnabled(False)
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
 
     def limparCampos(self):
         self.ui.txtCodigo.clear()
@@ -66,6 +99,8 @@ class Empresa(QtGui.QDialog):
 
         self.contatoAdd.clear()
         self.contatoRemove.clear()
+        self.emailAdd.clear()
+        self.emailRemove.clear()
 
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
@@ -109,6 +144,21 @@ class Empresa(QtGui.QDialog):
 
         for tipo in lista:
             self.ui.cBoxTipoEmpresa.addItem(tipo[0])
+
+    def setEmpresa(self):
+        empresa = EmpresaDao()
+        emp = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+        print(emp)
+        for empres in emp:
+            self.ui.txtCnpj.setText(str(empres[0]))
+            self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+            self.ui.txtRazaoSocial.setText(str(empres[2]))
+            self.ui.txtFantasia.setText(str(empres[3]))
+        if emp == []:
+            self.ui.txtCnpj.clear()
+            self.ui.txtInscricaoEstadua.clear()
+            self.ui.txtRazaoSocial.clear()
+            self.ui.txtInscricaoEstadua.clear()
 
     def addDescricaoProduto(self):
         if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
@@ -157,6 +207,39 @@ class Empresa(QtGui.QDialog):
             del self.contatoAdd[index]
         else:
             QMessageBox.warning(QWidget(), 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
+    def cadastrarTelefone(self):
+        emp = EmpresaDao()
+        empresa = emp.pesquisaEmpresa(self.ui.txtCodigo.text())
+        i = 0
+        for lista in self.contatoAdd:
+            a = self.contatoAdd[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, empresa)
+            emp.cadastrarTelefone(__descricao)
+
+            i += 1
+
+    def cadastrarEmail(self):
+        emp = EmpresaDao()
+        empresa = emp.pesquisaEmpresa(self.ui.txtCodigo.text())
+        i = 0
+        for lista in self.contatoAdd:
+            a = self.emailAdd[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, empresa)
+            emp.cadastrarEmail(__descricao)
+
+            i += 1
+
+
 
     '''
         self._ui.btnPesquisar.clicked.connect(self.pesquisar)

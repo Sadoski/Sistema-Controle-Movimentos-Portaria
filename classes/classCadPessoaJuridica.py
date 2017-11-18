@@ -36,11 +36,48 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
         self.ui.txtCnpj.editingFinished.connect(self.validacaoCnpj)
 
+        self.ui.txtRazaoSocial.returnPressed.connect(self.focusFantasia)
+        self.ui.txtFantasia.returnPressed.connect(self.focusCnpj)
+        self.ui.txtInsEstadual.returnPressed.connect(self.focusInscricaoEstadual)
+        self.ui.txtEndereco.returnPressed.connect(self.focusNumero)
+        self.ui.txtNumero.returnPressed.connect(self.focusComplemento)
+        self.ui.txtComplemento.returnPressed.connect(self.focusBairro)
+        self.ui.txtBairro.returnPressed.connect(self.focusCep)
+        self.ui.txtCep.returnPressed.connect(self.focusSite)
+
         self.ui.txtCep.returnPressed.connect(self.pesquisarCidade)
         self.ui.txtCep.editingFinished.connect(self.pesquisarCidade)
 
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtCnpj.cursorPositionChanged.connect(self.positionCursorCnpj)
+
+    def focusFantasia(self):
+        self.ui.txtFantasia.setFocus()
+
+    def focusCnpj(self):
+        self.ui.txtCnpj.setFocus()
+
+    def focusInscricaoEstadual(self):
+        self.ui.txtInsEstadual.setFocus()
+
+    def focusEndereco(self):
+        self.ui.txtEndereco.setFocus()
+
+    def focusNumero(self):
+        self.ui.txtNumero.setFocus()
+
+    def focusComplemento(self):
+        self.ui.txtComplemento.setFocus()
+
+    def focusBairro(self):
+        self.ui.txtBairro.setFocus()
+
+    def focusCep(self):
+        self.ui.txtCep.setFocus()
+
+    def focusSite(self):
+        self.ui.txtSite.setFocus()
+
 
     def upperRazaoSocial(self):
         self.ui.txtRazaoSocial.setText(self.ui.txtRazaoSocial.text().upper())

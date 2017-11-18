@@ -42,11 +42,53 @@ class EmpresaDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")
             return False
 
+    def pesquisarPessoaJuridica(self, pessoaJuridica):
+        try:
+            _sql = "SELECT cnpj, ins_estadual, razao_social, fantasia FROM pessoa_juridica WHERE id_pessoa_juridica = '"+pessoaJuridica+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def cadastroEmpresa(self, empresa):
 
         try:
             _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, inscricao_municipal, endereco, numero_endereco, complemento, bairro, telefone, cadastrado, id_cidades, id_tipo_empresa, site, situacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             _valores = (empresa.getFantasia, empresa.getRazaoSocial, empresa.getCnpj, empresa.getInscricaoEstadual, empresa.getInscricaoMunicipal, empresa.getEndereco, empresa.getNumero, empresa.getComplemento, empresa.getBairro, empresa.getTelefone, self.__dataHora, empresa.getCidade, empresa.getTipoEmpresa, empresa.getSite, empresa.getSituacao)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarTelefone(self, empresa):
+
+        try:
+            _sql = "INSERT INTO contato_empresa (nome_contato, numero, id_empresa) VALUES (%s, %s, %s)"
+            _valores = (empresa.getContato, empresa.getTelefone, empresa.getIdEmpresa)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarEmail(self, empresa):
+
+        try:
+            _sql = "INSERT INTO email_empresa (nome_contato, numero, id_empresa) VALUES (%s, %s, %s)"
+            _valores = (empresa.getContato, empresa.getEmail, empresa.getIdEmpresa)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
