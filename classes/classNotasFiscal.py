@@ -31,10 +31,153 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.unidadeMedida()
         self.tiposNF()
 
-        self.ui.btnImportXml.clicked.connect(self.set)
+        self.ui.txtCodig.textChanged.connect(self.numberCodigoFornecedor)
+        self.ui.txtCodigoMotorista.textChanged.connect(self.numberCodigoMotorista)
+        self.ui.txtSerie.textChanged.connect(self.numberSerie)
+        self.ui.txtModelo.textChanged.connect(self.numberModelo)
+        self.ui.txtNumNF.textChanged.connect(self.numberNumNF)
+        self.ui.txtIcmsPorcento.textChanged.connect(self.numberIcmsPorcento)
+        self.ui.txtChaveAcessoNF.textChanged.connect(self.numberChaveAcessoNF)
+        self.ui.txtProtocoloAuto.textChanged.connect(self.numberProtocoloAuto)
+        self.ui.txtICMSRed.textChanged.connect(self.numberICMSRed)
+        self.ui.txtBaseICMS.textChanged.connect(self.numberBaseICMS)
+        self.ui.txtValorICMS.textChanged.connect(self.numberValorICMS)
+        self.ui.txtBaseICMSST.textChanged.connect(self.numberBaseICMSST)
+        self.ui.txtValorConfins.textChanged.connect(self.numberValorConfins)
+        self.ui.txtValorICMSSub.textChanged.connect(self.numberValorICMSSub)
+        self.ui.txtValorPIS.textChanged.connect(self.numberValorPIS)
+        self.ui.txtValorProduto.textChanged.connect(self.numberValorProduto)
+        self.ui.txtValorFrete.textChanged.connect(self.numberValorFrete)
+        self.ui.txtValorSeguro.textChanged.connect(self.numberValorSeguro)
+        self.ui.txtValorDesconto.textChanged.connect(self.numberValorDesconto)
+        self.ui.txtOutrasDespesas.textChanged.connect(self.numberOutrasDespesas)
+        self.ui.txtValorIPI.textChanged.connect(self.numberValorIPI)
+        self.ui.txtValorNF.textChanged.connect(self.numberValorNF)
+        self.ui.txtQtd.textChanged.connect(self.numberQuantidade)
+        self.ui.txtValorUnotario.textChanged.connect(self.numberValorUnitario)
+        self.ui.txtValorTotal.textChanged.connect(self.numberValorTotal)
+        self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
+        self.ui.txtValorTotalServico.textChanged.connect(self.numberValorTotalServico)
+        self.ui.txtBaseIssqn.textChanged.connect(self.numberBaseIssqn)
+        self.ui.txtValorIssqn.textChanged.connect(self.numberValorIssqn)
 
-    def set(self):
-        self.ui.txtFornecedor.setText("Jefferson")
+
+
+    def numberCodigoFornecedor(self):
+        if self.ui.txtCodig.text().isnumeric() == False:
+            self.ui.txtCodig.backspace()
+
+    def numberCodigoMotorista(self):
+        if self.ui.txtCodigoMotorista.text().isnumeric() == False:
+            self.ui.txtCodigoMotorista.backspace()
+
+    def numberSerie(self):
+        if self.ui.txtSerie.text().isnumeric() == False:
+            self.ui.txtSerie.backspace()
+
+    def numberIcmsPorcento(self):
+        if self.ui.txtIcmsPorcento.text().isnumeric() == False:
+            self.ui.txtIcmsPorcento.backspace()
+
+    def numberNumNF(self):
+        if self.ui.txtNumNF.text().isnumeric() == False:
+            self.ui.txtNumNF.backspace()
+
+    def numberModelo(self):
+        if self.ui.txtModelo.text().isnumeric() == False:
+            self.ui.txtModelo.backspace()
+
+    def numberChaveAcessoNF(self):
+        if self.ui.txtChaveAcessoNF.text().isnumeric() == False:
+            self.ui.txtChaveAcessoNF.backspace()
+
+    def numberProtocoloAuto(self):
+        if self.ui.txtProtocoloAuto.text().isnumeric() == False:
+            self.ui.txtProtocoloAuto.backspace()
+
+    def numberICMSRed(self):
+        if self.ui.txtICMSRed.text().isnumeric() == False :
+            self.ui.txtICMSRed.backspace()
+
+    def numberBaseICMS(self):
+        if self.ui.txtBaseICMS.text().isnumeric() == False:
+            self.ui.txtBaseICMS.backspace()
+
+    def numberValorICMS(self):
+        if self.ui.txtValorICMS.text().isnumeric() == False:
+            self.ui.txtValorICMS.backspace()
+
+    def numberBaseICMSST(self):
+        if self.ui.txtBaseICMSST.text().isnumeric() == False:
+            self.ui.txtBaseICMSST.backspace()
+
+    def numberValorICMSSub(self):
+        if self.ui.txtValorICMSSub.text().isnumeric() == False:
+            self.ui.txtValorICMSSub.backspace()
+
+    def numberValorPIS(self):
+        if self.ui.txtValorPIS.text().isnumeric() == False:
+            self.ui.txtValorPIS.backspace()
+
+    def numberValorConfins(self):
+        if self.ui.txtValorConfins.text().isnumeric() == False:
+            self.ui.txtValorConfins.backspace()
+
+    def numberValorProduto(self):
+        if self.ui.txtValorProduto.text().isnumeric() == False:
+            self.ui.txtValorProduto.backspace()
+
+    def numberValorFrete(self):
+        if self.ui.txtValorFrete.text().isnumeric() == False:
+            self.ui.txtValorFrete.backspace()
+
+    def numberValorSeguro(self):
+        if self.ui.txtValorSeguro.text().isnumeric() == False:
+            self.ui.txtValorSeguro.backspace()
+
+    def numberValorDesconto(self):
+        if self.ui.txtValorDesconto.text().isnumeric() == False:
+            self.ui.txtValorDesconto.backspace()
+
+    def numberOutrasDespesas(self):
+        if self.ui.txtOutrasDespesas.text().isnumeric() == False:
+            self.ui.txtOutrasDespesas.backspace()
+
+    def numberValorIPI(self):
+        if self.ui.txtValorIPI.text().isnumeric() == False:
+            self.ui.txtValorIPI.backspace()
+
+    def numberValorNF(self):
+        if self.ui.txtValorNF.text().isnumeric() == False:
+            self.ui.txtValorNF.backspace()
+
+    def numberQuantidade(self):
+        if self.ui.txtQtd.text().isnumeric() == False:
+            self.ui.txtQtd.backspace()
+
+    def numberValorUnitario(self):
+        if self.ui.txtValorUnotario.text().isnumeric() == False:
+            self.ui.txtValorUnotario.backspace()
+
+    def numberValorTotal(self):
+        if self.ui.txtValorTotal.text().isnumeric() == False:
+            self.ui.txtValorTotal.backspace()
+
+    def numberInsMunicipal(self):
+        if self.ui.txtInsMunicipal.text().isnumeric() == False:
+            self.ui.txtInsMunicipal.backspace()
+
+    def numberValorTotalServico(self):
+        if self.ui.txtValorTotalServico.text().isnumeric() == False:
+            self.ui.txtValorTotalServico.backspace()
+
+    def numberBaseIssqn(self):
+        if self.ui.txtBaseIssqn.text().isnumeric() == False:
+            self.ui.txtBaseIssqn.backspace()
+
+    def numberValorIssqn(self):
+        if self.ui.txtValorIssqn.text().isnumeric() == False:
+            self.ui.txtValorIssqn.backspace()
 
     def upperCaseDestinatario(self):
         self.ui.txtFornecedor.setText(self.ui.txtFornecedor.text().upper())
@@ -145,6 +288,44 @@ class CadastroNotaFiscal(QtGui.QDialog):
     def deletarDescricaoProduto(self):
         for i in reversed(range(self.ui.tabDescricaoProduto.rowCount())):
             self.ui.tabDescricaoProduto.removeRow(i)
+
+        def cadastro(self):
+            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+                empresa = Empresas(None, self.ui.txtCodigo.text(), self.ui.cBoxTipoEmpresa.currentText(),
+                                   self.ui.txtInscricaoMunicipal.text())
+                empresaDao = EmpresaDao()
+                empresaDao.cadastroEmpresa(empresa)
+
+                registroGeral = RegistroGeralDao()
+                self.idEmpresa = registroGeral.ultimoRegistro()
+
+                if self.contatoAdd != []:
+                    i = 0
+                    for lista in self.desc:
+                        a = self.contatoAdd[i]
+
+                        __notaFiscal = a[0]
+                        __codigoNosso = a[1]
+                        __codigoProduto = a[2]
+                        __produto = a[3]
+                        __ncm = a[4]
+                        __cst = a[5]
+                        __cfop = a[6]
+                        __un = a[7]
+                        __qtd = a[8]
+                        __valorUnitario = a[9]
+                        __valorTotal = a[10]
+                        __valorIcms = a[11]
+                        __valorIpi = a[12]
+                        __alicotaIcms = a[13]
+                        __alicotaIpi = a[14]
+
+                        __descricao = DescricaoProduto(None, __notaFiscal, __codigoNosso, __codigoProduto, __produto,
+                                                       __ncm, __cst, __cfop, __un, __qtd, __valorUnitario, __valorTotal,
+                                                       __valorIcms, __valorIpi, __alicotaIcms, __alicotaIpi)
+                        #__notaFiscalRomaneio.cadastrarDescricaoProduto(__descricao)
+
+                        i += 1
 
         '''
         self.ui.txtNomeEmitente.editingFinished.connect(self.pesquisarFornecedor)

@@ -3,10 +3,14 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from controller.ContatoEmail import ContatoEmail
-from controller.ContatoTelefone import ContatoTelefone
+from controller.getSetContatoEmail import ContatoEmail
+from controller.getSetContatoTelefone import ContatoTelefone
+from controller.getSetCargo import Cargo
+from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetTipoEmpresa import TipoEmpresa
+from controller.setGetSetor import Setor
 from dao.cidadesEstadosDao import CidadesEstadosDao
+from dao.registroGeralDao import RegistroGeralDao
 from dao.tipoEmpresaDao import TipoEmpresaDao
 from telas.frmCadEmpresa import Ui_frmCadastroEmpresa
 from dao.empresaDao import EmpresaDao
@@ -20,16 +24,22 @@ class Empresa(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroEmpresa()
         self.ui.setupUi(self)
+        self.idEmpresa = int()
         self.contatoAdd = []
         self.contatoRemove = []
         self.emailAdd = []
         self.emailRemove = []
+        self.setoresAdd = []
+        self.setoresRemove = []
+        self.cargoAdd = []
+        self.cargoRemove = []
+
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
 
 
-        self.ui.btnAddTelefone.clicked.connect(self.addDescricaoProduto)
+        self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
         self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
 
         self.ui.txtCodigo.returnPressed.connect(self.setEmpresa)
@@ -90,6 +100,8 @@ class Empresa(QtGui.QDialog):
         self.ui.txtInscricaoMunicipal.clear()
 
         self.ui.txtContatoTelefone.clear()
+        self.ui.txtNumeroTelefone.clear()
+        self.ui.txtEnderecoEmail.clear()
         self.ui.txtContatoEmail.clear()
 
         self.ui.txtCadSetoresSetor.clear()
@@ -101,6 +113,7 @@ class Empresa(QtGui.QDialog):
         self.contatoRemove.clear()
         self.emailAdd.clear()
         self.emailRemove.clear()
+
 
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
@@ -148,7 +161,7 @@ class Empresa(QtGui.QDialog):
     def setEmpresa(self):
         empresa = EmpresaDao()
         emp = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
-        print(emp)
+
         for empres in emp:
             self.ui.txtCnpj.setText(str(empres[0]))
             self.ui.txtInscricaoEstadua.setText(str(empres[1]))
@@ -158,21 +171,26 @@ class Empresa(QtGui.QDialog):
             self.ui.txtCnpj.clear()
             self.ui.txtInscricaoEstadua.clear()
             self.ui.txtRazaoSocial.clear()
-            self.ui.txtInscricaoEstadua.clear()
+            self.ui.txtFantasia.clear()
 
-    def addDescricaoProduto(self):
+    def addContatoTelefone(self):
         if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
-            __contato = str(self.ui.txtContatoTelefone.text())
-            __telefone = str(self.ui.txtNumeroTelefone.text())
+            if len(self.ui.txtNumeroTelefone.text()) == 10 or len(self.ui.txtNumeroTelefone.text()) == 11:
+                __contato = str(self.ui.txtContatoTelefone.text())
+                __telefone = str(self.ui.txtNumeroTelefone.text())
 
-            add = [(__contato, __telefone)]
-            self.contatoAdd.append([__contato, __telefone])
-            self.inserirTabela(add)
+                add = [(__contato, __telefone)]
+                self.contatoAdd.append([__contato, __telefone])
+                self.inserirTabela(add)
 
-            self.ui.txtContatoTelefone.clear()
-            self.ui.txtNumeroTelefone.clear()
+                self.ui.txtContatoTelefone.clear()
+                self.ui.txtNumeroTelefone.clear()
 
-            self.ui.txtContatoTelefone.setFocus()
+                self.ui.txtContatoTelefone.setFocus()
+            elif len(self.ui.txtNumeroTelefone.text()) >11:
+                QMessageBox.warning(QWidget(), 'Mensagem', "Atenção contem digitos do telefone a mais")
+            else:
+                QMessageBox.warning(QWidget(), 'Mensagem', "Atenção esta faltando digitos do telefone")
         else:
             QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
@@ -190,7 +208,6 @@ class Empresa(QtGui.QDialog):
 
 
             linha += 1
-        print(self.contatoAdd)
 
     def contatoRemovido(self):
         itens = []
@@ -228,7 +245,7 @@ class Empresa(QtGui.QDialog):
         emp = EmpresaDao()
         empresa = emp.pesquisaEmpresa(self.ui.txtCodigo.text())
         i = 0
-        for lista in self.contatoAdd:
+        for lista in self.emailAdd:
             a = self.emailAdd[i]
 
             contato = a[0]
@@ -238,6 +255,53 @@ class Empresa(QtGui.QDialog):
             emp.cadastrarEmail(__descricao)
 
             i += 1
+
+    def cadastrarSetores(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.setoresAdd:
+            a = self.setoresAdd[i]
+
+            setor = a[0]
+
+            __descricao = Setor(None, setor, self.idEmpresa)
+            emp.cadastrarSetor(__descricao)
+
+            i += 1
+
+    def cadastrarCargo(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.cargoAdd:
+            a = self.cargoAdd[i]
+
+            cargo = a[0]
+
+            __descricao = Cargo(None, cargo, self.idEmpresa)
+            emp.cadastrarCargo(__descricao)
+
+            i += 1
+
+    def cadastro(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+            empresa = Empresas(None, self.ui.txtCodigo.text(), self.idTipoEmpresa(self.ui.cBoxTipoEmpresa.currentText()), self.ui.txtInscricaoMunicipal.text(), "OPERANDO")
+            empresaDao = EmpresaDao()
+            empresaDao.cadastroEmpresa(empresa)
+
+            registroGeral = RegistroGeralDao()
+            self.idEmpresa = registroGeral.ultimoRegistro()
+
+            if self.contatoAdd != []:
+                self.cadastrarTelefone()
+
+            if self.emailAdd != []:
+                self.cadastrarEmail()
+
+            if self.setoresAdd != []:
+                self.cadastrarSetores()
+
+            if self.cargoAdd != []:
+                self.cadastrarCargo()
 
 
 

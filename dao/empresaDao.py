@@ -36,7 +36,7 @@ class EmpresaDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")
@@ -55,12 +55,11 @@ class EmpresaDao(object):
     def cadastroEmpresa(self, empresa):
 
         try:
-            _sql = "INSERT INTO empresa (fantasia, razao_social, cnpj, inscricao_estadual, inscricao_municipal, endereco, numero_endereco, complemento, bairro, telefone, cadastrado, id_cidades, id_tipo_empresa, site, situacao) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (empresa.getFantasia, empresa.getRazaoSocial, empresa.getCnpj, empresa.getInscricaoEstadual, empresa.getInscricaoMunicipal, empresa.getEndereco, empresa.getNumero, empresa.getComplemento, empresa.getBairro, empresa.getTelefone, self.__dataHora, empresa.getCidade, empresa.getTipoEmpresa, empresa.getSite, empresa.getSituacao)
+            _sql = "INSERT INTO empresa (id_pessoa_juridica, inscricao_municipal, cadastrado, id_tipo_empresa, situacao) VALUES (%s, %s, %s, %s, %s)"
+            _valores = (empresa.getIdPessoaJuridica, empresa.getInscricaoMunicipal, self.__dataHora, empresa.getTipoEmpresa, empresa.getSituacao)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
 
         except mysql.connector.Error as e:
             w = QWidget()
@@ -76,7 +75,6 @@ class EmpresaDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
 
         except mysql.connector.Error as e:
             w = QWidget()
@@ -92,7 +90,36 @@ class EmpresaDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarSetor(self, setores):
+
+        try:
+            _sql = "INSERT INTO setores (descricao, id_empresa, cadastrado) VALUES (%s, %s, %s)"
+            _valores = (setores.getSetor, setores.getIdEmpresa, self.__dataHora)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarCargo(self, setores):
+
+        try:
+            _sql = "INSERT INTO cargo (descricao, id_empresa, cadastrado) VALUES (%s, %s, %s)"
+            _valores = (setores.getCargo, setores.getIdEmpresa, self.__dataHora)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
 
         except mysql.connector.Error as e:
             w = QWidget()

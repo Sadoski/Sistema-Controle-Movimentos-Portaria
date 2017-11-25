@@ -31,6 +31,7 @@ class PessoaFisicaDao(object):
             _valores = (pessoaFisica.getNome, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getExpeditor, pessoaFisica.getData, pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro, pessoaFisica.getMae, pessoaFisica.getPai, pessoaFisica.getSexo, pessoaFisica.getIdCidade, self.__dataHora)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
+
             # self.__cursor.close()
             QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
         except BaseException as os:

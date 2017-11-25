@@ -170,7 +170,7 @@ class NotaFiscalRomanieo(object):
 
     def cadastrarDescricaoProduto(self, descricao):
             try:
-                _sql = "INSERT INTO descricao_produto_nota_fiscal(id_carga_produto, id_notas_fiscais, unidade_medida, quantidade, valor_unitario) VALUES (%s, %s, %s, %s, %s)"
+                _sql = "INSERT INTO descricao_produto_nota_fiscal(id_notas_fiscais, id_produto, ncm, cst, cfop, unidade_medida, quantidade, valor_unitario, valor_total, valor_icms, valor_ipi, alicota_icms, alicota_ipi) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
                 _valores = (descricao.getCargaProduto, descricao.getNotaFiscal, descricao.getUnidade, descricao.getQuantidade, descricao.getValor)
                 self.__cursor.execute(_sql, _valores)
                 self.__conexao.conn.commit()

@@ -5,7 +5,6 @@ from PyQt4.QtGui import *
 from mysql.connector import Error
 from conexao.conexao import ConexaoDb, mysql
 from classes.classUsuario import Usuario
-from classes.classPrincipal import Principal
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -28,16 +27,19 @@ class LogarDao(object):
         self.__conexao = ConexaoDb()
         self.__cursor = self.__conexao.conn.cursor()
 
+    def salto(self, usuario):
+        sql = "select salto from usuarios where login = '" + usuario + "'"
+        self.__cursor.execute(sql)
+        salto = self.__cursor.fetchone()[0]
+        return salto
+
     def login(self, pUsuario, pSenha):
-        #__concatena = pUsuario+pSenha
-        #__usuario = Usuario()
-        #__salto = __usuario.salto(pUsuario)
-        #__strSenha = str(__concatena)
-        #__strSalto = str(__salto)
-        #__senhaCripto = __usuario.criptografar(__concatena, __salto)
+        __usuario = Usuario()
+        __salto = self.salto(pUsuario)
+        __senhaCripto = __usuario.criptografar(pSenha, __salto)
 
 
-        __sql = "select * from usuarios where login= '"+pUsuario+"' and senha = '"+pSenha+"'"
+        __sql = "select * from usuarios where login= '"+pUsuario+"' and senha = '"+__senhaCripto+"'"
         self.__cursor.execute(__sql)
 
         result = self.__cursor.fetchall()

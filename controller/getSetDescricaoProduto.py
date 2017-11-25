@@ -1,11 +1,22 @@
 class DescricaoProduto():
-    def __init__(self, idDescricao, cargaProduto, notaFiscal, unidade, quantidade, valor):
+    def __init__(self, idDescricao, notaFiscal, codigoNosso, codigoProduto, produto, ncm, cst, cfop, un, qtd, valorUnitario, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi):
         self.__idDescricao = idDescricao
-        self.__cargaProduto = cargaProduto
         self.__notaFiscal = notaFiscal
-        self.__unidade = unidade
-        self.__quantidade = quantidade
-        self.__valor = valor
+        self.__codigoNosso = codigoNosso
+        self.__codigoProduto = codigoProduto
+        self.__produto = produto
+        self.__ncm = ncm
+        self.__cst = cst
+        self.__cfop = cfop
+        self.__un = un
+        self.__qtd = qtd
+        self.__valorUnitario = valorUnitario
+        self.__valorTotal = valorTotal
+        self.__valorIcms = valorIcms
+        self.__valorIpi = valorIpi
+        self.__alicotaIcms = alicotaIcms
+        self.__alicotaIpi = alicotaIpi
+
 
     @property
     def getIdDescricao(self):
@@ -16,41 +27,113 @@ class DescricaoProduto():
         self.__idDescricao = idDescricao
 
     @property
-    def getCargaProduto(self):
-        return self.__cargaProduto
-
-    @getCargaProduto.setter
-    def setCargaProduto(self, cargaProduto):
-        self.__cargaProduto = cargaProduto
-
-    @property
     def getNotaFiscal(self):
         return self.__notaFiscal
 
     @getNotaFiscal.setter
     def setNotaFiscal(self, notaFiscal):
-        self.__notaFiscalo = notaFiscal
+        self.__notaFiscal = notaFiscal
 
     @property
-    def getUnidade(self):
-        return self.__unidade
+    def getCodigoNosso(self):
+        return self.__codigoNosso
 
-    @getUnidade.setter
-    def setUnidade(self, unidade):
-        self.__unidade = unidade
-
-    @property
-    def getQuantidade(self):
-        return self.__quantidade
-
-    @getQuantidade.setter
-    def setQuantidade(self, quantidade):
-        self.__quantidade = quantidade
+    @getCodigoNosso.setter
+    def setCodigoNosso(self, codigoNosso):
+        self.__codigoNosso = codigoNosso
 
     @property
-    def getValor(self):
-        return self.__valor
+    def getCodigoProduto(self):
+        return self.__codigoProduto
 
-    @getValor.setter
-    def setValor(self, valor):
-        self.__valor = valor
+    @getCodigoProduto.setter
+    def setCodigoProduto(self, codigoProduto):
+        self.__codigoProduto = codigoProduto
+
+    @property
+    def getProduto(self):
+        return self.__produto
+
+    @getProduto.setter
+    def setProduto(self, produto):
+        self.__produto = produto
+
+    @property
+    def getCst(self):
+        return self.__cst
+
+    @getCst.setter
+    def setCst(self, cst):
+        self.__cst = cst
+
+    @property
+    def getCfop(self):
+        return self.__cfop
+
+    @getCfop.setter
+    def setCfop(self, cfop):
+        self.__cfop = cfop
+
+    @property
+    def getUn(self):
+        return self.__un
+
+    @getUn.setter
+    def setUn(self, un):
+        self.__un = un
+
+    @property
+    def getQtd(self):
+        return self.__qtd
+
+    @getQtd.setter
+    def setQtd(self, qtd):
+        self.__qtd = qtd
+
+    @property
+    def getValorUnitario(self):
+        return self.__valorUnitario
+
+    @getValorUnitario.setter
+    def setValorUnitario(self, valorUnitario):
+        self.__valorUnitario = valorUnitario
+
+    @property
+    def getValorTotal(self):
+        return self.__valorTotal
+
+    @getValorTotal.setter
+    def setValorTotal(self, valorTotal):
+        self.__valorTotal = valorTotal
+
+    @property
+    def getValorIcms(self):
+        return self.__valorIcms
+
+    @getValorIcms.setter
+    def setValorIcms(self, valorIcms):
+        self.__valorIcms = valorIcms
+
+    @property
+    def getValorIpi(self):
+        return self.__valorIpi
+
+    @getValorIpi.setter
+    def setValorIpi(self, valorIpi):
+        self.__valorIpi = valorIpi
+
+    @property
+    def getAlicotaIcms(self):
+        return self.__alicotaIcms
+
+    @getAlicotaIcms.setter
+    def setAlicotaIcms(self, alicotaIcms):
+        self.__alicotaIcms = alicotaIcms
+
+    @property
+    def getAlicotaIpi(self):
+        return self.__alicotaIpi
+
+    @getAlicotaIpi.setter
+    def setAlicotaIpi(self, alicotaIpi):
+        self.__alicotaIpi = alicotaIpi

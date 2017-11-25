@@ -3,7 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from controller.entradaFuncionario import EntradaFuncionario
+from controller.getSetEntradaFuncionario import EntradaFuncionario
 from dao.entradaFuncionarioDao import EntradaFuncionarioDao
 from telas.frmEntradaFuncionario import Ui_frmCadastroEntradaFuncionario
 

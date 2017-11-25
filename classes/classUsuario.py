@@ -11,10 +11,10 @@ class Usuario(object):
         self.__conexao = ConexaoDb()
 
     def salto(self):
-        return bcrypt.gensalt(8)
+        return bcrypt.gensalt()
 
     def criptografar(self, senha, salto):
-        return bcrypt.hashpw(senha.encode('utf8'), salto)
+        return bcrypt.hashpw(senha.encode('utf8'), salto.encode('utf8')).decode('utf-8')
 
     def armazenarSenha(self, funcionario, login, senha, salto,):
         try:

@@ -1,8 +1,16 @@
 class Setor():
-    def __init__(self, idEmpresa, setor):
+    def __init__(self, idSetor, setor, idEmpresa):
+        self.__idSetor = idSetor
         self.__idEmpresa = idEmpresa
         self.__setor = setor
 
+    @property
+    def getIdSetor(self):
+        return self.__idSetor
+
+    @getIdSetor.setter
+    def setIdSetor(self, idSetor):
+        self.__idSetor = idSetor
 
     @property
     def getIdEmpresa(self):
@@ -20,27 +28,7 @@ class Setor():
     def setSetor(self, setor):
         self.__setor = setor
 
-class Cargo():
-    def __init__(self, idEmpresa, cargo):
-        self.__idEmpresa = idEmpresa
-        self.__cargo = cargo
 
-
-    @property
-    def getIdEmpresa(self):
-        return self.__idEmpresa
-
-    @getIdEmpresa.setter
-    def setIdEmpresa(self, idEmpresa):
-        self.__idEmpresa = idEmpresa
-
-    @property
-    def getCargo(self):
-        return self.__cargo
-
-    @getCargo.setter
-    def setCargo(self, cargo):
-        self.__cargo = cargo
 
 class Relacao():
     def __init__(self, idEmpresa, setor, cargo):

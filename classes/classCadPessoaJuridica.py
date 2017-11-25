@@ -3,11 +3,13 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from controller.getSetCidade import Cidades
 from controller.getSetPessoaJuridica import PessoaJuridica
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.pesquisarPessoaJuridicaDao import PesquisarPessoaJuridicaDao
 from dao.pessoaJuridicaDao import PessoaJuridicaDao
 from telas.frmCadastroPessoaJuridica import Ui_frmCadastroPessoaJuridica
+from telas.frmPesquisarCidades import Ui_frmConsultarCidades
 from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
 from telas.frmPesquisarPessoaJuridica import Ui_frmPesquisarPessoaJuridica
 
@@ -26,7 +28,10 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         self.ui.btnDeletar.clicked.connect(self.deletar)
 
+        self.ui.btnPesquisarCidade.clicked.connect(self.pesquisarCidadesBotao)
+
         self.ui.txtRazaoSocial.textChanged.connect(self.upperRazaoSocial)
+        self.ui.txtInsEstadual.textChanged.connect(self.numberInscricaoEstadua)
         self.ui.txtFantasia.textChanged.connect(self.upperFantasia)
         self.ui.txtEndereco.textChanged.connect(self.upperEndereco)
         self.ui.txtNumero.textChanged.connect(self.upperNumero)
@@ -50,6 +55,10 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtCnpj.cursorPositionChanged.connect(self.positionCursorCnpj)
+
+    def numberInscricaoEstadua(self):
+        if self.ui.txtInsEstadual.text().isnumeric() == False:
+            self.ui.txtInsEstadual.backspace()
 
     def focusFantasia(self):
         self.ui.txtFantasia.setFocus()
@@ -96,6 +105,9 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
     def upperBairro(self):
         self.ui.txtBairro.setText(self.ui.txtBairro.text().upper())
+
+    def upperCidade(self):
+        self.__pesquisar.txtPesquisar.setText( self.__pesquisar.txtPesquisar.text().upper())
 
     def upperSite(self):
         self.ui.txtSite.setText(self.ui.txtSite.text().upper())
@@ -447,3 +459,98 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             fisicaDao = PessoaJuridicaDao()
             fisicaDao.deletarPessoaJuridica(self.pessoa)
             self.desativarCampos()
+
+    def pesquisarCidadesBotao(self):
+        self.dialogCidade = QDialog(self)
+        self.__pesquisar = Ui_frmConsultarCidades()
+        self.__pesquisar.setupUi(self.dialogCidade)
+
+        self.__pesquisar.txtPesquisar.returnPressed.connect(self.pesquisarDadosCidade)
+        self.__pesquisar.txtPesquisar.textChanged.connect(self.upperCidade)
+
+        self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisarDadosCidade)
+
+        self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCamposCidades)
+
+        self.dialogCidade.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogCidade.exec_()
+
+    def pesquisarDadosCidade(self):
+        if self.__pesquisar.radBtnCodigoCidade.isChecked():
+            __codigo = self.__pesquisar.txtPesquisar.text()
+            __pesDao = CidadesEstadosDao()
+            __retorno = __pesDao.pesquisarCodigoCidade(__codigo)
+
+
+            self.setarTabelaPesquisaCidade(__retorno)
+
+        elif self.__pesquisar.radBtnCidade.isChecked():
+            __cidade = self.__pesquisar.txtPesquisar.text()
+            __pesDao = CidadesEstadosDao()
+            __retorno = __pesDao.pesquisarNomeCidade(__cidade)
+
+            self.setarTabelaPesquisaCidade(__retorno)
+
+        elif self.__pesquisar.radBtnEstado.isChecked():
+            __estado = self.__pesquisar.txtPesquisar.text()
+            __pesDao = CidadesEstadosDao()
+            __retorno = __pesDao.pesquisarEstadoCidade(__estado)
+
+            self.setarTabelaPesquisaCidade(__retorno)
+
+        elif self.__pesquisar.radBtnCep.isChecked():
+            __cep = self.__pesquisar.txtPesquisar.text()
+            __pesDao = CidadesEstadosDao()
+            __retorno = __pesDao.pesquisarCepCidade(__cep)
+
+            self.setarTabelaPesquisaCidade(__retorno)
+
+        else:
+            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisaCidade(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            cidade = pesqui[1]
+            estado = pesqui[2]
+            cep = pesqui[3]
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cep)))
+
+
+            linha += 1
+
+    def setarCamposCidades(self):
+        itens = []
+
+        for item in self.__pesquisar.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codigo = str(itens[0])
+        cidade = str(itens[1])
+        estado = str(itens[2])
+        cep = str(itens[3])
+
+
+
+        __dados = Cidades(codigo, estado,cidade, cep)
+        self.setCamposCidade(__dados)
+        self.botoesEditar()
+        self.dialogCidade.close()
+
+    def setCamposCidade(self, campos):
+        self.idCidade = campos.getIdCidade
+        self.ui.txtCep.setText(campos.getCep)
+        self.ui.txtCidade.setText(campos.getNomeCidade)
+        self.ui.txtEstado.setText(campos.getNomeEstado)

@@ -29,7 +29,6 @@ class PessoaJuridicaDao(object):
         try:
             _sql = "INSERT INTO pessoa_juridica (razao_social, fantasia, cnpj, ins_estadual, endereco, numero, complemento, bairro, id_cidade, site, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             _valores = (pessoaJuridica.getRazao, pessoaJuridica.getFantasia, pessoaJuridica.getCnpj, pessoaJuridica.getInscricao, pessoaJuridica.getEndereco, pessoaJuridica.getNumero, pessoaJuridica.getComplemento, pessoaJuridica.getBairro, pessoaJuridica.getIdCidade, pessoaJuridica.getSite, self.__dataHora)
-            print(_valores)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -43,9 +42,7 @@ class PessoaJuridicaDao(object):
         try:
             __sql = "UPDATE pessoa_juridica SET razao_social = %s, fantasia = %s, cnpj = %s, ins_estadual = %s, endereco = %s, numero = %s, complemento = %s, bairro = %s, id_cidade = %s, site = %s, atualizado = %s WHERE id_pessoa_juridica = %s"
             _valores = (pessoaJuridica.getRazao, pessoaJuridica.getFantasia, pessoaJuridica.getCnpj, pessoaJuridica.getInscricao, pessoaJuridica.getEndereco, pessoaJuridica.getNumero, pessoaJuridica.getComplemento, pessoaJuridica.getBairro, pessoaJuridica.getIdCidade, pessoaJuridica.getSite, self.__dataHora, pessoaJuridica.getIdPesJuridica)
-            print(_valores)
             a = self.__cursor.execute(__sql, _valores)
-            print(a)
             self.__conexao.conn.commit()
             #self.__cursor.close()
             QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro atualizado com sucesso!")

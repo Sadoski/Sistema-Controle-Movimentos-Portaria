@@ -114,9 +114,18 @@ class Ui_frmCadastroPessoaJuridica(object):
 
         self.txtEstado = QtGui.QLineEdit(self.grbDados)
         self.txtEstado.setEnabled(False)
-        self.txtEstado.setGeometry(QtCore.QRect(540, 230, 221, 25))
+        self.txtEstado.setGeometry(QtCore.QRect(540, 230, 181, 25))
         self.txtEstado.setMaxLength(50)
         self.txtEstado.setObjectName(_fromUtf8("txtEstado"))
+
+        self.btnPesquisarCidade = QtGui.QPushButton(self.grbDados)
+        self.btnPesquisarCidade.setGeometry(QtCore.QRect(730, 230, 31, 26))
+        self.btnPesquisarCidade.setText(_fromUtf8(""))
+        self.btnPesquisarCidade.setFocusPolicy(QtCore.Qt.NoFocus)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisarCidade.setIcon(icon5)
+        self.btnPesquisarCidade.setObjectName(_fromUtf8("btnPesquisarCidade"))
 
         self.lblEstado = QtGui.QLabel(self.grbDados)
         self.lblEstado.setGeometry(QtCore.QRect(540, 210, 51, 19))
