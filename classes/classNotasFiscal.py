@@ -43,7 +43,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
 
     def validarCamposFlutuante(self):
-        validarReal = QtGui.QDoubleValidator(0, 99999, 0, self)
+        validarReal = QtGui.QDoubleValidator(-99999, 99999, 0, self)
         validarReal.setDecimals(2)
         listaObj = [self.ui.txtIcmsPorcento, self.ui.txtICMSRed, self.ui.txtBaseICMS, self.ui.txtValorICMS, self.ui.txtBaseICMSST,
                     self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorProduto, self.ui.txtValorFrete,
