@@ -48,6 +48,7 @@ class Ui_frmMainHouse(object):
         self.lblControlePortaria.setFont(font)
         self.lblControlePortaria.setObjectName(_fromUtf8("lblControlePortaria"))
 
+
         self.lblImagem = QtGui.QLabel(self.centralwidget)
         self.lblImagem.setGeometry(QtCore.QRect(10, 110, 1000, 521))
         self.lblImagem.setText(_fromUtf8(""))

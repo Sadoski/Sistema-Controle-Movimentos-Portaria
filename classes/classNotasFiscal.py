@@ -26,6 +26,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaNF()
         self.ui.setupUi(self)
+        self.validarCamposFlutuante()
         self.desc = []
 
         self.unidadeMedida()
@@ -36,32 +37,20 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtSerie.textChanged.connect(self.numberSerie)
         self.ui.txtModelo.textChanged.connect(self.numberModelo)
         self.ui.txtNumNF.textChanged.connect(self.numberNumNF)
-        self.ui.txtIcmsPorcento.textChanged.connect(self.numberIcmsPorcento)
         self.ui.txtChaveAcessoNF.textChanged.connect(self.numberChaveAcessoNF)
         self.ui.txtProtocoloAuto.textChanged.connect(self.numberProtocoloAuto)
-        self.ui.txtICMSRed.textChanged.connect(self.numberICMSRed)
-        self.ui.txtBaseICMS.textChanged.connect(self.numberBaseICMS)
-        self.ui.txtValorICMS.textChanged.connect(self.numberValorICMS)
-        self.ui.txtBaseICMSST.textChanged.connect(self.numberBaseICMSST)
-        self.ui.txtValorConfins.textChanged.connect(self.numberValorConfins)
-        self.ui.txtValorICMSSub.textChanged.connect(self.numberValorICMSSub)
-        self.ui.txtValorPIS.textChanged.connect(self.numberValorPIS)
-        self.ui.txtValorProduto.textChanged.connect(self.numberValorProduto)
-        self.ui.txtValorFrete.textChanged.connect(self.numberValorFrete)
-        self.ui.txtValorSeguro.textChanged.connect(self.numberValorSeguro)
-        self.ui.txtValorDesconto.textChanged.connect(self.numberValorDesconto)
-        self.ui.txtOutrasDespesas.textChanged.connect(self.numberOutrasDespesas)
-        self.ui.txtValorIPI.textChanged.connect(self.numberValorIPI)
-        self.ui.txtValorNF.textChanged.connect(self.numberValorNF)
         self.ui.txtQtd.textChanged.connect(self.numberQuantidade)
-        self.ui.txtValorUnotario.textChanged.connect(self.numberValorUnitario)
-        self.ui.txtValorTotal.textChanged.connect(self.numberValorTotal)
         self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
-        self.ui.txtValorTotalServico.textChanged.connect(self.numberValorTotalServico)
-        self.ui.txtBaseIssqn.textChanged.connect(self.numberBaseIssqn)
-        self.ui.txtValorIssqn.textChanged.connect(self.numberValorIssqn)
 
-
+    def validarCamposFlutuante(self):
+        validarReal = QtGui.QDoubleValidator(0, 99999, 0, self)
+        validarReal.setDecimals(2)
+        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtICMSRed, self.ui.txtBaseICMS, self.ui.txtValorICMS, self.ui.txtBaseICMSST,
+                    self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorProduto, self.ui.txtValorFrete,
+                    self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI, self.ui.txtValorNF,
+                    self.ui.txtValorUnotario, self.ui.txtValorTotal, self.ui.txtValorTotalServico, self.ui.txtBaseIssqn, self.ui.txtValorIssqn]
+        for objeto in listaObj:
+            objeto.setValidator(validarReal)
 
     def numberCodigoFornecedor(self):
         if self.ui.txtCodig.text().isnumeric() == False:
@@ -74,10 +63,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
     def numberSerie(self):
         if self.ui.txtSerie.text().isnumeric() == False:
             self.ui.txtSerie.backspace()
-
-    def numberIcmsPorcento(self):
-        if self.ui.txtIcmsPorcento.text().isnumeric() == False:
-            self.ui.txtIcmsPorcento.backspace()
 
     def numberNumNF(self):
         if self.ui.txtNumNF.text().isnumeric() == False:
@@ -95,89 +80,14 @@ class CadastroNotaFiscal(QtGui.QDialog):
         if self.ui.txtProtocoloAuto.text().isnumeric() == False:
             self.ui.txtProtocoloAuto.backspace()
 
-    def numberICMSRed(self):
-        if self.ui.txtICMSRed.text().isnumeric() == False :
-            self.ui.txtICMSRed.backspace()
-
-    def numberBaseICMS(self):
-        if self.ui.txtBaseICMS.text().isnumeric() == False:
-            self.ui.txtBaseICMS.backspace()
-
-    def numberValorICMS(self):
-        if self.ui.txtValorICMS.text().isnumeric() == False:
-            self.ui.txtValorICMS.backspace()
-
-    def numberBaseICMSST(self):
-        if self.ui.txtBaseICMSST.text().isnumeric() == False:
-            self.ui.txtBaseICMSST.backspace()
-
-    def numberValorICMSSub(self):
-        if self.ui.txtValorICMSSub.text().isnumeric() == False:
-            self.ui.txtValorICMSSub.backspace()
-
-    def numberValorPIS(self):
-        if self.ui.txtValorPIS.text().isnumeric() == False:
-            self.ui.txtValorPIS.backspace()
-
-    def numberValorConfins(self):
-        if self.ui.txtValorConfins.text().isnumeric() == False:
-            self.ui.txtValorConfins.backspace()
-
-    def numberValorProduto(self):
-        if self.ui.txtValorProduto.text().isnumeric() == False:
-            self.ui.txtValorProduto.backspace()
-
-    def numberValorFrete(self):
-        if self.ui.txtValorFrete.text().isnumeric() == False:
-            self.ui.txtValorFrete.backspace()
-
-    def numberValorSeguro(self):
-        if self.ui.txtValorSeguro.text().isnumeric() == False:
-            self.ui.txtValorSeguro.backspace()
-
-    def numberValorDesconto(self):
-        if self.ui.txtValorDesconto.text().isnumeric() == False:
-            self.ui.txtValorDesconto.backspace()
-
-    def numberOutrasDespesas(self):
-        if self.ui.txtOutrasDespesas.text().isnumeric() == False:
-            self.ui.txtOutrasDespesas.backspace()
-
-    def numberValorIPI(self):
-        if self.ui.txtValorIPI.text().isnumeric() == False:
-            self.ui.txtValorIPI.backspace()
-
-    def numberValorNF(self):
-        if self.ui.txtValorNF.text().isnumeric() == False:
-            self.ui.txtValorNF.backspace()
-
     def numberQuantidade(self):
         if self.ui.txtQtd.text().isnumeric() == False:
             self.ui.txtQtd.backspace()
-
-    def numberValorUnitario(self):
-        if self.ui.txtValorUnotario.text().isnumeric() == False:
-            self.ui.txtValorUnotario.backspace()
-
-    def numberValorTotal(self):
-        if self.ui.txtValorTotal.text().isnumeric() == False:
-            self.ui.txtValorTotal.backspace()
 
     def numberInsMunicipal(self):
         if self.ui.txtInsMunicipal.text().isnumeric() == False:
             self.ui.txtInsMunicipal.backspace()
 
-    def numberValorTotalServico(self):
-        if self.ui.txtValorTotalServico.text().isnumeric() == False:
-            self.ui.txtValorTotalServico.backspace()
-
-    def numberBaseIssqn(self):
-        if self.ui.txtBaseIssqn.text().isnumeric() == False:
-            self.ui.txtBaseIssqn.backspace()
-
-    def numberValorIssqn(self):
-        if self.ui.txtValorIssqn.text().isnumeric() == False:
-            self.ui.txtValorIssqn.backspace()
 
     def upperCaseDestinatario(self):
         self.ui.txtFornecedor.setText(self.ui.txtFornecedor.text().upper())

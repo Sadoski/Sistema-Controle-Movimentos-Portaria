@@ -290,6 +290,24 @@ class Principal(QtGui.QMainWindow):
         _email = Email()
         _email.show()
         _email.exec_()
+
+
+
+    def changeEvent(self, event):
+        if event.type() == QtCore.QEvent.WindowStateChange:
+            if self.windowState() & QtCore.Qt.WindowMaximized:
+                a = self.centralWidget()
+                b = self.geometry()
+                vertcal = self.adjustSize()
+                horizontal = self.adjustSize()
+                imgVertical = self.ui.lblImagem.minimumWidth()
+                imgHorizoltal = self.ui.lblImagem.minimumHeight()
+
+            elif QtCore.QRect:
+
+                pass
+        QtGui.QWidget.changeEvent(self, event)
+
     '''
     def closeEvent(self, event):
         sair = QtGui.QMessageBox.question(QWidget(), 'Atenção', "Você tem certeza que deseja sair", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)

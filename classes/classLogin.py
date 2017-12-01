@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classValidator import Validator
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
@@ -15,11 +16,12 @@ class Login(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self._ui = Ui_frmLogin()
         self._ui.setupUi(self)
+        self.validator = Validator()
         self._ui.lblImagem.setFocus()
         self._logarDao = LogarDao()
 
-        self._ui.txtUsuario.textChanged.connect(self.upperCaseUsuario)
-        self._ui.txtSenha.textChanged.connect(self.upperCaseSenha)
+        self._ui.txtUsuario.setValidator(self.validator)
+        self._ui.txtSenha.setValidator(self.validator)
 
         self._ui.btnLogin.clicked.connect(self._login)
         self._ui.btnSair.clicked.connect(self._sair)
@@ -28,11 +30,6 @@ class Login(QtGui.QDialog):
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
         self._ui.txtSenha.returnPressed.connect(self._login)
 
-    def upperCaseUsuario(self):
-        self._ui.txtUsuario.setText(self._ui.txtUsuario.text().upper())
-
-    def upperCaseSenha(self):
-        self._ui.txtSenha.setText(self._ui.txtSenha.text().upper())
 
     def focusSenha(self):
         self._ui.txtSenha.setFocus()

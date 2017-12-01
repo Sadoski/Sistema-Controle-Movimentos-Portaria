@@ -15,7 +15,7 @@ class TipoEmpresaDao(object):
             __sql = "select descricao from tipo_empresa"
             self.__cursor.execute(__sql)
             result = self.__cursor.fetchall()
-            self.__cursor.close()
+            #self.__cursor.close()
             return result
         except mysql.connector.Error as e:
             w = QWidget()
@@ -27,7 +27,7 @@ class TipoEmpresaDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")

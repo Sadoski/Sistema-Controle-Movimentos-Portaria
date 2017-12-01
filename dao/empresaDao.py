@@ -1,4 +1,3 @@
-# coding=utf-8
 import sys
 import time
 import datetime
@@ -42,6 +41,17 @@ class EmpresaDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar o tipo de empresa no banco de dados ")
             return False
 
+    def pesquisarEmpresaId(self, empresa):
+        try:
+            _sql = "SELECT e.id_empresa FROM empresa e INNER JOIN pessoa_juridica p ON p.id_pessoa_juridica = e.id_pessoa_juridica WHERE p.cnpj = '%s' AND p.fantasia = '%s' AND p.razao_social = '%s'"
+            _valores = (empresa.getCnpj, empresa.getFantasia, empresa.getRazaoSocial)
+            self.__cursor.execute(_sql, _valores)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisarPessoaJuridica(self, pessoaJuridica):
         try:
             _sql = "SELECT cnpj, ins_estadual, razao_social, fantasia FROM pessoa_juridica WHERE id_pessoa_juridica = '"+pessoaJuridica+"'"
@@ -49,6 +59,28 @@ class EmpresaDao(object):
             result = self.__cursor.fetchall()
             # self.__cursor.close()
             return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaJuridicaId(self, empresa):
+        try:
+            _sql = "SELECT j.id_pessoa_juridica FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica WHERE e.id_empresa = '"+empresa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def ultimoRegistro(self):
+        try:
+            _sql = "SELECT LAST_INSERT_ID()"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+
+            return result
+
         except BaseException as os:
             return False
 
@@ -63,15 +95,30 @@ class EmpresaDao(object):
 
         except mysql.connector.Error as e:
             w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados empresa")
             self.__conexao.conn.rollback()
             return False
 
     def cadastrarTelefone(self, empresa):
 
         try:
-            _sql = "INSERT INTO contato_empresa (nome_contato, numero, id_empresa) VALUES (%s, %s, %s)"
-            _valores = (empresa.getContato, empresa.getTelefone, empresa.getIdEmpresa)
+            _sql = "INSERT INTO telefone (contato, telefone) VALUES (%s, %s)"
+            _valores = (empresa.getContato, empresa.getTelefone)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarTelefoneEmpresa(self, idTelefone, idEmpresa):
+
+        try:
+            _sql = "INSERT INTO telefone_empresa (id_telefone, id_empresa) VALUES (%s, %s)"
+            _valores = (idTelefone, idEmpresa)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
@@ -85,15 +132,30 @@ class EmpresaDao(object):
     def cadastrarEmail(self, empresa):
 
         try:
-            _sql = "INSERT INTO email_empresa (nome_contato, numero, id_empresa) VALUES (%s, %s, %s)"
-            _valores = (empresa.getContato, empresa.getEmail, empresa.getIdEmpresa)
+            _sql = "INSERT INTO email (contato, email) VALUES (%s, %s)"
+            _valores = (empresa.getContato, empresa.getEmail)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
 
         except mysql.connector.Error as e:
             w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarEmailEmpresa(self, idEmail, idEmpresa):
+
+        try:
+            _sql = "INSERT INTO email_empresa (id_email, id_empresa) VALUES (%s, %s)"
+            _valores = (idEmail, idEmpresa)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados  email")
             self.__conexao.conn.rollback()
             return False
 
@@ -108,7 +170,7 @@ class EmpresaDao(object):
 
         except mysql.connector.Error as e:
             w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados setor ")
             self.__conexao.conn.rollback()
             return False
 
@@ -123,7 +185,7 @@ class EmpresaDao(object):
 
         except mysql.connector.Error as e:
             w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados cargo")
             self.__conexao.conn.rollback()
             return False
 
@@ -172,7 +234,7 @@ class EmpresaDao(object):
 
     def pesquisaCodigo(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome, e.situacao from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.id_empresa = '"+pesquisa+"'"
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  e.id_empresa = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -182,7 +244,7 @@ class EmpresaDao(object):
 
     def pesquisaFantasia(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome, e.situacao from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.fantasia LIKE '%"+pesquisa+"%'"
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where  j.fantasia LIKE '%"+pesquisa+"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -192,7 +254,7 @@ class EmpresaDao(object):
 
     def pesquisaRazaoSocial(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome, e.situacao from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.razao_social LIKE '%"+pesquisa+"%'"
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where j.razao_social LIKE '%"+pesquisa+"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -202,7 +264,7 @@ class EmpresaDao(object):
 
     def pesquisaCnpj(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome, e.situacao from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.cnpj = '"+pesquisa+"'"
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   j.cnpj = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -212,7 +274,17 @@ class EmpresaDao(object):
 
     def pesquisaInscEstadual(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, t.descricao, e.cnpj, e.inscricao_estadual, e.inscricao_municipal, e.fantasia, e.razao_social,  e.endereco, e.numero_endereco, e.complemento, e.bairro, e.telefone, e.site, c.cep, c.nome, d.nome, e.situacao from empresa e INNER JOIN cidade c on c.id_cidade = e.id_cidades INNER JOIN estado d on d.id_estado = c.id_estado INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  e.inscricao_estadual = '"+pesquisa+"'"
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   j.ins_estadual = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaInscMunicipal(self, pesquisa):
+        try:
+            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   e.inscricao_municipal = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -247,6 +319,16 @@ class EmpresaDao(object):
             self.__cursor.execute(_sql, _valores)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaTelefone(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_empresa t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN empresa e ON e.id_empresa = t.id_empresa WHERE t.id_empresa = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
             return result
         except BaseException as os:
             return False

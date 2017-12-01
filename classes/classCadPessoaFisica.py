@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classValidator import Validator
 from controller.getSetCidade import Cidades
 from controller.getSetPessoaFisica import PessoaFisica
 from dao.cidadesEstadosDao import CidadesEstadosDao
@@ -19,6 +20,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroPessoaFisica()
         self.ui.setupUi(self)
+        self.validator = Validator()
         self.pessoa = ''
         self.idCidade=''
 
@@ -44,15 +46,15 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.txtCep.returnPressed.connect(self.pesquisarCidade)
         self.ui.txtCep.editingFinished.connect(self.pesquisarCidade)
 
-        self.ui.txtNome.textChanged.connect(self.upperNome)
+        self.ui.txtNome.setValidator(self.validator)
         self.ui.txtRg.textChanged.connect(self.numberRg)
-        self.ui.txtExpeditor.textChanged.connect(self.upperExpeditor)
-        self.ui.txtEndereco.textChanged.connect(self.upperEndereco)
-        self.ui.txtNumero.textChanged.connect(self.upperNumero)
-        self.ui.txtComplemento.textChanged.connect(self.upperComplemento)
-        self.ui.txtBairro.textChanged.connect(self.upperBairro)
-        self.ui.txtMae.textChanged.connect(self.upperMae)
-        self.ui.txtPai.textChanged.connect(self.upperPai)
+        self.ui.txtExpeditor.setValidator(self.validator)
+        self.ui.txtEndereco.setValidator(self.validator)
+        self.ui.txtNumero.setValidator(self.validator)
+        self.ui.txtComplemento.setValidator(self.validator)
+        self.ui.txtBairro.setValidator(self.validator)
+        self.ui.txtMae.setValidator(self.validator)
+        self.ui.txtPai.setValidator(self.validator)
 
         self.ui.txtCpf.editingFinished.connect(self.validacaoCpf)
 
@@ -100,32 +102,6 @@ class CadastroPessoaFisica(QtGui.QDialog):
     def focusPai(self):
         self.ui.txtPai.setFocus()
 
-    def upperNome(self):
-            self.ui.txtNome.setText(self.ui.txtNome.text().upper())
-
-    def upperExpeditor(self):
-        self.ui.txtExpeditor.setText(self.ui.txtExpeditor.text().upper())
-
-    def upperEndereco(self):
-        self.ui.txtEndereco.setText(self.ui.txtEndereco.text().upper())
-
-    def upperNumero(self):
-        self.ui.txtNumero.setText(self.ui.txtNumero.text().upper())
-
-    def upperComplemento(self):
-        self.ui.txtComplemento.setText(self.ui.txtComplemento.text().upper())
-
-    def upperBairro(self):
-        self.ui.txtBairro.setText(self.ui.txtBairro.text().upper())
-
-    def upperCidade(self):
-        self.__pesquisar.txtPesquisar.setText( self.__pesquisar.txtPesquisar.text().upper())
-
-    def upperMae(self):
-        self.ui.txtMae.setText(self.ui.txtMae.text().upper())
-
-    def upperPai(self):
-        self.ui.txtPai.setText(self.ui.txtPai.text().upper())
 
     def positionCursorCep(self):
         texto = self.removerCaracter(self.ui.txtCep.text())

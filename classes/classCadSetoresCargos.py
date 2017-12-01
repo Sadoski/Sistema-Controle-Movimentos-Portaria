@@ -5,7 +5,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from controller.setGetConfimarEmpresa import ConfirmarEmpresa
-from controller.setGetSetor import Setor, Cargo, Relacao
+from controller.setGetSetor import Setor, Relacao
 from dao.empresaDao import EmpresaDao
 from dao.setoresCargosDao import SetoresCargosDao
 from telas.frmCadastroSetoresCargos import Ui_frmCadastroSetoresCargos

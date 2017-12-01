@@ -16,6 +16,8 @@ class RegistroGeralDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
+            print(result)
             return result
+
         except BaseException as os:
             return False

@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classValidator import Validator
 from controller.getSetCidade import Cidades
 from controller.getSetPessoaJuridica import PessoaJuridica
 from dao.cidadesEstadosDao import CidadesEstadosDao
@@ -19,6 +20,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroPessoaJuridica()
         self.ui.setupUi(self)
+        self.validator = Validator()
         self.pessoa = ''
         self.idCidade = ''
 
@@ -30,14 +32,14 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
         self.ui.btnPesquisarCidade.clicked.connect(self.pesquisarCidadesBotao)
 
-        self.ui.txtRazaoSocial.textChanged.connect(self.upperRazaoSocial)
+        self.ui.txtRazaoSocial.setValidator(self.validator)
         self.ui.txtInsEstadual.textChanged.connect(self.numberInscricaoEstadua)
-        self.ui.txtFantasia.textChanged.connect(self.upperFantasia)
-        self.ui.txtEndereco.textChanged.connect(self.upperEndereco)
-        self.ui.txtNumero.textChanged.connect(self.upperNumero)
-        self.ui.txtComplemento.textChanged.connect(self.upperComplemento)
-        self.ui.txtBairro.textChanged.connect(self.upperBairro)
-        self.ui.txtSite.textChanged.connect(self.upperSite)
+        self.ui.txtFantasia.setValidator(self.validator)
+        self.ui.txtEndereco.setValidator(self.validator)
+        self.ui.txtNumero.setValidator(self.validator)
+        self.ui.txtComplemento.setValidator(self.validator)
+        self.ui.txtBairro.setValidator(self.validator)
+        self.ui.txtSite.setValidator(self.validator)
 
         self.ui.txtCnpj.editingFinished.connect(self.validacaoCnpj)
 
@@ -87,30 +89,6 @@ class CadastroPessoaJuridica(QtGui.QDialog):
     def focusSite(self):
         self.ui.txtSite.setFocus()
 
-
-    def upperRazaoSocial(self):
-        self.ui.txtRazaoSocial.setText(self.ui.txtRazaoSocial.text().upper())
-
-    def upperFantasia(self):
-        self.ui.txtFantasia.setText(self.ui.txtFantasia.text().upper())
-
-    def upperEndereco(self):
-        self.ui.txtEndereco.setText(self.ui.txtEndereco.text().upper())
-
-    def upperNumero(self):
-        self.ui.txtNumero.setText(self.ui.txtNumero.text().upper())
-
-    def upperComplemento(self):
-        self.ui.txtComplemento.setText(self.ui.txtComplemento.text().upper())
-
-    def upperBairro(self):
-        self.ui.txtBairro.setText(self.ui.txtBairro.text().upper())
-
-    def upperCidade(self):
-        self.__pesquisar.txtPesquisar.setText( self.__pesquisar.txtPesquisar.text().upper())
-
-    def upperSite(self):
-        self.ui.txtSite.setText(self.ui.txtSite.text().upper())
 
     def pesquisarCidade(self):
         _cep = self.removerCaracter(self.ui.txtCep.text())
