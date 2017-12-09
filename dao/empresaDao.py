@@ -332,3 +332,33 @@ class EmpresaDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisaEmail(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_email, l.contato, l.email FROM email_empresa t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN empresa e ON e.id_empresa = t.id_empresa WHERE t.id_empresa = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaSetor(self, pesquisa):
+        try:
+            _sql = "SELECT l.id_setores, l.descricao FROM  setores l INNER JOIN empresa e ON e.id_empresa = l.id_empresa WHERE l.id_empresa = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaCargo(self, pesquisa):
+        try:
+            _sql = "SELECT l.id_cargo, l.descricao FROM  cargo l INNER JOIN empresa e ON e.id_empresa = l.id_empresa WHERE l.id_empresa = '" + pesquisa + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

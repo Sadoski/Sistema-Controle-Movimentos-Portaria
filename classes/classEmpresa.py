@@ -1,4 +1,3 @@
-import sys
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -7,12 +6,9 @@ from classes.classValidator import Validator
 from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetCargo import Cargo
-from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetPessoaJuridica import PessoaJuridica
-from controller.getSetTipoEmpresa import TipoEmpresa
 from controller.setGetSetor import Setor
 from dao.pesquisarPessoaJuridicaDao import PesquisarPessoaJuridicaDao
-from dao.registroGeralDao import RegistroGeralDao
 from dao.tipoEmpresaDao import TipoEmpresaDao
 from telas.frmCadEmpresa import Ui_frmCadastroEmpresa
 from dao.empresaDao import EmpresaDao
@@ -60,11 +56,18 @@ class Empresa(QtGui.QDialog):
         self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
         self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
 
+        self.ui.btnAddSetor.clicked.connect(self.addContatoSetor)
+        self.ui.btnRemoverSetor.clicked.connect(self.delContatoSetor)
+
+        self.ui.btnAddCargos.clicked.connect(self.addContatoCargo)
+        self.ui.btnRemoverCargos.clicked.connect(self.delContatoCargo)
+
         self.ui.txtCodigo.returnPressed.connect(self.setEmpresa)
 
         self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
         self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
         self.ui.txtInscricaoMunicipal.textChanged.connect(self.numberInscricaoMunicipal)
+
 
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
@@ -312,6 +315,89 @@ class Empresa(QtGui.QDialog):
         else:
             QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
+    def inserirTabelaSetor(self, dado):
+
+        linha = self.ui.tabSetores.rowCount()
+        for info in dado:
+            self.ui.tabSetores.insertRow(linha)
+            __setor = info
+
+
+            self.ui.tabSetores.setItem(linha, 0, QtGui.QTableWidgetItem(str(__setor)))
+
+            linha += 1
+
+    def addContatoSetor(self):
+        if self.ui.txtCadSetoresSetor.text() != "" :
+                __setor = str(self.ui.txtCadSetoresSetor.text())
+
+                add = [(__setor)]
+                self.setoresAdd.append([__setor])
+                self.inserirTabelaSetor(add)
+
+                self.ui.txtCadSetoresSetor.clear()
+
+                self.ui.txtCadSetoresSetor.setFocus()
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def contatoRemovidoSetor(self):
+        itens = []
+        for item in self.ui.tabSetores.selectedItems():
+            itens.append(item.text())
+        self.setoresRemove.append(itens)
+
+    def delContatoSetor(self):
+        self.contatoRemovidoSetor()
+        index = self.ui.tabSetores.currentRow()
+        self.ui.tabSetores.removeRow(index)
+
+        if index >= 0:
+            del self.setoresAdd[index]
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+    def inserirTabelaCargo(self, dado):
+
+        linha = self.ui.tabCargos.rowCount()
+        for info in dado:
+            self.ui.tabCargos.insertRow(linha)
+            __cargo = info
+
+            self.ui.tabCargos.setItem(linha, 0, QtGui.QTableWidgetItem(str(__cargo)))
+
+            linha += 1
+
+    def addContatoCargo(self):
+        if self.ui.txtCadCargoCargo.text() != "":
+            __cargo = str(self.ui.txtCadCargoCargo.text())
+
+            add = [(__cargo)]
+            self.cargoAdd.append([__cargo])
+            self.inserirTabelaCargo(add)
+
+            self.ui.txtCadCargoCargo.clear()
+
+            self.ui.txtCadCargoCargo.setFocus()
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def contatoRemovidoCargo(self):
+        itens = []
+        for item in self.ui.tabCargos.selectedItems():
+            itens.append(item.text())
+        self.cargoRemove.append(itens)
+
+    def delContatoCargo(self):
+        self.contatoRemovidoCargo()
+        index = self.ui.tabCargos.currentRow()
+        self.ui.tabCargos.removeRow(index)
+
+        if index >= 0:
+            del self.cargoAdd[index]
+        else:
+            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
     def cadastrarTelefone(self):
         emp = EmpresaDao()
         i = 0
@@ -397,58 +483,58 @@ class Empresa(QtGui.QDialog):
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
             self.dialog = QDialog(self)
-            self.__pesquisar = Ui_frmConsultarEmpresa()
-            self.__pesquisar.setupUi(self.dialog)
+            self.__pesquisarEmpresa = Ui_frmConsultarEmpresa()
+            self.__pesquisarEmpresa.setupUi(self.dialog)
 
-            self.__pesquisar.txtPesquisar.setValidator(self.validator)
+            self.__pesquisarEmpresa.txtPesquisar.setValidator(self.validator)
 
-            self.__pesquisar.txtPesquisar.returnPressed.connect(self.pesquisar)
+            self.__pesquisarEmpresa.txtPesquisar.returnPressed.connect(self.pesquisar)
 
-            self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisar)
+            self.__pesquisarEmpresa.btnPesquisar.clicked.connect(self.pesquisar)
 
-            self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCampos)
+            self.__pesquisarEmpresa.tabPesquisar.doubleClicked.connect(self.setarCampos)
 
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
             self.dialog.exec_()
 
     def pesquisar(self):
-        if self.__pesquisar.radBtnCodigo.isChecked():
-            __codigo = self.__pesquisar.txtPesquisar.text()
+        if self.__pesquisarEmpresa.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaCodigo(__codigo)
 
             self.setarTabelaPesquisa(__retorno)
 
-        elif self.__pesquisar.radBtnFantasia.isChecked():
-            __fantasia = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarEmpresa.radBtnFantasia.isChecked():
+            __fantasia = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaFantasia(__fantasia)
 
             self.setarTabelaPesquisa(__retorno)
 
-        elif self.__pesquisar.radBtnRazaoSocial.isChecked():
-            __razao = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarEmpresa.radBtnRazaoSocial.isChecked():
+            __razao = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaRazaoSocial(__razao)
 
             self.setarTabelaPesquisa(__retorno)
 
-        elif self.__pesquisar.radBtnCnpj.isChecked():
-            __cnpj = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarEmpresa.radBtnCnpj.isChecked():
+            __cnpj = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaCnpj(__cnpj)
 
             self.setarTabelaPesquisa(__retorno)
 
-        elif self.__pesquisar.radBtnIncrisaoEstadual.isChecked():
-            __insEstadual = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarEmpresa.radBtnIncrisaoEstadual.isChecked():
+            __insEstadual = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaInscEstadual(__insEstadual)
 
             self.setarTabelaPesquisa(__retorno)
 
-        elif self.__pesquisar.radBtnIncrisaoMunicipal.isChecked():
-            __insMunicipal = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarEmpresa.radBtnIncrisaoMunicipal.isChecked():
+            __insMunicipal = self.__pesquisarEmpresa.txtPesquisar.text()
             __pesDao = EmpresaDao()
             __retorno = __pesDao.pesquisaInscMunicipal(__insMunicipal)
 
@@ -459,7 +545,7 @@ class Empresa(QtGui.QDialog):
 
     def setarTabelaPesquisa(self, __retorno):
         qtde_registros = len(__retorno)
-        self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
+        self.__pesquisarEmpresa.tabPesquisar.setRowCount(qtde_registros)
 
         linha = 0
         for pesqui in __retorno:
@@ -485,21 +571,21 @@ class Empresa(QtGui.QDialog):
                 situacao = 'Desativa'
 
             # preenchendo o grid de pesquisa
-            self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantsia)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(razao)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(insEstadual)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(insMunicipal)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(tipoEmpresa)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cidade)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(estado)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(situacao)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantsia)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(insEstadual)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(insMunicipal)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(tipoEmpresa)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(situacao)))
 
 
             linha += 1
@@ -507,7 +593,7 @@ class Empresa(QtGui.QDialog):
     def setarCampos(self):
         itens = []
 
-        for item in self.__pesquisar.tabPesquisar.selectedItems():
+        for item in self.__pesquisarEmpresa.tabPesquisar.selectedItems():
             itens.append(item.text())
 
         codigo = str(itens[0])
@@ -536,6 +622,9 @@ class Empresa(QtGui.QDialog):
         self.botoesEditar()
         self.setCampos(__dados)
         self.pesquisarTelefone(codigo)
+        self.pesquisaEmail(codigo)
+        self.pesquisaSetor(codigo)
+        self.pesquisaCargo(codigo)
         self.dialog.close()
 
     def setCampos(self, campos):
@@ -565,52 +654,52 @@ class Empresa(QtGui.QDialog):
 
     def pesquisarPessoaJuridica(self):
         self.dialogJuridico = QDialog(self)
-        self.__pesquisar = Ui_frmPesquisarPessoaJuridica()
-        self.__pesquisar.setupUi(self.dialogJuridico)
+        self.__pesquisarJuridica = Ui_frmPesquisarPessoaJuridica()
+        self.__pesquisarJuridica.setupUi(self.dialogJuridico)
 
-        self.__pesquisar.txtPesquisar.setValidator(self.validator)
+        self.__pesquisarJuridica.txtPesquisar.setValidator(self.validator)
 
-        self.__pesquisar.txtPesquisar.returnPressed.connect(self.pesquisarJuridico)
+        self.__pesquisarJuridica.txtPesquisar.returnPressed.connect(self.pesquisarJuridico)
 
-        self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisarJuridico)
+        self.__pesquisarJuridica.btnPesquisar.clicked.connect(self.pesquisarJuridico)
 
-        self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCamposJuridico)
+        self.__pesquisarJuridica.tabPesquisar.doubleClicked.connect(self.setarCamposJuridico)
 
         self.dialogJuridico.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogJuridico.exec_()
 
 
     def pesquisarJuridico(self):
-        if self.__pesquisar.radBtnCodigo.isChecked():
-            __codigo = self.__pesquisar.txtPesquisar.text()
+        if self.__pesquisarJuridica.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarJuridica.txtPesquisar.text()
             __pesDao = PesquisarPessoaJuridicaDao()
             __retorno = __pesDao.pesquisaCodigo(__codigo)
 
             self.setarTabelaPesquisaJuridico(__retorno)
 
-        elif self.__pesquisar.radBtnRazaoSocial.isChecked():
-            __razao = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarJuridica.radBtnRazaoSocial.isChecked():
+            __razao = self.__pesquisarJuridica.txtPesquisar.text()
             __pesDao = PesquisarPessoaJuridicaDao()
             __retorno = __pesDao.pesquisaRazaoSocial(__razao)
 
             self.setarTabelaPesquisaJuridico(__retorno)
 
-        elif self.__pesquisar.radBtnFantasia.isChecked():
-            __fantasia = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarJuridica.radBtnFantasia.isChecked():
+            __fantasia = self.__pesquisarJuridica.txtPesquisar.text()
             __pesDao = PesquisarPessoaJuridicaDao()
             __retorno = __pesDao.pesquisaFantasia(__fantasia)
 
             self.setarTabelaPesquisaJuridico(__retorno)
 
-        elif self.__pesquisar.radBtnCnpj.isChecked():
-            __cnpj = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarJuridica.radBtnCnpj.isChecked():
+            __cnpj = self.__pesquisarJuridica.txtPesquisar.text()
             __pesDao = PesquisarPessoaJuridicaDao()
             __retorno = __pesDao.pesquisaCnpj(__cnpj)
 
             self.setarTabelaPesquisaJuridico(__retorno)
 
-        elif self.__pesquisar.radBtnInsEstadual.isChecked():
-            __inscricao = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarJuridica.radBtnInsEstadual.isChecked():
+            __inscricao = self.__pesquisarJuridica.txtPesquisar.text()
             __pesDao = PesquisarPessoaJuridicaDao()
             __retorno = __pesDao.pesquisaInsEstadual(__inscricao)
 
@@ -622,7 +711,7 @@ class Empresa(QtGui.QDialog):
 
     def setarTabelaPesquisaJuridico(self, __retorno):
         qtde_registros = len(__retorno)
-        self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
+        self.__pesquisarJuridica.tabPesquisar.setRowCount(qtde_registros)
 
         linha = 0
         for pesqui in __retorno:
@@ -643,29 +732,27 @@ class Empresa(QtGui.QDialog):
             site = pesqui[12]
 
             # preenchendo o grid de pesquisa
-            self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(razao)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(fantasia)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscricao)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(cidade)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(estado)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cep)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(fantasia)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscricao)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarJuridica.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(site)))
 
             linha += 1
-
-
 
 
     def setarCamposJuridico(self):
         itens = []
 
-        for item in self.__pesquisar.tabPesquisar.selectedItems():
+        for item in self.__pesquisarJuridica.tabPesquisar.selectedItems():
             itens.append(item.text())
 
 
@@ -689,10 +776,8 @@ class Empresa(QtGui.QDialog):
         self.dialogJuridico.close()
 
     def pesquisarTelefone(self, campos):
-        print(campos)
         empresaDao = EmpresaDao()
         id = empresaDao.pesquisaTelefone(campos)
-        print(id)
         if id != []:
             self.contatoAdd.append(id)
             self.setTabelaTelefone(id)
@@ -718,4 +803,57 @@ class Empresa(QtGui.QDialog):
         self.ui.txtFantasia.setText(campos.getFantasia)
         self.ui.txtRazaoSocial.setText(campos.getRazao)
 
+    def pesquisaEmail(self, campos):
+        empresaDao = EmpresaDao()
+        id = empresaDao.pesquisaEmail(campos)
+        if id != []:
+            self.emailAdd.append(id)
+            self.setTabelaEmail(id)
 
+    def setTabelaEmail(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.ui.tabContatoEmail.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            contato = pesqui[1]
+            email = pesqui[2]
+
+            self.ui.tabContatoEmail.setItem(linha, 0, QtGui.QTableWidgetItem(str(contato)))
+            self.ui.tabContatoEmail.setItem(linha, 1, QtGui.QTableWidgetItem(str(email)))
+
+    def pesquisaSetor(self, campos):
+        empresaDao = EmpresaDao()
+        id = empresaDao.pesquisaSetor(campos)
+
+        if id != []:
+            self.setoresAdd.append(id)
+            self.setTabelaSetores(id)
+
+    def setTabelaSetores(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.ui.tabSetores.setRowCount(qtde_registros)
+        linha = 0
+        for pesqui in __retorno:
+            setor = pesqui[1]
+            self.ui.tabSetores.setItem(linha, 0, QtGui.QTableWidgetItem(str(setor)))
+            linha += 1
+
+    def pesquisaCargo(self, campos):
+        empresaDao = EmpresaDao()
+        id = empresaDao.pesquisaCargo(campos)
+
+        if id != []:
+            self.cargoAdd.append(id)
+            self.setTabelaCargo(id)
+
+    def setTabelaCargo(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.ui.tabCargos.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            cargos = pesqui[1]
+            self.ui.tabCargos.setItem(linha, 0, QtGui.QTableWidgetItem(str(cargos)))
+
+            linha += 1

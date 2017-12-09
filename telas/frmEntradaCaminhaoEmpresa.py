@@ -138,7 +138,7 @@ class Ui_frmEntradaCaminhoaEmpresa(object):
         self.btnPesquisarMotorista.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarMotorista.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarMotorista.setIcon(icon)
         self.btnPesquisarMotorista.setObjectName(_fromUtf8("btnPesquisarMotorista"))
         self.grbBotoes = QtGui.QGroupBox(frmEntradaCaminhoaEmpresa)

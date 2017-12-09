@@ -297,7 +297,9 @@ class Principal(QtGui.QMainWindow):
         if event.type() == QtCore.QEvent.WindowStateChange:
             if self.windowState() & QtCore.Qt.WindowMaximized:
                 a = self.centralWidget()
+                print(a)
                 b = self.geometry()
+                print(b)
                 vertcal = self.adjustSize()
                 horizontal = self.adjustSize()
                 imgVertical = self.ui.lblImagem.minimumWidth()

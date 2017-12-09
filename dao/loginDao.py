@@ -3,6 +3,8 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from mysql.connector import Error
+
+from classes.classMensagemBox import MensagemBox
 from conexao.conexao import ConexaoDb, mysql
 from classes.classUsuario import Usuario
 
@@ -12,14 +14,6 @@ except AttributeError:
     def _fromUtf8(s):
         return s
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
-
 class LogarDao(object):
 
 
@@ -28,18 +22,19 @@ class LogarDao(object):
         self.__cursor = self.__conexao.conn.cursor()
 
     def salto(self, usuario):
-        sql = "select salto from usuarios where login = '" + usuario + "'"
-        self.__cursor.execute(sql)
-        salto = self.__cursor.fetchone()[0]
-        return salto
+        try:
+            sql = "select salto from usuarios where login = '" + usuario + "'"
+            self.__cursor.execute(sql)
+            result = self.__cursor.fetchone()[0]
+
+            return result
+        except BaseException as os:
+            return False
+
 
     def login(self, pUsuario, pSenha):
-        __usuario = Usuario()
-        __salto = self.salto(pUsuario)
-        __senhaCripto = __usuario.criptografar(pSenha, __salto)
 
-
-        __sql = "select * from usuarios where login= '"+pUsuario+"' and senha = '"+__senhaCripto+"'"
+        __sql = "select * from usuarios where login= '"+pUsuario+"' and senha = '"+pSenha+"'"
         self.__cursor.execute(__sql)
 
         result = self.__cursor.fetchall()
@@ -51,40 +46,7 @@ class LogarDao(object):
                 self.__cursor.close()
 
             else:
-                self.erroUsuario()
+                MensagemBox().warning('Atenção', 'Senha incorreto!')
 
-        except mysql.connector.Error as e:
-            self.erroFatal()
-
-
-    def fechar(self):
-        self.msgBox.close()
-
-    def erroUsuario(self):
-        self.msgBox = QtGui.QMessageBox()
-        self.msgBox.setWindowTitle('Atenção')
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/warning.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.msgBox.setWindowIcon(icon)
-        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("imagens/icon-warning.png")))
-        self.msgBox.setText('Usuário ou Senha incorreto!')
-        btnQS = QtGui.QPushButton('Ok')
-        self.msgBox.addButton(btnQS, QtGui.QMessageBox.YesRole)
-        btnQS.clicked.connect(self.fechar)
-        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.msgBox.exec_()
-
-    def erroFatal(self):
-        self.msgBox = QtGui.QMessageBox()
-        self.msgBox.setWindowTitle('Erro')
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/critical.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.msgBox.setWindowIcon(icon)
-        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("icon-critical.png")))
-        self.msgBox.setText('Erro fatal no banco de dados')
-        btnQS = QtGui.QPushButton('Ok')
-        self.msgBox.addButton(btnQS, QtGui.QMessageBox.YesRole)
-        btnQS.clicked.connect(self.fechar)
-        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.msgBox.exec_()
-
+        except BaseException as os:
+            MensagemBox().critico('Erro', 'Erro ao autenticar usuario')

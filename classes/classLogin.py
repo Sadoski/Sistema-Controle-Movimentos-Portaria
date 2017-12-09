@@ -3,11 +3,13 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
-from classes.classValidator import Validator
+from classes.classMensagemBox import MensagemBox
+from classes.classUsuario import Usuario
+from .classValidator import Validator
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
-from classes.classPrincipal import Principal
+from .classPrincipal import Principal
 from telas.frmMesagemSair import Ui_frmMensagemSair
 
 
@@ -44,36 +46,52 @@ class Login(QtGui.QDialog):
         _login = self._ui.txtUsuario.text()
         _senha = self._ui.txtSenha.text()
 
-        _empresa = self._logarDao.login(_login, _senha)
+        __usuario = Usuario()
+        __salto = self._logarDao.salto(_login)
+        if __salto != False:
+            __senhaCripto = __usuario.criptografar(_senha, __salto)
+            _empresa = self._logarDao.login(_login, __senhaCripto)
 
-        if _empresa:
-            for log in _empresa:
-                id = int(log[0])
-                nome = str(log[1])
-                DadosUsuario(id, nome)
-                principal.status(nome)
-                principal.show()
-                self.close()
+            if _empresa:
+                for log in _empresa:
+                    id = int(log[0])
+                    nome = str(log[1])
+                    DadosUsuario(id, nome)
+                    principal.status(nome)
+                    principal.show()
+                    self.close()
+        else:
+            MensagemBox().warning('Mensagem', "Usuário incorreto ou inexistente!")
 
 
     def _sair(self):
-        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
-        self.dialogMensagem.setWindowModality(Qt.NonModal)
-        self.__mesagem = Ui_frmMensagemSair()
-        self.__mesagem.setupUi(self.dialogMensagem)
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            def _fromUtf8(s):
+                return s
+        self.msgBox = QtGui.QMessageBox()
+        self.msgBox.setWindowTitle("Mensagem")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.msgBox.setWindowIcon(icon)
+        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("imagens/icon-question.png")))
+        self.msgBox.setText("Deseja sair do Programa?")
+        btnSim = QtGui.QPushButton('Sim')
+        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+        btnSim.clicked.connect(self.fechar)
+        btnNao = QtGui.QPushButton('Não')
+        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+        btnNao.clicked.connect(self.closeMesagem)
+        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.msgBox.exec_()
 
-        self.__mesagem.btnSim.clicked.connect(self.fechar)
-        self.__mesagem.btnNao.clicked.connect(self.closeMesagem)
-
-
-        self.dialogMensagem.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.dialogMensagem.exec_()
 
     def fechar(self):
         sys.exit(0)
 
     def closeMesagem(self):
-        self.dialogMensagem.close()
+        self.msgBox.close()
 
     def _esqueciSenha(self):
         pass

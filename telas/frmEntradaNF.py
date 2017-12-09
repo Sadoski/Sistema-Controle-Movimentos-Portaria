@@ -951,4 +951,3 @@ class Ui_frmEntradaNF(object):
         self.btnNovo.setText(_translate("frmEntradaNF", "Novo", None))
         self.btnEditar.setWhatsThis(_translate("frmEntradaNF", "botão para salvar edição de NF", None))
         self.btnEditar.setText(_translate("frmEntradaNF", "Editar", None))
-

@@ -52,7 +52,7 @@ class Ui_frmMainHouse(object):
         self.lblImagem = QtGui.QLabel(self.centralwidget)
         self.lblImagem.setGeometry(QtCore.QRect(10, 110, 1000, 521))
         self.lblImagem.setText(_fromUtf8(""))
-        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("./imagens/controle movimentos portaria.png")))
+        self.lblImagem.setPixmap(QtGui.QPixmap(_fromUtf8("imagens/controlemovimentosportaria.png")))
         self.lblImagem.setObjectName(_fromUtf8("lblImagem"))
 
         frmMainHouse.setCentralWidget(self.centralwidget)

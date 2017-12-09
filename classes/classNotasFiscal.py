@@ -4,6 +4,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from decimal import Decimal
 
+
 from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetNotaFiscal import NotaFiscal
 from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
@@ -13,7 +14,7 @@ from dao.pesquisaEmpresa import PesquisaEmpresaDao
 from dao.pesquisarFornecedor import PesquisarFornecedorDao
 from dao.pesquisarMotorista import PesquisarMotoristaDao
 from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
-from telas.frmEntradaNF import Ui_frmEntradaNF
+from telas.frmEntradaNF import Ui_frmEntradaNF, _fromUtf8
 from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
 from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
 from telas.frmPesquisarFornecedor import Ui_frmConsultarFornecedores
@@ -32,6 +33,8 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.unidadeMedida()
         self.tiposNF()
 
+        self.ui.txtBaseICMS.textChanged.connect(self.alterarCaracter)
+
         self.ui.txtCodig.textChanged.connect(self.numberCodigoFornecedor)
         self.ui.txtCodigoMotorista.textChanged.connect(self.numberCodigoMotorista)
         self.ui.txtSerie.textChanged.connect(self.numberSerie)
@@ -43,14 +46,26 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
 
     def validarCamposFlutuante(self):
-        validarReal = QtGui.QDoubleValidator(-99999, 99999, 0, self)
+
+        validarReal = QtGui.QDoubleValidator(0, 99999, 0, self)
         validarReal.setDecimals(2)
-        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtICMSRed, self.ui.txtBaseICMS, self.ui.txtValorICMS, self.ui.txtBaseICMSST,
+
+        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtBaseICMS, self.ui.txtICMSRed,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
                     self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorProduto, self.ui.txtValorFrete,
                     self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI, self.ui.txtValorNF,
                     self.ui.txtValorUnotario, self.ui.txtValorTotal, self.ui.txtValorTotalServico, self.ui.txtBaseIssqn, self.ui.txtValorIssqn]
+
         for objeto in listaObj:
             objeto.setValidator(validarReal)
+
+    def keyPressEvent(self, QKeyEvent):
+        pass
+
+    def alterarCaracter(self):
+        i = self.ui.txtBaseICMS.text()
+        i = i.replace('.', ',')
+
+        self.ui.txtBaseICMS.setText(i)
 
     def numberCodigoFornecedor(self):
         if self.ui.txtCodig.text().isnumeric() == False:

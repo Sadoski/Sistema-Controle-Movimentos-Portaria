@@ -103,7 +103,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.btnPesquisa.setGeometry(QtCore.QRect(710, 29, 31, 28))
         self.btnPesquisa.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("C:/Users/JEFFERSON/Faculdade/Estagio I/Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisa.setIcon(icon)
         self.btnPesquisa.setObjectName(_fromUtf8("btnPesquisa"))
         self.lblPesquisa = QtGui.QLabel(frmSaidaCaminhoaEmpresa)

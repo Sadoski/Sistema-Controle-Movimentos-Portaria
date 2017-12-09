@@ -70,7 +70,7 @@ class Ui_frmSaidaVeiculoDescarregamento(object):
         self.btnPesquisarNotaFiscal.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarNotaFiscal.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("C:/Users/JEFFERSON/Faculdade/Estagio I/Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarNotaFiscal.setIcon(icon)
         self.btnPesquisarNotaFiscal.setObjectName(_fromUtf8("btnPesquisarNotaFiscal"))
         self.tabPesquisa = QtGui.QTableWidget(frmSaidaVeiculoDescarregamento)

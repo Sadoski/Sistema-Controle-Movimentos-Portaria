@@ -65,6 +65,9 @@ class CadastroPessoaFisica(QtGui.QDialog):
         if self.ui.txtRg.text().isnumeric() == False:
             self.ui.txtRg.backspace()
 
+    def upperCidade(self):
+        self.__pesquisar.txtPesquisar.setText(self.__pesquisar.txtPesquisar.text().upper())
+
     def focusNome(self):
         self.ui.txtNome.setFocus()
 

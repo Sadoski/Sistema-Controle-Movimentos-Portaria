@@ -62,6 +62,9 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         if self.ui.txtInsEstadual.text().isnumeric() == False:
             self.ui.txtInsEstadual.backspace()
 
+    def upperCidade(self):
+        self.__pesquisar.txtPesquisar.setText(self.__pesquisar.txtPesquisar.text().upper())
+
     def focusFantasia(self):
         self.ui.txtFantasia.setFocus()
 
