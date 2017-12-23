@@ -67,12 +67,14 @@ class Ui_frmMainHouse(object):
         self.menuCadastros.setObjectName(_fromUtf8("menuCadastros"))
 
         self.menuCadPesFisica = QtGui.QAction(frmMainHouse)
+        self.menuCadPesFisica.setShortcut('Ctrl+F')
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/pessoa_fisica.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.menuCadPesFisica.setIcon(icon)
         self.menuCadPesFisica.setObjectName(_fromUtf8("menuCadPesFisica"))
 
         self.menuCadPesJuridica = QtGui.QAction(frmMainHouse)
+        self.menuCadPesJuridica.setShortcut('Ctrl+J')
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/pessoa_juridica.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.menuCadPesJuridica.setIcon(icon)
@@ -237,18 +239,21 @@ class Ui_frmMainHouse(object):
         self.entSadMaquiSubMenuSaida.setObjectName(_fromUtf8("entSadMaquiSubMenuSaida"))
 
         self.menuSair = QtGui.QAction(frmMainHouse)
+        self.menuSair.setShortcut('Ctrl+E')
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/logout.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.menuSair.setIcon(icon)
         self.menuSair.setObjectName(_fromUtf8("menuSair"))
 
         self.subMenuSobre = QtGui.QAction(frmMainHouse)
+        self.subMenuSobre.setShortcut('Ctrl+S')
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/info-icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.subMenuSobre.setIcon(icon)
         self.subMenuSobre.setObjectName(_fromUtf8("subMenuSobre"))
 
         self.subMenuRelatorios = QtGui.QAction(frmMainHouse)
+        self.subMenuRelatorios.setShortcut('Ctrl+R')
         self.subMenuRelatorios.setEnabled(False)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/relatorio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -256,6 +261,7 @@ class Ui_frmMainHouse(object):
         self.subMenuRelatorios.setObjectName(_fromUtf8("subMenuRelatorios"))
 
         self.subMenuGraficos = QtGui.QAction(frmMainHouse)
+        self.subMenuGraficos.setShortcut('Ctrl+G')
         self.subMenuGraficos.setEnabled(False)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/garfico_linha.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -396,6 +402,7 @@ class Ui_frmMainHouse(object):
         self.menuCarregSaida.setObjectName(_fromUtf8("menuCarregSaida"))
 
         self.menuLogout = QtGui.QAction(frmMainHouse)
+        self.menuLogout.setShortcut('Ctrl+T')
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/peer_to_peer.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.menuLogout.setIcon(icon)
@@ -478,7 +485,7 @@ class Ui_frmMainHouse(object):
         self.subMenuCadastroEmpresa.setText(_translate("frmMainHouse", "Empresa", None))
         self.subMenuCadastroFuncionarios.setText(_translate("frmMainHouse", "Funcionarios", None))
         self.subMenuCadastroFornecedor.setText(_translate("frmMainHouse", "Fornecedor", None))
-        self.subMenuCadastroClintes.setText(_translate("frmMainHouse", "Clintes", None))
+        self.subMenuCadastroClintes.setText(_translate("frmMainHouse", "Clientes", None))
         self.veicEmpSubMenuEntrada.setText(_translate("frmMainHouse", "Entrada", None))
         self.veicEmpSaida.setText(_translate("frmMainHouse", "Saída", None))
         self.veiTerSubMenuEntrada.setText(_translate("frmMainHouse", "Entrada", None))

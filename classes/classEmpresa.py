@@ -2,6 +2,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
 from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
@@ -24,16 +25,22 @@ class Empresa(QtGui.QDialog):
         self.ui = Ui_frmCadastroEmpresa()
         self.ui.setupUi(self)
         self.validator = Validator()
+        self.mensagem = MensagemBox()
         self.idEmpresa = int()
         self.idTipoEmpresa = int()
+        self.editar = False
         self.contatoAdd = []
         self.contatoRemove = []
+        self.contatoAtualizar = []
         self.emailAdd = []
         self.emailRemove = []
+        self.emailAtualizar = []
         self.setoresAdd = []
         self.setoresRemove = []
+        self.setoresAtualizar = []
         self.cargoAdd = []
         self.cargoRemove = []
+        self.cargoAtualizar = []
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
@@ -46,6 +53,7 @@ class Empresa(QtGui.QDialog):
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
+        self.ui.btnEditar.clicked.connect(self.atualizar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaJuridica)
 
@@ -122,6 +130,9 @@ class Empresa(QtGui.QDialog):
 
 
     def limparCampos(self):
+        self.ui.txtCodigo.setEnabled(True)
+        self.ui.btnPesquisarEmpresa.setEnabled(True)
+        self.editar = False
         self.ui.txtCodigo.clear()
         self.ui.txtCnpj.clear()
         self.ui.txtInscricaoEstadua.clear()
@@ -202,7 +213,7 @@ class Empresa(QtGui.QDialog):
         if em == []:
             emp = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
             if emp == []:
-                QMessageBox.warning(QWidget(), 'Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
                 self.ui.txtCnpj.clear()
                 self.ui.txtInscricaoEstadua.clear()
                 self.ui.txtRazaoSocial.clear()
@@ -214,28 +225,34 @@ class Empresa(QtGui.QDialog):
                     self.ui.txtRazaoSocial.setText(str(empres[2]))
                     self.ui.txtFantasia.setText(str(empres[3]))
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Atenção já tem um cadastro desta empresa")
+            self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro desta empresa")
 
     def addContatoTelefone(self):
+
         if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
             if len(self.ui.txtNumeroTelefone.text()) == 10 or len(self.ui.txtNumeroTelefone.text()) == 11:
                 __contato = str(self.ui.txtContatoTelefone.text())
                 __telefone = str(self.ui.txtNumeroTelefone.text())
+                if self.editar == False:
+                    add = [(__contato, __telefone)]
+                    self.contatoAdd.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
 
-                add = [(__contato, __telefone)]
-                self.contatoAdd.append([__contato, __telefone])
-                self.inserirTabelaTelefone(add)
+                elif self.editar == True:
+                    add = [(__contato, __telefone)]
+                    self.contatoAtualizar.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
 
                 self.ui.txtContatoTelefone.clear()
                 self.ui.txtNumeroTelefone.clear()
 
                 self.ui.txtContatoTelefone.setFocus()
             elif len(self.ui.txtNumeroTelefone.text()) >11:
-                QMessageBox.warning(QWidget(), 'Mensagem', "Atenção contem digitos do telefone a mais")
+                self.mensagem.warning( 'Mensagem', "Atenção contem digitos do telefone a mais")
             else:
-                QMessageBox.warning(QWidget(), 'Mensagem', "Atenção esta faltando digitos do telefone")
+                self.mensagem.warning( 'Mensagem', "Atenção esta faltando digitos do telefone")
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def inserirTabelaTelefone(self, dado):
 
@@ -253,22 +270,15 @@ class Empresa(QtGui.QDialog):
             linha += 1
 
 
-    def contatoRemovidoTelefone(self):
-        itens = []
-        for item in self.ui.tabContatoTelefone.selectedItems():
-            itens.append(item.text())
-        self.contatoRemove.append(itens)
-
-
     def delContatoTelefone(self):
-        self.contatoRemovidoTelefone()
         index = self.ui.tabContatoTelefone.currentRow()
         self.ui.tabContatoTelefone.removeRow(index)
-        print(index)
+
         if index >= 0:
+            self.contatoRemove.append(self.contatoAdd[index])
             del self.contatoAdd[index]
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            self.mensagem.warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaEmail(self, dado):
 
@@ -287,33 +297,32 @@ class Empresa(QtGui.QDialog):
         if self.ui.txtContatoEmail.text() != "" and self.ui.txtEnderecoEmail.text() != "":
                 __contato = str(self.ui.txtContatoEmail.text())
                 __email = str(self.ui.txtEnderecoEmail.text())
+                if self.editar == False:
+                    add = [(__contato, __email)]
+                    self.emailAdd.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
 
-                add = [(__contato, __email)]
-                self.emailAdd.append([__contato, __email])
-                self.inserirTabelaEmail(add)
+                elif self.editar == True:
+                    add = [(__contato, __email)]
+                    self.emailAtualizar.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
 
                 self.ui.txtContatoEmail.clear()
                 self.ui.txtEnderecoEmail.clear()
 
                 self.ui.txtContatoEmail.setFocus()
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
-
-    def contatoRemovidoEmail(self):
-        itens = []
-        for item in self.ui.tabContatoEmail.selectedItems():
-            itens.append(item.text())
-        self.emailRemove.append(itens)
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoEmail(self):
-        self.contatoRemovidoEmail()
         index = self.ui.tabContatoEmail.currentRow()
         self.ui.tabContatoEmail.removeRow(index)
 
         if index >= 0:
+            self.emailRemove.append(self.emailAdd[index])
             del self.emailAdd[index]
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaSetor(self, dado):
 
@@ -330,32 +339,31 @@ class Empresa(QtGui.QDialog):
     def addContatoSetor(self):
         if self.ui.txtCadSetoresSetor.text() != "" :
                 __setor = str(self.ui.txtCadSetoresSetor.text())
+                if self.editar == False:
+                    add = [(__setor)]
+                    self.setoresAdd.append([__setor])
+                    self.inserirTabelaSetor(add)
 
-                add = [(__setor)]
-                self.setoresAdd.append([__setor])
-                self.inserirTabelaSetor(add)
+                elif self.editar == True:
+                    add = [(__setor)]
+                    self.setoresAtualizar.append([__setor])
+                    self.inserirTabelaSetor(add)
 
                 self.ui.txtCadSetoresSetor.clear()
 
                 self.ui.txtCadSetoresSetor.setFocus()
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
-
-    def contatoRemovidoSetor(self):
-        itens = []
-        for item in self.ui.tabSetores.selectedItems():
-            itens.append(item.text())
-        self.setoresRemove.append(itens)
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoSetor(self):
-        self.contatoRemovidoSetor()
         index = self.ui.tabSetores.currentRow()
         self.ui.tabSetores.removeRow(index)
 
         if index >= 0:
+            self.setoresRemove.append(self.setoresAdd[index])
             del self.setoresAdd[index]
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaCargo(self, dado):
 
@@ -371,32 +379,30 @@ class Empresa(QtGui.QDialog):
     def addContatoCargo(self):
         if self.ui.txtCadCargoCargo.text() != "":
             __cargo = str(self.ui.txtCadCargoCargo.text())
-
-            add = [(__cargo)]
-            self.cargoAdd.append([__cargo])
-            self.inserirTabelaCargo(add)
+            if self.editar == False:
+                add = [(__cargo)]
+                self.cargoAdd.append([__cargo])
+                self.inserirTabelaCargo(add)
+            elif self.editar == True:
+                add = [(__cargo)]
+                self.cargoAtualizar.append([__cargo])
+                self.inserirTabelaCargo(add)
 
             self.ui.txtCadCargoCargo.clear()
 
             self.ui.txtCadCargoCargo.setFocus()
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Por favor preencha os campos de contato e telefone")
-
-    def contatoRemovidoCargo(self):
-        itens = []
-        for item in self.ui.tabCargos.selectedItems():
-            itens.append(item.text())
-        self.cargoRemove.append(itens)
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoCargo(self):
-        self.contatoRemovidoCargo()
         index = self.ui.tabCargos.currentRow()
         self.ui.tabCargos.removeRow(index)
 
         if index >= 0:
+            self.cargoRemove.append(self.cargoAdd[index])
             del self.cargoAdd[index]
         else:
-            QMessageBox.warning(QWidget(), 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def cadastrarTelefone(self):
         emp = EmpresaDao()
@@ -478,7 +484,7 @@ class Empresa(QtGui.QDialog):
 
             self.cancelar()
         else:
-            QMessageBox.warning(QWidget(), 'Atenção', "Preencha os campos obrigatorio")
+            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -541,7 +547,7 @@ class Empresa(QtGui.QDialog):
             self.setarTabelaPesquisa(__retorno)
 
         else:
-            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
     def setarTabelaPesquisa(self, __retorno):
         qtde_registros = len(__retorno)
@@ -628,6 +634,8 @@ class Empresa(QtGui.QDialog):
         self.dialog.close()
 
     def setCampos(self, campos):
+        self.ui.txtCodigo.setEnabled(False)
+        self.ui.btnPesquisarEmpresa.setEnabled(False)
         self.idEmpresa = campos.getIdEmpresa
         self.ui.txtCodigo.setText(str(campos.getIdPessoaJuridica))
         self.ui.txtCnpj.setText(campos.getCnpj)
@@ -641,7 +649,8 @@ class Empresa(QtGui.QDialog):
         if campos.getSituacao == True:
             self.ui.radBtnAtivo.setChecked(True)
         else:
-            self.ui.radBtnDesativo.setChecked(False)
+            self.ui.radBtnDesativo.setChecked(True)
+        self.editar = True
 
     def setTipoEmpresaAtualizado(self, dados):
         empresa = EmpresaDao()
@@ -706,7 +715,7 @@ class Empresa(QtGui.QDialog):
             self.setarTabelaPesquisaJuridico(__retorno)
 
         else:
-            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
 
     def setarTabelaPesquisaJuridico(self, __retorno):
@@ -779,7 +788,7 @@ class Empresa(QtGui.QDialog):
         empresaDao = EmpresaDao()
         id = empresaDao.pesquisaTelefone(campos)
         if id != []:
-            self.contatoAdd.append(id)
+
             self.setTabelaTelefone(id)
 
     def setTabelaTelefone(self, __retorno):
@@ -788,12 +797,20 @@ class Empresa(QtGui.QDialog):
 
         linha = 0
         for pesqui in __retorno:
+            idContato = pesqui[0]
             contato = pesqui[1]
             telefone = pesqui[2]
 
 
             self.ui.tabContatoTelefone.setItem(linha, 0, QtGui.QTableWidgetItem(str(contato)))
             self.ui.tabContatoTelefone.setItem(linha, 1, QtGui.QTableWidgetItem(str(telefone)))
+
+            lista = (idContato, contato, telefone)
+            self.contatoAdd.append(lista)
+
+
+            linha += 1
+
 
 
     def setCamposJuridico(self, campos):
@@ -816,11 +833,17 @@ class Empresa(QtGui.QDialog):
 
         linha = 0
         for pesqui in __retorno:
+            idEmail = pesqui[0]
             contato = pesqui[1]
             email = pesqui[2]
 
             self.ui.tabContatoEmail.setItem(linha, 0, QtGui.QTableWidgetItem(str(contato)))
             self.ui.tabContatoEmail.setItem(linha, 1, QtGui.QTableWidgetItem(str(email)))
+
+            lista = (idEmail, contato, email)
+            self.emailAdd.append(lista)
+
+            linha += 1
 
     def pesquisaSetor(self, campos):
         empresaDao = EmpresaDao()
@@ -835,8 +858,11 @@ class Empresa(QtGui.QDialog):
         self.ui.tabSetores.setRowCount(qtde_registros)
         linha = 0
         for pesqui in __retorno:
+            idSetor = pesqui[0]
             setor = pesqui[1]
             self.ui.tabSetores.setItem(linha, 0, QtGui.QTableWidgetItem(str(setor)))
+            lista = (idSetor, setor)
+            self.setoresAdd.append(lista)
             linha += 1
 
     def pesquisaCargo(self, campos):
@@ -853,7 +879,159 @@ class Empresa(QtGui.QDialog):
 
         linha = 0
         for pesqui in __retorno:
+            idCargo = pesqui[0]
             cargos = pesqui[1]
             self.ui.tabCargos.setItem(linha, 0, QtGui.QTableWidgetItem(str(cargos)))
-
+            lista = (idCargo, cargos)
+            self.cargoAdd.append(lista)
             linha += 1
+
+
+    def deletarTelefone(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.contatoRemove :
+            a = self.contatoRemove[i]
+
+            idTelefone = int(a[0])
+
+            emp.deletarTelefone(idTelefone, self.idEmpresa)
+            pesquisa = emp.pesquisaTelefoneEmpresa(idTelefone, self.idEmpresa)
+            if pesquisa == "":
+                emp.deletarContatoTelefone(idTelefone)
+
+            i += 1
+
+    def deletarEmail(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.emailRemove:
+            a = self.emailRemove[i]
+
+            idEmail = a[0]
+
+            emp.deletarEmail(idEmail, self.idEmpresa)
+            pesquisa = emp.pesquisaEmailEmpresa(idEmail, self.idEmpresa)
+            if pesquisa == "":
+                emp.deletarContatoEmail(idEmail)
+
+            i += 1
+
+    def deletarSetores(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.setoresRemove:
+            a = self.setoresAdd[i]
+
+            idSetor = a[0]
+
+            emp.deletarSetor(idSetor, self.idEmpresa)
+
+            i += 1
+
+    def deletarCargos(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.cargoRemove:
+            a = self.cargoRemove[i]
+
+            idCargo = a[0]
+
+            emp.deletarCargo(idCargo, self.idEmpresa)
+
+            i += 1
+
+    def atualizaTelefone(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.contatoAtualizar:
+            a = self.contatoAtualizar[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, self.idEmpresa)
+            emp.cadastrarTelefone(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarTelefoneEmpresa(id, self.idEmpresa)
+
+            i += 1
+
+    def atualizaEmail(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.emailAtualizar:
+            a = self.emailAtualizar[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, self.idEmpresa)
+            emp.cadastrarEmail(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarEmailEmpresa(id, self.idEmpresa)
+
+            i += 1
+
+    def atualizaSetores(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.setoresAtualizar:
+            a = self.setoresAtualizar[i]
+
+            setor = a[0]
+
+            __descricao = Setor(None, setor, self.idEmpresa)
+            emp.cadastrarSetor(__descricao)
+
+            i += 1
+
+    def atualizaCargo(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.cargoAtualizar:
+            a = self.cargoAtualizar[i]
+
+            cargo = a[0]
+
+            __descricao = Cargo(None, cargo, self.idEmpresa)
+            emp.cadastrarCargo(__descricao)
+
+            i += 1
+
+    def atualizar(self):
+        if self.contatoRemove  != []:
+            self.deletarTelefone()
+
+        if self.emailRemove != []:
+            self.deletarEmail()
+
+        if self.setoresRemove != []:
+            self.deletarSetores()
+
+        if self.cargoRemove != []:
+            self.deletarCargos()
+
+        if self.contatoAtualizar != []:
+            self.atualizaTelefone()
+
+        if self.emailAtualizar != []:
+            self.atualizaEmail()
+
+        if self.setoresAtualizar != []:
+            self.atualizaSetores()
+
+        if self.cargoAtualizar != []:
+            self.atualizaCargo()
+
+        if self.ui.radBtnAtivo.isChecked():
+            ativo = 1
+        elif self.ui.radBtnDesativo.isChecked():
+            ativo = 0
+
+        empresaDao = EmpresaDao()
+        empresa = Empresas(self.idEmpresa, self.ui.txtCodigo.text(), self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
+        empresaDao.atualizarEmpresa(empresa)
+
+        self.cancelar()
+

@@ -37,52 +37,65 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.grbBotoes.setGeometry(QtCore.QRect(10, 600, 851, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))
         self.grbBotoes.setObjectName(_fromUtf8("grbBotoes"))
+
         self.btnDeletar = QtGui.QPushButton(self.grbBotoes)
         self.btnDeletar.setEnabled(False)
         self.btnDeletar.setGeometry(QtCore.QRect(740, 10, 81, 61))
         self.btnDeletar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
+
         self.btnSalvar = QtGui.QPushButton(self.grbBotoes)
         self.btnSalvar.setEnabled(False)
         self.btnSalvar.setGeometry(QtCore.QRect(440, 10, 81, 61))
         self.btnSalvar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnSalvar.setObjectName(_fromUtf8("btnSalvar"))
+
         self.btnNovo = QtGui.QPushButton(self.grbBotoes)
         self.btnNovo.setGeometry(QtCore.QRect(340, 10, 81, 61))
         self.btnNovo.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnNovo.setObjectName(_fromUtf8("btnNovo"))
+
         self.btnCancelar = QtGui.QPushButton(self.grbBotoes)
         self.btnCancelar.setEnabled(False)
         self.btnCancelar.setGeometry(QtCore.QRect(640, 10, 81, 61))
         self.btnCancelar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnCancelar.setObjectName(_fromUtf8("btnCancelar"))
+
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)
         self.btnEditar.setEnabled(False)
         self.btnEditar.setGeometry(QtCore.QRect(540, 10, 81, 61))
         self.btnEditar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
+
         self.grbTipoPesquisa = QtGui.QGroupBox(frmSaidaCaminhoaEmpresa)
         self.grbTipoPesquisa.setEnabled(False)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 0, 281, 81))
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
+
         self.radBtnNomeMotorista = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnNomeMotorista.setGeometry(QtCore.QRect(10, 16, 124, 23))
         self.radBtnNomeMotorista.setObjectName(_fromUtf8("radBtnNomeMotorista"))
+
         self.radBtnMarcaVeiculo = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnMarcaVeiculo.setGeometry(QtCore.QRect(10, 36, 109, 23))
         self.radBtnMarcaVeiculo.setObjectName(_fromUtf8("radBtnMarcaVeiculo"))
+
         self.radBtnModeloVeiculo = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnModeloVeiculo.setGeometry(QtCore.QRect(10, 56, 121, 23))
         self.radBtnModeloVeiculo.setObjectName(_fromUtf8("radBtnModeloVeiculo"))
+
         self.radBtnPlaca = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnPlaca.setGeometry(QtCore.QRect(140, 17, 109, 23))
         self.radBtnPlaca.setObjectName(_fromUtf8("radBtnPlaca"))
+
         self.radBtnCidade = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnCidade.setGeometry(QtCore.QRect(140, 37, 109, 23))
         self.radBtnCidade.setObjectName(_fromUtf8("radBtnCidade"))
+
         self.radBtnTipoAfazer = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnTipoAfazer.setGeometry(QtCore.QRect(140, 57, 131, 23))
         self.radBtnTipoAfazer.setObjectName(_fromUtf8("radBtnTipoAfazer"))
+
         self.txtPesquisa = QtGui.QLineEdit(frmSaidaCaminhoaEmpresa)
         self.txtPesquisa.setEnabled(False)
         self.txtPesquisa.setGeometry(QtCore.QRect(300, 30, 401, 25))
@@ -98,6 +111,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtPesquisa.setPalette(palette)
         self.txtPesquisa.setObjectName(_fromUtf8("txtPesquisa"))
+
         self.btnPesquisa = QtGui.QPushButton(frmSaidaCaminhoaEmpresa)
         self.btnPesquisa.setEnabled(False)
         self.btnPesquisa.setGeometry(QtCore.QRect(710, 29, 31, 28))
@@ -106,9 +120,11 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisa.setIcon(icon)
         self.btnPesquisa.setObjectName(_fromUtf8("btnPesquisa"))
+
         self.lblPesquisa = QtGui.QLabel(frmSaidaCaminhoaEmpresa)
         self.lblPesquisa.setGeometry(QtCore.QRect(300, 10, 66, 19))
         self.lblPesquisa.setObjectName(_fromUtf8("lblPesquisa"))
+
         self.tableWidget = QtGui.QTableWidget(frmSaidaCaminhoaEmpresa)
         self.tableWidget.setEnabled(False)
         self.tableWidget.setGeometry(QtCore.QRect(20, 90, 861, 121))
@@ -126,10 +142,12 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
+
         self.grbDadosExtra = QtGui.QGroupBox(frmSaidaCaminhoaEmpresa)
         self.grbDadosExtra.setEnabled(False)
         self.grbDadosExtra.setGeometry(QtCore.QRect(20, 530, 871, 81))
         self.grbDadosExtra.setObjectName(_fromUtf8("grbDadosExtra"))
+
         self.txtTipoCarga = QtGui.QComboBox(self.grbDadosExtra)
         self.txtTipoCarga.setEnabled(False)
         self.txtTipoCarga.setGeometry(QtCore.QRect(280, 42, 241, 25))
@@ -145,12 +163,15 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtTipoCarga.setPalette(palette)
         self.txtTipoCarga.setObjectName(_fromUtf8("txtTipoCarga"))
+
         self.lblDataSaida = QtGui.QLabel(self.grbDadosExtra)
         self.lblDataSaida.setGeometry(QtCore.QRect(10, 22, 101, 16))
         self.lblDataSaida.setObjectName(_fromUtf8("lblDataSaida"))
+
         self.lblHoraSaida = QtGui.QLabel(self.grbDadosExtra)
         self.lblHoraSaida.setGeometry(QtCore.QRect(140, 22, 91, 16))
         self.lblHoraSaida.setObjectName(_fromUtf8("lblHoraSaida"))
+
         self.txtHora = QtGui.QTimeEdit(self.grbDadosExtra)
         self.txtHora.setEnabled(False)
         self.txtHora.setGeometry(QtCore.QRect(140, 42, 118, 25))
@@ -166,6 +187,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtHora.setPalette(palette)
         self.txtHora.setObjectName(_fromUtf8("txtHora"))
+
         self.txtProduto = QtGui.QComboBox(self.grbDadosExtra)
         self.txtProduto.setEnabled(False)
         self.txtProduto.setGeometry(QtCore.QRect(530, 42, 241, 25))
@@ -181,6 +203,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
         self.txtProduto.setPalette(palette)
         self.txtProduto.setObjectName(_fromUtf8("txtProduto"))
+
         self.txtData = QtGui.QDateEdit(self.grbDadosExtra)
         self.txtData.setEnabled(False)
         self.txtData.setGeometry(QtCore.QRect(10, 42, 110, 25))
@@ -197,16 +220,20 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.txtData.setPalette(palette)
         self.txtData.setCalendarPopup(True)
         self.txtData.setObjectName(_fromUtf8("txtData"))
+
         self.lblTipoCarga = QtGui.QLabel(self.grbDadosExtra)
         self.lblTipoCarga.setGeometry(QtCore.QRect(280, 20, 101, 16))
         self.lblTipoCarga.setObjectName(_fromUtf8("lblTipoCarga"))
+
         self.lblProduto = QtGui.QLabel(self.grbDadosExtra)
         self.lblProduto.setGeometry(QtCore.QRect(530, 20, 51, 16))
         self.lblProduto.setObjectName(_fromUtf8("lblProduto"))
+
         self.grbDadosMotorista = QtGui.QGroupBox(frmSaidaCaminhoaEmpresa)
         self.grbDadosMotorista.setEnabled(False)
         self.grbDadosMotorista.setGeometry(QtCore.QRect(20, 220, 871, 114))
         self.grbDadosMotorista.setObjectName(_fromUtf8("grbDadosMotorista"))
+
         self.txtModeloMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtModeloMotorista.setEnabled(False)
         self.txtModeloMotorista.setGeometry(QtCore.QRect(10, 80, 291, 25))
@@ -223,9 +250,11 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.txtModeloMotorista.setPalette(palette)
         self.txtModeloMotorista.setMaxLength(50)
         self.txtModeloMotorista.setObjectName(_fromUtf8("txtModeloMotorista"))
+
         self.lblMarcaMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblMarcaMotorista.setGeometry(QtCore.QRect(310, 62, 51, 19))
         self.lblMarcaMotorista.setObjectName(_fromUtf8("lblMarcaMotorista"))
+
         self.txtMarcaMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtMarcaMotorista.setEnabled(False)
         self.txtMarcaMotorista.setGeometry(QtCore.QRect(310, 82, 331, 25))
@@ -242,6 +271,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.txtMarcaMotorista.setPalette(palette)
         self.txtMarcaMotorista.setMaxLength(50)
         self.txtMarcaMotorista.setObjectName(_fromUtf8("txtMarcaMotorista"))
+
         self.txtNomeMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
         self.txtNomeMotorista.setGeometry(QtCore.QRect(180, 36, 681, 25))
         palette = QtGui.QPalette()
@@ -257,6 +287,7 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         self.txtNomeMotorista.setPalette(palette)
         self.txtNomeMotorista.setMaxLength(70)
         self.txtNomeMotorista.setObjectName(_fromUtf8("txtNomeMotorista"))
+
         self.lblNomeMotorista = QtGui.QLabel(self.grbDadosMotorista)
         self.lblNomeMotorista.setGeometry(QtCore.QRect(180, 16, 151, 19))
         self.lblNomeMotorista.setObjectName(_fromUtf8("lblNomeMotorista"))

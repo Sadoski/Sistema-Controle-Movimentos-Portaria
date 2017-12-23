@@ -26,9 +26,14 @@ class Ui_frmCadastroEmpresa(object):
     def setupUi(self, frmCadastroEmpresa):
         frmCadastroEmpresa.setObjectName(_fromUtf8("frmCadastroEmpresa"))
         frmCadastroEmpresa.resize(890, 529)
+        frmCadastroEmpresa.setMinimumSize(QtCore.QSize(890, 529))
+        frmCadastroEmpresa.setMaximumSize(QtCore.QSize(890, 529))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroEmpresa.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/company.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmCadastroEmpresa.setWindowIcon(icon)
         frmCadastroEmpresa.setSizeGripEnabled(True)
         frmCadastroEmpresa.setModal(True)
 
@@ -161,10 +166,10 @@ class Ui_frmCadastroEmpresa(object):
 
         self.tabContatoTelefone = QtGui.QTableWidget(self.contatos)
         self.tabContatoTelefone.setGeometry(QtCore.QRect(13, 84, 361, 141))
+        self.tabContatoTelefone.setEditTriggers(self.tabContatoTelefone.NoEditTriggers)
+        self.tabContatoTelefone.setSelectionBehavior(self.tabContatoTelefone.SelectRows)
+        self.tabContatoTelefone.setSelectionMode(self.tabContatoTelefone.SingleSelection)
         self.tabContatoTelefone.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.tabContatoTelefone.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.tabContatoTelefone.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        self.tabContatoTelefone.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabContatoTelefone.setObjectName(_fromUtf8("tabContatoTelefone"))
 
         self.tabContatoTelefone.setColumnCount(2)
@@ -226,12 +231,11 @@ class Ui_frmCadastroEmpresa(object):
 
         self.tabContatoEmail = QtGui.QTableWidget(self.contatos)
         self.tabContatoEmail.setGeometry(QtCore.QRect(493, 73, 361, 151))
+        self.tabContatoEmail.setEditTriggers(self.tabContatoEmail.NoEditTriggers)
+        self.tabContatoEmail.setSelectionBehavior(self.tabContatoEmail.SelectRows)
+        self.tabContatoEmail.setSelectionMode(self.tabContatoEmail.SingleSelection)
         self.tabContatoEmail.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.tabContatoEmail.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.tabContatoEmail.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        self.tabContatoEmail.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabContatoEmail.setObjectName(_fromUtf8("tabContatoEmail"))
-
         self.tabContatoEmail.setColumnCount(2)
         self.tabContatoEmail.setRowCount(0)
         item = QtGui.QTableWidgetItem()
@@ -276,12 +280,11 @@ class Ui_frmCadastroEmpresa(object):
 
         self.tabSetores = QtGui.QTableWidget(self.cadastroSetores)
         self.tabSetores.setGeometry(QtCore.QRect(10, 61, 391, 141))
+        self.tabSetores.setEditTriggers(self.tabSetores.NoEditTriggers)
+        self.tabSetores.setSelectionBehavior(self.tabSetores.SelectRows)
+        self.tabSetores.setSelectionMode(self.tabSetores.SingleSelection)
         self.tabSetores.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.tabSetores.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.tabSetores.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        self.tabSetores.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabSetores.setObjectName(_fromUtf8("tabSetores"))
-
         self.tabSetores.setColumnCount(1)
         self.tabSetores.setRowCount(0)
         item = QtGui.QTableWidgetItem()
@@ -328,10 +331,10 @@ class Ui_frmCadastroEmpresa(object):
 
         self.tabCargos = QtGui.QTableWidget(self.cadastroSetores)
         self.tabCargos.setGeometry(QtCore.QRect(460, 61, 391, 141))
+        self.tabCargos.setEditTriggers(self.tabCargos.NoEditTriggers)
+        self.tabCargos.setSelectionBehavior(self.tabCargos.SelectRows)
+        self.tabCargos.setSelectionMode(self.tabCargos.SingleSelection)
         self.tabCargos.setFocusPolicy(QtCore.Qt.ClickFocus)
-        self.tabCargos.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
-        self.tabCargos.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
-        self.tabCargos.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabCargos.setObjectName(_fromUtf8("tabCargos"))
         self.tabCargos.setColumnCount(1)
         self.tabCargos.setRowCount(0)
@@ -340,6 +343,7 @@ class Ui_frmCadastroEmpresa(object):
         self.tabCargos.horizontalHeader().setStretchLastSection(True)
         self.tabCargos.verticalHeader().setVisible(False)
         self.tabWiAdicionais.addTab(self.cadastroSetores, _fromUtf8(""))
+
         self.grbBotoes = QtGui.QGroupBox(frmCadastroEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(10, 470, 871, 51))
         self.grbBotoes.setTitle(_fromUtf8(""))

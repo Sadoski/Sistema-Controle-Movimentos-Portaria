@@ -1,7 +1,8 @@
 class PessoaFisica():
-    def __init__(self, idPesFisica, nome, cpf, rg, expeditor, data, sexo, endereco, numero, complemento, bairro, mae, pai, idCidade, cidade, estado, cep):
+    def __init__(self, idPesFisica, nome, apelido, cpf, rg, expeditor, data, sexo, endereco, numero, complemento, bairro, mae, pai, idCidade, cidade, estado, cep):
         self.__idPesFisica = idPesFisica
         self.__nome = nome
+        self.__apelido = apelido
         self.__cpf = cpf
         self.__rg = rg
         self.__expeditor = expeditor
@@ -23,7 +24,7 @@ class PessoaFisica():
         return self.__idPesFisica
 
     @getIdPesFisica.setter
-    def setIdFornecedor(self, idPesFisica):
+    def setIdPesFisica(self, idPesFisica):
         self.__idPesFisica = idPesFisica
 
     @property
@@ -33,6 +34,14 @@ class PessoaFisica():
     @getNome.setter
     def setNome(self, Nome):
         self.__nome = Nome
+
+    @property
+    def getApelido(self):
+        return self.__apelido
+
+    @getApelido.setter
+    def setApelido(self, apelido):
+        self.__apelido = apelido
 
     @property
     def getCpf(self):

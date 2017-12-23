@@ -43,10 +43,9 @@ class EmpresaDao(object):
 
     def pesquisarEmpresaId(self, empresa):
         try:
-            _sql = "SELECT e.id_empresa FROM empresa e INNER JOIN pessoa_juridica p ON p.id_pessoa_juridica = e.id_pessoa_juridica WHERE p.cnpj = '%s' AND p.fantasia = '%s' AND p.razao_social = '%s'"
-            _valores = (empresa.getCnpj, empresa.getFantasia, empresa.getRazaoSocial)
-            self.__cursor.execute(_sql, _valores)
-            result = self.__cursor.fetchone()[0]
+            _sql = "SELECT * FROM empresa e INNER JOIN pessoa_juridica p ON p.id_pessoa_juridica = e.id_pessoa_juridica WHERE p.id_pessoa_juridica = '"+ empresa +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
             # self.__cursor.close()
             return result
         except BaseException as os:
@@ -192,9 +191,8 @@ class EmpresaDao(object):
     def atualizarEmpresa(self, empresa):
 
         try:
-            __sql = "UPDATE empresa SET fantasia = %s, razao_social = %s, cnpj = %s, inscricao_estadual = %s, inscricao_municipal = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, atualizado = %s, id_cidades = %s, id_tipo_empresa = %s, site = %s, situacao = %s where id_empresa = %s"
-            _valores = (empresa.getFantasia, empresa.getRazaoSocial, empresa.getCnpj, empresa.getInscricaoEstadual, empresa.getInscricaoMunicipal, empresa.getEndereco, empresa.getNumero, empresa.getComplemento, empresa.getBairro, empresa.getTelefone, self.__dataHora, empresa.getCidade, empresa.getTipoEmpresa, empresa.getSite, empresa.getSituacao, empresa.getIdEmpresa)
-
+            __sql = "UPDATE empresa SET inscricao_municipal = %s, atualizado = %s, id_tipo_empresa = %s, situacao = %s where id_empresa = %s"
+            _valores = (empresa.getInscricaoMunicipal, self.__dataHora, empresa.getTipoEmpresa, empresa.getSituacao, empresa.getIdEmpresa)
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
@@ -203,6 +201,95 @@ class EmpresaDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
             self.__conexao.conn.rollback()
             return False
+
+
+    def deletarTelefone(self, idTelefone, idEmpresa):
+
+        try:
+            _sql = "DELETE FROM telefone_empresa WHERE id_telefone = %s AND id_empresa = %s"
+            __valor = (idTelefone, idEmpresa)
+            print(__valor)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoTelefone(self, idTelefone, idEmpresa):
+
+        try:
+            _sql = "DELETE FROM telefone WHERE id_telefone = '"+idTelefone+"'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarEmail(self, idEmail, idEmpresa):
+
+        try:
+            _sql = "DELETE FROM email_empresa WHERE id_email = %s AND id_empresa = %s"
+            __valor = (idEmail, idEmpresa)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoEmail(self, idEmail):
+
+        try:
+            _sql = "DELETE FROM email WHERE id_email = '"+idEmail+"'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarSetor(self, idSetor, idEmpresa):
+
+        try:
+            _sql = "DELETE FROM setores WHERE  id_setor = '"+idSetor+"' AND id_empresa = '"+idEmpresa+"'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados setor ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarCargo(self, idCargo, idEmpresa):
+
+        try:
+            _sql = "DELETE FROM cargo WHERE id_Cargo = '"+idCargo+"' AND id_empresa = '"+idEmpresa+"'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados cargo")
+            self.__conexao.conn.rollback()
+            return False
+
 
     def deletarEmpresa(self, empresa):
         try:
@@ -333,9 +420,29 @@ class EmpresaDao(object):
         except BaseException as os:
             return False
 
+    def pesquisaTelefoneEmpresa(self, idTelefone, idEmpresa):
+        try:
+            _sql = "SELECT * FROM telefone_empresa t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN empresa e ON e.id_empresa = t.id_empresa WHERE t.id_telefone = '"+idTelefone+"' AND  t.id_empresa = '"+idEmpresa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisaEmail(self, pesquisa):
         try:
             _sql = "SELECT t.id_email, l.contato, l.email FROM email_empresa t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN empresa e ON e.id_empresa = t.id_empresa WHERE t.id_empresa = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmailEmpresa(self, idEmail, idEmpresa):
+        try:
+            _sql = "SELECT * FROM email_empresa t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN empresa e ON e.id_empresa = t.id_empresa WHERE t.id_telefone = '"+idEmail+"' AND  t.id_empresa = '"+idEmpresa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
