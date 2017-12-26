@@ -11,7 +11,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaCodigo(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.id_pessoa_fisica = '"+ pesquisa +"'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND p.id_pessoa = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -21,7 +21,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaNome(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.nome LIKE '%"+ pesquisa +"%'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND  f.nome LIKE '%"+ pesquisa +"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -31,7 +31,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaApelido(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.apelido LIKE '%"+ pesquisa +"%'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND f.apelido LIKE '%"+ pesquisa +"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -41,7 +41,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaCpf(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.cpf = '"+ pesquisa +"'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND f.cpf = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -51,7 +51,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaRg(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.rg = '"+ pesquisa +"'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND f.rg = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -61,7 +61,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaMae(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.mae = '"+ pesquisa +"'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND f.mae = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -71,7 +71,7 @@ class PesquisarPessoaFisicaDao(object):
 
     def pesquisaPai(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_fisica, p.nome, p.apelido, p.cpf, p.rg, p.expeditor, p.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.mae, p.pai FROM pessoa_fisica p INNER JOIN genero g ON g.id_genero = p.id_genero INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.pai = '"+ pesquisa +"'"
+            _sql = "SELECT f.id_pessoa, f.nome, f.apelido, f.cpf, f.rg, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, e.endereco, e.numero, e.complemento, e.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISICA' AND f.pai = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()

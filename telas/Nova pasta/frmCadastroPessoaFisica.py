@@ -6,7 +6,12 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+import datetime
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -25,9 +30,9 @@ except AttributeError:
 class Ui_frmCadastroPessoaFisica(object):
     def setupUi(self, frmCadastroPessoaFisica):
         frmCadastroPessoaFisica.setObjectName(_fromUtf8("frmCadastroPessoaFisica"))
-        frmCadastroPessoaFisica.resize(791, 457)
-        frmCadastroPessoaFisica.setMinimumSize(QtCore.QSize(791, 457))
-        frmCadastroPessoaFisica.setMaximumSize(QtCore.QSize(791, 457))
+        frmCadastroPessoaFisica.resize(791, 439)
+        frmCadastroPessoaFisica.setMinimumSize(QtCore.QSize(791, 439))
+        frmCadastroPessoaFisica.setMaximumSize(QtCore.QSize(791, 439))
         font = QtGui.QFont()
         font.setPointSize(11)
         frmCadastroPessoaFisica.setFont(font)
@@ -38,7 +43,7 @@ class Ui_frmCadastroPessoaFisica(object):
         frmCadastroPessoaFisica.setModal(True)
 
         self.grbBotoes = QtGui.QGroupBox(frmCadastroPessoaFisica)
-        self.grbBotoes.setGeometry(QtCore.QRect(10, 403, 771, 51))
+        self.grbBotoes.setGeometry(QtCore.QRect(10, 380, 771, 51))
         self.grbBotoes.setTitle(_fromUtf8(""))
         self.grbBotoes.setObjectName(_fromUtf8("grbBotoes"))
 
@@ -73,7 +78,7 @@ class Ui_frmCadastroPessoaFisica(object):
         self.btnDeletar.setGeometry(QtCore.QRect(660, 10, 88, 27))
         self.btnDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/critical.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/critical.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnDeletar.setIcon(icon3)
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
 
@@ -82,7 +87,7 @@ class Ui_frmCadastroPessoaFisica(object):
         self.btnEditar.setGeometry(QtCore.QRect(460, 10, 88, 27))
         self.btnEditar.setFocusPolicy(QtCore.Qt.ClickFocus)
         icon4 = QtGui.QIcon()
-        icon4.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/Save-as_37111.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon4.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/Save-as_37111.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnEditar.setIcon(icon4)
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
 
@@ -103,54 +108,63 @@ class Ui_frmCadastroPessoaFisica(object):
 
         self.grbDados = QtGui.QGroupBox(frmCadastroPessoaFisica)
         self.grbDados.setEnabled(False)
-        self.grbDados.setGeometry(QtCore.QRect(10, 10, 771, 391))
+        self.grbDados.setGeometry(QtCore.QRect(10, 10, 771, 361))
         self.grbDados.setTitle(_fromUtf8(""))
         self.grbDados.setObjectName(_fromUtf8("grbDados"))
 
         self.txtComplemento = QtGui.QLineEdit(self.grbDados)
-        self.txtComplemento.setGeometry(QtCore.QRect(10, 210, 331, 24))
+        self.txtComplemento.setGeometry(QtCore.QRect(10, 170, 331, 24))
         self.txtComplemento.setMaxLength(50)
         self.txtComplemento.setObjectName(_fromUtf8("txtComplemento"))
 
         self.txtEstado = QtGui.QLineEdit(self.grbDados)
         self.txtEstado.setEnabled(False)
-        self.txtEstado.setGeometry(QtCore.QRect(540, 260, 181, 25))
+        self.txtEstado.setGeometry(QtCore.QRect(540, 220, 181, 25))
         self.txtEstado.setMaxLength(50)
         self.txtEstado.setObjectName(_fromUtf8("txtEstado"))
 
+        self.btnPesquisarCidade = QtGui.QPushButton(self.grbDados)
+        self.btnPesquisarCidade.setGeometry(QtCore.QRect(730, 219, 31, 26))
+        self.btnPesquisarCidade.setText(_fromUtf8(""))
+        self.btnPesquisarCidade.setFocusPolicy(QtCore.Qt.NoFocus)
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btnPesquisarCidade.setIcon(icon5)
+        self.btnPesquisarCidade.setObjectName(_fromUtf8("btnPesquisarCidade"))
+
         self.lblEstado = QtGui.QLabel(self.grbDados)
-        self.lblEstado.setGeometry(QtCore.QRect(540, 240, 51, 19))
+        self.lblEstado.setGeometry(QtCore.QRect(540, 200, 51, 19))
         self.lblEstado.setObjectName(_fromUtf8("lblEstado"))
 
         self.lblComplemento = QtGui.QLabel(self.grbDados)
-        self.lblComplemento.setGeometry(QtCore.QRect(10, 190, 101, 16))
+        self.lblComplemento.setGeometry(QtCore.QRect(10, 150, 101, 16))
         self.lblComplemento.setObjectName(_fromUtf8("lblComplemento"))
 
         self.txtCidade = QtGui.QLineEdit(self.grbDados)
         self.txtCidade.setEnabled(False)
-        self.txtCidade.setGeometry(QtCore.QRect(150, 260, 381, 25))
+        self.txtCidade.setGeometry(QtCore.QRect(150, 220, 381, 25))
         self.txtCidade.setMaxLength(75)
         self.txtCidade.setObjectName(_fromUtf8("txtCidade"))
 
         self.lblCidade = QtGui.QLabel(self.grbDados)
-        self.lblCidade.setGeometry(QtCore.QRect(150, 240, 51, 19))
+        self.lblCidade.setGeometry(QtCore.QRect(150, 200, 51, 19))
         self.lblCidade.setObjectName(_fromUtf8("lblCidade"))
 
         self.txtCpf = QtGui.QLineEdit(self.grbDados)
-        self.txtCpf.setGeometry(QtCore.QRect(10, 110, 161, 25))
-        self.txtCpf.setMaxLength(18)
+        self.txtCpf.setGeometry(QtCore.QRect(10, 70, 161, 25))
+        self.txtCpf.setMaxLength(14)
         self.txtCpf.setObjectName(_fromUtf8("txtCpf"))
 
         self.lblRg = QtGui.QLabel(self.grbDados)
-        self.lblRg.setGeometry(QtCore.QRect(180, 90, 91, 19))
+        self.lblRg.setGeometry(QtCore.QRect(180, 50, 91, 19))
         self.lblRg.setObjectName(_fromUtf8("lblRg"))
 
         self.txtCep = QtGui.QLineEdit(self.grbDados)
-        self.txtCep.setGeometry(QtCore.QRect(10, 260, 131, 25))
+        self.txtCep.setGeometry(QtCore.QRect(10, 220, 131, 25))
         self.txtCep.setObjectName(_fromUtf8("txtCep"))
 
         self.txtNumero = QtGui.QLineEdit(self.grbDados)
-        self.txtNumero.setGeometry(QtCore.QRect(620, 160, 141, 25))
+        self.txtNumero.setGeometry(QtCore.QRect(620, 120, 141, 25))
         self.txtNumero.setMaxLength(11)
         self.txtNumero.setObjectName(_fromUtf8("txtNumero"))
 
@@ -160,20 +174,20 @@ class Ui_frmCadastroPessoaFisica(object):
         self.txtNome.setObjectName(_fromUtf8("txtNome"))
 
         self.lblBairro = QtGui.QLabel(self.grbDados)
-        self.lblBairro.setGeometry(QtCore.QRect(350, 190, 51, 19))
+        self.lblBairro.setGeometry(QtCore.QRect(350, 150, 51, 19))
         self.lblBairro.setObjectName(_fromUtf8("lblBairro"))
 
         self.txtEndereco = QtGui.QLineEdit(self.grbDados)
-        self.txtEndereco.setGeometry(QtCore.QRect(10, 160, 601, 25))
+        self.txtEndereco.setGeometry(QtCore.QRect(10, 120, 601, 25))
         self.txtEndereco.setMaxLength(50)
         self.txtEndereco.setObjectName(_fromUtf8("txtEndereco"))
 
         self.lblEndereco = QtGui.QLabel(self.grbDados)
-        self.lblEndereco.setGeometry(QtCore.QRect(10, 140, 66, 19))
+        self.lblEndereco.setGeometry(QtCore.QRect(10, 100, 66, 19))
         self.lblEndereco.setObjectName(_fromUtf8("lblEndereco"))
 
         self.txtRg = QtGui.QLineEdit(self.grbDados)
-        self.txtRg.setGeometry(QtCore.QRect(180, 110, 131, 25))
+        self.txtRg.setGeometry(QtCore.QRect(180, 70, 141, 25))
         self.txtRg.setMaxLength(15)
         self.txtRg.setObjectName(_fromUtf8("txtRg"))
 
@@ -182,51 +196,52 @@ class Ui_frmCadastroPessoaFisica(object):
         self.lblNome.setObjectName(_fromUtf8("lblNome"))
 
         self.txtBairro = QtGui.QLineEdit(self.grbDados)
-        self.txtBairro.setGeometry(QtCore.QRect(350, 210, 411, 25))
+        self.txtBairro.setGeometry(QtCore.QRect(350, 170, 411, 25))
         self.txtBairro.setMaxLength(50)
         self.txtBairro.setObjectName(_fromUtf8("txtBairro"))
 
         self.lblNumero = QtGui.QLabel(self.grbDados)
-        self.lblNumero.setGeometry(QtCore.QRect(620, 140, 66, 19))
+        self.lblNumero.setGeometry(QtCore.QRect(620, 100, 66, 19))
         self.lblNumero.setObjectName(_fromUtf8("lblNumero"))
 
         self.txtMae = QtGui.QLineEdit(self.grbDados)
-        self.txtMae.setGeometry(QtCore.QRect(10, 310, 561, 25))
+        self.txtMae.setGeometry(QtCore.QRect(10, 270, 561, 25))
         self.txtMae.setMaxLength(75)
         self.txtMae.setObjectName(_fromUtf8("txtMae"))
 
         self.lblCep = QtGui.QLabel(self.grbDados)
-        self.lblCep.setGeometry(QtCore.QRect(10, 240, 31, 19))
+        self.lblCep.setGeometry(QtCore.QRect(10, 200, 31, 19))
         self.lblCep.setObjectName(_fromUtf8("lblCep"))
 
         self.lblMae = QtGui.QLabel(self.grbDados)
-        self.lblMae.setGeometry(QtCore.QRect(10, 290, 31, 19))
+        self.lblMae.setGeometry(QtCore.QRect(10, 250, 31, 19))
         self.lblMae.setObjectName(_fromUtf8("lblMae"))
 
         self.lblCpf = QtGui.QLabel(self.grbDados)
-        self.lblCpf.setGeometry(QtCore.QRect(10, 90, 81, 19))
+        self.lblCpf.setGeometry(QtCore.QRect(10, 50, 81, 19))
         self.lblCpf.setObjectName(_fromUtf8("lblCpf"))
 
         self.lblPai = QtGui.QLabel(self.grbDados)
-        self.lblPai.setGeometry(QtCore.QRect(10, 340, 31, 19))
+        self.lblPai.setGeometry(QtCore.QRect(10, 300, 31, 19))
         self.lblPai.setObjectName(_fromUtf8("lblPai"))
 
         self.txtPai = QtGui.QLineEdit(self.grbDados)
-        self.txtPai.setGeometry(QtCore.QRect(10, 360, 561, 25))
+        self.txtPai.setGeometry(QtCore.QRect(10, 320, 561, 25))
         self.txtPai.setMaxLength(75)
         self.txtPai.setObjectName(_fromUtf8("txtPai"))
 
         self.dateData = QtGui.QDateEdit(self.grbDados)
-        self.dateData.setGeometry(QtCore.QRect(450, 110, 110, 26))
+        self.dateData.setDate(QDate.currentDate())
+        self.dateData.setGeometry(QtCore.QRect(450, 70, 110, 26))
         self.dateData.setCalendarPopup(True)
         self.dateData.setObjectName(_fromUtf8("dateData"))
 
         self.lblDataNas = QtGui.QLabel(self.grbDados)
-        self.lblDataNas.setGeometry(QtCore.QRect(450, 90, 71, 16))
+        self.lblDataNas.setGeometry(QtCore.QRect(450, 50, 71, 16))
         self.lblDataNas.setObjectName(_fromUtf8("lblDataNas"))
 
         self.grbSexo = QtGui.QGroupBox(self.grbDados)
-        self.grbSexo.setGeometry(QtCore.QRect(570, 90, 191, 51))
+        self.grbSexo.setGeometry(QtCore.QRect(570, 50, 191, 51))
         self.grbSexo.setObjectName(_fromUtf8("grbSexo"))
 
         self.radBtnMasculino = QtGui.QRadioButton(self.grbSexo)
@@ -238,38 +253,12 @@ class Ui_frmCadastroPessoaFisica(object):
         self.radBtnFeminino.setObjectName(_fromUtf8("radBtnFeminino"))
 
         self.txtExpeditor = QtGui.QLineEdit(self.grbDados)
-        self.txtExpeditor.setGeometry(QtCore.QRect(317, 110, 81, 24))
+        self.txtExpeditor.setGeometry(QtCore.QRect(330, 70, 113, 24))
         self.txtExpeditor.setObjectName(_fromUtf8("txtExpeditor"))
 
         self.lblExpeditor = QtGui.QLabel(self.grbDados)
-        self.lblExpeditor.setGeometry(QtCore.QRect(317, 90, 71, 16))
+        self.lblExpeditor.setGeometry(QtCore.QRect(330, 50, 71, 16))
         self.lblExpeditor.setObjectName(_fromUtf8("lblExpeditor"))
-
-        self.btnPesquisarCidade = QtGui.QPushButton(self.grbDados)
-        self.btnPesquisarCidade.setGeometry(QtCore.QRect(730, 259, 31, 26))
-        self.btnPesquisarCidade.setText(_fromUtf8(""))
-        icon5 = QtGui.QIcon()
-        icon5.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnPesquisarCidade.setIcon(icon5)
-        self.btnPesquisarCidade.setObjectName(_fromUtf8("btnPesquisarCidade"))
-
-        self.txtSobrenome = QtGui.QLineEdit(self.grbDados)
-        self.txtSobrenome.setGeometry(QtCore.QRect(10, 65, 751, 25))
-        self.txtSobrenome.setMaxLength(75)
-        self.txtSobrenome.setObjectName(_fromUtf8("txtSobrenome"))
-
-        self.lblSobrenome = QtGui.QLabel(self.grbDados)
-        self.lblSobrenome.setGeometry(QtCore.QRect(10, 45, 141, 19))
-        self.lblSobrenome.setObjectName(_fromUtf8("lblSobrenome"))
-
-        self.lblUf = QtGui.QLabel(self.grbDados)
-        self.lblUf.setGeometry(QtCore.QRect(404, 90, 21, 16))
-        self.lblUf.setObjectName(_fromUtf8("lblUf"))
-
-        self.txtUf = QtGui.QLineEdit(self.grbDados)
-        self.txtUf.setGeometry(QtCore.QRect(404, 110, 41, 24))
-        self.txtUf.setMaxLength(2)
-        self.txtUf.setObjectName(_fromUtf8("txtUf"))
 
         self.lblEstado.setBuddy(self.txtEstado)
         self.lblComplemento.setBuddy(self.txtComplemento)
@@ -283,23 +272,22 @@ class Ui_frmCadastroPessoaFisica(object):
         self.lblMae.setBuddy(self.txtMae)
         self.lblCpf.setBuddy(self.txtCpf)
         self.lblPai.setBuddy(self.txtMae)
-        self.lblSobrenome.setBuddy(self.txtNome)
 
         self.retranslateUi(frmCadastroPessoaFisica)
         QtCore.QMetaObject.connectSlotsByName(frmCadastroPessoaFisica)
-        frmCadastroPessoaFisica.setTabOrder(self.txtNome, self.txtSobrenome)
-        frmCadastroPessoaFisica.setTabOrder(self.txtSobrenome, self.txtCpf)
+        frmCadastroPessoaFisica.setTabOrder(self.txtNome, self.txtCpf)
         frmCadastroPessoaFisica.setTabOrder(self.txtCpf, self.txtRg)
         frmCadastroPessoaFisica.setTabOrder(self.txtRg, self.txtExpeditor)
-        frmCadastroPessoaFisica.setTabOrder(self.txtExpeditor, self.txtUf)
-        frmCadastroPessoaFisica.setTabOrder(self.txtUf, self.txtEndereco)
+        frmCadastroPessoaFisica.setTabOrder(self.txtExpeditor, self.dateData)
+        frmCadastroPessoaFisica.setTabOrder(self.dateData, self.radBtnMasculino)
+        frmCadastroPessoaFisica.setTabOrder(self.radBtnMasculino, self.radBtnFeminino)
+        frmCadastroPessoaFisica.setTabOrder(self.radBtnFeminino, self.txtEndereco)
         frmCadastroPessoaFisica.setTabOrder(self.txtEndereco, self.txtNumero)
         frmCadastroPessoaFisica.setTabOrder(self.txtNumero, self.txtComplemento)
         frmCadastroPessoaFisica.setTabOrder(self.txtComplemento, self.txtBairro)
         frmCadastroPessoaFisica.setTabOrder(self.txtBairro, self.txtCep)
-        frmCadastroPessoaFisica.setTabOrder(self.txtCep, self.txtCidade)
-        frmCadastroPessoaFisica.setTabOrder(self.txtCidade, self.txtEstado)
-        frmCadastroPessoaFisica.setTabOrder(self.txtEstado, self.txtMae)
+        frmCadastroPessoaFisica.setTabOrder(self.txtCep, self.txtMae)
+        frmCadastroPessoaFisica.setTabOrder(self.txtMae, self.txtPai)
 
     def retranslateUi(self, frmCadastroPessoaFisica):
         frmCadastroPessoaFisica.setWindowTitle(_translate("frmCadastroPessoaFisica", "Cadastro Pessoa Física", None))
@@ -339,7 +327,7 @@ class Ui_frmCadastroPessoaFisica(object):
         self.txtNumero.setToolTip(_translate("frmCadastroPessoaFisica", "Número", None))
         self.txtNumero.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do número do endereço da pessoa física</p></body></html>", None))
         self.txtNome.setToolTip(_translate("frmCadastroPessoaFisica", "Nome", None))
-        self.txtNome.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do nome da pessoa física</p></body></html>", None))
+        self.txtNome.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do nome completo da pessoa física</p></body></html>", None))
         self.lblBairro.setText(_translate("frmCadastroPessoaFisica", "Bairro", None))
         self.txtEndereco.setToolTip(_translate("frmCadastroPessoaFisica", "Endereço", None))
         self.txtEndereco.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do endereço da pessoa jurídica</p></body></html>", None))
@@ -369,10 +357,4 @@ class Ui_frmCadastroPessoaFisica(object):
         self.txtExpeditor.setToolTip(_translate("frmCadastroPessoaFisica", "Expeditor", None))
         self.txtExpeditor.setWhatsThis(_translate("frmCadastroPessoaFisica", "Campo do orgão expeditor do RG", None))
         self.lblExpeditor.setText(_translate("frmCadastroPessoaFisica", "Expeditor", None))
-        self.txtSobrenome.setToolTip(_translate("frmCadastroPessoaFisica", "Sobrenome", None))
-        self.txtSobrenome.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do segundo nome da pessoa física</p></body></html>", None))
-        self.lblSobrenome.setText(_translate("frmCadastroPessoaFisica", "Sobrenome", None))
-        self.lblUf.setText(_translate("frmCadastroPessoaFisica", "UF", None))
-        self.txtUf.setToolTip(_translate("frmCadastroPessoaFisica", "UF", None))
-        self.txtUf.setWhatsThis(_translate("frmCadastroPessoaFisica", "<html><head/><body><p>Campo do estado do orgão expeditor do RG</p></body></html>", None))
 
