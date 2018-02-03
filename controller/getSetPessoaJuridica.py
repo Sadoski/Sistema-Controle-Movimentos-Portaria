@@ -1,6 +1,8 @@
 class PessoaJuridica():
-    def __init__(self, idPesJuridica, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, site):
+    def __init__(self, idPessoa, idPesJuridica, idTipoPessoa, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, site):
+        self.__idPessoa = idPessoa
         self.__idPesJuridica = idPesJuridica
+        self.__idTipoPessoa = idTipoPessoa
         self.__razao = razao
         self.__fantasia = fantasia
         self.__cnpj = cnpj
@@ -16,12 +18,28 @@ class PessoaJuridica():
         self.__site = site
 
     @property
+    def getIdPessoa(self):
+        return self.__idPessoa
+
+    @getIdPessoa.setter
+    def setIdPessoa(self, idPessoa):
+        self.__idPessoa = idPessoa
+
+    @property
     def getIdPesJuridica(self):
         return self.__idPesJuridica
 
     @getIdPesJuridica.setter
     def setIdJuridica(self, idPesJuridica):
         self.__idPesJuridica = idPesJuridica
+
+    @property
+    def getIdTipoPessoa(self):
+        return self.__idTipoPessoa
+
+    @getIdTipoPessoa.setter
+    def setIdTipoPessoa(self, idTipoPessoa):
+        self.__idTipoPessoa = idTipoPessoa
 
     @property
     def getRazao(self):

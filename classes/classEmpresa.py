@@ -25,7 +25,7 @@ class Empresa(QtGui.QDialog):
         self.ui = Ui_frmCadastroEmpresa()
         self.ui.setupUi(self)
         self.validator = Validator()
-        self.mensagem = MensagemBox()
+        self.idPessoaJuridica = int()
         self.idEmpresa = int()
         self.idTipoEmpresa = int()
         self.editar = False
@@ -76,7 +76,6 @@ class Empresa(QtGui.QDialog):
         self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
         self.ui.txtInscricaoMunicipal.textChanged.connect(self.numberInscricaoMunicipal)
 
-
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
             self.ui.txtCodigo.backspace()
@@ -93,7 +92,6 @@ class Empresa(QtGui.QDialog):
         if self.ui.cBoxTipoEmpresa.currentText() != '':
             tipoEmpresa = TipoEmpresaDao()
             self.idTipoEmpresa = tipoEmpresa.idTipoEmpresa(self.ui.cBoxTipoEmpresa.currentText())
-
 
     def novo(self):
         self.limparCampos()
@@ -213,7 +211,7 @@ class Empresa(QtGui.QDialog):
         if em == []:
             emp = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
             if emp == []:
-                self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
                 self.ui.txtCnpj.clear()
                 self.ui.txtInscricaoEstadua.clear()
                 self.ui.txtRazaoSocial.clear()
@@ -225,7 +223,7 @@ class Empresa(QtGui.QDialog):
                     self.ui.txtRazaoSocial.setText(str(empres[2]))
                     self.ui.txtFantasia.setText(str(empres[3]))
         else:
-            self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro desta empresa")
+            MensagemBox().warning( 'Mensagem', "Atenção já tem um cadastro desta empresa")
 
     def addContatoTelefone(self):
 
@@ -248,11 +246,11 @@ class Empresa(QtGui.QDialog):
 
                 self.ui.txtContatoTelefone.setFocus()
             elif len(self.ui.txtNumeroTelefone.text()) >11:
-                self.mensagem.warning( 'Mensagem', "Atenção contem digitos do telefone a mais")
+                MensagemBox().warning( 'Mensagem', "Atenção contem digitos do telefone a mais")
             else:
-                self.mensagem.warning( 'Mensagem', "Atenção esta faltando digitos do telefone")
+                MensagemBox().warning( 'Mensagem', "Atenção esta faltando digitos do telefone")
         else:
-            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+            MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def inserirTabelaTelefone(self, dado):
 
@@ -278,7 +276,7 @@ class Empresa(QtGui.QDialog):
             self.contatoRemove.append(self.contatoAdd[index])
             del self.contatoAdd[index]
         else:
-            self.mensagem.warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaEmail(self, dado):
 
@@ -312,7 +310,7 @@ class Empresa(QtGui.QDialog):
 
                 self.ui.txtContatoEmail.setFocus()
         else:
-            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+            MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoEmail(self):
         index = self.ui.tabContatoEmail.currentRow()
@@ -322,7 +320,7 @@ class Empresa(QtGui.QDialog):
             self.emailRemove.append(self.emailAdd[index])
             del self.emailAdd[index]
         else:
-            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaSetor(self, dado):
 
@@ -353,7 +351,7 @@ class Empresa(QtGui.QDialog):
 
                 self.ui.txtCadSetoresSetor.setFocus()
         else:
-            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+            MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoSetor(self):
         index = self.ui.tabSetores.currentRow()
@@ -363,7 +361,7 @@ class Empresa(QtGui.QDialog):
             self.setoresRemove.append(self.setoresAdd[index])
             del self.setoresAdd[index]
         else:
-            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def inserirTabelaCargo(self, dado):
 
@@ -392,7 +390,7 @@ class Empresa(QtGui.QDialog):
 
             self.ui.txtCadCargoCargo.setFocus()
         else:
-            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+            MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
     def delContatoCargo(self):
         index = self.ui.tabCargos.currentRow()
@@ -402,7 +400,7 @@ class Empresa(QtGui.QDialog):
             self.cargoRemove.append(self.cargoAdd[index])
             del self.cargoAdd[index]
         else:
-            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def cadastrarTelefone(self):
         emp = EmpresaDao()
@@ -463,10 +461,12 @@ class Empresa(QtGui.QDialog):
             i += 1
 
     def cadastro(self):
+        self.setEmpresa()
         if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
             empresaDao = EmpresaDao()
-            empresa = Empresas(None, self.ui.txtCodigo.text(), self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
-            empresaDao.cadastroEmpresa(empresa)
+            idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
+            empresa = Empresas(self.ui.txtCodigo.text(), idPessoaJuridica, None, self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
+            cad = empresaDao.cadastroEmpresa(empresa)
             self.idEmpresa = empresaDao.ultimoRegistro()
 
 
@@ -482,9 +482,11 @@ class Empresa(QtGui.QDialog):
             if self.cargoAdd != []:
                 self.cadastrarCargo()
 
-            self.cancelar()
+            if cad == True:
+                MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
+                self.cancelar()
         else:
-            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
+            MensagemBox().warning( 'Atenção', "Preencha os campos obrigatorio")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -547,7 +549,7 @@ class Empresa(QtGui.QDialog):
             self.setarTabelaPesquisa(__retorno)
 
         else:
-            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
+            MensagemBox().warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
     def setarTabelaPesquisa(self, __retorno):
         qtde_registros = len(__retorno)
@@ -621,10 +623,11 @@ class Empresa(QtGui.QDialog):
         else:
             situacao = False
         empresaDao = EmpresaDao()
-        idPessoa = empresaDao.pesquisarPessoaJuridicaId(codigo)
+        idEmpresa = empresaDao.pesquisarEmpresaCodigo(codigo)
+        idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(codigo)
 
 
-        __dados = Empresas(codigo, idPessoa, tipoEmpresa, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
+        __dados = Empresas(codigo, idEmpresa, idPessoaJuridica, tipoEmpresa, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
         self.botoesEditar()
         self.setCampos(__dados)
         self.pesquisarTelefone(codigo)
@@ -636,8 +639,9 @@ class Empresa(QtGui.QDialog):
     def setCampos(self, campos):
         self.ui.txtCodigo.setEnabled(False)
         self.ui.btnPesquisarEmpresa.setEnabled(False)
-        self.idEmpresa = campos.getIdEmpresa
-        self.ui.txtCodigo.setText(str(campos.getIdPessoaJuridica))
+        self.idEmpresa = int(campos.getIdEmpresa)
+        self.idPessoaJuridica = int(campos.getIdPessoaJuridica)
+        self.ui.txtCodigo.setText(str(campos.getIdPessoa))
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
         self.ui.txtInscricaoMunicipal.setText(campos.getInscricaoMunicipal)
@@ -715,7 +719,7 @@ class Empresa(QtGui.QDialog):
             self.setarTabelaPesquisaJuridico(__retorno)
 
         else:
-            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
+            MensagemBox().warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
 
     def setarTabelaPesquisaJuridico(self, __retorno):
@@ -779,7 +783,7 @@ class Empresa(QtGui.QDialog):
         cep = str(itens[11])
         site = str(itens[12])
 
-        __dados = PessoaJuridica(codigo, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
+        __dados = PessoaJuridica(codigo, None, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
         self.setCamposJuridico(__dados)
         self.ativarCampos()
         self.dialogJuridico.close()
@@ -812,9 +816,8 @@ class Empresa(QtGui.QDialog):
             linha += 1
 
 
-
     def setCamposJuridico(self, campos):
-        self.ui.txtCodigo.setText(campos.getIdPesJuridica)
+        self.ui.txtCodigo.setText(campos.getIdPessoa)
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.setInscricao)
         self.ui.txtFantasia.setText(campos.getFantasia)
@@ -1030,7 +1033,7 @@ class Empresa(QtGui.QDialog):
             ativo = 0
 
         empresaDao = EmpresaDao()
-        empresa = Empresas(self.idEmpresa, self.ui.txtCodigo.text(), self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
+        empresa = Empresas(self.idEmpresa, self.idPessoaJuridica, self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
         empresaDao.atualizarEmpresa(empresa)
 
         self.cancelar()

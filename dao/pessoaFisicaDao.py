@@ -28,7 +28,7 @@ class PessoaFisicaDao(object):
 
     def pesquisarPessoaFisica(self, pessoaFisica):
         try:
-            _sql = "SELECT * FROM pessoa_fisica WHERE nome = %s and  cpf = %s and rg = %s"
+            _sql = "SELECT * FROM pessoa WHERE nome_razao = %s and  cpf_cnpj = %s and rg_inscricao = %s"
             _valores = (pessoaFisica.getNome, pessoaFisica.getCpf, pessoaFisica.getRg)
             self.__cursor.execute(_sql, _valores)
             result = self.__cursor.fetchall()
@@ -39,17 +39,7 @@ class PessoaFisicaDao(object):
 
     def pesquisarIdPessoaFisica(self, pessoaFisica):
         try:
-            _sql = "SELECT f.id_pessoa_fisica FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE p.id_pessoa = '"+pessoaFisica+"'"
-            self.__cursor.execute(_sql)
-            result = self.__cursor.fetchone()[0]
-            # self.__cursor.close()
-            return result
-        except BaseException as os:
-            return False
-
-    def pesquisarIdEnderecoPessoaFisica(self, pessoaFisica):
-        try:
-            _sql = "SELECT e.id_endereco_pessoa FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE p.id_pessoa = '"+pessoaFisica+"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE p.id_pessoa = '"+str(pessoaFisica)+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -59,8 +49,8 @@ class PessoaFisicaDao(object):
 
     def cadastrarPessoa(self, pessoaFisica):
         try:
-            _sql = "INSERT INTO pessoa (id_tipo_pessoa, cadastrado) VALUES (%s, %s)"
-            _valores = (pessoaFisica, self.__dataHora)
+            _sql = "INSERT INTO pessoa (nome_razao, sobrenome_fantasia, cpf_cnpj, rg_inscricao, endereco, numero, complemento, bairro, id_cidade, id_tipo_pessoa, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = (pessoaFisica.getNome, pessoaFisica.getApelido, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro,  pessoaFisica.getIdCidade, pessoaFisica.getIdTipoPessoa, self.__dataHora)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
 
@@ -72,23 +62,9 @@ class PessoaFisicaDao(object):
 
     def cadastrarPessoaFisica(self, pessoaFisica):
         try:
-            _sql = "INSERT INTO pessoa_fisica (nome, apelido, cpf, rg, expeditor, uf, aniversario, mae, pai, id_genero, id_pessoa,  cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (pessoaFisica.getNome, pessoaFisica.getApelido, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getExpeditor, pessoaFisica.getUf, pessoaFisica.getData,  pessoaFisica.getMae, pessoaFisica.getPai, pessoaFisica.getSexo, pessoaFisica.getIdPessoa, self.__dataHora)
+            _sql = "INSERT INTO pessoa_fisica ( expeditor, uf, aniversario, mae, pai, id_genero, id_pessoa,  cadastrado) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = ( pessoaFisica.getExpeditor, pessoaFisica.getUf, pessoaFisica.getData,  pessoaFisica.getMae, pessoaFisica.getPai, pessoaFisica.getSexo, pessoaFisica.getIdPessoa, self.__dataHora)
 
-            self.__cursor.execute(_sql, _valores)
-            self.__conexao.conn.commit()
-
-            # self.__cursor.close()
-            return True
-        except BaseException as os:
-            self.__conexao.conn.rollback()
-            return False
-
-
-    def cadastrarEnderecoPessoa(self, pessoaFisica):
-        try:
-            _sql = "INSERT INTO endereco_pessoa (endereco, numero, complemento, bairro, id_cidade, id_pessoa) VALUES (%s, %s, %s, %s, %s, %s)"
-            _valores = (pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro,  pessoaFisica.getIdCidade, pessoaFisica.getIdPessoa)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
 
@@ -101,8 +77,8 @@ class PessoaFisicaDao(object):
     def atualizarPessoa(self, pessoaFisica):
 
         try:
-            __sql = "UPDATE pessoa SET atualizado = %s"
-            _valores = (self.__dataHora)
+            __sql = "UPDATE pessoa SET nome_razao = %s, sobrenome_fantasia = %s, cpf_cnpj = %s, rg_inscricao = %s, endereco = %s, numero = %s, complemento = %s, bairro = %s, id_cidade = %s, id_tipo_pessoa = %s, atualizado = %s WHERE id_pessoa = %s"
+            _valores = (pessoaFisica.getNome, pessoaFisica.getApelido, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro,  pessoaFisica.getIdCidade, pessoaFisica.getIdTipoPessoa, self.__dataHora, pessoaFisica.getIdPessoa)
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
@@ -113,20 +89,8 @@ class PessoaFisicaDao(object):
     def atualizarPessoaFisica(self, pessoaFisica):
 
         try:
-            __sql = "UPDATE pessoa_fisica SET nome = %s, apelido = %s, cpf = %s, rg = %s, expeditor = %s, uf = %s, aniversario = %s, mae = %s, pai = %s, id_genero = %s, atualizado = %s WHERE id_pessoa_fisica = %s"
-            _valores = (pessoaFisica.getNome, pessoaFisica.getApelido, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getExpeditor, pessoaFisica.getUf, pessoaFisica.getData, pessoaFisica.getMae, pessoaFisica.getPai, pessoaFisica.getSexo, self.__dataHora, pessoaFisica.getIdPesFisica)
-            self.__cursor.execute(__sql, _valores)
-            self.__conexao.conn.commit()
-            #self.__cursor.close()
-            return True
-        except mysql.connector.Error as e:
-            return False
-
-    def atualizarEnderecoPessoaFisica(self, pessoaFisica):
-
-        try:
-            __sql = "UPDATE endereco_pessoa SET endereco = %s, numero = %s, complemento = %s, bairro = %s, id_cidade = %s WHERE id_endereco_pessoa = %s"
-            _valores = (pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro,  pessoaFisica.getIdCidade, pessoaFisica.getIdEnderecoPessoa)
+            __sql = "UPDATE pessoa_fisica SET expeditor = %s, uf = %s, aniversario = %s, mae = %s, pai = %s, id_genero = %s, id_pessoa = %s, atualizado = %s WHERE id_pessoa_fisica = %s"
+            _valores = ( pessoaFisica.getExpeditor, pessoaFisica.getUf, pessoaFisica.getData,  pessoaFisica.getMae, pessoaFisica.getPai, pessoaFisica.getSexo, pessoaFisica.getIdPessoa, self.__dataHora, pessoaFisica.getIdPesFisica)
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
@@ -147,16 +111,6 @@ class PessoaFisicaDao(object):
     def deletarPessoaFisica(self, pessoaFisica):
         try:
             __sql = "DELETE FROM pessoa_fisica WHERE id_pessoa = '"+pessoaFisica+"'"
-            self.__cursor.execute(__sql)
-            self.__conexao.conn.commit()
-            #self.__cursor.close()
-            return True
-        except mysql.connector.Error as e:
-            return False
-
-    def deletarEnderecoPessoaFisica(self, pessoaFisica):
-        try:
-            __sql = "DELETE FROM endereco_pessoa WHERE id_pessoa = '"+pessoaFisica+"'"
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             #self.__cursor.close()

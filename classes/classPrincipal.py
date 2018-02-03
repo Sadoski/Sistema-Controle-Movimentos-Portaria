@@ -134,44 +134,65 @@ class Principal(QtGui.QMainWindow):
     def displayTime(self):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
 
-    def _sair(self):
-        self.dialogMensagem = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint
-)
-        self.__mesagem = Ui_frmMensagemSair()
-        self.__mesagem.setupUi(self.dialogMensagem)
-
-        self.__mesagem.btnSim.clicked.connect(self.fechar)
-        self.__mesagem.btnNao.clicked.connect(self.closeMesagem)
-
-
-        self.dialogMensagem.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.dialogMensagem.exec_()
-
-    def fechar(self):
-        sys.exit(0)
-
-    def closeMesagem(self):
-        self.dialogMensagem.close()
-
     def _trocarUsuario(self):
-        self.dialogTrocaUsuario = QDialog(self, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint )
-        self.__trocaUsuario = Ui_frmMensagemTrocaUsuario()
-        self.__trocaUsuario.setupUi(self.dialogTrocaUsuario)
-
-        self.__trocaUsuario.btnSim.clicked.connect(self._logout)
-        self.__trocaUsuario.btnNao.clicked.connect(self.closeTrocaUsuario)
-
-
-        self.dialogTrocaUsuario.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.dialogTrocaUsuario.exec_()
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            def _fromUtf8(s):
+                return s
+        self.msgBox = QtGui.QMessageBox()
+        self.msgBox.setWindowTitle("Mensagem")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.msgBox.setWindowIcon(icon)
+        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+        self.msgBox.setText("Você tem certeza que deseja trocar de usuário?")
+        btnSim = QtGui.QPushButton('Sim')
+        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+        btnSim.clicked.connect(self._logout)
+        btnNao = QtGui.QPushButton('Não')
+        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+        btnNao.clicked.connect(self.closeMesagem)
+        btnNao.setFocus()
+        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.msgBox.exec_()
 
     def _logout(self):
-            self.dialogTrocaUsuario.close()
+            self.msgBox.close()
             self.close()
             from classes.classLogin import Login
             _login = Login()
             _login.show()
             _login.exec_()
+
+    def _sair(self):
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            def _fromUtf8(s):
+                return s
+        self.msgBox = QtGui.QMessageBox()
+        self.msgBox.setWindowTitle("Mensagem")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.msgBox.setWindowIcon(icon)
+        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+        self.msgBox.setText("Deseja sair do Programa?")
+        btnSim = QtGui.QPushButton('Sim')
+        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+        btnSim.clicked.connect(self.fechar)
+        btnNao = QtGui.QPushButton('Não')
+        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+        btnNao.clicked.connect(self.closeMesagem)
+        btnNao.setFocus()
+        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.msgBox.exec_()
+
+    def fechar(self):
+        sys.exit(0)
+
+    def closeMesagem(self):
+        self.msgBox.close()
 
     def closeTrocaUsuario(self):
         self.dialogTrocaUsuario.close()

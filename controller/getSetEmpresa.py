@@ -1,5 +1,6 @@
 class Empresas():
-    def __init__(self, idEmpresa, idPessoaJuridica, tipoEmpresa, cnpj, inscricaoEstadual, inscricaoMunicipal, fantasia, razaoSocial, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, situacao):
+    def __init__(self, idPessoa, idEmpresa, idPessoaJuridica,  tipoEmpresa, cnpj, inscricaoEstadual, inscricaoMunicipal, fantasia, razaoSocial, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, situacao):
+        self.__idpessoa = idPessoa
         self._idEmpresa = idEmpresa
         self.__idPessoaJuridica = idPessoaJuridica
         self._tipoEmpresa = tipoEmpresa
@@ -18,6 +19,13 @@ class Empresas():
         self._cep = cep
         self._situacao = situacao
 
+    @property
+    def getIdPessoa(self):
+        return self.__idPessoa
+
+    @getIdPessoa.setter
+    def setIdPessoa(self, idPessoa):
+        self.self.__idPessoa = idPessoa
 
     @property
     def getIdEmpresa(self):
@@ -34,6 +42,7 @@ class Empresas():
     @getIdPessoaJuridica.setter
     def setIdPessoaJuridica(self, PessoaJuridica):
         self.__idPessoaJuridica = PessoaJuridica
+
 
     @property
     def getTipoEmpresa(self):

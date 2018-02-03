@@ -11,7 +11,7 @@ class PesquisarPessoaJuridicaDao(object):
 
     def pesquisaCodigo(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_juridica, p.razao_social, p.fantasia, p.cnpj, p.ins_estadual, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.site FROM pessoa_juridica p INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.id_pessoa_juridica = '"+ pesquisa +"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep,  j.site FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -21,7 +21,7 @@ class PesquisarPessoaJuridicaDao(object):
 
     def pesquisaRazaoSocial(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_juridica, p.razao_social, p.fantasia, p.cnpj, p.ins_estadual, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.site FROM pessoa_juridica p INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.razao_social LIKE '%"+ pesquisa +"%'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep,  j.site FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.nome_razao LIKE '%"+ pesquisa +"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -31,7 +31,7 @@ class PesquisarPessoaJuridicaDao(object):
 
     def pesquisaFantasia(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_juridica, p.razao_social, p.fantasia, p.cnpj, p.ins_estadual, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.site FROM pessoa_juridica p INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.fantasia LIKE  '%"+ pesquisa +"%'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep,  j.site FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.sobrenome_fantasia LIKE  '%"+ pesquisa +"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -41,7 +41,7 @@ class PesquisarPessoaJuridicaDao(object):
 
     def pesquisaCnpj(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_juridica, p.razao_social, p.fantasia, p.cnpj, p.ins_estadual, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.site FROM pessoa_juridica p INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.cnpj = '"+ pesquisa +"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep,  j.site FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.cpf_cnpj = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -51,10 +51,11 @@ class PesquisarPessoaJuridicaDao(object):
 
     def pesquisaInsEstadual(self, pesquisa):
         try:
-            _sql = "SELECT p.id_pessoa_juridica, p.razao_social, p.fantasia, p.cnpj, p.ins_estadual, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, p.site FROM pessoa_juridica p INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.ins_estadual = '"+ pesquisa +"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep,  j.site FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.rg_inscricao = '"+ pesquisa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
             return result
         except BaseException as os:
             return False
+

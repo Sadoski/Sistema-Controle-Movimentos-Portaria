@@ -58,7 +58,7 @@ class Ui_frmConsultarCidades(object):
 
         self.btnPesquisar = QtGui.QPushButton(frmConsultarCidades)
         self.btnPesquisar.setGeometry(QtCore.QRect(690, 50, 31, 27))
-        self.btnPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnPesquisar.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

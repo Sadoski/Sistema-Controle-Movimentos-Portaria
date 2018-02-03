@@ -21,8 +21,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui = Ui_frmCadastroPessoaFisica()
         self.ui.setupUi(self)
         self.validator = Validator()
-        self.pessoa = ''
-        self.idCidade=''
+        self.pessoa = int()
+        self.idCidade= int()
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -69,9 +69,6 @@ class CadastroPessoaFisica(QtGui.QDialog):
         if self.ui.txtRg.text().isnumeric() == False:
             self.ui.txtRg.backspace()
 
-    def upperCidade(self):
-        self.__pesquisar.txtPesquisar.setText(self.__pesquisar.txtPesquisar.text().upper())
-
     def focusNome(self):
         self.ui.txtNome.setFocus()
 
@@ -104,7 +101,6 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
     def focusBairro(self):
         self.ui.txtBairro.setFocus()
-
 
     def focusCep(self):
         self.ui.txtCep.setFocus()
@@ -260,6 +256,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
                 if _valCpf == False:
                     MensagemBox().warning( 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
                     return False
+                else:
+                    return True
             else:
                 MensagemBox().warning('Atenção', "CPF Invalido, por favor insira um CPF Valido")
                 return False
@@ -295,48 +293,52 @@ class CadastroPessoaFisica(QtGui.QDialog):
     def cadastrar(self):
         if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() and self.ui.txtPai.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
             if self.removerCaracter(self.ui.txtCpf.text()) != '':
-                if self.ui.radBtnMasculino.isChecked() or self.ui.radBtnFeminino.isChecked():
-                    nome = self.ui.txtNome.text()
-                    segundoNome = self.ui.txtSobrenome.text()
-                    cpf = self.removerCaracter(self.ui.txtCpf.text())
-                    rg = self.ui.txtRg.text()
-                    expeditor = self.ui.txtExpeditor.text()
-                    uf = self.ui.txtUf.text()
-                    data = self.removerCaracter(self.ui.dateData.text())
-                    if self.ui.radBtnMasculino.isChecked():
-                        sexo = '1'
-                    elif self.ui.radBtnFeminino.isChecked():
-                        sexo = '2'
-                    else:
-                        return None
-                    nascimento = self.formatarData(data)
-                    endereco = self.ui.txtEndereco.text()
-                    numero = self.ui.txtNumero.text()
-                    complemento = self.ui.txtComplemento.text()
-                    bairro = self.ui.txtBairro.text()
-                    mae = self.ui.txtMae.text()
-                    pai = self.ui.txtPai.text()
-                    cidade = self.idCidade
-
-
-                    pessoaFisico = PessoaFisica(None, None, None, nome, segundoNome, cpf, rg, expeditor,  uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
-                    fisicaDao = PessoaFisicaDao()
-                    pes = fisicaDao.pesquisarPessoaFisica(pessoaFisico)
-                    if pes == []:
-                        fisicaDao.cadastrarPessoa(1)
-                        id = fisicaDao.ultimoRegistro()
-                        pessoaFisico = PessoaFisica(id, None, None, nome, segundoNome, cpf, rg, expeditor, uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
-                        a = fisicaDao.cadastrarPessoaFisica(pessoaFisico)
-                        b = fisicaDao.cadastrarEnderecoPessoa(pessoaFisico)
-                        if a == True and b == True:
-                            MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
-                            self.desativarCampos()
+                valCpf = self.validacaoCpf()
+                if valCpf != False:
+                    if self.ui.radBtnMasculino.isChecked() or self.ui.radBtnFeminino.isChecked():
+                        nome = self.ui.txtNome.text()
+                        segundoNome = self.ui.txtSobrenome.text()
+                        cpf = self.removerCaracter(self.ui.txtCpf.text())
+                        rg = self.ui.txtRg.text()
+                        expeditor = self.ui.txtExpeditor.text()
+                        uf = self.ui.txtUf.text()
+                        data = self.removerCaracter(self.ui.dateData.text())
+                        if self.ui.radBtnMasculino.isChecked():
+                            sexo = '1'
+                        elif self.ui.radBtnFeminino.isChecked():
+                            sexo = '2'
                         else:
-                            MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+                            return None
+                        nascimento = self.formatarData(data)
+                        endereco = self.ui.txtEndereco.text()
+                        numero = self.ui.txtNumero.text()
+                        complemento = self.ui.txtComplemento.text()
+                        bairro = self.ui.txtBairro.text()
+                        mae = self.ui.txtMae.text()
+                        pai = self.ui.txtPai.text()
+                        cidade = self.idCidade
+
+
+                        pessoaFisico = PessoaFisica(None, None, 1, nome, segundoNome, cpf, rg, expeditor,  uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                        fisicaDao = PessoaFisicaDao()
+                        pes = fisicaDao.pesquisarPessoaFisica(pessoaFisico)
+                        if pes == []:
+                            a = fisicaDao.cadastrarPessoa(pessoaFisico)
+                            if a == True:
+                                id = fisicaDao.ultimoRegistro()
+                                pessoaFisico = PessoaFisica(id, None, 1, nome, segundoNome, cpf, rg, expeditor, uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                                b = fisicaDao.cadastrarPessoaFisica(pessoaFisico)
+                                if b == True:
+                                    MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
+                                    self.desativarCampos()
+                                else:
+                                    MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+                            else:
+                                MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+                        else:
+                            MensagemBox().warning( 'Atenção', "Já existe um registro desta Pessoa")
                     else:
-                        MensagemBox().warning( 'Atenção', "Já existe um registro desta Pessoa")
-                else:
-                    MensagemBox().warning( 'Atenção', "Selecione o sexo da pessoa")
+                        MensagemBox().warning( 'Atenção', "Selecione o sexo da pessoa")
             else:
                 MensagemBox().warning( 'Atenção', "Insira o CPF")
 
@@ -505,7 +507,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         if campos.getSexo == 'MASCULINO':
             self.ui.radBtnMasculino.setChecked(True)
         elif campos.getSexo == 'FEMININO':
-            self.ui.radBtnFeminino.setCheckable(True)
+            self.ui.radBtnFeminino.setChecked(True)
         self.ui.txtEndereco.setText(campos.getEndereco)
         self.ui.txtNumero.setText(campos.getNumero)
         self.ui.txtComplemento.setText(campos.getComplemento)
@@ -542,8 +544,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
                             sexo = '1'
                         elif self.ui.radBtnFeminino.isChecked():
                             sexo = '2'
-                        else:
-                            return None
+
                         nascimento = self.formatarData(data)
                         endereco = self.ui.txtEndereco.text()
                         numero = self.ui.txtNumero.text()
@@ -556,14 +557,15 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
                         fisicaDao = PessoaFisicaDao()
                         idPessoaFisica = fisicaDao.pesquisarIdPessoaFisica(pessoa)
-                        idEnderecoPessoaFisica = fisicaDao.pesquisarIdEnderecoPessoaFisica(pessoa)
-                        pessoaFisico = PessoaFisica(pessoa, idPessoaFisica, idEnderecoPessoaFisica, nome, sobrenome, cpf, rg, expeditor, uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
-                        fisicaDao.atualizarPessoa(pessoa)
-                        a = fisicaDao.atualizarPessoaFisica(pessoaFisico)
-                        b = fisicaDao.atualizarEnderecoPessoaFisica(pessoaFisico)
-                        if a == True and b == True:
-                            MensagemBox().informacao('Mensagem', 'Cadastro atualizado com sucesso!')
-                            self.desativarCampos()
+                        pessoaFisico = PessoaFisica(pessoa, idPessoaFisica, 1, nome, sobrenome, cpf, rg, expeditor, uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                        a = fisicaDao.atualizarPessoa(pessoaFisico)
+                        if a == True:
+                            b = fisicaDao.atualizarPessoaFisica(pessoaFisico)
+                            if b == True:
+                                MensagemBox().informacao('Mensagem', 'Cadastro atualizado com sucesso!')
+                                self.desativarCampos()
+                            else:
+                                MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
                         else:
                             MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
                     else:
@@ -599,10 +601,11 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
     def simDeletar(self):
             fisicaDao = PessoaFisicaDao()
-            b = fisicaDao.deletarEnderecoPessoaFisica(self.pessoa)
-            a = fisicaDao.deletarPessoaFisica(self.pessoa)
-            c = fisicaDao.deletarPessoa(self.pessoa)
-            if a == True and b == True and c == True:
+            codigo = self.pessoa
+            idPessoaFisica = fisicaDao.pesquisarIdPessoaFisica(codigo)
+            a = fisicaDao.deletarPessoaFisica(idPessoaFisica)
+            b = fisicaDao.deletarPessoa(codigo)
+            if a == True and b == True:
                 MensagemBox().informacao('Mensagem', 'Cadastro deletar com sucesso!')
                 self.desativarCampos()
             else:
@@ -620,11 +623,13 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.__pesquisar.setupUi(self.dialogCidade)
 
         self.__pesquisar.txtPesquisar.returnPressed.connect(self.pesquisarDadosCidade)
-        self.__pesquisar.txtPesquisar.textChanged.connect(self.upperCidade)
 
         self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisarDadosCidade)
 
         self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCamposCidades)
+
+        self.__pesquisar.txtPesquisar.setValidator(self.validator)
+
 
         self.dialogCidade.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogCidade.exec_()
@@ -696,11 +701,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
         estado = str(itens[2])
         cep = str(itens[3])
 
-
-
         __dados = Cidades(codigo, estado,cidade, cep)
         self.setCamposCidade(__dados)
-        self.botoesEditar()
         self.dialogCidade.close()
 
     def setCamposCidade(self, campos):

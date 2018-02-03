@@ -43,7 +43,7 @@ class EmpresaDao(object):
 
     def pesquisarEmpresaId(self, empresa):
         try:
-            _sql = "SELECT * FROM empresa e INNER JOIN pessoa_juridica p ON p.id_pessoa_juridica = e.id_pessoa_juridica WHERE p.id_pessoa_juridica = '"+ empresa +"'"
+            _sql = "SELECT * FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa  INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa = '"+ empresa +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -53,7 +53,7 @@ class EmpresaDao(object):
 
     def pesquisarPessoaJuridica(self, pessoaJuridica):
         try:
-            _sql = "SELECT cnpj, ins_estadual, razao_social, fantasia FROM pessoa_juridica WHERE id_pessoa_juridica = '"+pessoaJuridica+"'"
+            _sql = "SELECT p.cpf_cnpj, p.rg_inscricao, p.nome_razao, p.sobrenome_fantasia FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa = '"+ pessoaJuridica +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -61,9 +61,19 @@ class EmpresaDao(object):
         except BaseException as os:
             return False
 
+    def pesquisarEmpresaCodigo(self, empresa):
+        try:
+            _sql = "SELECT m.id_empresa FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa  '"+ empresa +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisarPessoaJuridicaId(self, empresa):
         try:
-            _sql = "SELECT j.id_pessoa_juridica FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica WHERE e.id_empresa = '"+empresa+"'"
+            _sql = "SELECT j.id_pessoa_juridica FROM pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN endereco_pessoa e ON e.id_pessoa = p.id_pessoa INNER JOIN cidade c ON c.id_cidade = e.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa  = '"+empresa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -91,7 +101,7 @@ class EmpresaDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             #self.__cursor.close()
-
+            return True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados empresa")
@@ -208,7 +218,6 @@ class EmpresaDao(object):
         try:
             _sql = "DELETE FROM telefone_empresa WHERE id_telefone = %s AND id_empresa = %s"
             __valor = (idTelefone, idEmpresa)
-            print(__valor)
             self.__cursor.execute(_sql, __valor)
             self.__conexao.conn.commit()
             #self.__cursor.close()
@@ -318,10 +327,9 @@ class EmpresaDao(object):
 
         return lista
 
-
     def pesquisaCodigo(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  e.id_empresa = '"+pesquisa+"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.id_pessoa = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -331,7 +339,7 @@ class EmpresaDao(object):
 
     def pesquisaFantasia(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where  j.fantasia LIKE '%"+pesquisa+"%'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.fantasia LIKE '%"+pesquisa+"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -341,7 +349,8 @@ class EmpresaDao(object):
 
     def pesquisaRazaoSocial(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where j.razao_social LIKE '%"+pesquisa+"%'"
+
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.nome_razao LIKE '%"+pesquisa+"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -351,7 +360,7 @@ class EmpresaDao(object):
 
     def pesquisaCnpj(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   j.cnpj = '"+pesquisa+"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.cpf_cnpj = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -361,7 +370,7 @@ class EmpresaDao(object):
 
     def pesquisaInscEstadual(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   j.ins_estadual = '"+pesquisa+"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.rg_inscricao = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -371,7 +380,7 @@ class EmpresaDao(object):
 
     def pesquisaInscMunicipal(self, pesquisa):
         try:
-            _sql = "SELECT e.id_empresa, j.fantasia, j.razao_social, j.cnpj, j.ins_estadual, e.inscricao_municipal, t.descricao, j.endereco, j.numero, j.complemento, j.bairro, c.nome, s.nome, c.cep, e.situacao FROM empresa e INNER JOIN pessoa_juridica j ON j.id_pessoa_juridica = e.id_pessoa_juridica INNER JOIN tipo_empresa t ON t.id_tipo_empresa = e.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = j.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado where   e.inscricao_municipal = '"+pesquisa+"'"
+            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep, j.site FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_empresa i ON i.id_tipo_empresa = m.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND m.inscricao_municipal = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -381,7 +390,7 @@ class EmpresaDao(object):
 
     def pesquisaEmpresa(self, pesquisa):
         try:
-            _sql = "SELECT id_empresa, razao_social, cnpj, inscricao_estadual from empresa where  fantasia = '"+pesquisa+"'"
+            _sql = "SELECT m.id_empresa, p.nome_razao, p.cpf_cnpj, p.rg_inscricao FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_empresa i ON i.id_tipo_empresa = m.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.sobrenome_fantasia  = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -391,6 +400,7 @@ class EmpresaDao(object):
 
     def pesquisaEmpresaSetCar(self, pesquisa):
         try:
+            _sql = "SELECT m.id_empresa, p.nome_razao, t.descricao, p.cpf_cnpj, p.rg_inscricao FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_empresa i ON i.id_tipo_empresa = m.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND p.sobrenome_fantasia  = '"+pesquisa+"'"
             _sql = "SELECT e.id_empresa, e.razao_social, t.descricao,  e.cnpj, e.inscricao_estadual from empresa e INNER JOIN tipo_empresa t on t.id_tipo_empresa = e.id_tipo_empresa where  fantasia = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
@@ -401,7 +411,7 @@ class EmpresaDao(object):
 
     def confirmarEmpresa(self, setorCargo):
         try:
-            _sql = "SELECT id_empresa FROM empresa WHERE fantasia = %s AND razao_social = %s AND cnpj = %s AND inscricao_estadual = %s AND id_empresa = %s"
+            _sql = "SELECT id_empresa FROM  pessoa p INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN empresa m ON m.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_empresa i ON i.id_tipo_empresa = m.id_tipo_empresa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  p.sobrenome_fantasia = %s AND p.nome_razao = %s AND p.cpf_cnpj = %s AND p.rg_inscricao = %s AND m.id_empresa = %s"
             _valores = (setorCargo.getFantasia, setorCargo.getRazaoSocial, setorCargo.getCnpj, setorCargo.getInscricao, setorCargo.getIdEmpresa)
             self.__cursor.execute(_sql, _valores)
             result = self.__cursor.fetchone()[0]

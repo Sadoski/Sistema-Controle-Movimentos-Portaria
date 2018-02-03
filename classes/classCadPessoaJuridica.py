@@ -3,6 +3,7 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
 from controller.getSetCidade import Cidades
 from controller.getSetPessoaJuridica import PessoaJuridica
@@ -21,8 +22,8 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         self.ui = Ui_frmCadastroPessoaJuridica()
         self.ui.setupUi(self)
         self.validator = Validator()
-        self.pessoa = ''
-        self.idCidade = ''
+        self.pessoa = int()
+        self.idCidade = int()
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -61,9 +62,6 @@ class CadastroPessoaJuridica(QtGui.QDialog):
     def numberInscricaoEstadua(self):
         if self.ui.txtInsEstadual.text().isnumeric() == False:
             self.ui.txtInsEstadual.backspace()
-
-    def upperCidade(self):
-        self.__pesquisar.txtPesquisar.setText(self.__pesquisar.txtPesquisar.text().upper())
 
     def focusFantasia(self):
         self.ui.txtFantasia.setFocus()
@@ -163,10 +161,34 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         self.ui.btnDeletar.setEnabled(False)
 
     def cancelar(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja realmente cancelar a operação", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            def _fromUtf8(s):
+                return s
+        self.msgBox = QtGui.QMessageBox()
+        self.msgBox.setWindowTitle("Mensagem")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.msgBox.setWindowIcon(icon)
+        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+        self.msgBox.setText("Deseja realmente cancelar a operação?")
+        btnSim = QtGui.QPushButton('Sim')
+        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+        btnSim.clicked.connect(self.cancelamento)
+        btnNao = QtGui.QPushButton('Não')
+        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+        btnNao.clicked.connect(self.closeMesagem)
+        btnNao.setFocus()
+        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.msgBox.exec_()
+
+    def cancelamento(self):
             self.limparCampos()
             self.desativarCampos()
+
+    def closeMesagem(self):
+        self.msgBox.close()
 
     def limparCampos(self):
        self.ui.txtRazaoSocial.clear()
@@ -201,8 +223,10 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             _val = self.validaCnpj(_cnpj)
             if _val == False:
                 w = QWidget()
-                result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
+                result = MensagemBox().warning('Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
                 return False
+            else:
+                return True
 
 
     def validaCnpj(self,cnpj):
@@ -212,7 +236,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
         if len(cnpj) != 14 or not cnpj.isnumeric():
             w = QWidget()
-            result = QMessageBox.critical(w, 'Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
+            result = MensagemBox().critico('Atenção', "CNPJ Invalido, por favor insira um CNPJ Valido")
             return False
 
         verificadores = cnpj[-2:]
@@ -251,13 +275,26 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             site = self.ui.txtSite.text()
             cidade = self.idCidade
 
-            pessoaJuridica = PessoaJuridica(None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, cidade,  None, None, None, site)
+            pessoaJuridica = PessoaJuridica(None, None, 2, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, cidade,  None, None, None, site)
             __dao = PessoaJuridicaDao()
-            __dao.pesquisarPessoaJuridica(pessoaJuridica)
-            __dao.cadastrarPessoaJuridica(pessoaJuridica)
-            self.desativarCampos()
+            pes = __dao.pesquisarPessoaJuridica(pessoaJuridica)
+            if pes == []:
+                a = __dao.cadastrarPessoa(pessoaJuridica)
+                if a == True:
+                    id = __dao.ultimoRegistro()
+                    pessoaJuridica = PessoaJuridica(id, None, 2, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, cidade, None, None, None, site)
+                    b = __dao.cadastrarPessoaJuridica(pessoaJuridica)
+                    if b == True:
+                        MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
+                        self.desativarCampos()
+                    else:
+                        MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+                else:
+                    MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+            else:
+                MensagemBox().warning('Atenção', "Já existe um registro desta Pessoa")
         else:
-            QMessageBox.critical(QWidget(), 'Atenção', "Por Favor, preencham os campos obrigtorios ")
+            MensagemBox().warning( 'Atenção', "Por Favor, preencham os campos obrigtorios ")
 
 
     def keyPressEvent(self, keyEvent):
@@ -271,6 +308,8 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisar)
 
             self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCampos)
+
+            self.__pesquisar.txtPesquisar.setValidator(self.validator)
 
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
             self.dialog.exec_()
@@ -312,7 +351,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             self.setarTabelaPesquisa(__retorno)
 
         else:
-            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+            MensagemBox().warning('Atenção', "Selecione uma das opções de pesquisa")
 
     def setarTabelaPesquisa(self, __retorno):
         qtde_registros = len(__retorno)
@@ -368,7 +407,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         for item in self.__pesquisar.tabPesquisar.selectedItems():
             itens.append(item.text())
 
-        codigo = str(itens[0])
+        codigo = int(itens[0])
         razao = str(itens[1])
         fantasia = str(itens[2])
         cnpj = str(itens[3])
@@ -383,13 +422,13 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         site = str(itens[12])
 
 
-        __dados = PessoaJuridica(codigo, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
+        __dados = PessoaJuridica(codigo, None, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
         self.setCampos(__dados)
         self.botoesEditar()
         self.dialog.close()
 
     def setCampos(self, campos):
-        self.pessoa = campos.getIdPesJuridica
+        self.pessoa = campos.getIdPessoa
         self.ui.txtRazaoSocial.setText(campos.getRazao)
         self.ui.txtFantasia.setText(campos.getFantasia)
         self.ui.txtCnpj.setText(campos.getCnpj)
@@ -414,84 +453,124 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
     def editar(self):
         if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and  self.ui.txtComplemento.text() != '' and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '' and self.ui.txtSite.text() != '':
-            codigo = self.pessoa
-            razao = self.ui.txtRazaoSocial.text()
-            fantasia = self.ui.txtFantasia.text()
-            cnpj = self.removerCaracter(self.ui.txtCnpj.text())
-            inscricao = self.ui.txtInsEstadual.text()
-            endereco = self.ui.txtEndereco.text()
-            numero = self.ui.txtNumero.text()
-            complemento = self.ui.txtComplemento.text()
-            bairro = self.ui.txtBairro.text()
-            site = self.ui.txtSite.text()
-            cid = CidadesEstadosDao()
-            cidade = cid.idCidade(self.removerCaracter(self.ui.txtCep.text()), self.ui.txtCidade.text(), self.ui.txtEstado.text())
+            validar = self.validacaoCnpj()
+            if validar == True:
+                codigo = self.pessoa
+                razao = self.ui.txtRazaoSocial.text()
+                fantasia = self.ui.txtFantasia.text()
+                cnpj = self.removerCaracter(self.ui.txtCnpj.text())
+                inscricao = self.ui.txtInsEstadual.text()
+                endereco = self.ui.txtEndereco.text()
+                numero = self.ui.txtNumero.text()
+                complemento = self.ui.txtComplemento.text()
+                bairro = self.ui.txtBairro.text()
+                site = self.ui.txtSite.text()
+                cid = CidadesEstadosDao()
+                cidade = cid.idCidade(self.removerCaracter(self.ui.txtCep.text()), self.ui.txtCidade.text(), self.ui.txtEstado.text())
 
-            pessoaJuridica = PessoaJuridica(codigo, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, cidade, None, None, None, site)
-            __dao = PessoaJuridicaDao()
-            __dao.atualizarPessoaJuridica(pessoaJuridica)
-            self.desativarCampos()
+                __dao = PessoaJuridicaDao()
+                idPessoaJuridica = __dao.pesquisarIdPessoaJuridica(codigo)
+                pessoaJuridica = PessoaJuridica(codigo, idPessoaJuridica, 2, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, cidade, None, None, None, site)
+                a = __dao.atualizarPessoa(pessoaJuridica)
+                if a == True:
+                    b = __dao.atualizarPessoaJuridica(pessoaJuridica)
+                    if b == True:
+                        MensagemBox().informacao('Mensagem', 'Cadastro atualizado com sucesso!')
+                        self.desativarCampos()
+                    else:
+                        MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
+                else:
+                    MensagemBox().critico('Erro', 'Erro ao atualizar as informações no banco de dados')
         else:
-            QMessageBox.critical(QWidget(), 'Atenção', "Por Favor, preencham os campos obrigtorios ")
+            MensagemBox().critico('Atenção', "Por Favor, preencham os campos obrigtorios ")
 
     def deletar(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja excluir esse registro", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
+        try:
+            _fromUtf8 = QtCore.QString.fromUtf8
+        except AttributeError:
+            def _fromUtf8(s):
+                return s
+        self.msgBox = QtGui.QMessageBox()
+        self.msgBox.setWindowTitle("Mensagem")
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.msgBox.setWindowIcon(icon)
+        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+        self.msgBox.setText("Tem certeza que deseja excluir esse registro?")
+        btnSim = QtGui.QPushButton('Sim')
+        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+        btnSim.clicked.connect(self.deletarRegistro)
+        btnNao = QtGui.QPushButton('Não')
+        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+        btnNao.clicked.connect(self.closeMesagem)
+        btnNao.setFocus()
+        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.msgBox.exec_()
+
+    def deletarRegistro(self):
             fisicaDao = PessoaJuridicaDao()
-            fisicaDao.deletarPessoaJuridica(self.pessoa)
+            codigo = self.pessoa
+            idPessoaJuridica = fisicaDao.pesquisarIdPessoaJuridica(codigo)
+            a = fisicaDao.deletarPessoaJuridica(idPessoaJuridica)
+            b = fisicaDao.deletarPessoa(codigo)
+            if a == True and b == True:
+                MensagemBox().informacao('Mensagem', 'Cadastro deletar com sucesso!')
+                self.desativarCampos()
+            else:
+                MensagemBox().critico('Erro', 'Erro ao deletar as informações no banco de dados')
             self.desativarCampos()
 
     def pesquisarCidadesBotao(self):
         self.dialogCidade = QDialog(self)
-        self.__pesquisar = Ui_frmConsultarCidades()
-        self.__pesquisar.setupUi(self.dialogCidade)
+        self.__pesquisarCidade = Ui_frmConsultarCidades()
+        self.__pesquisarCidade.setupUi(self.dialogCidade)
 
-        self.__pesquisar.txtPesquisar.returnPressed.connect(self.pesquisarDadosCidade)
-        self.__pesquisar.txtPesquisar.textChanged.connect(self.upperCidade)
+        self.__pesquisarCidade.txtPesquisar.returnPressed.connect(self.pesquisarDadosCidade)
 
-        self.__pesquisar.btnPesquisar.clicked.connect(self.pesquisarDadosCidade)
+        self.__pesquisarCidade.btnPesquisar.clicked.connect(self.pesquisarDadosCidade)
 
-        self.__pesquisar.tabPesquisar.doubleClicked.connect(self.setarCamposCidades)
+        self.__pesquisarCidade.tabPesquisar.doubleClicked.connect(self.setarCamposCidades)
+
+        self.__pesquisarCidade.txtPesquisar.setValidator(self.validator)
 
         self.dialogCidade.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.dialogCidade.exec_()
 
     def pesquisarDadosCidade(self):
-        if self.__pesquisar.radBtnCodigoCidade.isChecked():
-            __codigo = self.__pesquisar.txtPesquisar.text()
+        if self.__pesquisarCidade.radBtnCodigoCidade.isChecked():
+            __codigo = self.__pesquisarCidade.txtPesquisar.text()
             __pesDao = CidadesEstadosDao()
             __retorno = __pesDao.pesquisarCodigoCidade(__codigo)
 
-
             self.setarTabelaPesquisaCidade(__retorno)
 
-        elif self.__pesquisar.radBtnCidade.isChecked():
-            __cidade = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarCidade.radBtnCidade.isChecked():
+            __cidade = self.__pesquisarCidade.txtPesquisar.text()
             __pesDao = CidadesEstadosDao()
             __retorno = __pesDao.pesquisarNomeCidade(__cidade)
 
             self.setarTabelaPesquisaCidade(__retorno)
 
-        elif self.__pesquisar.radBtnEstado.isChecked():
-            __estado = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarCidade.radBtnEstado.isChecked():
+            __estado = self.__pesquisarCidade.txtPesquisar.text()
             __pesDao = CidadesEstadosDao()
             __retorno = __pesDao.pesquisarEstadoCidade(__estado)
 
             self.setarTabelaPesquisaCidade(__retorno)
 
-        elif self.__pesquisar.radBtnCep.isChecked():
-            __cep = self.__pesquisar.txtPesquisar.text()
+        elif self.__pesquisarCidade.radBtnCep.isChecked():
+            __cep = self.__pesquisarCidade.txtPesquisar.text()
             __pesDao = CidadesEstadosDao()
             __retorno = __pesDao.pesquisarCepCidade(__cep)
 
             self.setarTabelaPesquisaCidade(__retorno)
 
         else:
-            QMessageBox.warning(QWidget(), 'Atenção', "Selecione uma das opções de pesquisa")
+            MensagemBox().warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
     def setarTabelaPesquisaCidade(self, __retorno):
         qtde_registros = len(__retorno)
-        self.__pesquisar.tabPesquisar.setRowCount(qtde_registros)
+        self.__pesquisarCidade.tabPesquisar.setRowCount(qtde_registros)
 
         linha = 0
         for pesqui in __retorno:
@@ -504,10 +583,10 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
 
             # preenchendo o grid de pesquisa
-            self.__pesquisar.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(cidade)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(estado)))
-            self.__pesquisar.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarCidade.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarCidade.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarCidade.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarCidade.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cep)))
 
 
             linha += 1
@@ -515,7 +594,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
     def setarCamposCidades(self):
         itens = []
 
-        for item in self.__pesquisar.tabPesquisar.selectedItems():
+        for item in self.__pesquisarCidade.tabPesquisar.selectedItems():
             itens.append(item.text())
 
         codigo = str(itens[0])
@@ -523,11 +602,8 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         estado = str(itens[2])
         cep = str(itens[3])
 
-
-
         __dados = Cidades(codigo, estado,cidade, cep)
         self.setCamposCidade(__dados)
-        self.botoesEditar()
         self.dialogCidade.close()
 
     def setCamposCidade(self, campos):
