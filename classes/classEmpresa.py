@@ -4,6 +4,7 @@ from PyQt4.QtGui import *
 
 from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
+from controller.getSetCnae import Cnae
 from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetCargo import Cargo
@@ -14,6 +15,7 @@ from dao.tipoEmpresaDao import TipoEmpresaDao
 from telas.frmCadEmpresa import Ui_frmCadastroEmpresa
 from dao.empresaDao import EmpresaDao
 from controller.getSetEmpresa import Empresas
+from telas.frmPesquisarCnae import Ui_frmPesquisarCnae
 from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
 from telas.frmPesquisarPessoaJuridica import Ui_frmPesquisarPessoaJuridica
 
@@ -28,6 +30,7 @@ class Empresa(QtGui.QDialog):
         self.idPessoaJuridica = int()
         self.idEmpresa = int()
         self.idTipoEmpresa = int()
+        self.idCnae = int()
         self.editar = False
         self.contatoAdd = []
         self.contatoRemove = []
@@ -56,6 +59,7 @@ class Empresa(QtGui.QDialog):
         self.ui.btnEditar.clicked.connect(self.atualizar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaJuridica)
+        self.ui.btnPesquisarCnae.clicked.connect(self.pesquisarCnae)
 
 
         self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
@@ -71,10 +75,13 @@ class Empresa(QtGui.QDialog):
         self.ui.btnRemoverCargos.clicked.connect(self.delContatoCargo)
 
         self.ui.txtCodigo.returnPressed.connect(self.setEmpresa)
+        self.ui.txtCnae.returnPressed.connect(self.setCnae)
 
         self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
         self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
         self.ui.txtInscricaoMunicipal.textChanged.connect(self.numberInscricaoMunicipal)
+
+        self.ui.txtCnae.cursorPositionChanged.connect(self.positionCursorCnae)
 
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
@@ -87,6 +94,32 @@ class Empresa(QtGui.QDialog):
     def numberInscricaoMunicipal(self):
         if self.ui.txtInscricaoMunicipal.text().isnumeric() == False:
             self.ui.txtInscricaoMunicipal.backspace()
+
+    def positionCursorCnae(self):
+        texto = self.removerCaracter(self.ui.txtCnae.text())
+
+        if len(texto) == 0:
+            self.ui.txtCnae.setCursorPosition(0)
+        elif len(texto) <= 3:
+            b = len(texto)
+            self.ui.txtCnae.setCursorPosition(b)
+        elif len(texto) >= 4 and len(texto) <5:
+            b = len(texto)+1
+            self.ui.txtCnae.setCursorPosition(b)
+        elif len(texto) >= 6 and len(texto) <8:
+            c = len(texto)+2
+            self.ui.txtCnae.setCursorPosition(c)
+
+    def removerCaracter(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('/', '')
+        i = i.replace('-', '')
+        i = i.replace('(', '')
+        i = i.replace(')', '')
+        i = i.replace('\\', '')
+        return i
 
     def pesquisarTipoEmpresa(self):
         if self.ui.cBoxTipoEmpresa.currentText() != '':
@@ -138,6 +171,8 @@ class Empresa(QtGui.QDialog):
         self.ui.txtFantasia.clear()
         self.ui.cBoxTipoEmpresa.clear()
         self.ui.txtInscricaoMunicipal.clear()
+        self.ui.txtCnae.clear()
+        self.ui.txtCnaeDescricao.clear()
 
         self.ui.txtContatoTelefone.clear()
         self.ui.txtNumeroTelefone.clear()
@@ -203,6 +238,17 @@ class Empresa(QtGui.QDialog):
 
         for tipo in lista:
             self.ui.cBoxTipoEmpresa.addItem(tipo[0])
+
+    def setCnae(self):
+        empresa = EmpresaDao()
+
+        emp = empresa.pesquisarCnaeEmpresa(self.ui.txtCnae.text())
+        if emp == []:
+            MensagemBox().warning('Mensagem', "Atenção não existe este codigo CNAE")
+            self.ui.txtCnaeDescricao.clear()
+        else:
+            for empres in emp:
+                self.ui.txtCnaeDescricao.setText(empres[0])
 
     def setEmpresa(self):
         empresa = EmpresaDao()
@@ -462,10 +508,11 @@ class Empresa(QtGui.QDialog):
 
     def cadastro(self):
         self.setEmpresa()
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '' and self.removerCaracter(self.ui.txtCnae.text()) != '' and self.ui.txtCnaeDescricao.text() != '':
             empresaDao = EmpresaDao()
             idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
-            empresa = Empresas(self.ui.txtCodigo.text(), idPessoaJuridica, None, self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
+            idCnae = empresaDao.pesquisarCnaeEmpresa(self.ui.txtCnae.text())
+            empresa = Empresas(self.ui.txtCodigo.text(), idPessoaJuridica, None, self.idTipoEmpresa, idCnae[0], None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
             cad = empresaDao.cadastroEmpresa(empresa)
             self.idEmpresa = empresaDao.ultimoRegistro()
 
@@ -577,6 +624,7 @@ class Empresa(QtGui.QDialog):
                 situacao = 'ATIVA'
             else:
                 situacao = 'Desativa'
+            subclasse = pesqui[15]
 
             # preenchendo o grid de pesquisa
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
@@ -594,6 +642,7 @@ class Empresa(QtGui.QDialog):
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(estado)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(situacao)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(subclasse)))
 
 
             linha += 1
@@ -622,12 +671,14 @@ class Empresa(QtGui.QDialog):
             situacao = True
         else:
             situacao = False
+        subclasse = itens[15]
         empresaDao = EmpresaDao()
         idEmpresa = empresaDao.pesquisarEmpresaCodigo(codigo)
         idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(codigo)
+        idCnae = empresaDao.pesquisarCnaeEmpresa(subclasse)
 
 
-        __dados = Empresas(codigo, idEmpresa, idPessoaJuridica, tipoEmpresa, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
+        __dados = Empresas(codigo, idEmpresa, idPessoaJuridica, tipoEmpresa, idCnae, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
         self.botoesEditar()
         self.setCampos(__dados)
         self.pesquisarTelefone(codigo)
@@ -641,6 +692,7 @@ class Empresa(QtGui.QDialog):
         self.ui.btnPesquisarEmpresa.setEnabled(False)
         self.idEmpresa = int(campos.getIdEmpresa)
         self.idPessoaJuridica = int(campos.getIdPessoaJuridica)
+        self.idCnae = int(campos.getCnae)
         self.ui.txtCodigo.setText(str(campos.getIdPessoa))
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
@@ -1033,8 +1085,122 @@ class Empresa(QtGui.QDialog):
             ativo = 0
 
         empresaDao = EmpresaDao()
-        empresa = Empresas(self.idEmpresa, self.idPessoaJuridica, self.idTipoEmpresa, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
+        empresa = Empresas(self.idEmpresa, self.idPessoaJuridica, self.idTipoEmpresa, self.idCnae, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
         empresaDao.atualizarEmpresa(empresa)
 
         self.cancelar()
 
+
+
+    def pesquisarCnae(self):
+        self.dialogCnae = QDialog(self)
+        self.__pesquisarCnae = Ui_frmPesquisarCnae()
+        self.__pesquisarCnae.setupUi(self.dialogCnae)
+
+        self.__pesquisarCnae.txtPesquisar.setValidator(self.validator)
+
+        self.__pesquisarCnae.txtPesquisar.returnPressed.connect(self.pesquisarCodCnae)
+
+        self.__pesquisarCnae.btnPesquisar.clicked.connect(self.pesquisarCodCnae)
+
+        self.__pesquisarCnae.tabPesquisar.doubleClicked.connect(self.setarCamposCnae)
+
+        self.dialogCnae.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogCnae.exec_()
+
+
+    def pesquisarCodCnae(self):
+        __empDao = EmpresaDao()
+        if self.__pesquisarCnae.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeCodigo(__codigo)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnCodSubclasse.isChecked():
+            __razao = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeCodigoSubclasse(__razao)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnSecao.isChecked():
+            __fantasia = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeSecao(__fantasia)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnDivisao.isChecked():
+            __cnpj = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeDivisao(__cnpj)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnGrupo.isChecked():
+            __inscricao = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeGrupo(__inscricao)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnClasse.isChecked():
+            __inscricao = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeClasse(__inscricao)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        elif self.__pesquisarCnae.radBtnSubclasse.isChecked():
+            __inscricao = self.__pesquisarCnae.txtPesquisar.text()
+            __retorno = __empDao.pesquisarCnaeSubclasse(__inscricao)
+
+            self.setarTabelaPesquisaCnae(__retorno)
+
+        else:
+            MensagemBox().warning( 'Atenção', "Selecione uma das opções de pesquisa")
+
+
+    def setarTabelaPesquisaCnae(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarCnae.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            codSubclasse = pesqui[1]
+            secao = pesqui[2]
+            divisao = pesqui[3]
+            grupo = pesqui[4]
+            classe = pesqui[5]
+            subclasse = pesqui[6]
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(codSubclasse)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(secao)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(divisao)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(grupo)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(classe)))
+            self.__pesquisarCnae.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(subclasse)))
+
+            linha += 1
+
+
+    def setarCamposCnae(self):
+        itens = []
+
+        for item in self.__pesquisarCnae.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        print(itens)
+
+        codigo = str(itens[1])
+        descricao = str(itens[6])
+
+        __dados = Cnae(codigo, descricao)
+        self.setCamposCnae(__dados)
+        self.dialogCnae.close()
+
+    def setCamposCnae(self, campos):
+        self.ui.txtCnae.setText(campos.getCodSubclasse)
+        self.ui.txtCnaeDescricao.setText(campos.getSubclasse)

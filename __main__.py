@@ -5,9 +5,9 @@ __version__    = '1.0'
 __maintainer__ = 'Jefferson Aparecido Sadoski'
 __status__     = 'Beta'
 
-from classes.classLogin import Login
-
 
 if __name__ == '__main__':
-    login = Login()
+
+    from classes.classLogin import Login
+
 

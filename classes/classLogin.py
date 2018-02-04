@@ -1,4 +1,4 @@
-import sys
+import sys, time
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -10,7 +10,13 @@ from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
 from dao.loginDao import LogarDao
 from .classPrincipal import Principal
-from telas.frmMesagemSair import Ui_frmMensagemSair
+
+try:
+    _fromUtf8 = QtCore.QString.fromUtf8
+except AttributeError:
+    def _fromUtf8(s):
+        return s
+app = QApplication(sys.argv)
 
 
 class Login(QtGui.QDialog):
@@ -98,7 +104,6 @@ class Login(QtGui.QDialog):
         pass
 
 
-app = QtGui.QApplication(sys.argv)
 principal = Principal()
 login = Login()
 login.show()
