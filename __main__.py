@@ -9,5 +9,3 @@ __status__     = 'Beta'
 if __name__ == '__main__':
 
     from classes.classLogin import Login
-
-

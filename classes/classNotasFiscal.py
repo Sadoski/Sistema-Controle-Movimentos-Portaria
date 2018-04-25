@@ -50,7 +50,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         validarReal = QtGui.QDoubleValidator(0, 99999, 0, self)
         validarReal.setDecimals(2)
 
-        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtBaseICMS, self.ui.txtICMSRed,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
+        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtBaseICMS,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
                     self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorProduto, self.ui.txtValorFrete,
                     self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI, self.ui.txtValorNF,
                     self.ui.txtValorUnotario, self.ui.txtValorTotal, self.ui.txtValorTotalServico, self.ui.txtBaseIssqn, self.ui.txtValorIssqn]
@@ -142,7 +142,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
         return ("%s-%s-%s" % (ano, mes, dia))
 
-    def formatarData(self, data):
+    def formataData(self, data):
         dia = data[:2]
         mes = data[2:4]
         ano = data[4:8]
@@ -178,7 +178,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtModelo.clear()
         self.ui.txtNumNF.clear()
         self.ui.txtIcmsPorcento.clear()
-        self.ui.txtICMSRed.clear()
         self.ui.txtChaveAcessoNF.clear()
         self.ui.txtProtocoloAuto.clear()
         self.ui.dateDataEmissao.setDate(QDate.currentDate())
@@ -216,6 +215,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
         def cadastro(self):
             if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+                '''
                 empresa = Empresas(None, self.ui.txtCodigo.text(), self.ui.cBoxTipoEmpresa.currentText(),
                                    self.ui.txtInscricaoMunicipal.text())
                 empresaDao = EmpresaDao()
@@ -251,6 +251,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
                         #__notaFiscalRomaneio.cadastrarDescricaoProduto(__descricao)
 
                         i += 1
+                '''
 
         '''
         self.ui.txtNomeEmitente.editingFinished.connect(self.pesquisarFornecedor)

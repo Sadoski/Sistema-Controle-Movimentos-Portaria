@@ -187,6 +187,14 @@ class Empresa(QtGui.QDialog):
         self.contatoRemove.clear()
         self.emailAdd.clear()
         self.emailRemove.clear()
+        self.contatoAtualizar.clear()
+        self.emailAtualizar.clear()
+        self.setoresAdd.clear()
+        self.setoresRemove.clear()
+        self.setoresAtualizar.clear()
+        self.cargoAdd.clear()
+        self.cargoRemove.clear()
+        self.cargoAtualizar.clear()
 
 
         self.deletarContatoTelefone()
@@ -313,17 +321,35 @@ class Empresa(QtGui.QDialog):
 
             linha += 1
 
+    def cellClick(self):
+        list=[]
+        columcount = self.ui.tabContatoTelefone.columnCount()
+        row = self.ui.tabContatoTelefone.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell =self.ui.tabContatoTelefone.item(row, x).text()  # get cell at row, col
+            list.append(cell)
+        print(list)
+        return list
+
+
+
 
     def delContatoTelefone(self):
         index = self.ui.tabContatoTelefone.currentRow()
         self.ui.tabContatoTelefone.removeRow(index)
-
-        if index >= 0:
-            self.contatoRemove.append(self.contatoAdd[index])
-            del self.contatoAdd[index]
-        else:
-            MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
-
+        if self.editar == False:
+            if index >= 0:
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            a = QtCore.QObject.connect(self.ui.tabContatoTelefone, QtCore.SIGNAL("cellClicked()"),self.cellClick)
+            print(a)
+            if list is self.contatoAdd:
+                print("sim")
+            #self.contatoRemove.append(self.contatoAdd[index])
+            #self.contatoAtualizar.remove()
+            pass
     def inserirTabelaEmail(self, dado):
 
         linha = self.ui.tabContatoEmail.rowCount()
@@ -380,6 +406,7 @@ class Empresa(QtGui.QDialog):
 
             linha += 1
 
+
     def addContatoSetor(self):
         if self.ui.txtCadSetoresSetor.text() != "" :
                 __setor = str(self.ui.txtCadSetoresSetor.text())
@@ -404,8 +431,11 @@ class Empresa(QtGui.QDialog):
         self.ui.tabSetores.removeRow(index)
 
         if index >= 0:
-            self.setoresRemove.append(self.setoresAdd[index])
-            del self.setoresAdd[index]
+            if self.editar == False:
+                del self.setoresAdd[index]
+            elif self.editar == True:
+                self.setoresRemove.append(self.setoresAtualizar[index])
+                del self.setoresAdd[index]
         else:
             MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
@@ -511,8 +541,9 @@ class Empresa(QtGui.QDialog):
         if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '' and self.removerCaracter(self.ui.txtCnae.text()) != '' and self.ui.txtCnaeDescricao.text() != '':
             empresaDao = EmpresaDao()
             idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
-            idCnae = empresaDao.pesquisarCnaeEmpresa(self.ui.txtCnae.text())
-            empresa = Empresas(self.ui.txtCodigo.text(), idPessoaJuridica, None, self.idTipoEmpresa, idCnae[0], None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
+            idCnae = empresaDao.pesquisarIdCnae(self.ui.txtCnae.text())
+            print(idCnae)
+            empresa = Empresas(self.ui.txtCodigo.text(), None, idPessoaJuridica, self.idTipoEmpresa, idCnae, None, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
             cad = empresaDao.cadastroEmpresa(empresa)
             self.idEmpresa = empresaDao.ultimoRegistro()
 
@@ -607,8 +638,8 @@ class Empresa(QtGui.QDialog):
             # capturando os dados da tupla
 
             codigo = pesqui[0]
-            fantsia = pesqui[1]
-            razao = pesqui[2]
+            razao = pesqui[1]
+            fantasia = pesqui[2]
             cnpj = pesqui[3]
             insEstadual = pesqui[4]
             insMunicipal = pesqui[5]
@@ -628,8 +659,8 @@ class Empresa(QtGui.QDialog):
 
             # preenchendo o grid de pesquisa
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantsia)))
-            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(fantasia)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(insEstadual)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(insMunicipal)))
@@ -642,10 +673,11 @@ class Empresa(QtGui.QDialog):
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(estado)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
             self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(situacao)))
-            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(subclasse)))
+            self.__pesquisarEmpresa.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(subclasse))
 
 
             linha += 1
+
 
     def setarCampos(self):
         itens = []
@@ -672,13 +704,14 @@ class Empresa(QtGui.QDialog):
         else:
             situacao = False
         subclasse = itens[15]
+
         empresaDao = EmpresaDao()
-        idEmpresa = empresaDao.pesquisarEmpresaCodigo(codigo)
+        idPessoa = empresaDao.pesquisarPessoaCodigo(codigo)
         idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(codigo)
-        idCnae = empresaDao.pesquisarCnaeEmpresa(subclasse)
+        self.idCnae = empresaDao.pesquisarIdCnae(subclasse)
+        desCnae = empresaDao.pesquisarCnaeDescricao(subclasse)
 
-
-        __dados = Empresas(codigo, idEmpresa, idPessoaJuridica, tipoEmpresa, idCnae, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
+        __dados = Empresas(idPessoa, codigo, idPessoaJuridica, tipoEmpresa, self.removerCaracter(subclasse), desCnae, cnpj, insEstadual, insMunicipal, fantasia, razao, endereco, numero, complemento, bairro, None, cidade, estado, cep, situacao)
         self.botoesEditar()
         self.setCampos(__dados)
         self.pesquisarTelefone(codigo)
@@ -692,7 +725,6 @@ class Empresa(QtGui.QDialog):
         self.ui.btnPesquisarEmpresa.setEnabled(False)
         self.idEmpresa = int(campos.getIdEmpresa)
         self.idPessoaJuridica = int(campos.getIdPessoaJuridica)
-        self.idCnae = int(campos.getCnae)
         self.ui.txtCodigo.setText(str(campos.getIdPessoa))
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
@@ -706,6 +738,8 @@ class Empresa(QtGui.QDialog):
             self.ui.radBtnAtivo.setChecked(True)
         else:
             self.ui.radBtnDesativo.setChecked(True)
+        self.ui.txtCnae.setText(campos.getCnae)
+        self.ui.txtCnaeDescricao.setText(campos.getDesCnae[0])
         self.editar = True
 
     def setTipoEmpresaAtualizado(self, dados):
@@ -844,7 +878,6 @@ class Empresa(QtGui.QDialog):
         empresaDao = EmpresaDao()
         id = empresaDao.pesquisaTelefone(campos)
         if id != []:
-
             self.setTabelaTelefone(id)
 
     def setTabelaTelefone(self, __retorno):
@@ -879,7 +912,7 @@ class Empresa(QtGui.QDialog):
         empresaDao = EmpresaDao()
         id = empresaDao.pesquisaEmail(campos)
         if id != []:
-            self.emailAdd.append(id)
+
             self.setTabelaEmail(id)
 
     def setTabelaEmail(self, __retorno):
@@ -905,7 +938,7 @@ class Empresa(QtGui.QDialog):
         id = empresaDao.pesquisaSetor(campos)
 
         if id != []:
-            self.setoresAdd.append(id)
+
             self.setTabelaSetores(id)
 
     def setTabelaSetores(self, __retorno):
@@ -918,6 +951,7 @@ class Empresa(QtGui.QDialog):
             self.ui.tabSetores.setItem(linha, 0, QtGui.QTableWidgetItem(str(setor)))
             lista = (idSetor, setor)
             self.setoresAdd.append(lista)
+
             linha += 1
 
     def pesquisaCargo(self, campos):
@@ -925,7 +959,6 @@ class Empresa(QtGui.QDialog):
         id = empresaDao.pesquisaCargo(campos)
 
         if id != []:
-            self.cargoAdd.append(id)
             self.setTabelaCargo(id)
 
     def setTabelaCargo(self, __retorno):
@@ -976,9 +1009,10 @@ class Empresa(QtGui.QDialog):
         emp = EmpresaDao()
         i = 0
         for lista in self.setoresRemove:
-            a = self.setoresAdd[i]
 
-            idSetor = a[0]
+            a = self.setoresRemove[i]
+
+            idSetor = str(a[0])
 
             emp.deletarSetor(idSetor, self.idEmpresa)
 
@@ -1085,7 +1119,7 @@ class Empresa(QtGui.QDialog):
             ativo = 0
 
         empresaDao = EmpresaDao()
-        empresa = Empresas(self.idEmpresa, self.idPessoaJuridica, self.idTipoEmpresa, self.idCnae, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
+        empresa = Empresas(self.ui.txtCodigo.text(), self.idEmpresa, self.idPessoaJuridica, self.idTipoEmpresa, self.idCnae, None, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, ativo)
         empresaDao.atualizarEmpresa(empresa)
 
         self.cancelar()

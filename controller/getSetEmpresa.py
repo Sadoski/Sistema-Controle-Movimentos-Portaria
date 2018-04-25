@@ -1,10 +1,11 @@
 class Empresas():
-    def __init__(self, idPessoa, idEmpresa, idPessoaJuridica,  tipoEmpresa, cnae, cnpj, inscricaoEstadual, inscricaoMunicipal, fantasia, razaoSocial, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, situacao):
-        self.__idpessoa = idPessoa
+    def __init__(self, idPessoa, idEmpresa, idPessoaJuridica,  tipoEmpresa, cnae, desCnae, cnpj, inscricaoEstadual, inscricaoMunicipal, fantasia, razaoSocial, endereco, numero, complemento, bairro, idCidade, cidade, estado, cep, situacao):
+        self.__idPessoa = idPessoa
         self._idEmpresa = idEmpresa
         self.__idPessoaJuridica = idPessoaJuridica
         self._tipoEmpresa = tipoEmpresa
         self.__cnae = cnae
+        self.__desCnae = desCnae
         self._cnpj = cnpj
         self._inscricaoEstadual = inscricaoEstadual
         self._inscricaoMunicipal = inscricaoMunicipal
@@ -60,6 +61,14 @@ class Empresas():
     @getCnae.setter
     def setCnae(self, cnae):
         self._cnae = cnae
+
+    @property
+    def getDesCnae(self):
+        return self.__desCnae
+
+    @getDesCnae.setter
+    def setDesCnae(self, desCnae):
+        self.__desCnae = desCnae
 
     @property
     def getCnpj(self):

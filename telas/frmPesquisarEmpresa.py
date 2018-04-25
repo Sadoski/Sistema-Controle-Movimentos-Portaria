@@ -78,7 +78,7 @@ class Ui_frmConsultarEmpresa(object):
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 110, 771, 381))
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
-        self.tabPesquisar.setColumnCount(15)
+        self.tabPesquisar.setColumnCount(16)
         self.tabPesquisar.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(0, item)
@@ -110,6 +110,8 @@ class Ui_frmConsultarEmpresa(object):
         self.tabPesquisar.setHorizontalHeaderItem(13, item)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(14, item)
+        item = QtGui.QTableWidgetItem()
+        self.tabPesquisar.setHorizontalHeaderItem(15, item)
         self.tabPesquisar.setEditTriggers(self.tabPesquisar.NoEditTriggers)
         self.tabPesquisar.setSelectionBehavior(self.tabPesquisar.SelectRows)
         self.tabPesquisar.setSelectionMode(self.tabPesquisar.SingleSelection)
@@ -179,4 +181,8 @@ class Ui_frmConsultarEmpresa(object):
         item.setText(_translate("frmConsultarEmpresa", "CEP", None))
         item = self.tabPesquisar.horizontalHeaderItem(14)
         item.setText(_translate("frmConsultarEmpresa", "Situação", None))
+        item = self.tabPesquisar.horizontalHeaderItem(15)
+        item.setText(_translate("frmConsultarEmpresa", "CNAE", None))
+
+
 
