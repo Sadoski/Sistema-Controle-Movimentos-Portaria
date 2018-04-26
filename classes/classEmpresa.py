@@ -321,35 +321,39 @@ class Empresa(QtGui.QDialog):
 
             linha += 1
 
-    def cellClick(self):
+    def cellClickTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
         list=[]
         columcount = self.ui.tabContatoTelefone.columnCount()
         row = self.ui.tabContatoTelefone.currentItem().row()
         for x in range(0, columcount, 1):
-            cell =self.ui.tabContatoTelefone.item(row, x).text()  # get cell at row, col
+            cell =self.ui.tabContatoTelefone.item(row, x).text()
             list.append(cell)
-        print(list)
-        return list
 
-
-
+        if list in self.contatoAtualizar:
+            self.contatoAtualizar.remove(list)
+            self.ui.tabContatoTelefone.removeRow(index)
+        else:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                self.contatoRemove.append(self.contatoAdd[index])
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def delContatoTelefone(self):
         index = self.ui.tabContatoTelefone.currentRow()
-        self.ui.tabContatoTelefone.removeRow(index)
+
         if self.editar == False:
+            self.ui.tabContatoTelefone.removeRow(index)
             if index >= 0:
                 del self.contatoAdd[index]
             else:
                 MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
         elif self.editar == True:
-            a = QtCore.QObject.connect(self.ui.tabContatoTelefone, QtCore.SIGNAL("cellClicked()"),self.cellClick)
-            print(a)
-            if list is self.contatoAdd:
-                print("sim")
-            #self.contatoRemove.append(self.contatoAdd[index])
-            #self.contatoAtualizar.remove()
-            pass
+            self.cellClickTelefone()
+            #QtCore.QObject.connect(self.ui.tabContatoTelefone, QtCore.SIGNAL("cellClicked()"),self.cellClick())
+
     def inserirTabelaEmail(self, dado):
 
         linha = self.ui.tabContatoEmail.rowCount()
@@ -384,15 +388,37 @@ class Empresa(QtGui.QDialog):
         else:
             MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
+    def cellClickEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+        list = []
+        columcount = self.ui.tabContatoEmail.columnCount()
+        row = self.ui.tabContatoEmail.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabContatoEmail.item(row, x).text()
+            list.append(cell)
+
+        if list in self.emailAtualizar:
+            self.emailAtualizar.remove(list)
+            self.ui.tabContatoEmail.removeRow(index)
+        else:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                self.emailAtualizar.append(self.emailAdd[index])
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
     def delContatoEmail(self):
         index = self.ui.tabContatoEmail.currentRow()
-        self.ui.tabContatoEmail.removeRow(index)
 
-        if index >= 0:
-            self.emailRemove.append(self.emailAdd[index])
-            del self.emailAdd[index]
-        else:
-            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        if self.editar == False:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickEmail()
 
     def inserirTabelaSetor(self, dado):
 
@@ -426,18 +452,39 @@ class Empresa(QtGui.QDialog):
         else:
             MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
+    def cellClickSetores(self):
+        index = self.ui.tabSetores.currentRow()
+        list=[]
+        columcount = self.ui.tabSetores.columnCount()
+        row = self.ui.tabSetores.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabSetores.item(row, x).text()
+            list.append(cell)
+
+        if list in self.setoresAtualizar:
+            self.setoresAtualizar.remove(list)
+            self.ui.tabSetores.removeRow(index)
+        else:
+            self.ui.tabSetores.removeRow(index)
+            if index >= 0:
+                self.setoresRemove.append(self.setoresAdd[index])
+                del self.setoresAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
     def delContatoSetor(self):
         index = self.ui.tabSetores.currentRow()
-        self.ui.tabSetores.removeRow(index)
 
-        if index >= 0:
-            if self.editar == False:
+        if self.editar == False:
+            self.ui.tabSetores.removeRow(index)
+            if index >= 0:
+                self.setoresAdd.append(self.setoresAdd[index])
                 del self.setoresAdd[index]
-            elif self.editar == True:
-                self.setoresRemove.append(self.setoresAtualizar[index])
-                del self.setoresAdd[index]
-        else:
-            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+            else:
+                MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickSetores()
 
     def inserirTabelaCargo(self, dado):
 
@@ -468,15 +515,38 @@ class Empresa(QtGui.QDialog):
         else:
             MensagemBox().warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
+    def cellClickCargo(self):
+        index = self.ui.tabCargos.currentRow()
+        list=[]
+        columcount = self.ui.tabCargos.columnCount()
+        row = self.ui.tabCargos.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabCargos.item(row, x).text()
+            list.append(cell)
+
+        if list in self.cargoAtualizar:
+            self.cargoAtualizar.remove(list)
+            self.ui.tabCargos.removeRow(index)
+        else:
+            self.ui.tabCargos.removeRow(index)
+            if index >= 0:
+                self.cargoRemove.append(self.cargoAdd[index])
+                del self.cargoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
     def delContatoCargo(self):
         index = self.ui.tabCargos.currentRow()
         self.ui.tabCargos.removeRow(index)
-
-        if index >= 0:
-            self.cargoRemove.append(self.cargoAdd[index])
-            del self.cargoAdd[index]
-        else:
-            MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        if self.editar == False:
+            if index >= 0:
+                self.cargoRemove.append(self.cargoAdd[index])
+                del self.cargoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickCargo()
 
     def cadastrarTelefone(self):
         emp = EmpresaDao()
