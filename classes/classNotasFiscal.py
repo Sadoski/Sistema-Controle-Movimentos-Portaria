@@ -35,6 +35,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ncm()
         self.cfop()
         self.csosn()
+        self.cst()
 
 
         self.ui.txtIcmsPorcento.textChanged.connect(self.validatorChangedDoublePorcentoICMS)
@@ -363,6 +364,12 @@ class CadastroNotaFiscal(QtGui.QDialog):
         csosn = nf.pesquisarCfop()
         for i in csosn:
             self.ui.cBoxCsosn.addItem(str(i[0]))
+
+    def cst(self):
+        nf = NotaFiscalRomanieo()
+        cst = nf.pesquisarCts()
+        for i in cst:
+            self.ui.cBoxCst.addItem(str(i[0]))
 
     def substituirCaracterMetros(self, i):
         i = str(i)

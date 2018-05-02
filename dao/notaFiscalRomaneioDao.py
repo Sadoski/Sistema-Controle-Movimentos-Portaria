@@ -54,9 +54,9 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
-    def pesquisarCst(self):
+    def pesquisarCts(self):
         try:
-            _sql = "SELECT codigo_csosn FROM cst"
+            _sql = "SELECT cod_cst FROM cts"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
