@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'frmEntradaNF2.ui'
+# Form implementation generated from reading ui file 'frmEntradaNF.ui'
 #
 # Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
 import datetime
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
@@ -28,36 +30,38 @@ except AttributeError:
 class Ui_frmEntradaNF(object):
     def setupUi(self, frmEntradaNF):
         frmEntradaNF.setObjectName(_fromUtf8("frmEntradaNF"))
-        frmEntradaNF.resize(979, 590)
-        frmEntradaNF.setMinimumSize(QtCore.QSize(979, 590))
-        frmEntradaNF.setMaximumSize(QtCore.QSize(979, 590))
+        frmEntradaNF.resize(882, 590)
+        frmEntradaNF.setMinimumSize(QtCore.QSize(882, 590))
+        frmEntradaNF.setMaximumSize(QtCore.QSize(882, 590))
         font = QtGui.QFont()
         font.setPointSize(10)
         frmEntradaNF.setFont(font)
         frmEntradaNF.setSizeGripEnabled(True)
         frmEntradaNF.setModal(True)
-
+        
         self.grbFornecedor = QtGui.QGroupBox(frmEntradaNF)
         self.grbFornecedor.setGeometry(QtCore.QRect(4, 4, 491, 51))
         self.grbFornecedor.setTitle(_fromUtf8(""))
         self.grbFornecedor.setObjectName(_fromUtf8("grbFornecedor"))
-
+        
         self.txtCodig = QtGui.QLineEdit(self.grbFornecedor)
         self.txtCodig.setGeometry(QtCore.QRect(10, 20, 113, 25))
         self.txtCodig.setObjectName(_fromUtf8("txtCodig"))
-
+        
         self.lblCodigo = QtGui.QLabel(self.grbFornecedor)
         self.lblCodigo.setGeometry(QtCore.QRect(10, 0, 31, 19))
         self.lblCodigo.setObjectName(_fromUtf8("lblCodigo"))
-
+        
         self.lblFornecedor = QtGui.QLabel(self.grbFornecedor)
         self.lblFornecedor.setGeometry(QtCore.QRect(130, 0, 81, 19))
         self.lblFornecedor.setObjectName(_fromUtf8("lblFornecedor"))
-
+        
         self.txtFornecedor = QtGui.QLineEdit(self.grbFornecedor)
+        self.txtFornecedor.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.txtFornecedor.setEnabled(False)
         self.txtFornecedor.setGeometry(QtCore.QRect(130, 20, 351, 25))
         self.txtFornecedor.setObjectName(_fromUtf8("txtFornecedor"))
-
+        
         self.btnPesquisarFornecedor = QtGui.QPushButton(self.grbFornecedor)
         self.btnPesquisarFornecedor.setGeometry(QtCore.QRect(117, 35, 16, 16))
         self.btnPesquisarFornecedor.setFocusPolicy(QtCore.Qt.ClickFocus)
@@ -68,254 +72,210 @@ class Ui_frmEntradaNF(object):
         self.btnPesquisarFornecedor.setDefault(False)
         self.btnPesquisarFornecedor.setFlat(True)
         self.btnPesquisarFornecedor.setObjectName(_fromUtf8("btnPesquisarFornecedor"))
-
+        
         self.grbDadosNF = QtGui.QGroupBox(frmEntradaNF)
-        self.grbDadosNF.setGeometry(QtCore.QRect(496, 4, 381, 51))
+        self.grbDadosNF.setGeometry(QtCore.QRect(496, 108, 381, 51))
         self.grbDadosNF.setTitle(_fromUtf8(""))
         self.grbDadosNF.setObjectName(_fromUtf8("grbDadosNF"))
-
+        
         self.txtNumNF = QtGui.QLineEdit(self.grbDadosNF)
         self.txtNumNF.setGeometry(QtCore.QRect(260, 20, 113, 25))
         self.txtNumNF.setObjectName(_fromUtf8("txtNumNF"))
-
+        
         self.lblNumNF = QtGui.QLabel(self.grbDadosNF)
         self.lblNumNF.setGeometry(QtCore.QRect(260, 0, 66, 19))
         self.lblNumNF.setObjectName(_fromUtf8("lblNumNF"))
-
+        
         self.lblSerie = QtGui.QLabel(self.grbDadosNF)
         self.lblSerie.setGeometry(QtCore.QRect(120, 0, 66, 19))
         self.lblSerie.setObjectName(_fromUtf8("lblSerie"))
-
+        
         self.txtSerie = QtGui.QLineEdit(self.grbDadosNF)
         self.txtSerie.setGeometry(QtCore.QRect(120, 20, 61, 25))
         self.txtSerie.setObjectName(_fromUtf8("txtSerie"))
-
+        
         self.cboxTipos = QtGui.QComboBox(self.grbDadosNF)
         self.cboxTipos.setGeometry(QtCore.QRect(10, 20, 101, 25))
         self.cboxTipos.setObjectName(_fromUtf8("cboxTipos"))
-
+        
         self.lblTipo = QtGui.QLabel(self.grbDadosNF)
         self.lblTipo.setGeometry(QtCore.QRect(10, 0, 66, 19))
         self.lblTipo.setObjectName(_fromUtf8("lblTipo"))
-
+        
         self.txtModelo = QtGui.QLineEdit(self.grbDadosNF)
         self.txtModelo.setGeometry(QtCore.QRect(190, 20, 61, 25))
         self.txtModelo.setObjectName(_fromUtf8("txtModelo"))
-
+        
         self.lblModelo = QtGui.QLabel(self.grbDadosNF)
         self.lblModelo.setGeometry(QtCore.QRect(190, 0, 66, 19))
         self.lblModelo.setObjectName(_fromUtf8("lblModelo"))
-
-        self.grbChaveAcesso = QtGui.QGroupBox(frmEntradaNF)
-        self.grbChaveAcesso.setGeometry(QtCore.QRect(4, 108, 491, 51))
-        self.grbChaveAcesso.setTitle(_fromUtf8(""))
-        self.grbChaveAcesso.setObjectName(_fromUtf8("grbChaveAcesso"))
-
-        self.lblChaveAcessoNF = QtGui.QLabel(self.grbChaveAcesso)
-        self.lblChaveAcessoNF.setGeometry(QtCore.QRect(10, 0, 121, 19))
-        self.lblChaveAcessoNF.setObjectName(_fromUtf8("lblChaveAcessoNF"))
-
-        self.txtChaveAcessoNF = QtGui.QLineEdit(self.grbChaveAcesso)
-        self.txtChaveAcessoNF.setGeometry(QtCore.QRect(10, 20, 471, 25))
-        self.txtChaveAcessoNF.setObjectName(_fromUtf8("txtChaveAcessoNF"))
-
-        self.grbProtocoloAuto = QtGui.QGroupBox(frmEntradaNF)
-        self.grbProtocoloAuto.setGeometry(QtCore.QRect(496, 56, 221, 51))
-        self.grbProtocoloAuto.setTitle(_fromUtf8(""))
-        self.grbProtocoloAuto.setObjectName(_fromUtf8("grbProtocoloAuto"))
-
-        self.lblProtocoloAuto = QtGui.QLabel(self.grbProtocoloAuto)
-        self.lblProtocoloAuto.setGeometry(QtCore.QRect(10, 0, 211, 19))
-        self.lblProtocoloAuto.setObjectName(_fromUtf8("lblProtocoloAuto"))
-
-        self.txtProtocoloAuto = QtGui.QLineEdit(self.grbProtocoloAuto)
-        self.txtProtocoloAuto.setGeometry(QtCore.QRect(10, 20, 201, 25))
-        self.txtProtocoloAuto.setObjectName(_fromUtf8("txtProtocoloAuto"))
-
+        
         self.grbData = QtGui.QGroupBox(frmEntradaNF)
-        self.grbData.setGeometry(QtCore.QRect(714, 56, 261, 51))
+        self.grbData.setGeometry(QtCore.QRect(496, 56, 261, 51))
         self.grbData.setTitle(_fromUtf8(""))
         self.grbData.setObjectName(_fromUtf8("grbData"))
-
+        
         self.lblEntrada = QtGui.QLabel(self.grbData)
         self.lblEntrada.setGeometry(QtCore.QRect(136, 0, 66, 19))
         self.lblEntrada.setObjectName(_fromUtf8("lblEntrada"))
-
+        
         self.dateDataEntrada = QtGui.QDateEdit(self.grbData)
-        self.dateDataEntrada.setGeometry(QtCore.QRect(136, 20, 115, 25))
         self.dateDataEntrada.setDate(QDate.currentDate())
+        self.dateDataEntrada.setGeometry(QtCore.QRect(136, 20, 115, 25))
         self.dateDataEntrada.setCalendarPopup(True)
         self.dateDataEntrada.setObjectName(_fromUtf8("dateDataEntrada"))
-
+        
         self.dateDataEmissao = QtGui.QDateEdit(self.grbData)
-        self.dateDataEmissao.setGeometry(QtCore.QRect(10, 20, 116, 25))
         self.dateDataEmissao.setDate(QDate.currentDate())
+        self.dateDataEmissao.setGeometry(QtCore.QRect(10, 20, 116, 25))
         self.dateDataEmissao.setCalendarPopup(True)
         self.dateDataEmissao.setObjectName(_fromUtf8("dateDataEmissao"))
-
+        
         self.lblEmissao = QtGui.QLabel(self.grbData)
         self.lblEmissao.setGeometry(QtCore.QRect(10, 0, 66, 19))
         self.lblEmissao.setObjectName(_fromUtf8("lblEmissao"))
-
+        
         self.grbCalculoImposto = QtGui.QGroupBox(frmEntradaNF)
-        self.grbCalculoImposto.setGeometry(QtCore.QRect(4, 160, 971, 101))
+        self.grbCalculoImposto.setGeometry(QtCore.QRect(4, 160, 873, 101))
         self.grbCalculoImposto.setTitle(_fromUtf8(""))
         self.grbCalculoImposto.setObjectName(_fromUtf8("grbCalculoImposto"))
-
+        
         self.txtBaseICMS = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtBaseICMS.setGeometry(QtCore.QRect(10, 20, 113, 25))
         self.txtBaseICMS.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtBaseICMS.setObjectName(_fromUtf8("txtBaseICMS"))
-
+        
         self.lblBaseICMS = QtGui.QLabel(self.grbCalculoImposto)
         self.lblBaseICMS.setGeometry(QtCore.QRect(10, 0, 81, 19))
         self.lblBaseICMS.setObjectName(_fromUtf8("lblBaseICMS"))
-
+        
         self.txtValorICMS = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorICMS.setGeometry(QtCore.QRect(130, 20, 113, 25))
         self.txtValorICMS.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorICMS.setObjectName(_fromUtf8("txtValorICMS"))
-
+        
         self.lblValorICMS = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorICMS.setGeometry(QtCore.QRect(130, 0, 81, 19))
         self.lblValorICMS.setObjectName(_fromUtf8("lblValorICMS"))
-
+        
         self.txtBaseICMSST = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtBaseICMSST.setGeometry(QtCore.QRect(250, 20, 113, 25))
         self.txtBaseICMSST.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtBaseICMSST.setObjectName(_fromUtf8("txtBaseICMSST"))
-
+        
         self.lblBaseICMSST = QtGui.QLabel(self.grbCalculoImposto)
         self.lblBaseICMSST.setGeometry(QtCore.QRect(250, 0, 101, 19))
         self.lblBaseICMSST.setObjectName(_fromUtf8("lblBaseICMSST"))
-
+        
         self.txtValorICMSSub = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorICMSSub.setGeometry(QtCore.QRect(370, 20, 113, 25))
         self.txtValorICMSSub.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorICMSSub.setObjectName(_fromUtf8("txtValorICMSSub"))
-
+        
         self.lblValorICMSSub = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorICMSSub.setGeometry(QtCore.QRect(370, 0, 121, 19))
         self.lblValorICMSSub.setObjectName(_fromUtf8("lblValorICMSSub"))
-
+        
         self.txtValorPIS = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorPIS.setGeometry(QtCore.QRect(490, 20, 113, 25))
         self.txtValorPIS.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorPIS.setObjectName(_fromUtf8("txtValorPIS"))
-
+        
         self.lblValorPis = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorPis.setGeometry(QtCore.QRect(490, 0, 66, 19))
         self.lblValorPis.setObjectName(_fromUtf8("lblValorPis"))
-
+        
         self.txtValorConfins = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorConfins.setGeometry(QtCore.QRect(610, 20, 113, 25))
         self.txtValorConfins.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorConfins.setObjectName(_fromUtf8("txtValorConfins"))
-
+        
         self.lblValorConfins = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorConfins.setGeometry(QtCore.QRect(610, 0, 101, 19))
         self.lblValorConfins.setObjectName(_fromUtf8("lblValorConfins"))
-
-        self.txtValorProduto = QtGui.QLineEdit(self.grbCalculoImposto)
-        self.txtValorProduto.setGeometry(QtCore.QRect(842, 20, 121, 25))
-        self.txtValorProduto.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.txtValorProduto.setObjectName(_fromUtf8("txtValorProduto"))
-
-        self.lblValorProduto = QtGui.QLabel(self.grbCalculoImposto)
-        self.lblValorProduto.setGeometry(QtCore.QRect(850, 0, 101, 19))
-        self.lblValorProduto.setObjectName(_fromUtf8("lblValorProduto"))
-
+        
         self.txtValorFrete = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorFrete.setGeometry(QtCore.QRect(10, 70, 113, 25))
         self.txtValorFrete.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorFrete.setObjectName(_fromUtf8("txtValorFrete"))
-
+        
         self.lblValorFrete = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorFrete.setGeometry(QtCore.QRect(10, 50, 81, 19))
         self.lblValorFrete.setObjectName(_fromUtf8("lblValorFrete"))
-
+        
         self.txtValorSeguro = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorSeguro.setGeometry(QtCore.QRect(130, 70, 113, 25))
         self.txtValorSeguro.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorSeguro.setObjectName(_fromUtf8("txtValorSeguro"))
-
+        
         self.lblValorSeguro = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorSeguro.setGeometry(QtCore.QRect(130, 50, 101, 19))
         self.lblValorSeguro.setObjectName(_fromUtf8("lblValorSeguro"))
-
+        
         self.txtValorDesconto = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorDesconto.setGeometry(QtCore.QRect(250, 70, 113, 25))
         self.txtValorDesconto.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorDesconto.setObjectName(_fromUtf8("txtValorDesconto"))
-
+        
         self.lblValorDesconto = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorDesconto.setGeometry(QtCore.QRect(250, 50, 111, 19))
         self.lblValorDesconto.setObjectName(_fromUtf8("lblValorDesconto"))
-
+        
         self.txtOutrasDespesas = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtOutrasDespesas.setGeometry(QtCore.QRect(370, 70, 113, 25))
         self.txtOutrasDespesas.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtOutrasDespesas.setObjectName(_fromUtf8("txtOutrasDespesas"))
-
+        
         self.lblOutrasDespesas = QtGui.QLabel(self.grbCalculoImposto)
         self.lblOutrasDespesas.setGeometry(QtCore.QRect(370, 50, 111, 19))
         self.lblOutrasDespesas.setObjectName(_fromUtf8("lblOutrasDespesas"))
-
+        
         self.txtValorIPI = QtGui.QLineEdit(self.grbCalculoImposto)
         self.txtValorIPI.setGeometry(QtCore.QRect(490, 70, 113, 25))
         self.txtValorIPI.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorIPI.setObjectName(_fromUtf8("txtValorIPI"))
-
+        
         self.lblValorIPI = QtGui.QLabel(self.grbCalculoImposto)
         self.lblValorIPI.setGeometry(QtCore.QRect(490, 50, 66, 19))
         self.lblValorIPI.setObjectName(_fromUtf8("lblValorIPI"))
-
-        self.lblValorNF = QtGui.QLabel(self.grbCalculoImposto)
-        self.lblValorNF.setGeometry(QtCore.QRect(850, 50, 66, 19))
-        self.lblValorNF.setObjectName(_fromUtf8("lblValorNF"))
-
-        self.txtValorNF = QtGui.QLineEdit(self.grbCalculoImposto)
-        self.txtValorNF.setGeometry(QtCore.QRect(850, 70, 113, 25))
-        self.txtValorNF.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.txtValorNF.setObjectName(_fromUtf8("txtValorNF"))
-
+        
         self.grbDescricaoProduto = QtGui.QGroupBox(frmEntradaNF)
-        self.grbDescricaoProduto.setGeometry(QtCore.QRect(4, 262, 971, 231))
+        self.grbDescricaoProduto.setGeometry(QtCore.QRect(4, 262, 873, 231))
         self.grbDescricaoProduto.setTitle(_fromUtf8(""))
         self.grbDescricaoProduto.setObjectName(_fromUtf8("grbDescricaoProduto"))
-
+        
         self.cBoxProduto = QtGui.QComboBox(self.grbDescricaoProduto)
         self.cBoxProduto.setGeometry(QtCore.QRect(10, 20, 321, 25))
         self.cBoxProduto.setObjectName(_fromUtf8("cBoxProduto"))
-
+        
         self.lblUn = QtGui.QLabel(self.grbDescricaoProduto)
         self.lblUn.setGeometry(QtCore.QRect(340, 0, 31, 19))
         self.lblUn.setObjectName(_fromUtf8("lblUn"))
-
+        
         self.lblQtd = QtGui.QLabel(self.grbDescricaoProduto)
-        self.lblQtd.setGeometry(QtCore.QRect(470, 0, 41, 19))
+        self.lblQtd.setGeometry(QtCore.QRect(460, 0, 41, 19))
         self.lblQtd.setObjectName(_fromUtf8("lblQtd"))
-
+        
         self.lblValorUnitario = QtGui.QLabel(self.grbDescricaoProduto)
-        self.lblValorUnitario.setGeometry(QtCore.QRect(590, 0, 101, 19))
+        self.lblValorUnitario.setGeometry(QtCore.QRect(540, 0, 101, 19))
         self.lblValorUnitario.setObjectName(_fromUtf8("lblValorUnitario"))
-
+        
         self.lblProduto = QtGui.QLabel(self.grbDescricaoProduto)
         self.lblProduto.setGeometry(QtCore.QRect(10, 0, 66, 19))
         self.lblProduto.setObjectName(_fromUtf8("lblProduto"))
-
+        
         self.cBoxUn = QtGui.QComboBox(self.grbDescricaoProduto)
         self.cBoxUn.setGeometry(QtCore.QRect(340, 20, 61, 22))
         self.cBoxUn.setFrame(True)
         self.cBoxUn.setObjectName(_fromUtf8("cBoxUn"))
-
+        
         self.txtValorUnotario = QtGui.QLineEdit(self.grbDescricaoProduto)
-        self.txtValorUnotario.setGeometry(QtCore.QRect(590, 20, 151, 25))
+        self.txtValorUnotario.setGeometry(QtCore.QRect(540, 20, 121, 25))
         self.txtValorUnotario.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorUnotario.setObjectName(_fromUtf8("txtValorUnotario"))
-
+        
         self.tabDescricaoProduto = QtGui.QTableWidget(self.grbDescricaoProduto)
-        self.tabDescricaoProduto.setGeometry(QtCore.QRect(10, 50, 955, 141))
+        self.tabDescricaoProduto.setGeometry(QtCore.QRect(10, 50, 854, 141))
         self.tabDescricaoProduto.setToolTip(_fromUtf8(""))
         self.tabDescricaoProduto.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.tabDescricaoProduto.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
@@ -354,44 +314,43 @@ class Ui_frmEntradaNF(object):
         self.tabDescricaoProduto.setHorizontalHeaderItem(14, item)
         self.tabDescricaoProduto.horizontalHeader().setStretchLastSection(True)
         self.tabDescricaoProduto.verticalHeader().setVisible(False)
-
+        
         self.txtQtd = QtGui.QLineEdit(self.grbDescricaoProduto)
-        self.txtQtd.setGeometry(QtCore.QRect(410, 20, 171, 25))
-        self.txtQtd.setStyleSheet(_fromUtf8("0"))
+        self.txtQtd.setGeometry(QtCore.QRect(410, 20, 121, 25))
         self.txtQtd.setAlignment(QtCore.Qt.AlignCenter)
         self.txtQtd.setObjectName(_fromUtf8("txtQtd"))
-
+        
         self.lblValorTotal = QtGui.QLabel(self.grbDescricaoProduto)
-        self.lblValorTotal.setGeometry(QtCore.QRect(750, 0, 81, 19))
+        self.lblValorTotal.setGeometry(QtCore.QRect(670, 0, 81, 19))
         self.lblValorTotal.setObjectName(_fromUtf8("lblValorTotal"))
-
+        
         self.txtValorTotal = QtGui.QLineEdit(self.grbDescricaoProduto)
-        self.txtValorTotal.setGeometry(QtCore.QRect(750, 20, 151, 25))
+        self.txtValorTotal.setGeometry(QtCore.QRect(670, 20, 111, 25))
         self.txtValorTotal.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorTotal.setObjectName(_fromUtf8("txtValorTotal"))
-
+        
         self.btnAdd = QtGui.QPushButton(self.grbDescricaoProduto)
-        self.btnAdd.setGeometry(QtCore.QRect(934, 20, 31, 27))
+        self.btnAdd.setGeometry(QtCore.QRect(834, 20, 31, 27))
         self.btnAdd.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnAdd.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/add.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnAdd.setIcon(icon1)
-        self.btnAdd.setText(_fromUtf8(""))
         self.btnAdd.setObjectName(_fromUtf8("btnAdd"))
-
+        
         self.btnRemove = QtGui.QPushButton(self.grbDescricaoProduto)
-        self.btnRemove.setGeometry(QtCore.QRect(934, 194, 31, 27))
+        self.btnRemove.setGeometry(QtCore.QRect(834, 194, 31, 27))
         self.btnRemove.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.btnRemove.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/delete.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnRemove.setIcon(icon2)
-        self.btnRemove.setText(_fromUtf8(""))
         self.btnRemove.setObjectName(_fromUtf8("btnRemove"))
-
+        
         self.SomatoriaTotalValor = QtGui.QLabel(self.grbDescricaoProduto)
-        self.SomatoriaTotalValor.setGeometry(QtCore.QRect(10, 200, 121, 19))
+        self.SomatoriaTotalValor.setGeometry(QtCore.QRect(10, 200, 124, 19))
         self.SomatoriaTotalValor.setObjectName(_fromUtf8("SomatoriaTotalValor"))
-
+        
         self.txtSomatoriaTotalValor = QtGui.QLineEdit(self.grbDescricaoProduto)
         self.txtSomatoriaTotalValor.setGeometry(QtCore.QRect(135, 197, 151, 25))
         palette = QtGui.QPalette()
@@ -409,11 +368,11 @@ class Ui_frmEntradaNF(object):
         self.txtSomatoriaTotalValor.setAcceptDrops(False)
         self.txtSomatoriaTotalValor.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtSomatoriaTotalValor.setObjectName(_fromUtf8("txtSomatoriaTotalValor"))
-
+        
         self.lblSomatoriaTotalQtd = QtGui.QLabel(self.grbDescricaoProduto)
         self.lblSomatoriaTotalQtd.setGeometry(QtCore.QRect(310, 203, 165, 19))
         self.lblSomatoriaTotalQtd.setObjectName(_fromUtf8("lblSomatoriaTotalQtd"))
-
+        
         self.txtSomatoriaTotalQtd = QtGui.QLineEdit(self.grbDescricaoProduto)
         self.txtSomatoriaTotalQtd.setGeometry(QtCore.QRect(477, 200, 151, 25))
         palette = QtGui.QPalette()
@@ -431,94 +390,94 @@ class Ui_frmEntradaNF(object):
         self.txtSomatoriaTotalQtd.setAcceptDrops(False)
         self.txtSomatoriaTotalQtd.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtSomatoriaTotalQtd.setObjectName(_fromUtf8("txtSomatoriaTotalQtd"))
-
+        
         self.grbIssqn = QtGui.QGroupBox(frmEntradaNF)
         self.grbIssqn.setGeometry(QtCore.QRect(4, 494, 551, 51))
         self.grbIssqn.setTitle(_fromUtf8(""))
         self.grbIssqn.setObjectName(_fromUtf8("grbIssqn"))
-
+        
         self.txtBaseIssqn = QtGui.QLineEdit(self.grbIssqn)
         self.txtBaseIssqn.setGeometry(QtCore.QRect(310, 20, 113, 25))
         self.txtBaseIssqn.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtBaseIssqn.setObjectName(_fromUtf8("txtBaseIssqn"))
-
+        
         self.lblValorIssqn = QtGui.QLabel(self.grbIssqn)
         self.lblValorIssqn.setGeometry(QtCore.QRect(430, 0, 91, 19))
         self.lblValorIssqn.setObjectName(_fromUtf8("lblValorIssqn"))
-
+        
         self.txtInsMunicipal = QtGui.QLineEdit(self.grbIssqn)
         self.txtInsMunicipal.setGeometry(QtCore.QRect(10, 20, 131, 25))
         self.txtInsMunicipal.setObjectName(_fromUtf8("txtInsMunicipal"))
-
+        
         self.lblInsMunicipal = QtGui.QLabel(self.grbIssqn)
         self.lblInsMunicipal.setGeometry(QtCore.QRect(10, 0, 101, 19))
         self.lblInsMunicipal.setObjectName(_fromUtf8("lblInsMunicipal"))
-
+        
         self.txtValorTotalServico = QtGui.QLineEdit(self.grbIssqn)
         self.txtValorTotalServico.setGeometry(QtCore.QRect(150, 20, 151, 25))
         self.txtValorTotalServico.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorTotalServico.setObjectName(_fromUtf8("txtValorTotalServico"))
-
+        
         self.txtValorIssqn = QtGui.QLineEdit(self.grbIssqn)
         self.txtValorIssqn.setGeometry(QtCore.QRect(430, 20, 113, 25))
         self.txtValorIssqn.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtValorIssqn.setObjectName(_fromUtf8("txtValorIssqn"))
-
+        
         self.lblBaseIssqn = QtGui.QLabel(self.grbIssqn)
         self.lblBaseIssqn.setGeometry(QtCore.QRect(310, 0, 91, 19))
         self.lblBaseIssqn.setObjectName(_fromUtf8("lblBaseIssqn"))
-
+        
         self.lblValorTotalServico = QtGui.QLabel(self.grbIssqn)
         self.lblValorTotalServico.setGeometry(QtCore.QRect(150, 0, 111, 19))
         self.lblValorTotalServico.setObjectName(_fromUtf8("lblValorTotalServico"))
-
+        
         self.grbIcmsPorcento = QtGui.QGroupBox(frmEntradaNF)
-        self.grbIcmsPorcento.setGeometry(QtCore.QRect(878, 4, 97, 51))
+        self.grbIcmsPorcento.setGeometry(QtCore.QRect(759, 56, 118, 51))
         self.grbIcmsPorcento.setTitle(_fromUtf8(""))
         self.grbIcmsPorcento.setObjectName(_fromUtf8("grbIcmsPorcento"))
-
+        
         self.txtIcmsPorcento = QtGui.QLineEdit(self.grbIcmsPorcento)
-        self.txtIcmsPorcento.setGeometry(QtCore.QRect(10, 20, 77, 25))
+        self.txtIcmsPorcento.setGeometry(QtCore.QRect(10, 20, 98, 25))
         self.txtIcmsPorcento.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.txtIcmsPorcento.setObjectName(_fromUtf8("txtIcmsPorcento"))
-
+        
         self.lblIcmsPorcento = QtGui.QLabel(self.grbIcmsPorcento)
         self.lblIcmsPorcento.setGeometry(QtCore.QRect(10, 0, 31, 19))
         self.lblIcmsPorcento.setObjectName(_fromUtf8("lblIcmsPorcento"))
-
+        
         self.grbImpostos = QtGui.QGroupBox(frmEntradaNF)
-        self.grbImpostos.setGeometry(QtCore.QRect(496, 108, 479, 51))
+        self.grbImpostos.setGeometry(QtCore.QRect(4, 108, 491, 51))
         self.grbImpostos.setTitle(_fromUtf8(""))
         self.grbImpostos.setObjectName(_fromUtf8("grbImpostos"))
-
+        
         self.lblCst = QtGui.QLabel(self.grbImpostos)
         self.lblCst.setGeometry(QtCore.QRect(370, 0, 31, 19))
         self.lblCst.setObjectName(_fromUtf8("lblCst"))
-
+        
         self.lblCfop = QtGui.QLabel(self.grbImpostos)
         self.lblCfop.setGeometry(QtCore.QRect(130, 0, 41, 19))
         self.lblCfop.setObjectName(_fromUtf8("lblCfop"))
-
+        
         self.cBoxNcm = QtGui.QComboBox(self.grbImpostos)
         self.cBoxNcm.setGeometry(QtCore.QRect(10, 20, 111, 25))
         self.cBoxNcm.setObjectName(_fromUtf8("cBoxNcm"))
-
+        
         self.lblNcm = QtGui.QLabel(self.grbImpostos)
         self.lblNcm.setGeometry(QtCore.QRect(10, 0, 41, 19))
         self.lblNcm.setObjectName(_fromUtf8("lblNcm"))
-
-        self.cBoxCfop = QtGui.QComboBox(self.grbImpostos)
-        self.cBoxCfop.setGeometry(QtCore.QRect(370, 20, 101, 25))
-        self.cBoxCfop.setObjectName(_fromUtf8("cBoxCfop"))
-
+        
         self.cBoxCst = QtGui.QComboBox(self.grbImpostos)
-        self.cBoxCst.setGeometry(QtCore.QRect(130, 20, 111, 25))
+        self.cBoxCst.setGeometry(QtCore.QRect(370, 20, 112, 25))
         self.cBoxCst.setObjectName(_fromUtf8("cBoxCst"))
 
+        self.cBoxCfop = QtGui.QComboBox(self.grbImpostos)
+        self.cBoxCfop.setGeometry(QtCore.QRect(130, 20, 111, 25))
+        self.cBoxCfop.setObjectName(_fromUtf8("cBoxCst"))
+        
         self.cBoxCsosn = QtGui.QComboBox(self.grbImpostos)
         self.cBoxCsosn.setGeometry(QtCore.QRect(250, 20, 111, 25))
         self.cBoxCsosn.setObjectName(_fromUtf8("cBoxCsosn"))
-
+        
         self.lblCsosn = QtGui.QLabel(self.grbImpostos)
         self.lblCsosn.setGeometry(QtCore.QRect(250, 0, 51, 19))
         self.lblCsosn.setObjectName(_fromUtf8("lblCsosn"))
@@ -535,74 +494,71 @@ class Ui_frmEntradaNF(object):
         self.lblCodigoMotorista = QtGui.QLabel(self.grbTransportadoraMotorista)
         self.lblCodigoMotorista.setGeometry(QtCore.QRect(10, 0, 31, 19))
         self.lblCodigoMotorista.setObjectName(_fromUtf8("lblCodigoMotorista"))
-
+        
         self.lblMotorista = QtGui.QLabel(self.grbTransportadoraMotorista)
         self.lblMotorista.setGeometry(QtCore.QRect(130, 0, 161, 19))
         self.lblMotorista.setObjectName(_fromUtf8("lblMotorista"))
-
+        
         self.txtMotorista = QtGui.QLineEdit(self.grbTransportadoraMotorista)
+        self.txtMotorista.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.txtMotorista.setEnabled(False)
         self.txtMotorista.setGeometry(QtCore.QRect(130, 20, 351, 25))
         self.txtMotorista.setObjectName(_fromUtf8("txtMotorista"))
-
+        
         self.btnPesquisarMotorista = QtGui.QPushButton(self.grbTransportadoraMotorista)
         self.btnPesquisarMotorista.setGeometry(QtCore.QRect(117, 35, 16, 16))
         self.btnPesquisarMotorista.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarMotorista.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarMotorista.setIcon(icon3)
         self.btnPesquisarMotorista.setDefault(False)
         self.btnPesquisarMotorista.setFlat(True)
         self.btnPesquisarMotorista.setObjectName(_fromUtf8("btnPesquisarMotorista"))
-
+        
         self.grbBotoes = QtGui.QGroupBox(frmEntradaNF)
-        self.grbBotoes.setGeometry(QtCore.QRect(4, 546, 971, 41))
+        self.grbBotoes.setGeometry(QtCore.QRect(4, 546, 873, 41))
         self.grbBotoes.setTitle(_fromUtf8(""))
         self.grbBotoes.setObjectName(_fromUtf8("grbBotoes"))
-
+        
         self.btnDeletar = QtGui.QPushButton(self.grbBotoes)
-        self.btnDeletar.setGeometry(QtCore.QRect(889, 7, 71, 27))
+        self.btnDeletar.setGeometry(QtCore.QRect(770, 7, 71, 27))
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
-
+        
         self.btnCancelar = QtGui.QPushButton(self.grbBotoes)
-        self.btnCancelar.setGeometry(QtCore.QRect(816, 7, 71, 27))
+        self.btnCancelar.setGeometry(QtCore.QRect(697, 7, 71, 27))
         self.btnCancelar.setObjectName(_fromUtf8("btnCancelar"))
-
+        
         self.btnSalvar = QtGui.QPushButton(self.grbBotoes)
-        self.btnSalvar.setGeometry(QtCore.QRect(670, 7, 71, 27))
+        self.btnSalvar.setGeometry(QtCore.QRect(551, 7, 71, 27))
         self.btnSalvar.setObjectName(_fromUtf8("btnSalvar"))
-
+        
         self.btnNovo = QtGui.QPushButton(self.grbBotoes)
-        self.btnNovo.setGeometry(QtCore.QRect(597, 7, 71, 27))
+        self.btnNovo.setGeometry(QtCore.QRect(478, 7, 71, 27))
         self.btnNovo.setObjectName(_fromUtf8("btnNovo"))
-
+        
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)
-        self.btnEditar.setGeometry(QtCore.QRect(743, 7, 71, 27))
+        self.btnEditar.setGeometry(QtCore.QRect(624, 7, 71, 27))
         self.btnEditar.setObjectName(_fromUtf8("btnEditar"))
-
+        
         self.lblCodigo.setBuddy(self.txtCodig)
         self.lblFornecedor.setBuddy(self.txtFornecedor)
         self.lblNumNF.setBuddy(self.txtNumNF)
         self.lblSerie.setBuddy(self.txtSerie)
         self.lblTipo.setBuddy(self.cboxTipos)
         self.lblModelo.setBuddy(self.txtModelo)
-        self.lblChaveAcessoNF.setBuddy(self.txtChaveAcessoNF)
-        self.lblProtocoloAuto.setBuddy(self.txtProtocoloAuto)
         self.lblEntrada.setBuddy(self.dateDataEntrada)
         self.lblEmissao.setBuddy(self.dateDataEmissao)
         self.lblBaseICMS.setBuddy(self.txtBaseICMS)
-        self.lblValorICMS.setBuddy(self.txtValorICMS)
         self.lblBaseICMSST.setBuddy(self.txtBaseICMSST)
         self.lblValorICMSSub.setBuddy(self.txtValorICMSSub)
         self.lblValorPis.setBuddy(self.txtValorPIS)
         self.lblValorConfins.setBuddy(self.txtValorConfins)
-        self.lblValorProduto.setBuddy(self.txtValorProduto)
         self.lblValorFrete.setBuddy(self.txtValorFrete)
         self.lblValorSeguro.setBuddy(self.txtValorSeguro)
         self.lblValorDesconto.setBuddy(self.txtValorDesconto)
         self.lblOutrasDespesas.setBuddy(self.txtOutrasDespesas)
         self.lblValorIPI.setBuddy(self.txtValorIPI)
-        self.lblValorNF.setBuddy(self.txtValorNF)
         self.lblUn.setBuddy(self.cBoxUn)
         self.lblQtd.setBuddy(self.txtQtd)
         self.lblValorUnitario.setBuddy(self.txtValorUnotario)
@@ -634,9 +590,7 @@ class Ui_frmEntradaNF(object):
         frmEntradaNF.setTabOrder(self.txtSerie, self.txtModelo)
         frmEntradaNF.setTabOrder(self.txtModelo, self.txtNumNF)
         frmEntradaNF.setTabOrder(self.txtNumNF, self.txtIcmsPorcento)
-        frmEntradaNF.setTabOrder(self.txtIcmsPorcento, self.txtChaveAcessoNF)
-        frmEntradaNF.setTabOrder(self.txtChaveAcessoNF, self.txtProtocoloAuto)
-        frmEntradaNF.setTabOrder(self.txtProtocoloAuto, self.dateDataEmissao)
+        frmEntradaNF.setTabOrder(self.txtIcmsPorcento, self.dateDataEmissao)
         frmEntradaNF.setTabOrder(self.dateDataEmissao, self.dateDataEntrada)
         frmEntradaNF.setTabOrder(self.dateDataEntrada, self.cBoxNcm)
         frmEntradaNF.setTabOrder(self.cBoxNcm, self.cBoxCst)
@@ -648,14 +602,12 @@ class Ui_frmEntradaNF(object):
         frmEntradaNF.setTabOrder(self.txtBaseICMSST, self.txtValorICMSSub)
         frmEntradaNF.setTabOrder(self.txtValorICMSSub, self.txtValorPIS)
         frmEntradaNF.setTabOrder(self.txtValorPIS, self.txtValorConfins)
-        frmEntradaNF.setTabOrder(self.txtValorConfins, self.txtValorProduto)
-        frmEntradaNF.setTabOrder(self.txtValorProduto, self.txtValorFrete)
+        frmEntradaNF.setTabOrder(self.txtValorConfins, self.txtValorFrete)
         frmEntradaNF.setTabOrder(self.txtValorFrete, self.txtValorSeguro)
         frmEntradaNF.setTabOrder(self.txtValorSeguro, self.txtValorDesconto)
         frmEntradaNF.setTabOrder(self.txtValorDesconto, self.txtOutrasDespesas)
         frmEntradaNF.setTabOrder(self.txtOutrasDespesas, self.txtValorIPI)
-        frmEntradaNF.setTabOrder(self.txtValorIPI, self.txtValorNF)
-        frmEntradaNF.setTabOrder(self.txtValorNF, self.cBoxProduto)
+        frmEntradaNF.setTabOrder(self.txtValorIPI, self.cBoxProduto)
         frmEntradaNF.setTabOrder(self.cBoxProduto, self.cBoxUn)
         frmEntradaNF.setTabOrder(self.cBoxUn, self.txtQtd)
         frmEntradaNF.setTabOrder(self.txtQtd, self.txtValorUnotario)
@@ -695,12 +647,6 @@ class Ui_frmEntradaNF(object):
         self.txtModelo.setToolTip(_translate("frmEntradaNF", "Modelo", None))
         self.txtModelo.setWhatsThis(_translate("frmEntradaNF", "Campo do numero do modelo da NF", None))
         self.lblModelo.setText(_translate("frmEntradaNF", "Modelo", None))
-        self.lblChaveAcessoNF.setText(_translate("frmEntradaNF", "Chave de Acesso", None))
-        self.txtChaveAcessoNF.setToolTip(_translate("frmEntradaNF", "Chave de Acesso", None))
-        self.txtChaveAcessoNF.setWhatsThis(_translate("frmEntradaNF", "Campo do número da chave de acesso da NF", None))
-        self.lblProtocoloAuto.setText(_translate("frmEntradaNF", "Protocolo de Autoriz. de Uso", None))
-        self.txtProtocoloAuto.setToolTip(_translate("frmEntradaNF", "Protocolo de Autorização de Uso", None))
-        self.txtProtocoloAuto.setWhatsThis(_translate("frmEntradaNF", "Campo do número do protocolo de autorização de uso", None))
         self.lblEntrada.setText(_translate("frmEntradaNF", "Entrada", None))
         self.dateDataEntrada.setToolTip(_translate("frmEntradaNF", "Entrada", None))
         self.dateDataEntrada.setWhatsThis(_translate("frmEntradaNF", "Campo da data de entrada na NF no sistema", None))
@@ -731,10 +677,6 @@ class Ui_frmEntradaNF(object):
         self.txtValorConfins.setWhatsThis(_translate("frmEntradaNF", "Campo do valor o Confins", None))
         self.txtValorConfins.setPlaceholderText(_translate("frmEntradaNF", "0,00", None))
         self.lblValorConfins.setText(_translate("frmEntradaNF", "Valor Confins", None))
-        self.txtValorProduto.setToolTip(_translate("frmEntradaNF", "Valor Produto", None))
-        self.txtValorProduto.setWhatsThis(_translate("frmEntradaNF", "Campo do valor do produto", None))
-        self.txtValorProduto.setPlaceholderText(_translate("frmEntradaNF", "0,00", None))
-        self.lblValorProduto.setText(_translate("frmEntradaNF", "Valor Produto", None))
         self.txtValorFrete.setToolTip(_translate("frmEntradaNF", "Valor Frete", None))
         self.txtValorFrete.setWhatsThis(_translate("frmEntradaNF", "Campo do valor do Frete", None))
         self.txtValorFrete.setPlaceholderText(_translate("frmEntradaNF", "0,00", None))
@@ -755,10 +697,6 @@ class Ui_frmEntradaNF(object):
         self.txtValorIPI.setWhatsThis(_translate("frmEntradaNF", "Campo do valor do IPI", None))
         self.txtValorIPI.setPlaceholderText(_translate("frmEntradaNF", "0,00", None))
         self.lblValorIPI.setText(_translate("frmEntradaNF", "Valor IPI", None))
-        self.lblValorNF.setText(_translate("frmEntradaNF", "Valor NF", None))
-        self.txtValorNF.setToolTip(_translate("frmEntradaNF", "Valor NF", None))
-        self.txtValorNF.setWhatsThis(_translate("frmEntradaNF", "Campo do valor da NF", None))
-        self.txtValorNF.setPlaceholderText(_translate("frmEntradaNF", "0,00", None))
         self.cBoxProduto.setToolTip(_translate("frmEntradaNF", "Produto", None))
         self.cBoxProduto.setWhatsThis(_translate("frmEntradaNF", "Campo do escolha do produto", None))
         self.lblUn.setText(_translate("frmEntradaNF", "UN", None))
@@ -803,6 +741,7 @@ class Ui_frmEntradaNF(object):
         item.setText(_translate("frmEntradaNF", "Alicota IPI", None))
         self.txtQtd.setToolTip(_translate("frmEntradaNF", "Quantidade", None))
         self.txtQtd.setWhatsThis(_translate("frmEntradaNF", "Campo de quantidade do produto", None))
+        self.txtQtd.setPlaceholderText(_translate("frmEntradaNF", "0", None))
         self.lblValorTotal.setText(_translate("frmEntradaNF", "Valor Total", None))
         self.txtValorTotal.setToolTip(_translate("frmEntradaNF", "Valor Total", None))
         self.txtValorTotal.setWhatsThis(_translate("frmEntradaNF", "Campo do valor total do produto", None))
@@ -839,11 +778,11 @@ class Ui_frmEntradaNF(object):
         self.cBoxNcm.setToolTip(_translate("frmEntradaNF", "NCM", None))
         self.cBoxNcm.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto NCM", None))
         self.lblNcm.setText(_translate("frmEntradaNF", "NCM", None))
-        self.cBoxCfop.setToolTip(_translate("frmEntradaNF", "CST", None))
-        self.cBoxCfop.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto CST", None))
+        self.cBoxCfop.setToolTip(_translate("frmEntradaNF", "CFOP", None))
+        self.cBoxCfop.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto CFOP", None))
         self.cBoxCst.setToolTip(_translate("frmEntradaNF", "CFOP", None))
-        self.cBoxCst.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto CFOP", None))
-        self.cBoxCsosn.setToolTip(_translate("frmEntradaNF", "CST", None))
+        self.cBoxCst.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto CST", None))
+        self.cBoxCsosn.setToolTip(_translate("frmEntradaNF", "CSOSN", None))
         self.cBoxCsosn.setWhatsThis(_translate("frmEntradaNF", "Campo de escolha do codigo do imposto CSOSN", None))
         self.lblCsosn.setText(_translate("frmEntradaNF", "CSOSN", None))
         self.txtCodigoMotorista.setToolTip(_translate("frmEntradaNF", "Codigo", None))
@@ -862,4 +801,3 @@ class Ui_frmEntradaNF(object):
         self.btnNovo.setText(_translate("frmEntradaNF", "Novo", None))
         self.btnEditar.setWhatsThis(_translate("frmEntradaNF", "botão para salvar edição de NF", None))
         self.btnEditar.setText(_translate("frmEntradaNF", "Editar", None))
-

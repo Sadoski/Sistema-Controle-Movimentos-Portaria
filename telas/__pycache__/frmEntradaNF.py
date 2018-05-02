@@ -67,7 +67,7 @@ class Ui_frmEntradaNF(object):
         self.btnPesquisarFornecedor.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisarFornecedor.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search_mini.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarFornecedor.setIcon(icon)
         self.btnPesquisarFornecedor.setDefault(False)
         self.btnPesquisarFornecedor.setFlat(True)

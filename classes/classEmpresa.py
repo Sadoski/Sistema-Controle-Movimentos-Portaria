@@ -260,12 +260,13 @@ class Empresa(QtGui.QDialog):
 
     def setEmpresa(self):
         empresa = EmpresaDao()
-        em = empresa.pesquisarEmpresaId(self.ui.txtCodigo.text())
+        em = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
 
         if em == []:
-            emp = empresa.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+            emp = empresa.pesquisarEmpresaId(self.ui.txtCodigo.text())
+
             if emp == []:
-                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta empresa")
                 self.ui.txtCnpj.clear()
                 self.ui.txtInscricaoEstadua.clear()
                 self.ui.txtRazaoSocial.clear()
@@ -277,7 +278,7 @@ class Empresa(QtGui.QDialog):
                     self.ui.txtRazaoSocial.setText(str(empres[2]))
                     self.ui.txtFantasia.setText(str(empres[3]))
         else:
-            MensagemBox().warning( 'Mensagem', "Atenção já tem um cadastro desta empresa")
+            MensagemBox().warning( 'Mensagem', "Atenção já tem um cadastro desta pessoa")
 
     def addContatoTelefone(self):
 
@@ -403,7 +404,7 @@ class Empresa(QtGui.QDialog):
         else:
             self.ui.tabContatoEmail.removeRow(index)
             if index >= 0:
-                self.emailAtualizar.append(self.emailAdd[index])
+                self.emailRemove.append(self.emailAdd[index])
                 del self.emailAdd[index]
             else:
                 MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
@@ -525,6 +526,7 @@ class Empresa(QtGui.QDialog):
             list.append(cell)
 
         if list in self.cargoAtualizar:
+            print(self.cargoAtualizar)
             self.cargoAtualizar.remove(list)
             self.ui.tabCargos.removeRow(index)
         else:
@@ -538,8 +540,8 @@ class Empresa(QtGui.QDialog):
 
     def delContatoCargo(self):
         index = self.ui.tabCargos.currentRow()
-        self.ui.tabCargos.removeRow(index)
         if self.editar == False:
+            self.ui.tabCargos.removeRow(index)
             if index >= 0:
                 self.cargoRemove.append(self.cargoAdd[index])
                 del self.cargoAdd[index]
@@ -1093,8 +1095,7 @@ class Empresa(QtGui.QDialog):
         i = 0
         for lista in self.cargoRemove:
             a = self.cargoRemove[i]
-
-            idCargo = a[0]
+            idCargo = str(a[0])
 
             emp.deletarCargo(idCargo, self.idEmpresa)
 

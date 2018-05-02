@@ -14,6 +14,56 @@ class NotaFiscalRomanieo(object):
         self.__ts = time.time()
         self.__dataHora = datetime.datetime.fromtimestamp(self.__ts).strftime('%Y-%m-%d %H:%M:%S')
 
+    def pesquisarNf(self):
+        try:
+            _sql = "SELECT tipo FROM tipo_nf"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarNcm(self):
+        try:
+            _sql = "SELECT ncm FROM ncm"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarCfop(self):
+        try:
+            _sql = "SELECT id_cfop FROM cfop"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarCsosn(self):
+        try:
+            _sql = "SELECT codigo_csosn FROM csosn"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarCst(self):
+        try:
+            _sql = "SELECT codigo_csosn FROM cst"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisarTipoCarga(self):
         try:
             _sql = "SELECT descricao FROM tipo_carga"

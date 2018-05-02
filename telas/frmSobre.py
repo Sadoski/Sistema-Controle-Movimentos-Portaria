@@ -179,7 +179,6 @@ class Ui_frmSobre(object):
         self.lblJeffersonSadoskiHotmailCom.setMouseTracking(True)
         self.lblJeffersonSadoskiHotmailCom.setFocusPolicy(QtCore.Qt.StrongFocus)
         self.lblJeffersonSadoskiHotmailCom.setAcceptDrops(True)
-        self.lblJeffersonSadoskiHotmailCom.setTextInteractionFlags(QtCore.Qt.TextEditorInteraction)
         self.lblJeffersonSadoskiHotmailCom.setObjectName(_fromUtf8("lblJeffersonSadoskiHotmailCom"))
 
         self.lbl5565996977055 = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -222,6 +221,7 @@ class Ui_frmSobre(object):
         self.lblJeffersonAparecidoSadoski.setText(_translate("frmSobre", "Jefferson Aparecido Sadoski", None))
         self.lblRodneyGasparPereira.setText(_translate("frmSobre", "Rodney Gaspar Pereira", None))
         self.lblEmanoelFranciscoDosSantos.setText(_translate("frmSobre", "Manoel Francisco dos Santos", None))
-        self.lblJeffersonSadoskiHotmailCom.setText(_translate("frmSobre", "jefferson_sadoski@hotmail.com", None))
+        self.lblJeffersonSadoskiHotmailCom.setText(_translate("frmSobre", "<a href='mailto:jefferson_sadoski@hotmail.com'>jefferson_sadoski@hotmail.com</a>", None))
+        self.lblJeffersonSadoskiHotmailCom.setOpenExternalLinks(True)
         self.lbl5565996977055.setText(_translate("frmSobre", "+55 65 99697-7055", None))
 

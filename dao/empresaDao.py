@@ -329,7 +329,7 @@ class EmpresaDao(object):
     def deletarCargo(self, idCargo, idEmpresa):
 
         try:
-            _sql = "DELETE FROM cargo WHERE id_Cargo = '"+ idCargo +"'"
+            _sql = "DELETE FROM cargo WHERE id_cargo = '"+ idCargo +"'"
             self.__cursor.execute(_sql)
             self.__conexao.conn.commit()
             #self.__cursor.close()

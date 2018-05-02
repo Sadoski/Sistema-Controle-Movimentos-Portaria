@@ -32,40 +32,279 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
         self.unidadeMedida()
         self.tiposNF()
+        self.ncm()
+        self.cfop()
+        self.csosn()
 
-        self.ui.txtBaseICMS.textChanged.connect(self.alterarCaracter)
+
+        self.ui.txtIcmsPorcento.textChanged.connect(self.validatorChangedDoublePorcentoICMS)
+        self.ui.txtBaseICMS.textChanged.connect(self.validatorChangedDoubleBaseICMS)
+        self.ui.txtValorICMS.textChanged.connect(self.validatorChangedDoubleValorICMS)
+        self.ui.txtBaseICMSST.textChanged.connect(self.validatorChangedDoubleBaseICMSST)
+        self.ui.txtValorICMSSub.textChanged.connect(self.validatorChangedDoubleValorICMSSubs)
+        self.ui.txtValorPIS.textChanged.connect(self.validatorChangedDoubleValorPIS)
+        self.ui.txtValorConfins.textChanged.connect(self.validatorChangedDoubleValorConfins)
+        self.ui.txtValorFrete.textChanged.connect(self.validatorChangedDoubleValorFrete)
+        self.ui.txtValorSeguro.textChanged.connect(self.validatorChangedDoubleValorSeguro)
+        self.ui.txtValorDesconto.textChanged.connect(self.validatorChangedDoubleValorDesconto)
+        self.ui.txtOutrasDespesas.textChanged.connect(self.validatorChangedDoubleOutrasDespesas)
+        self.ui.txtValorIPI.textChanged.connect(self.validatorChangedDoubleValorIPI)
+        self.ui.txtValorTotalServico.textChanged.connect(self.validatorChangedDoubleValorTotalServico)
+        self.ui.txtBaseIssqn.textChanged.connect(self.validatorChangedDoubleBaseIssqn)
+        self.ui.txtValorIssqn.textChanged.connect(self.validatorChangedDoubleValorIssqn)
+
 
         self.ui.txtCodig.textChanged.connect(self.numberCodigoFornecedor)
         self.ui.txtCodigoMotorista.textChanged.connect(self.numberCodigoMotorista)
         self.ui.txtSerie.textChanged.connect(self.numberSerie)
         self.ui.txtModelo.textChanged.connect(self.numberModelo)
         self.ui.txtNumNF.textChanged.connect(self.numberNumNF)
-        self.ui.txtChaveAcessoNF.textChanged.connect(self.numberChaveAcessoNF)
-        self.ui.txtProtocoloAuto.textChanged.connect(self.numberProtocoloAuto)
         self.ui.txtQtd.textChanged.connect(self.numberQuantidade)
         self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
 
     def validarCamposFlutuante(self):
 
-        validarReal = QtGui.QDoubleValidator(0, 99999, 0, self)
+        validarReal = QtGui.QDoubleValidator(0.00, 999999999.99, 2, self)
+        validarReal.setNotation(QtGui.QDoubleValidator.StandardNotation)
         validarReal.setDecimals(2)
 
         listaObj = [self.ui.txtIcmsPorcento, self.ui.txtBaseICMS,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
-                    self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorProduto, self.ui.txtValorFrete,
-                    self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI, self.ui.txtValorNF,
+                    self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorFrete,
+                    self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI,
                     self.ui.txtValorUnotario, self.ui.txtValorTotal, self.ui.txtValorTotalServico, self.ui.txtBaseIssqn, self.ui.txtValorIssqn]
 
         for objeto in listaObj:
             objeto.setValidator(validarReal)
 
-    def keyPressEvent(self, QKeyEvent):
-        pass
+    def validarCamposInteiro(self):
 
-    def alterarCaracter(self):
-        i = self.ui.txtBaseICMS.text()
+        validarReal = QtGui.QIntValidator(0, 999999999, self)
+
+        listaObj = [self.ui.txtCodig, self.ui.txtCodigoMotorista, self.ui.txtSerie, self.ui.txtNumNF, self.ui.txtModelo,
+                    self.ui.txtQtd, self.ui.txtInsMunicipal]
+
+        for objeto in listaObj:
+            objeto.setValidator(validarReal)
+
+    def alterarCaracterNum(self, i):
+        i = i.replace('0', '')
+        i = i.replace('1', '')
+        i = i.replace('2', '')
+        i = i.replace('3', '')
+        i = i.replace('4', '')
+        i = i.replace('5', '')
+        i = i.replace('6', '')
+        i = i.replace('7', '')
+        i = i.replace('8', '')
+        i = i.replace('9', '')
+
+        return  i
+
+    def alterarCaracter(self, i):
+        i = i.replace('-', '')
+        i = i.replace('+', '')
         i = i.replace('.', ',')
 
-        self.ui.txtBaseICMS.setText(i)
+        return i
+
+    def reformatar(self, i):
+        i = i.replace(',', '.')
+        return i
+
+    def validatorChangedDoublePorcentoICMS(self):
+        ponto = self.alterarCaracterNum(self.ui.txtIcmsPorcento.text())
+
+        if len(ponto) >1:
+            self.ui.txtIcmsPorcento.setText(self.alterarCaracter(self.ui.txtIcmsPorcento.text()))
+            self.ui.txtIcmsPorcento.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtIcmsPorcento.setText(self.alterarCaracter(self.ui.txtIcmsPorcento.text()))
+            numero = self.reformatar(self.ui.txtIcmsPorcento.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtIcmsPorcento.backspace()
+
+    def validatorChangedDoubleBaseICMS(self):
+        ponto = self.alterarCaracterNum(self.ui.txtBaseICMS.text())
+
+        if len(ponto) >1:
+            self.ui.txtBaseICMS.setText(self.alterarCaracter(self.ui.txtBaseICMS.text()))
+            self.ui.txtBaseICMS.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtBaseICMS.setText(self.alterarCaracter(self.ui.txtBaseICMS.text()))
+            numero = self.reformatar(self.ui.txtBaseICMS.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtBaseICMS.backspace()
+
+    def validatorChangedDoubleValorICMS(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorICMS.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorICMS.setText(self.alterarCaracter(self.ui.txtValorICMS.text()))
+            self.ui.txtValorICMS.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorICMS.setText(self.alterarCaracter(self.ui.txtValorICMS.text()))
+            numero = self.reformatar(self.ui.txtValorICMS.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorICMS.backspace()
+
+    def validatorChangedDoubleBaseICMSST(self):
+        ponto = self.alterarCaracterNum(self.ui.txtBaseICMSST.text())
+
+        if len(ponto) >1:
+            self.ui.txtBaseICMSST.setText(self.alterarCaracter(self.ui.txtBaseICMSST.text()))
+            self.ui.txtBaseICMSST.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtBaseICMSST.setText(self.alterarCaracter(self.ui.txtBaseICMSST.text()))
+            numero = self.reformatar(self.ui.txtBaseICMSST.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtBaseICMSST.backspace()
+
+    def validatorChangedDoubleValorICMSSubs(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorICMSSub.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorICMSSub.setText(self.alterarCaracter(self.ui.txtValorICMSSub.text()))
+            self.ui.txtValorICMSSub.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorICMSSub.setText(self.alterarCaracter(self.ui.txtValorICMSSub.text()))
+            numero = self.reformatar(self.ui.txtValorICMSSub.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorICMSSub.backspace()
+
+    def validatorChangedDoubleValorPIS(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorPIS.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorPIS.setText(self.alterarCaracter(self.ui.txtValorPIS.text()))
+            self.ui.txtValorPIS.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorPIS.setText(self.alterarCaracter(self.ui.txtValorPIS.text()))
+            numero = self.reformatar(self.ui.txtValorPIS.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorPIS.backspace()
+
+    def validatorChangedDoubleValorConfins(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorConfins.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorConfins.setText(self.alterarCaracter(self.ui.txtValorConfins.text()))
+            self.ui.txtValorConfins.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorConfins.setText(self.alterarCaracter(self.ui.txtValorConfins.text()))
+            numero = self.reformatar(self.ui.txtValorConfins.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorConfins.backspace()
+
+    def validatorChangedDoubleValorFrete(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorFrete.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorFrete.setText(self.alterarCaracter(self.ui.txtValorFrete.text()))
+            self.ui.txtValorFrete.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorFrete.setText(self.alterarCaracter(self.ui.txtValorFrete.text()))
+            numero = self.reformatar(self.ui.txtValorFrete.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorFrete.backspace()
+
+    def validatorChangedDoubleValorSeguro(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorSeguro.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorSeguro.setText(self.alterarCaracter(self.ui.txtValorSeguro.text()))
+            self.ui.txtValorSeguro.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorSeguro.setText(self.alterarCaracter(self.ui.txtValorSeguro.text()))
+            numero = self.reformatar(self.ui.txtValorSeguro.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorSeguro.backspace()
+
+    def validatorChangedDoubleValorDesconto(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorDesconto.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorDesconto.setText(self.alterarCaracter(self.ui.txtValorDesconto.text()))
+            self.ui.txtValorDesconto.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorDesconto.setText(self.alterarCaracter(self.ui.txtValorDesconto.text()))
+            numero = self.reformatar(self.ui.txtValorDesconto.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorDesconto.backspace()
+
+    def validatorChangedDoubleOutrasDespesas(self):
+        ponto = self.alterarCaracterNum(self.ui.txtOutrasDespesas.text())
+
+        if len(ponto) >1:
+            self.ui.txtOutrasDespesas.setText(self.alterarCaracter(self.ui.txtOutrasDespesas.text()))
+            self.ui.txtOutrasDespesas.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtOutrasDespesas.setText(self.alterarCaracter(self.ui.txtOutrasDespesas.text()))
+            numero = self.reformatar(self.ui.txtOutrasDespesas.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtOutrasDespesas.backspace()
+
+    def validatorChangedDoubleValorIPI(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorIPI.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorIPI.setText(self.alterarCaracter(self.ui.txtValorIPI.text()))
+            self.ui.txtValorIPI.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorIPI.setText(self.alterarCaracter(self.ui.txtValorIPI.text()))
+            numero = self.reformatar(self.ui.txtValorIPI.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorIPI.backspace()
+
+    def validatorChangedDoubleValorTotalServico(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorTotalServico.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorTotalServico.setText(self.alterarCaracter(self.ui.txtValorTotalServico.text()))
+            self.ui.txtValorTotalServico.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorTotalServico.setText(self.alterarCaracter(self.ui.txtValorTotalServico.text()))
+            numero = self.reformatar(self.ui.txtValorTotalServico.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorTotalServico.backspace()
+
+    def validatorChangedDoubleBaseIssqn(self):
+        ponto = self.alterarCaracterNum(self.ui.txtBaseIssqn.text())
+
+        if len(ponto) >1:
+            self.ui.txtBaseIssqn.setText(self.alterarCaracter(self.ui.txtBaseIssqn.text()))
+            self.ui.txtBaseIssqn.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtBaseIssqn.setText(self.alterarCaracter(self.ui.txtBaseIssqn.text()))
+            numero = self.reformatar(self.ui.txtBaseIssqn.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtBaseIssqn.backspace()
+
+    def validatorChangedDoubleValorIssqn(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorIssqn.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorIssqn.setText(self.alterarCaracter(self.ui.txtValorIssqn.text()))
+            self.ui.txtValorIssqn.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorIssqn.setText(self.alterarCaracter(self.ui.txtValorIssqn.text()))
+            numero = self.reformatar(self.ui.txtValorIssqn.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorIssqn.backspace()
 
     def numberCodigoFornecedor(self):
         if self.ui.txtCodig.text().isnumeric() == False:
@@ -87,14 +326,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         if self.ui.txtModelo.text().isnumeric() == False:
             self.ui.txtModelo.backspace()
 
-    def numberChaveAcessoNF(self):
-        if self.ui.txtChaveAcessoNF.text().isnumeric() == False:
-            self.ui.txtChaveAcessoNF.backspace()
-
-    def numberProtocoloAuto(self):
-        if self.ui.txtProtocoloAuto.text().isnumeric() == False:
-            self.ui.txtProtocoloAuto.backspace()
-
     def numberQuantidade(self):
         if self.ui.txtQtd.text().isnumeric() == False:
             self.ui.txtQtd.backspace()
@@ -103,13 +334,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         if self.ui.txtInsMunicipal.text().isnumeric() == False:
             self.ui.txtInsMunicipal.backspace()
 
-
-    def upperCaseDestinatario(self):
-        self.ui.txtFornecedor.setText(self.ui.txtFornecedor.text().upper())
-
-    def upperCaseMotorista(self):
-        self.ui.txtMotorista.setText(self.ui.txtMotorista.text().upper())
-
     def unidadeMedida(self):
         lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
         #lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
@@ -117,9 +341,28 @@ class CadastroNotaFiscal(QtGui.QDialog):
             self.ui.cBoxUn.addItem(i)
 
     def tiposNF(self):
-        lista = ["NF", "NF-e", "NFC-e", "NFS-e", "CT-e", "DANFE"]
-        for i in lista:
-            self.ui.cboxTipos.addItem(i)
+        nf = NotaFiscalRomanieo()
+        tipo = nf.pesquisarNf()
+        for i in tipo:
+            self.ui.cboxTipos.addItem(str(i[0]))
+
+    def ncm(self):
+        nf = NotaFiscalRomanieo()
+        ncm = nf.pesquisarNcm()
+        for i in ncm:
+            self.ui.cBoxNcm.addItem(str(i[0]))
+
+    def cfop(self):
+        nf = NotaFiscalRomanieo()
+        cfop = nf.pesquisarCfop()
+        for i in cfop:
+            self.ui.cBoxCfop.addItem(str(i[0]))
+
+    def csosn(self):
+        nf = NotaFiscalRomanieo()
+        csosn = nf.pesquisarCfop()
+        for i in csosn:
+            self.ui.cBoxCsosn.addItem(str(i[0]))
 
     def substituirCaracterMetros(self, i):
         i = str(i)
@@ -178,8 +421,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtModelo.clear()
         self.ui.txtNumNF.clear()
         self.ui.txtIcmsPorcento.clear()
-        self.ui.txtChaveAcessoNF.clear()
-        self.ui.txtProtocoloAuto.clear()
         self.ui.dateDataEmissao.setDate(QDate.currentDate())
         self.ui.dateDataEntrada.setDate(QDate.currentDate())
 
@@ -189,13 +430,11 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorICMSSub.clear()
         self.ui.txtValorPIS.clear()
         self.ui.txtValorConfins.clear()
-        self.ui.txtValorProduto.clear()
         self.ui.txtValorFrete.clear()
         self.ui.txtValorSeguro.clear()
         self.ui.txtValorDesconto.clear()
         self.ui.txtOutrasDespesas.clear()
         self.ui.txtValorIPI.clear()
-        self.ui.txtValorNF.clear()
 
         self.ui.txtQtd.clear()
         self.ui.txtValorUnotario.clear()
