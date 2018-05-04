@@ -36,6 +36,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.cfop()
         self.csosn()
         self.cst()
+        self.produtos()
 
 
         self.ui.txtIcmsPorcento.textChanged.connect(self.validatorChangedDoublePorcentoICMS)
@@ -53,6 +54,8 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorTotalServico.textChanged.connect(self.validatorChangedDoubleValorTotalServico)
         self.ui.txtBaseIssqn.textChanged.connect(self.validatorChangedDoubleBaseIssqn)
         self.ui.txtValorIssqn.textChanged.connect(self.validatorChangedDoubleValorIssqn)
+        self.ui.txtValorUnotario.textChanged.connect(self.validatorChangedDoubleValorUnitario)
+        self.ui.txtValorTotal.textChanged.connect(self.validatorChangedDoubleValorTotal)
 
 
         self.ui.txtCodig.textChanged.connect(self.numberCodigoFornecedor)
@@ -116,7 +119,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtIcmsPorcento.text())
 
         if len(ponto) >1:
-            self.ui.txtIcmsPorcento.setText(self.alterarCaracter(self.ui.txtIcmsPorcento.text()))
             self.ui.txtIcmsPorcento.backspace()
         elif len(ponto) == 1:
             self.ui.txtIcmsPorcento.setText(self.alterarCaracter(self.ui.txtIcmsPorcento.text()))
@@ -129,7 +131,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtBaseICMS.text())
 
         if len(ponto) >1:
-            self.ui.txtBaseICMS.setText(self.alterarCaracter(self.ui.txtBaseICMS.text()))
             self.ui.txtBaseICMS.backspace()
         elif len(ponto) == 1:
             self.ui.txtBaseICMS.setText(self.alterarCaracter(self.ui.txtBaseICMS.text()))
@@ -142,7 +143,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorICMS.text())
 
         if len(ponto) >1:
-            self.ui.txtValorICMS.setText(self.alterarCaracter(self.ui.txtValorICMS.text()))
             self.ui.txtValorICMS.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorICMS.setText(self.alterarCaracter(self.ui.txtValorICMS.text()))
@@ -155,7 +155,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtBaseICMSST.text())
 
         if len(ponto) >1:
-            self.ui.txtBaseICMSST.setText(self.alterarCaracter(self.ui.txtBaseICMSST.text()))
             self.ui.txtBaseICMSST.backspace()
         elif len(ponto) == 1:
             self.ui.txtBaseICMSST.setText(self.alterarCaracter(self.ui.txtBaseICMSST.text()))
@@ -168,7 +167,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorICMSSub.text())
 
         if len(ponto) >1:
-            self.ui.txtValorICMSSub.setText(self.alterarCaracter(self.ui.txtValorICMSSub.text()))
             self.ui.txtValorICMSSub.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorICMSSub.setText(self.alterarCaracter(self.ui.txtValorICMSSub.text()))
@@ -181,7 +179,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorPIS.text())
 
         if len(ponto) >1:
-            self.ui.txtValorPIS.setText(self.alterarCaracter(self.ui.txtValorPIS.text()))
             self.ui.txtValorPIS.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorPIS.setText(self.alterarCaracter(self.ui.txtValorPIS.text()))
@@ -194,7 +191,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorConfins.text())
 
         if len(ponto) >1:
-            self.ui.txtValorConfins.setText(self.alterarCaracter(self.ui.txtValorConfins.text()))
             self.ui.txtValorConfins.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorConfins.setText(self.alterarCaracter(self.ui.txtValorConfins.text()))
@@ -207,7 +203,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorFrete.text())
 
         if len(ponto) >1:
-            self.ui.txtValorFrete.setText(self.alterarCaracter(self.ui.txtValorFrete.text()))
             self.ui.txtValorFrete.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorFrete.setText(self.alterarCaracter(self.ui.txtValorFrete.text()))
@@ -220,7 +215,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorSeguro.text())
 
         if len(ponto) >1:
-            self.ui.txtValorSeguro.setText(self.alterarCaracter(self.ui.txtValorSeguro.text()))
             self.ui.txtValorSeguro.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorSeguro.setText(self.alterarCaracter(self.ui.txtValorSeguro.text()))
@@ -233,7 +227,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorDesconto.text())
 
         if len(ponto) >1:
-            self.ui.txtValorDesconto.setText(self.alterarCaracter(self.ui.txtValorDesconto.text()))
             self.ui.txtValorDesconto.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorDesconto.setText(self.alterarCaracter(self.ui.txtValorDesconto.text()))
@@ -246,7 +239,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtOutrasDespesas.text())
 
         if len(ponto) >1:
-            self.ui.txtOutrasDespesas.setText(self.alterarCaracter(self.ui.txtOutrasDespesas.text()))
             self.ui.txtOutrasDespesas.backspace()
         elif len(ponto) == 1:
             self.ui.txtOutrasDespesas.setText(self.alterarCaracter(self.ui.txtOutrasDespesas.text()))
@@ -259,7 +251,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorIPI.text())
 
         if len(ponto) >1:
-            self.ui.txtValorIPI.setText(self.alterarCaracter(self.ui.txtValorIPI.text()))
             self.ui.txtValorIPI.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorIPI.setText(self.alterarCaracter(self.ui.txtValorIPI.text()))
@@ -272,7 +263,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorTotalServico.text())
 
         if len(ponto) >1:
-            self.ui.txtValorTotalServico.setText(self.alterarCaracter(self.ui.txtValorTotalServico.text()))
             self.ui.txtValorTotalServico.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorTotalServico.setText(self.alterarCaracter(self.ui.txtValorTotalServico.text()))
@@ -285,7 +275,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtBaseIssqn.text())
 
         if len(ponto) >1:
-            self.ui.txtBaseIssqn.setText(self.alterarCaracter(self.ui.txtBaseIssqn.text()))
             self.ui.txtBaseIssqn.backspace()
         elif len(ponto) == 1:
             self.ui.txtBaseIssqn.setText(self.alterarCaracter(self.ui.txtBaseIssqn.text()))
@@ -298,7 +287,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         ponto = self.alterarCaracterNum(self.ui.txtValorIssqn.text())
 
         if len(ponto) >1:
-            self.ui.txtValorIssqn.setText(self.alterarCaracter(self.ui.txtValorIssqn.text()))
             self.ui.txtValorIssqn.backspace()
         elif len(ponto) == 1:
             self.ui.txtValorIssqn.setText(self.alterarCaracter(self.ui.txtValorIssqn.text()))
@@ -306,6 +294,30 @@ class CadastroNotaFiscal(QtGui.QDialog):
             formatar = str(numero).split('.')
             if len(formatar[1]) >2:
                 self.ui.txtValorIssqn.backspace()
+
+    def validatorChangedDoubleValorUnitario(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorUnotario.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorUnotario.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorUnotario.setText(self.alterarCaracter(self.ui.txtValorUnotario.text()))
+            numero = self.reformatar(self.ui.txtValorUnotario.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorUnotario.backspace()
+
+    def validatorChangedDoubleValorTotal(self):
+        ponto = self.alterarCaracterNum(self.ui.txtValorTotal.text())
+
+        if len(ponto) >1:
+            self.ui.txtValorTotal.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtValorTotal.setText(self.alterarCaracter(self.ui.txtValorTotal.text()))
+            numero = self.reformatar(self.ui.txtValorTotal.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtValorTotal.backspace()
 
     def numberCodigoFornecedor(self):
         if self.ui.txtCodig.text().isnumeric() == False:
@@ -336,8 +348,9 @@ class CadastroNotaFiscal(QtGui.QDialog):
             self.ui.txtInsMunicipal.backspace()
 
     def unidadeMedida(self):
-        lista = ["UN", "KM", "HM", "DAM", "M", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "M²", "DM²", "CM²", "MM²", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
+        lista = ["UN", "KM", "HM", "DAM", "M", "M²", "M³", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "DM²", "CM²", "MM²", "MM³", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
         #lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
+
         for i in lista:
             self.ui.cBoxUn.addItem(i)
 
@@ -367,9 +380,15 @@ class CadastroNotaFiscal(QtGui.QDialog):
 
     def cst(self):
         nf = NotaFiscalRomanieo()
-        cst = nf.pesquisarCts()
+        cst = nf.pesquisarCst()
         for i in cst:
             self.ui.cBoxCst.addItem(str(i[0]))
+
+    def produtos(self):
+        nf = NotaFiscalRomanieo()
+        cst = nf.pesquisarProduto()
+        for i in cst:
+            self.ui.cBoxProduto.addItem(str(i[0]))
 
     def substituirCaracterMetros(self, i):
         i = str(i)

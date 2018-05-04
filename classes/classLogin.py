@@ -64,6 +64,7 @@ class Login(QtGui.QDialog):
                     nome = str(log[1])
                     DadosUsuario(id, nome)
                     principal.status(nome)
+                    principal.hora()
                     principal.show()
                     self.close()
         else:

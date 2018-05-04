@@ -40,10 +40,6 @@ class Principal(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self)
         self.ui = Ui_frmMainHouse()
         self.ui.setupUi(self)
-        self.timer = QtCore.QTimer(self)
-        self.timer.setInterval(1000)
-        self.timer.timeout.connect(self.displayTime)
-        self.timer.start()
 
         self.ui.menuSair.triggered.connect(self._sair)
         self.ui.menuLogout.triggered.connect(self._trocarUsuario)
@@ -129,10 +125,18 @@ class Principal(QtGui.QMainWindow):
         '''
 
     def status(self, nome):
-        self.ui.statusbar.showMessage("Bem-Vindo "+nome)
+        self.ui.statusbar.addPermanentWidget(QtGui.QLabel("Bem-Vindo " + nome), 1)
+
+    def hora(self):
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.displayTime)
+        self.timer.start()
 
     def displayTime(self):
         self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
+
+
 
     def _trocarUsuario(self):
         try:

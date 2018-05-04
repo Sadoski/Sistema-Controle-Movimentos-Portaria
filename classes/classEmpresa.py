@@ -793,6 +793,7 @@ class Empresa(QtGui.QDialog):
         self.dialog.close()
 
     def setCampos(self, campos):
+        self.setTipoEmpresa()
         self.ui.txtCodigo.setEnabled(False)
         self.ui.btnPesquisarEmpresa.setEnabled(False)
         self.idEmpresa = int(campos.getIdEmpresa)
@@ -803,9 +804,7 @@ class Empresa(QtGui.QDialog):
         self.ui.txtInscricaoMunicipal.setText(campos.getInscricaoMunicipal)
         self.ui.txtFantasia.setText(campos.getFantasia)
         self.ui.txtRazaoSocial.setText(campos.getRazaoSocial)
-        tipo = campos.getTipoEmpresa
-        self.ui.cBoxTipoEmpresa.addItem(tipo)
-        self.setTipoEmpresaAtualizado(tipo)
+        self.ui.cBoxTipoEmpresa.setCurrentIndex(self.ui.cBoxTipoEmpresa.findText(campos.getTipoEmpresa))
         if campos.getSituacao == True:
             self.ui.radBtnAtivo.setChecked(True)
         else:
@@ -813,15 +812,6 @@ class Empresa(QtGui.QDialog):
         self.ui.txtCnae.setText(campos.getCnae)
         self.ui.txtCnaeDescricao.setText(campos.getDesCnae[0])
         self.editar = True
-
-    def setTipoEmpresaAtualizado(self, dados):
-        empresa = EmpresaDao()
-        lista = empresa.tipoEmpresa()
-
-        for tipo in lista:
-            if tipo[0] != dados:
-
-                self.ui.cBoxTipoEmpresa.addItem(tipo[0])
 
     def pesquisarPessoaJuridica(self):
         self.dialogJuridico = QDialog(self)

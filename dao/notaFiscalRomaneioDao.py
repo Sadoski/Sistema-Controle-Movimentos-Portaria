@@ -54,9 +54,9 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
-    def pesquisarCts(self):
+    def pesquisarCst(self):
         try:
-            _sql = "SELECT cod_cst FROM cts"
+            _sql = "SELECT cod_cst FROM cst"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -77,6 +77,16 @@ class NotaFiscalRomanieo(object):
     def pesquisarMetragem(self):
         try:
             _sql = "SELECT descricao FROM metragem"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarProduto(self):
+        try:
+            _sql = "SELECT descricao FROM produto"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -127,7 +137,7 @@ class NotaFiscalRomanieo(object):
         except BaseException as os:
             return False
 
-    def pesquisarProduto(self, produto):
+    def pesquisarProdutos(self, produto):
         try:
             _sql = "SELECT p.descricao FROM carga_produto a INNER JOIN tipo_carga c ON c.id_tipo_carga = a.id_tipo_carga INNER JOIN produto p ON p.id_produto = a.id_produto WHERE c.descricao = '"+produto+"'"
             self.__cursor.execute(_sql)
