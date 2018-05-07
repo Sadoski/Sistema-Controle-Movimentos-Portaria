@@ -41,6 +41,7 @@ class Principal(QtGui.QMainWindow):
         self.ui = Ui_frmMainHouse()
         self.ui.setupUi(self)
 
+
         self.ui.menuSair.triggered.connect(self._sair)
         self.ui.menuLogout.triggered.connect(self._trocarUsuario)
         self.ui.menuCadPesFisica.triggered.connect(self._cadastroPessoaFisica)
@@ -125,7 +126,14 @@ class Principal(QtGui.QMainWindow):
         '''
 
     def status(self, nome):
-        self.ui.statusbar.addPermanentWidget(QtGui.QLabel("Bem-Vindo " + nome), 1)
+        self.label = QtGui.QLabel("Bem-Vindo " + nome)
+        self.label.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
+        self.label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        self.label.setMinimumSize(self.label.sizeHint())
+        self.ui.statusbar.addPermanentWidget(self.label, 1)
+        self.time = QtGui.QLabel()
+        self.time.setFrameStyle(QFrame.StyledPanel | QFrame.Sunken)
+        self.ui.statusbar.addPermanentWidget(self.time)
 
     def hora(self):
         self.timer = QtCore.QTimer(self)
@@ -134,9 +142,7 @@ class Principal(QtGui.QMainWindow):
         self.timer.start()
 
     def displayTime(self):
-        self.ui.statusbar.showMessage(QtCore.QDateTime.currentDateTime().toString())
-
-
+        self.ui.statusbar.addPermanentWidget(self.time.setText(QtCore.QDateTime.currentDateTime().toString()))
 
     def _trocarUsuario(self):
         try:

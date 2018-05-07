@@ -150,7 +150,6 @@ class Ui_frmMainHouse(object):
         font.setFamily(_fromUtf8("Tahoma"))
         self.statusbar.setFont(font)
         self.statusbar.setObjectName(_fromUtf8("statusbar"))
-
         frmMainHouse.setStatusBar(self.statusbar)
 
         self.subMenuCadastroEmpresa = QtGui.QAction(frmMainHouse)

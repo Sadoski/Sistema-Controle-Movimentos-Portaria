@@ -77,7 +77,7 @@ class Ui_frmPesquisarPessoaFisicaJuridica(object):
         self.tabPesquisar.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
         self.tabPesquisar.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
-        self.tabPesquisar.setColumnCount(12)
+        self.tabPesquisar.setColumnCount(13)
         self.tabPesquisar.setRowCount(0)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(0, item)
@@ -103,6 +103,8 @@ class Ui_frmPesquisarPessoaFisicaJuridica(object):
         self.tabPesquisar.setHorizontalHeaderItem(10, item)
         item = QtGui.QTableWidgetItem()
         self.tabPesquisar.setHorizontalHeaderItem(11, item)
+        item = QtGui.QTableWidgetItem()
+        self.tabPesquisar.setHorizontalHeaderItem(12, item)
         self.tabPesquisar.verticalHeader().setVisible(False)
         self.tabPesquisar.verticalHeader().setCascadingSectionResizes(True)
 

@@ -49,6 +49,12 @@ class CadastroClientes(QtGui.QDialog):
 
         self.ui.txtCodigo.returnPressed.connect(self.setCliente)
 
+        self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
+        self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
+
+        self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
+        self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
+
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
             self.ui.txtCodigo.backspace()
@@ -183,16 +189,37 @@ class CadastroClientes(QtGui.QDialog):
 
             linha += 1
 
+    def cellClickTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
+        list=[]
+        columcount = self.ui.tabContatoTelefone.columnCount()
+        row = self.ui.tabContatoTelefone.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell =self.ui.tabContatoTelefone.item(row, x).text()
+            list.append(cell)
+
+        if list in self.contatoAtualizar:
+            self.contatoAtualizar.remove(list)
+            self.ui.tabContatoTelefone.removeRow(index)
+        else:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                self.contatoRemove.append(self.contatoAdd[index])
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
 
     def delContatoTelefone(self):
         index = self.ui.tabContatoTelefone.currentRow()
-        self.ui.tabContatoTelefone.removeRow(index)
 
-        if index >= 0:
-            self.contatoRemove.append(self.contatoAdd[index])
-            del self.contatoAdd[index]
-        else:
-            self.mensagem.warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        if self.editar == False:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickTelefone()
 
     def inserirTabelaEmail(self, dado):
 
@@ -228,15 +255,38 @@ class CadastroClientes(QtGui.QDialog):
         else:
             self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
+    def cellClickEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+        list = []
+        columcount = self.ui.tabContatoEmail.columnCount()
+        row = self.ui.tabContatoEmail.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabContatoEmail.item(row, x).text()
+            list.append(cell)
+
+        if list in self.emailAtualizar:
+            self.emailAtualizar.remove(list)
+            self.ui.tabContatoEmail.removeRow(index)
+        else:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                self.emailRemove.append(self.emailAdd[index])
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
     def delContatoEmail(self):
         index = self.ui.tabContatoEmail.currentRow()
-        self.ui.tabContatoEmail.removeRow(index)
 
-        if index >= 0:
-            self.emailRemove.append(self.emailAdd[index])
-            del self.emailAdd[index]
-        else:
-            self.mensagem.warning( 'Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        if self.editar == False:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickEmail()
 
     def setCliente(self):
         cliente = ClienteDao()
@@ -331,7 +381,6 @@ class CadastroClientes(QtGui.QDialog):
             self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
 
 
-
     def pesquisarPessoaFisicaJuridica(self):
         self.dialogFisicoJuridico = QDialog(self)
         self.__pesquisarFisicaJuridica = Ui_frmPesquisarPessoaFisicaJuridica()
@@ -350,9 +399,9 @@ class CadastroClientes(QtGui.QDialog):
 
     def colunasTabela(self):
         if self.ui.radBtnPessoaFisica.isChecked():
-            self.__pesquisarFisicaJuridica.tabPesquisar.setColumnCount(15)
+            self.__pesquisarFisicaJuridica.tabPesquisar.setColumnCount(18)
             self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(0)
-            self.__pesquisarFisicaJuridica.tabPesquisar.setHorizontalHeaderLabels(["Cod.", "Nome", "Apelido", "CPF", "RG", "Expeditor", "Aniversario", "Sexo", "Endereço", "Número", "Complemento", "Bairro", "Cidade", "Estado", "CEP"])
+            self.__pesquisarFisicaJuridica.tabPesquisar.setHorizontalHeaderLabels(["Cod.", "Nome", "Apelido", "CPF", "RG", "Expeditor", "UF", "Aniversario", "Sexo", "Mãe", "Pai", "Endereço", "Número", "Complemento", "Bairro", "Cidade", "Estado", "CEP"])
         elif self.ui.radBtnPessoaJuridica.isChecked():
             self.__pesquisarFisicaJuridica.tabPesquisar.setColumnCount(12)
             self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(0)
@@ -436,15 +485,18 @@ class CadastroClientes(QtGui.QDialog):
             cpf = pesqui[3]
             rg = pesqui[4]
             expeditor = pesqui[5]
-            aniversario = pesqui[6]
-            sexo = pesqui[7]
-            endereco = pesqui[8]
-            numero = pesqui[9]
-            complemento = pesqui[10]
-            bairro = pesqui[11]
-            cidade = pesqui[12]
-            estado = pesqui[13]
-            cep = pesqui[14]
+            uf = pesqui[6]
+            aniversario = pesqui[7]
+            sexo = pesqui[8]
+            mae = pesqui[9]
+            pai = pesqui[10]
+            endereco = pesqui[11]
+            numero = pesqui[12]
+            complemento = pesqui[13]
+            bairro = pesqui[14]
+            cidade = pesqui[15]
+            estado = pesqui[16]
+            cep = pesqui[17]
 
 
             # preenchendo o grid de pesquisa
@@ -454,15 +506,18 @@ class CadastroClientes(QtGui.QDialog):
             self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpf)))
             self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(rg)))
             self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(expeditor)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(aniversario)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(sexo)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(endereco)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(numero)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(complemento)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(bairro)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(cidade)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(estado)))
-            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(aniversario)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(sexo)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(mae)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(pai)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cep)))
 
             linha += 1
 
@@ -519,17 +574,18 @@ class CadastroClientes(QtGui.QDialog):
             cpf = str(itens[3])
             rg = str(itens[4])
             expeditor = str(itens[5])
-            aniversario = str(itens[6])
-            sexo = str(itens[7])
-            endereco = str(itens[8])
-            numero = str(itens[9])
-            complemento = str(itens[10])
-            bairro = str(itens[11])
-            cidade = str(itens[12])
-            estado = str(itens[13])
-            cep = str(itens[14])
+            uf = str(itens[6])
+            aniversario = str(itens[7])
+            sexo = str(itens[8])
+            endereco = str(itens[9])
+            numero = str(itens[10])
+            complemento = str(itens[11])
+            bairro = str(itens[12])
+            cidade = str(itens[13])
+            estado = str(itens[14])
+            cep = str(itens[15])
 
-            __dados = PessoaFisica(codigo, nome, apelido, cpf, rg, expeditor, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+            __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
             self.setCamposFisicoJuridico(__dados)
             self.dialogFisicoJuridico.close()
 
@@ -553,7 +609,7 @@ class CadastroClientes(QtGui.QDialog):
             estado = str(itens[10])
             cep = str(itens[11])
 
-            __dados = PessoaJuridica(codigo, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
+            __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
             self.setCamposFisicoJuridico(__dados)
             self.dialogFisicoJuridico.close()
 
