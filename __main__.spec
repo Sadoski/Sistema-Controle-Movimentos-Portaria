@@ -4,7 +4,7 @@ block_cipher = None
 
 
 a = Analysis(['__main__.py'],
-             pathex=['C:\\Users\\JEFFERSON\\Faculdade\\Estagio II\\Sistema Controle Movimentos Portaria',
+             pathex=['..\\Sistema Controle Movimentos Portaria',
              'C:\\Python34\\libs\\', 'C:\\Python34\\Lib\\site-packages'],
              binaries=None,
              datas=None,
@@ -27,4 +27,4 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
 	  runtime_tmpdir=None,
-          console=False , icon='C:\\Users\\JEFFERSON\\Faculdade\\Estagio II\\Sistema Controle Movimentos Portaria\\imagens\\sis.ico')
+          console=False , icon='..\\Sistema Controle Movimentos Portaria\\imagens\\sis.ico')
