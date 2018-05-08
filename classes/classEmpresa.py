@@ -614,7 +614,6 @@ class Empresa(QtGui.QDialog):
             empresaDao = EmpresaDao()
             idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
             idCnae = empresaDao.pesquisarIdCnae(self.ui.txtCnae.text())
-            print(idCnae)
             empresa = Empresas(self.ui.txtCodigo.text(), None, idPessoaJuridica, self.idTipoEmpresa, idCnae, None, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
             cad = empresaDao.cadastroEmpresa(empresa)
             self.idEmpresa = empresaDao.ultimoRegistro()

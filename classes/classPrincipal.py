@@ -169,6 +169,8 @@ class Principal(QtGui.QMainWindow):
 
     def _logout(self):
             self.msgBox.close()
+            self.ui.statusbar.removeWidget(self.label)
+            self.ui.statusbar.removeWidget(self.time)
             self.close()
             from classes.classLogin import Login
             _login = Login()

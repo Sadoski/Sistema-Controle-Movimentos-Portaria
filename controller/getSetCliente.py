@@ -1,7 +1,9 @@
 class Cliente():
-    def __init__(self, idCliente, idPessoa, cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao):
+    def __init__(self, idCliente, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao):
         self.__idCliente = idCliente
         self.__idPessoa = idPessoa
+        self.__idPessoaFisica = idPessoaFisica
+        self.__idPessoaJuridica = idPessoaJuridica
         self.__cnpj = cnpj
         self.__inscricaoEstadual = inscricaoEstadual
         self.__fantasia = fantasia
@@ -25,6 +27,22 @@ class Cliente():
     @getIdPessoa.setter
     def setIdPessoa(self, idPessoa):
         self.__idPessoa = idPessoa
+
+    @property
+    def getIdPessoaFisica(self):
+        return self.__idPessoaFisica
+
+    @getIdPessoaFisica.setter
+    def setIdPessoaFisica(self, idPessoaFisica):
+        self.__idPessoaFisica = idPessoaFisica
+
+    @property
+    def getIdPessoaJuridica(self):
+        return self.__idPessoaJuridica
+
+    @getIdPessoaJuridica.setter
+    def setIdPessoaJuridica(self, idPessoaJuridica):
+        self.__idPessoaJuridica = idPessoaJuridica
 
     @property
     def getCnpj(self):
