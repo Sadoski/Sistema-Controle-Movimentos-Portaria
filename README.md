@@ -4,7 +4,7 @@
 * **Licença:** GNU 2.0
 * **Autor:** Jefferson Aparecido Sadoski
 
-Este sistema esta em desenvolvimento com o intuito para o controle de movimento de veiculos na empresa Guavirá (www.guavira.com.br/), e futuramente terá a integração à biometrica para o controle de pessoa.
+Este sistema esta em desenvolvimento com o intuito para o controle de movimento de veiculos na empresa Guavirá (www.guavira.com.br/), e futuramente terá a integração à biometria para o controle de pessoa.
 
 ## Requisitos
 
