@@ -1286,7 +1286,6 @@ class Empresa(QtGui.QDialog):
         for item in self.__pesquisarCnae.tabPesquisar.selectedItems():
             itens.append(item.text())
 
-        print(itens)
 
         codigo = str(itens[1])
         descricao = str(itens[6])

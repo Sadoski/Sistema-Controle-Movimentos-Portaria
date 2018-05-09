@@ -1,27 +1,49 @@
 class Fornecedor():
-    def __init__(self, idFornecedor, cnpj, inscricaoEstadual, fantasia, razaoSocial, endereco, numero, complemento, bairro, telefone, site, email, cidade, empresa):
-        self.__idFornecedor = idFornecedor
+    def __init__(self, idCliente, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao, tipo):
+        self.__idCliente = idCliente
+        self.__idPessoa = idPessoa
+        self.__idPessoaFisica = idPessoaFisica
+        self.__idPessoaJuridica = idPessoaJuridica
         self.__cnpj = cnpj
         self.__inscricaoEstadual = inscricaoEstadual
         self.__fantasia = fantasia
         self.__razaoSocial = razaoSocial
-        self.__endereco = endereco
-        self.__numero = numero
-        self.__complemento = complemento
-        self.__bairro = bairro
-        self.__telefone = telefone
-        self.__site = site
-        self.__email = email
-        self.__cidade = cidade
-        self.__empresa = empresa
+        self.__observacao = observacao
+        self.__situacao = situacao
+        self.__tipo = tipo
+
 
     @property
-    def getIdFornecedor(self):
-        return self.__idFornecedor
+    def getIdCliente(self):
+        return self.__idCliente
 
-    @getIdFornecedor.setter
-    def setIdFornecedor(self, idFornecedor):
-        self.__idFornecedor = idFornecedor
+    @getIdCliente.setter
+    def setIdCliente(self, idCliente):
+        self.__idCliente = idCliente
+
+    @property
+    def getIdPessoa(self):
+        return self.__idPessoa
+
+    @getIdPessoa.setter
+    def setIdPessoa(self, idPessoa):
+        self.__idPessoa = idPessoa
+
+    @property
+    def getIdPessoaFisica(self):
+        return self.__idPessoaFisica
+
+    @getIdPessoaFisica.setter
+    def setIdPessoaFisica(self, idPessoaFisica):
+        self.__idPessoaFisica = idPessoaFisica
+
+    @property
+    def getIdPessoaJuridica(self):
+        return self.__idPessoaJuridica
+
+    @getIdPessoaJuridica.setter
+    def setIdPessoaJuridica(self, idPessoaJuridica):
+        self.__idPessoaJuridica = idPessoaJuridica
 
     @property
     def getCnpj(self):
@@ -56,73 +78,25 @@ class Fornecedor():
         self.__razaoSocial = razaoSocial
 
     @property
-    def getEndereco(self):
-        return self.__endereco
+    def getObservacao(self):
+        return self.__observacao
 
-    @getEndereco.setter
-    def setEndereco(self, endereco):
-        self.__endereco = endereco
-
-    @property
-    def getNumero(self):
-        return self.__numero
-
-    @getNumero.setter
-    def setNumero(self, numero):
-        self.__numero = numero
+    @getObservacao.setter
+    def setObservcao(self, observacao):
+        self.__observacao = observacao
 
     @property
-    def getComplemento(self):
-        return self.__complemento
+    def getSituacao(self):
+        return self.__situacao
 
-    @getComplemento.setter
-    def setComplemento(self, complemento):
-        self.__complemento = complemento
-
-    @property
-    def getBairro(self):
-        return self.__bairro
-
-    @getBairro.setter
-    def setBairro(self, bairro):
-        self.__bairro = bairro
+    @getSituacao.setter
+    def setSituacao(self, situacao):
+        self.__situcao = situacao
 
     @property
-    def getTelefone(self):
-        return self.__telefone
+    def getTipo(self):
+        return self.__tipo
 
-    @getTelefone.setter
-    def setTelefone(self, telefone):
-        self.__telefone = telefone
-
-    @property
-    def getSite(self):
-        return self.__site
-
-    @getSite.setter
-    def setSite(self, site):
-        self.__site = site
-
-    @property
-    def getEmail(self):
-        return self.__email
-
-    @getEmail.setter
-    def setEmail(self, email):
-        self.__email = email
-
-    @property
-    def getCidade(self):
-        return self.__cidade
-
-    @getCidade.setter
-    def setCidade(self, cidade):
-        self.__cidade = cidade
-
-    @property
-    def getEmpresa(self):
-        return self.__empresa
-
-    @getEmpresa.setter
-    def setEmpresa(self, empresa):
-        self.__empresa = empresa
+    @getTipo.setter
+    def setTipo(self, tipo):
+        self.__Tipo = tipo

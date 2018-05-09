@@ -348,7 +348,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
             self.ui.txtInsMunicipal.backspace()
 
     def unidadeMedida(self):
-        lista = ["UN", "KM", "HM", "DAM", "M", "M²", "M³", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "DM²", "CM²", "MM²", "MM³", "KM³", "HM³", "DAM³", "M³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
+        lista = ["UN", "KM", "HM", "DAM", "M", "M²", "M³", "DM", "CM", "MM", "KM²", "HM²", "DAM²", "DM²", "CM²", "MM²", "MM³", "KM³", "HM³", "DAM³", "DM³", "CM³", "MM³", "T", "KG", "HG", "DAG", "G", "DG", "CG", "MG", "KL", "HL", "DAL", "L", "DL", "CL", "ML", "ST"]
         #lista = ["UN", "M", "M²", "M³", "T", "ST", "L"]
 
         for i in lista:

@@ -26,6 +26,9 @@ class CadastroClientes(QtGui.QDialog):
         self.validator = Validator()
         self.mensagem = MensagemBox()
         self.idCliente = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.idPessoaJurirdica = int()
         self.editar = False
         self.contatoAdd = []
         self.contatoRemove = []
@@ -40,6 +43,7 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
+        self.ui.btnEditar.clicked.connect(self.atualizar)
         self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaFisicaJuridica)
 
         self.ui.radBtnPessoaFisica.clicked.connect(self.botaoNovo)
@@ -51,7 +55,7 @@ class CadastroClientes(QtGui.QDialog):
 
         self.ui.txtCodigo.returnPressed.connect(self.setCliente)
 
-        self.ui.txtCodigo.editingFinished.connect(self.setCliente)
+        self.ui.txtCodigo.editingFinished.connect(self.setClienteEditFinish)
 
         self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
         self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
@@ -92,6 +96,9 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.grbDadosPessoaFisicaJuridica.setEnabled(True)
         self.ui.tabWiAdicionais.setEnabled(True)
 
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+
 
     def cancelar(self):
         self.limparCampos()
@@ -108,6 +115,22 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
 
+    def botoesEditar(self):
+        self.ui.grbDadosPessoaFisicaJuridica.setEnabled(False)
+        self.limparCampos()
+        self.ui.grbTipoPessoa.setEnabled(False)
+        self.ui.radBtnPessoaFisica.setCheckable(True)
+        self.ui.radBtnPessoaJuridica.setCheckable(True)
+        self.ui.grbAtivo.setEnabled(True)
+        self.ui.radBtnAtivo.setCheckable(True)
+        self.ui.radBtnDesativo.setCheckable(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(True)
+
     def ativarCampos(self):
         self.ui.grbDadosPessoaFisicaJuridica.setEnabled(True)
         self.ui.tabWiAdicionais.setEnabled(True)
@@ -117,10 +140,16 @@ class CadastroClientes(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(True)
         self.ui.btnDeletar.setEnabled(False)
 
+
     def limparCampos(self):
-        self.ui.grbTipoPessoa.setEnabled(False)
+        self.idCliente = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.idPessoaJurirdica = int()
+        self.ui.grbTipoPessoa.setEnabled(True)
         self.ui.radBtnPessoaFisica.setCheckable(False)
         self.ui.radBtnPessoaJuridica.setCheckable(False)
+        self.ui.grbTipoPessoa.setEnabled(False)
         self.ui.txtCodigo.setEnabled(True)
         self.ui.btnPesquisarEmpresa.setEnabled(True)
         self.editar = False
@@ -140,8 +169,10 @@ class CadastroClientes(QtGui.QDialog):
 
         self.contatoAdd.clear()
         self.contatoRemove.clear()
+        self.contatoAtualizar.clear()
         self.emailAdd.clear()
         self.emailRemove.clear()
+        self.emailAtualizar.clear()
 
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
@@ -340,6 +371,42 @@ class CadastroClientes(QtGui.QDialog):
             else:
                 self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
 
+    def setClienteEditFinish(self):
+        cliente = ClienteDao()
+        if self.ui.radBtnPessoaFisica.isChecked():
+            cli = cliente.pesquisarClienteIdFisico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            cli = cliente.pesquisarClienteIdJuridico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+
     def cadastrarTelefone(self):
         cli = ClienteDao()
         i = 0
@@ -377,7 +444,7 @@ class CadastroClientes(QtGui.QDialog):
             clienteDao = ClienteDao()
             if self.ui.radBtnPessoaFisica.isChecked():
                 idPessoa = clienteDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
-                cliente = Cliente(None, idPessoa, self.ui.txtCodigo.text(), None, None, None, None, None, self.ui.txtObservacao.toPlainText(), 1)
+                cliente = Cliente(None, idPessoa, self.ui.txtCodigo.text(), None, None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
                 clienteDao.cadastrarClienteFisico(cliente)
                 self.idCliente = clienteDao.ultimoRegistro()
 
@@ -392,7 +459,7 @@ class CadastroClientes(QtGui.QDialog):
 
             if self.ui.radBtnPessoaJuridica.isChecked():
                 idPessoa = clienteDao.pesquisarPessoaJur(self.ui.txtCodigo.text())
-                cliente = Cliente(None, idPessoa, None, self.ui.txtCodigo.text(), None, None, None, None, self.ui.txtObservacao.toPlainText(), 1)
+                cliente = Cliente(None, idPessoa, None, self.ui.txtCodigo.text(), None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
                 clienteDao.cadastrarClienteJuridica(cliente)
                 self.idCliente = clienteDao.ultimoRegistro()
 
@@ -666,7 +733,7 @@ class CadastroClientes(QtGui.QDialog):
 
             self.__pesquisarCliente.btnPesquisar.clicked.connect(self.pesquisar)
 
-            #self.__pesquisarCliente.tabPesquisar.doubleClicked.connect(self.setarCampos)
+            self.__pesquisarCliente.tabPesquisar.doubleClicked.connect(self.setarCampos)
 
             self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
             self.dialog.exec_()
@@ -756,427 +823,208 @@ class CadastroClientes(QtGui.QDialog):
 
             linha += 1
 
-    '''
-      
-    def cadastroFornecedor(self):
-
-        if self.ui.txtIdEmpresa.text() != "" and self.ui.txtFantasiaEmpresa.text() != "" and self.ui.txtRazaoSocialEmpresa.text() != "" and self.ui.txtInscricaoEstadualCliente.text() != "" and self.ui.txtFantasiaCliente.text() != "" and self.ui.txtRazaoSocialCliente.text() != "" and self.ui.txtEnderecoCliente.text() != "" and self.ui.txtNumeroCliente.text() != "" and self.ui.txtBairroCliente.text() != "" and self.ui.txtCidadesCliente.text() != "" and self.ui.txtEstadosCliente.text() != "":
-            _cidade = CidadesEstadosDao()
-
-            idEmpresa = self.ui.txtIdEmpresa.text()
-            fanEmp = self.ui.txtFantasiaEmpresa.text()
-            razaoEmp = self.ui.txtRazaoSocialEmpresa.text()
-            cnpjEmp = self.ui.txtCnpjEmpresa.text()
-
-            cnpjFor = self.removerCaracter(self.ui.txtCnpjCliente.text())
-            inscFor = self.ui.txtInscricaoEstadualCliente.text()
-            fantasia = self.ui.txtFantasiaCliente.text()
-            razaoFor = self.ui.txtRazaoSocialCliente.text()
-            endereco = self.ui.txtEnderecoCliente.text()
-            numero = self.ui.txtNumeroCliente.text()
-            complemeto = self.ui.txtComplementoCliente.text()
-            bairro = self.ui.txtBairroCliente.text()
-            telefone = self.removerCaracter(self.ui.txtTelefoneCliente.text())
-            site = self.ui.txtSiteCliente.text()
-            email = self.ui.txtEmailCliente.text()
-
-            _cep = self.removerCaracter(self.ui.txtCepCliente.text())
-            if len(_cep) == 8:
-                _cida = _cidade.idCidade(_cep, self.ui.txtCidadesCliente.text(), self.ui.txtEstadosCliente.text())
-            else:
-                return False
-            __cliente = Cliente(None, cnpjFor, inscFor, fantasia, razaoFor, endereco, numero, complemeto, bairro, telefone, site, email, _cida, idEmpresa)
-            __forDao = ClienteDao()
-            __dao = __forDao.cadastrarCliente(__cliente)
-            if __dao != False:
-                self.limparCampos()
-                self.botaoCancelar()
-
-        else:
-            w = QWidget()
-            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
-
-    def atualizarFornecedor(self):
-
-        if self.ui.txtIdEmpresa.text() != "" and self.ui.txtFantasiaEmpresa.text() != "" and self.ui.txtRazaoSocialEmpresa.text() != "" and self.ui.txtCnpjCliente.text() != "" and self.ui.txtInscricaoEstadualCliente.text() != "" and self.ui.txtFantasiaCliente.text() != "" and self.ui.txtRazaoSocialCliente.text() != "" and self.ui.txtEnderecoCliente.text() != "" and self.ui.txtNumeroCliente.text() != "" and self.ui.txtBairroCliente.text() != "" and self.ui.txtTelefoneCliente.text() != "" and self.ui.txtCidadesCliente.text() != "" and self.ui.txtEstadosCliente.text() != "":
-            _cidade = CidadesEstadosDao()
-
-            idEmpresa = self.ui.txtIdEmpresa.text()
-            fanEmp = self.ui.txtFantasiaEmpresa.text()
-            razaoEmp = self.ui.txtRazaoSocialEmpresa.text()
-            cnpjEmp = self.ui.txtCnpjEmpresa.text()
-
-            idfor = self.ui.txtIdCliente.text()
-            cnpjFor = self.removerCaracter(self.ui.txtCnpjCliente.text())
-            inscFor = self.ui.txtInscricaoEstadualCliente.text()
-            fantasia = self.ui.txtFantasiaCliente.text()
-            razaoFor = self.ui.txtRazaoSocialCliente.text()
-            endereco = self.ui.txtEnderecoCliente.text()
-            numero = self.ui.txtNumeroCliente.text()
-            complemeto = self.ui.txtComplementoCliente.text()
-            bairro = self.ui.txtBairroCliente.text()
-            telefone = self.removerCaracter(self.ui.txtTelefoneCliente.text())
-            site = self.ui.txtSiteCliente.text()
-            email = self.ui.txtEmailCliente.text()
-
-            _cep = self.removerCaracter(self.ui.txtCepCliente.text())
-            if len(_cep) == 8:
-                _cida = _cidade.idCidade(_cep, self.ui.txtCidadesCliente.text(), self.ui.txtEstadosCliente.text())
-            else:
-                return False
-            __cliente = Cliente(idfor, cnpjFor, inscFor, fantasia, razaoFor, endereco, numero, complemeto, bairro, telefone, site, email, _cida, idEmpresa)
-            __cliDao = ClienteDao()
-            __dao = __cliDao.atualizarCliente(__cliente)
-            if __dao != False:
-                self.limparCampos()
-                self.botaoCancelar()
-
-        else:
-            w = QWidget()
-            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
-
-    def cancelarCadastro(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            self.botaoCancelar()
-            self.limparCampos()
-
-    def deletarEmpresa(self):
-
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja excluir essa empresa", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            __cliDao = ClienteDao()
-            __dao = __cliDao.deletarFornecedor(self.ui.txtIdCliente.text())
-            if __dao != False:
-                self.limparCampos()
-                self.botaoCancelar()
-
-    def pesquisar(self):
-        __cliDao = ClienteDao()
-        if self.ui.radBtnCodigo.isChecked():
-            _pesquisarCod = __cliDao.pesquisaCodigo(self.ui.txtPesquisa.text())
-
-            qtde_registros = len(_pesquisarCod)
-            self.ui.tbPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisarCod:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                fantasia = pesqui[1]
-                razaoSocial = pesqui[2]
-                cnpj = pesqui[3]
-                inscrEstadual = pesqui[4]
-                endereco = pesqui[5]
-                numero = pesqui[6]
-                complemento = pesqui[7]
-                bairro = pesqui[8]
-                telefone = pesqui[9]
-                site = pesqui[10]
-                email = pesqui[11]
-                cep = pesqui[12]
-                cidade = pesqui[13]
-                estado = pesqui[14]
-                idEmpresa = pesqui[15]
-                fanEmp = pesqui[16]
-                razaoEmp = pesqui[17]
-                cnpjEmp = pesqui[18]
-                insEmp = pesqui[19]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
-                self.ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self.ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-                self.ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                self.ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-                self.ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-                self.ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-                self.ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-                self.ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(telefone)))
-                self.ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(site)))
-                self.ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(email)))
-                self.ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cep)))
-                self.ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
-                self.ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
-                self.ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(idEmpresa)))
-                self.ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(fanEmp)))
-                self.ui.tbPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmp)))
-                self.ui.tbPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmp)))
-                self.ui.tbPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEmp)))
-
-                linha += 1
-
-        elif self.ui.radBtnFantasia.isChecked():
-            _pesquisarFantasia = __cliDao.pesquisaFantasia(str(self.ui.txtPesquisa.text()))
-
-            qtde_registros = len(_pesquisarFantasia)
-            self.ui.tbPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisarFantasia:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                fantasia = pesqui[1]
-                razaoSocial = pesqui[2]
-                cnpj = pesqui[3]
-                inscrEstadual = pesqui[4]
-                endereco = pesqui[5]
-                numero = pesqui[6]
-                complemento = pesqui[7]
-                bairro = pesqui[8]
-                telefone = pesqui[9]
-                site = pesqui[10]
-                email = pesqui[11]
-                cep = pesqui[12]
-                cidade = pesqui[13]
-                estado = pesqui[14]
-                idEmpresa = pesqui[15]
-                fanEmp = pesqui[16]
-                razaoEmp = pesqui[17]
-                cnpjEmp = pesqui[18]
-                insEmp = pesqui[19]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
-                self.ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self.ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-                self.ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                self.ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-                self.ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-                self.ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-                self.ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-                self.ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(telefone)))
-                self.ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(site)))
-                self.ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(email)))
-                self.ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cep)))
-                self.ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
-                self.ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
-                self.ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(idEmpresa)))
-                self.ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(fanEmp)))
-                self.ui.tbPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmp)))
-                self.ui.tbPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmp)))
-                self.ui.tbPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEmp)))
-
-                linha += 1
-
-        elif self.ui.radBtnRazaoSocial.isChecked():
-            _pesquisarRazaoSocial = __cliDao.pesquisaRazaoSocial(str(self.ui.txtPesquisa.text()))
-
-            qtde_registros = len(_pesquisarRazaoSocial)
-            self.ui.tbPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisarRazaoSocial:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                fantasia = pesqui[1]
-                razaoSocial = pesqui[2]
-                cnpj = pesqui[3]
-                inscrEstadual = pesqui[4]
-                endereco = pesqui[5]
-                numero = pesqui[6]
-                complemento = pesqui[7]
-                bairro = pesqui[8]
-                telefone = pesqui[9]
-                site = pesqui[10]
-                email = pesqui[11]
-                cep = pesqui[12]
-                cidade = pesqui[13]
-                estado = pesqui[14]
-                idEmpresa = pesqui[15]
-                fanEmp = pesqui[16]
-                razaoEmp = pesqui[17]
-                cnpjEmp = pesqui[18]
-                insEmp = pesqui[19]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
-                self.ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self.ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-                self.ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                self.ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-                self.ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-                self.ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-                self.ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-                self.ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(telefone)))
-                self.ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(site)))
-                self.ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(email)))
-                self.ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cep)))
-                self.ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
-                self.ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
-                self.ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(idEmpresa)))
-                self.ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(fanEmp)))
-                self.ui.tbPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmp)))
-                self.ui.tbPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmp)))
-                self.ui.tbPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEmp)))
-
-                linha += 1
-
-        elif self.ui.radBtnCnpj.isChecked():
-            _pesquisarCnpj = __cliDao.pesquisaCnpj(self.ui.txtPesquisa.text())
-
-            qtde_registros = len(_pesquisarCnpj)
-            self.ui.tbPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisarCnpj:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                fantasia = pesqui[1]
-                razaoSocial = pesqui[2]
-                cnpj = pesqui[3]
-                inscrEstadual = pesqui[4]
-                endereco = pesqui[5]
-                numero = pesqui[6]
-                complemento = pesqui[7]
-                bairro = pesqui[8]
-                telefone = pesqui[9]
-                site = pesqui[10]
-                email = pesqui[11]
-                cep = pesqui[12]
-                cidade = pesqui[13]
-                estado = pesqui[14]
-                idEmpresa = pesqui[15]
-                fanEmp = pesqui[16]
-                razaoEmp = pesqui[17]
-                cnpjEmp = pesqui[18]
-                insEmp = pesqui[19]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
-                self.ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self.ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-                self.ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                self.ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-                self.ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-                self.ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-                self.ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-                self.ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(telefone)))
-                self.ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(site)))
-                self.ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(email)))
-                self.ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cep)))
-                self.ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
-                self.ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
-                self.ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(idEmpresa)))
-                self.ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(fanEmp)))
-                self.ui.tbPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmp)))
-                self.ui.tbPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmp)))
-                self.ui.tbPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEmp)))
-
-                linha += 1
-
-        elif self.ui.radBtnInsEstadual.isChecked():
-            _pesquisarInsEstadual = __cliDao.pesquisaInscEstadual(self.ui.txtPesquisa.text())
-
-            qtde_registros = len(_pesquisarInsEstadual)
-            self.ui.tbPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in _pesquisarInsEstadual:
-                # capturando os dados da tupla
-
-                codigo = pesqui[0]
-                fantasia = pesqui[1]
-                razaoSocial = pesqui[2]
-                cnpj = pesqui[3]
-                inscrEstadual = pesqui[4]
-                endereco = pesqui[5]
-                numero = pesqui[6]
-                complemento = pesqui[7]
-                bairro = pesqui[8]
-                telefone = pesqui[9]
-                site = pesqui[10]
-                email = pesqui[11]
-                cep = pesqui[12]
-                cidade = pesqui[13]
-                estado = pesqui[14]
-                idEmpresa = pesqui[15]
-                fanEmp = pesqui[16]
-                razaoEmp = pesqui[17]
-                cnpjEmp = pesqui[18]
-                insEmp = pesqui[19]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tbPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tbPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(fantasia)))
-                self.ui.tbPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(razaoSocial)))
-                self.ui.tbPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
-                self.ui.tbPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscrEstadual)))
-                self.ui.tbPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
-                self.ui.tbPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
-                self.ui.tbPesquisa.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
-                self.ui.tbPesquisa.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
-                self.ui.tbPesquisa.setItem(linha, 9, QtGui.QTableWidgetItem(str(telefone)))
-                self.ui.tbPesquisa.setItem(linha, 10, QtGui.QTableWidgetItem(str(site)))
-                self.ui.tbPesquisa.setItem(linha, 11, QtGui.QTableWidgetItem(str(email)))
-                self.ui.tbPesquisa.setItem(linha, 12, QtGui.QTableWidgetItem(str(cep)))
-                self.ui.tbPesquisa.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
-                self.ui.tbPesquisa.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
-                self.ui.tbPesquisa.setItem(linha, 15, QtGui.QTableWidgetItem(str(idEmpresa)))
-                self.ui.tbPesquisa.setItem(linha, 16, QtGui.QTableWidgetItem(str(fanEmp)))
-                self.ui.tbPesquisa.setItem(linha, 17, QtGui.QTableWidgetItem(str(razaoEmp)))
-                self.ui.tbPesquisa.setItem(linha, 18, QtGui.QTableWidgetItem(str(cnpjEmp)))
-                self.ui.tbPesquisa.setItem(linha, 19, QtGui.QTableWidgetItem(str(insEmp)))
-
-                linha += 1
-
-        else:
-            result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
-
-    def botaoEditar(self):
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
-
-        self.ui.txtFantasiaEmpresa.setEnabled(True)
-        self.ui.grbDadosCliente.setEnabled(True)
-
-    def tablePesquisa(self, pesquisa):
-        if self.ui.txtIdEmpresa.text() != "" and self.ui.txtFantasiaEmpresa.text() != "" and self.ui.txtRazaoSocialEmpresa.text() != "" and self.ui.txtInscricaoEstaduaEmpresa.text() != "" and self.ui.txtInscricaoEstadualFornecedor.text() != "" and self.ui.txtFantasiaFornecedor.text() != "" and self.ui.txtRazaoSocialFornecedor.text() != "" and self.ui.txtEnderecoFornecedor.text() != "" and self.ui.txtNumeroFornecedor.text() != "" and self.ui.txtBairroFornecedor.text() != "" and self.ui.txtTelefoneFornecedor.text() != "" and self.ui.txtCidadesFornecedor.text() != "" and self.ui.txtEstadosFornecedor.text() != "":
-                self.setarCampos()
-        else:
-                w = QWidget()
-                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em processo", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-                if result == QMessageBox.Yes:
-                    self.setarCampos()
-
     def setarCampos(self):
-
+        clienteDao = ClienteDao()
         itens = []
-        for item in self.ui.tbPesquisa.selectedItems():
+
+        for item in self.__pesquisarCliente.tabPesquisar.selectedItems():
             itens.append(item.text())
-        if len(itens) == 20:
-            self.botaoNovoCad()
-            self.botaoEditar()
-            self.ui.txtIdCliente.setText(str(itens[0]))
-            self.ui.txtFantasiaCliente.setText(str(itens[1]))
-            self.ui.txtRazaoSocialCliente.setText(str(itens[2]))
-            self.ui.txtCnpjCliente.setText(str(itens[3]))
-            self.ui.txtInscricaoEstadualCliente.setText(str(itens[4]))
-            self.ui.txtEnderecoCliente.setText(str(itens[5]))
-            self.ui.txtNumeroCliente.setText(str(itens[6]))
-            self.ui.txtComplementoCliente.setText(str(itens[7]))
-            self.ui.txtBairroCliente.setText(str(itens[8]))
-            self.ui.txtTelefoneCliente.setText(str(itens[9]))
-            self.ui.txtSiteCliente.setText(str(itens[10]))
-            self.ui.txtEmailCliente.setText(str(itens[11]))
-            self.ui.txtCepCliente.setText(str(itens[12]))
-            self.ui.txtCidadesCliente.setText(str(itens[13]))
-            self.ui.txtEstadosCliente.setText(str(itens[14]))
-            self.ui.txtIdEmpresa.setText(str(itens[15]))
-            self.ui.txtFantasiaEmpresa.setText(str(itens[16]))
-            self.ui.txtRazaoSocialEmpresa.setText(str(itens[17]))
-            self.ui.txtCnpjEmpresa.setText(str(itens[18]))
-            self.ui.txtInscricaoEstaduaEmpresa.setText(str(itens[19]))
-'''
+
+        codigo = str(itens[0])
+        tipo = str(itens[1])
+        razao = str(itens[2])
+        fantasia = str(itens[3])
+        cnpj = str(itens[4])
+        insEstadual = str(itens[5])
+        expeditor = str(itens[6])
+        uf = str(itens[7])
+        aniversario = str(itens[8])
+        endereco = str(itens[9])
+        numero = str(itens[10])
+        complemento = str(itens[11])
+        bairro = str(itens[12])
+        cidade = str(itens[13])
+        estado = str(itens[14])
+        cep = str(itens[15])
+        site = str(itens[16])
+        obs = str(itens[17])
+        if itens[18] == 'Ativo':
+            situacao = True
+        else:
+            situacao = False
+
+        idPessoa = clienteDao.pesquisarPessoaCodigo(codigo)
+        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoaJuridica = clienteDao.pesquisarPessoaJuridicaId(idPessoa)
+
+        __dados = Cliente(codigo, idPessoa, idPessoaFisico, idPessoaJuridica, cnpj, insEstadual, fantasia, razao, obs, situacao, tipo)
+        self.botoesEditar()
+        self.setCampos(__dados)
+        self.pesquisarTelefone(codigo)
+        self.pesquisaEmail(codigo)
+        self.dialog.close()
+
+    def setCampos(self, campos):
+        self.ui.txtCodigo.setEnabled(False)
+        self.ui.btnPesquisarEmpresa.setEnabled(False)
+
+        if campos.getTipo == "PESSOA FÍSICA":
+            self.ui.radBtnPessoaFisica.setChecked(True)
+            self.idPessoaFisica = campos.getIdPessoaFisica
+        elif campos.getTipo == "PESSOA JURÍDICA":
+            self.idPessoaJurirdica = campos.getIdPessoaJuridica
+            self.ui.radBtnPessoaJuridica.setChecked(True)
+
+        self.idCliente= int(campos.getIdCliente)
+        self.idPessoa = int(campos.getIdPessoa)
+        self.ui.txtCodigo.setText(str(campos.getIdPessoa))
+        self.ui.txtCnpj.setText(campos.getCnpj)
+        self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
+        self.ui.txtFantasia.setText(campos.getFantasia)
+        self.ui.txtRazaoSocial.setText(campos.getRazaoSocial)
+
+        if campos.getSituacao == True:
+            self.ui.radBtnAtivo.setChecked(True)
+        else:
+            self.ui.radBtnDesativo.setChecked(True)
+
+        self.ui.txtObservacao.setText(str(campos.getObservacao))
+        self.editar = True
+
+    def pesquisarTelefone(self, campos):
+        empresaDao = ClienteDao()
+        id = empresaDao.pesquisaTelefone(campos)
+        if id != []:
+            self.setTabelaTelefone(id)
+
+    def setTabelaTelefone(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.ui.tabContatoTelefone.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            idContato = pesqui[0]
+            contato = pesqui[1]
+            telefone = pesqui[2]
+
+
+            self.ui.tabContatoTelefone.setItem(linha, 0, QtGui.QTableWidgetItem(str(contato)))
+            self.ui.tabContatoTelefone.setItem(linha, 1, QtGui.QTableWidgetItem(str(telefone)))
+
+            lista = (idContato, contato, telefone)
+            self.contatoAdd.append(lista)
+
+
+            linha += 1
+
+    def pesquisaEmail(self, campos):
+        empresaDao = ClienteDao()
+        id = empresaDao.pesquisaEmail(campos)
+        if id != []:
+
+            self.setTabelaEmail(id)
+
+    def setTabelaEmail(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.ui.tabContatoEmail.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            idEmail = pesqui[0]
+            contato = pesqui[1]
+            email = pesqui[2]
+
+            self.ui.tabContatoEmail.setItem(linha, 0, QtGui.QTableWidgetItem(str(contato)))
+            self.ui.tabContatoEmail.setItem(linha, 1, QtGui.QTableWidgetItem(str(email)))
+
+            lista = (idEmail, contato, email)
+            self.emailAdd.append(lista)
+
+            linha += 1
+
+    def deletarTelefone(self):
+        emp = ClienteDao()
+        i = 0
+        for lista in self.contatoRemove :
+            a = self.contatoRemove[i]
+
+            idTelefone = int(a[0])
+
+            emp.deletarTelefone(idTelefone, self.idCliente)
+            pesquisa = emp.pesquisaTelefoneCliente(idTelefone, self.idCliente)
+            if pesquisa == "":
+                emp.deletarContatoTelefone(idTelefone)
+
+            i += 1
+
+    def deletarEmail(self):
+        emp = ClienteDao()
+        i = 0
+        for lista in self.emailRemove:
+            a = self.emailRemove[i]
+
+            idEmail = a[0]
+
+            emp.deletarEmail(idEmail, self.idCliente)
+            pesquisa = emp.pesquisaEmailCliente(idEmail, self.idCliente)
+            if pesquisa == "":
+                emp.deletarContatoEmail(idEmail)
+
+            i += 1
+
+    def atualizaTelefone(self):
+        emp = ClienteDao()
+        i = 0
+        for lista in self.contatoAtualizar:
+            a = self.contatoAtualizar[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, self.idCliente)
+            emp.cadastrarTelefone(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarTelefoneCliente(id, self.idCliente)
+
+            i += 1
+
+    def atualizaEmail(self):
+        emp = ClienteDao()
+        i = 0
+        for lista in self.emailAtualizar:
+            a = self.emailAtualizar[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, self.idCliente)
+            emp.cadastrarEmail(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarEmailCliente(id, self.idCliente)
+
+            i += 1
+
+    def atualizar(self):
+        if self.contatoRemove  != []:
+            self.deletarTelefone()
+
+        if self.emailRemove != []:
+            self.deletarEmail()
+
+        if self.contatoAtualizar != []:
+            self.atualizaTelefone()
+
+        if self.emailAtualizar != []:
+            self.atualizaEmail()
+
+
+        if self.ui.radBtnAtivo.isChecked():
+            ativo = 1
+        elif self.ui.radBtnDesativo.isChecked():
+            ativo = 0
+
+        empresaDao = ClienteDao()
+        empresa = Cliente(self.idCliente, self.idPessoa, self.idPessoaFisica, self.idPessoaJurirdica, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtFantasia.text(), self.ui.txtRazaoSocial.text(), self.ui.txtObservacao.toPlainText(), ativo, None)
+        empresaDao.atualizarCliente(empresa)
+
+        self.cancelar()

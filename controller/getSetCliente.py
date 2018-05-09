@@ -1,5 +1,5 @@
 class Cliente():
-    def __init__(self, idCliente, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao):
+    def __init__(self, idCliente, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao, tipo):
         self.__idCliente = idCliente
         self.__idPessoa = idPessoa
         self.__idPessoaFisica = idPessoaFisica
@@ -10,6 +10,7 @@ class Cliente():
         self.__razaoSocial = razaoSocial
         self.__observacao = observacao
         self.__situacao = situacao
+        self.__tipo = tipo
 
 
     @property
@@ -92,3 +93,10 @@ class Cliente():
     def setSituacao(self, situacao):
         self.__situcao = situacao
 
+    @property
+    def getTipo(self):
+        return self.__tipo
+
+    @getTipo.setter
+    def setTipo(self, tipo):
+        self.__Tipo = tipo

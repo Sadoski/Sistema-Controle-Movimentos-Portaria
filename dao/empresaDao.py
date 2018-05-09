@@ -298,7 +298,7 @@ class EmpresaDao(object):
             self.__conexao.conn.rollback()
             return False
 
-    def deletarContatoEmail(self, idEmail, idEmpresa):
+    def deletarContatoEmail(self, idEmail):
 
         try:
             _sql = "DELETE FROM email WHERE id_email = '"+idEmail+"'"

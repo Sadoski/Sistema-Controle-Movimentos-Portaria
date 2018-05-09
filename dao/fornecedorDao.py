@@ -15,6 +15,46 @@ class FornecedorDao(object):
         self.__ts = time.time()
         self.__dataHora = datetime.datetime.fromtimestamp(self.__ts).strftime('%Y-%m-%d %H:%M:%S')
 
+    def pesquisarFornecedorIdFisico(self, fornecedor):
+        try:
+            _sql = "SELECT * FROM fornecedor e INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa INNER JOIN pessoa_fisica f ON p.id_pessoa = f.id_pessoa WHERE f.id_pessoa_fisica = '"+ fornecedor +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarFornecedorIdJuridico(self, fornecedor):
+        try:
+            _sql = "SELECT * FROM fornecedor e INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa INNER JOIN pessoa_juridica j ON p.id_pessoa = j.id_pessoa WHERE j.id_pessoa_juridica = '"+ fornecedor +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaFisica(self, pessoaFisica):
+        try:
+            _sql = "SELECT p.cpf_cnpj, p.rg_inscricao, p.nome_razao, p.sobrenome_fantasia FROM pessoa_fisica f INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE f.id_pessoa_fisica = '"+pessoaFisica+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaJuridica(self, pessoaJuridica):
+        try:
+            _sql = "SELECT p.cpf_cnpj, p.rg_inscricao, p.nome_razao, p.sobrenome_fantasia FROM pessoa_juridica j INNER JOIN pessoa p ON p.id_pessoa = J.id_pessoa WHERE j.id_pessoa_juridica = '"+pessoaJuridica+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def cadastrarFornecedor(self, fornecedor):
         try:
             _sql = "INSERT INTO fornecedor (fantasia, razao_social, cnpj, inscricao_estadual, endereco, numero_endereco, complemento, bairro, telefone, site, email, cadastrado, id_cidades, id_empresa) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"

@@ -3,18 +3,406 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classMensagemBox import MensagemBox
+from classes.classValidator import Validator
 from controller.getSetFornecedor import Fornecedor
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.empresaDao import EmpresaDao
 from dao.fornecedorDao import FornecedorDao
-from telas.frmCadastroFornecedor import Ui_frmCadastroFornecedor
+from telas.frmCadFornecedor import Ui_frmCadastroFornecedor
 
 class CadastroFornecedores(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroFornecedor()
         self.ui.setupUi(self)
+        self.validator = Validator()
+        self.mensagem = MensagemBox()
+        self.idCliente = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.idPessoaJurirdica = int()
+        self.editar = False
+        self.contatoAdd = []
+        self.contatoRemove = []
+        self.contatoAtualizar = []
+        self.emailAdd = []
+        self.emailRemove = []
+        self.emailAtualizar = []
 
+        self.ui.txtContatoEmail.setValidator(self.validator)
+        self.ui.txtContatoTelefone.setValidator(self.validator)
+
+        self.ui.btnNovo.clicked.connect(self.novo)
+        #self.ui.btnSalvar.clicked.connect(self.cadastro)
+        self.ui.btnCancelar.clicked.connect(self.cancelar)
+        #self.ui.btnEditar.clicked.connect(self.atualizar)
+        #self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaFisicaJuridica)
+
+
+        self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
+        self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
+        self.ui.txtObservacao.textChanged.connect(self.textEdite)
+
+        self.ui.radBtnPessoaFisica.clicked.connect(self.botaoNovo)
+        self.ui.radBtnPessoaJuridica.clicked.connect(self.botaoNovo)
+
+        self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
+        self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
+
+        self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
+        self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
+
+        self.ui.txtCodigo.returnPressed.connect(self.setCliente)
+
+        self.ui.txtCodigo.editingFinished.connect(self.setClienteEditFinish)
+
+
+    def numberCodigo(self):
+        if self.ui.txtCodigo.text().isnumeric() == False:
+            self.ui.txtCodigo.backspace()
+
+    def numberTelefone(self):
+        if self.ui.txtNumeroTelefone.text().isnumeric() == False:
+            self.ui.txtNumeroTelefone.backspace()
+
+    def textEdite(self):
+        if (len(self.ui.txtObservacao.toPlainText()) > 255):
+            self.ui.txtObservacao.textCursor().deletePreviousChar()
+
+    def novo(self):
+        self.limparCampos()
+        self.ui.grbTipoPessoa.setEnabled(True)
+        self.ui.radBtnPessoaFisica.setCheckable(True)
+        self.ui.radBtnPessoaJuridica.setCheckable(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
+    def botaoNovo(self):
+        self.ui.txtCodigo.clear()
+        self.ui.txtCnpj.clear()
+        self.ui.txtInscricaoEstadua.clear()
+        self.ui.txtRazaoSocial.clear()
+        self.ui.txtFantasia.clear()
+
+        self.ui.grbDadosPessoaFisicaJuridica.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+
+
+    def cancelar(self):
+        self.limparCampos()
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+        self.desativarCampos()
+
+    def desativarCampos(self):
+        self.ui.grbDadosPessoaFisicaJuridica.setEnabled(False)
+        self.ui.tabWiAdicionais.setEnabled(False)
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
+    def botoesEditar(self):
+        self.ui.grbDadosPessoaFisicaJuridica.setEnabled(False)
+        self.limparCampos()
+        self.ui.grbTipoPessoa.setEnabled(False)
+        self.ui.radBtnPessoaFisica.setCheckable(True)
+        self.ui.radBtnPessoaJuridica.setCheckable(True)
+        self.ui.grbAtivo.setEnabled(True)
+        self.ui.radBtnAtivo.setCheckable(True)
+        self.ui.radBtnDesativo.setCheckable(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(True)
+
+    def ativarCampos(self):
+        self.ui.grbDadosPessoaFisicaJuridica.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
+
+    def limparCampos(self):
+        self.idCliente = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.idPessoaJurirdica = int()
+        self.ui.grbTipoPessoa.setEnabled(True)
+        self.ui.radBtnPessoaFisica.setCheckable(False)
+        self.ui.radBtnPessoaJuridica.setCheckable(False)
+        self.ui.grbTipoPessoa.setEnabled(False)
+        self.ui.txtCodigo.setEnabled(True)
+        self.ui.btnPesquisarEmpresa.setEnabled(True)
+        self.editar = False
+        self.ui.txtCodigo.clear()
+        self.ui.txtCnpj.clear()
+        self.ui.txtInscricaoEstadua.clear()
+        self.ui.txtRazaoSocial.clear()
+        self.ui.txtFantasia.clear()
+
+        self.ui.txtObservacao.clear()
+
+        self.ui.txtContatoTelefone.clear()
+        self.ui.txtNumeroTelefone.clear()
+        self.ui.txtEnderecoEmail.clear()
+        self.ui.txtContatoEmail.clear()
+
+
+        self.contatoAdd.clear()
+        self.contatoRemove.clear()
+        self.contatoAtualizar.clear()
+        self.emailAdd.clear()
+        self.emailRemove.clear()
+        self.emailAtualizar.clear()
+
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+
+        self.ui.radBtnAtivo.setCheckable(False)
+        self.ui.radBtnDesativo.setCheckable(False)
+
+    def deletarContatoTelefone(self):
+        for i in reversed(range(self.ui.tabContatoTelefone.rowCount())):
+            self.ui.tabContatoTelefone.removeRow(i)
+
+    def deletarContatoEmail(self):
+        for i in reversed(range(self.ui.tabContatoEmail.rowCount())):
+            self.ui.tabContatoEmail.removeRow(i)
+
+    def addContatoTelefone(self):
+
+        if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
+            if len(self.ui.txtNumeroTelefone.text()) == 10 or len(self.ui.txtNumeroTelefone.text()) == 11:
+                __contato = str(self.ui.txtContatoTelefone.text())
+                __telefone = str(self.ui.txtNumeroTelefone.text())
+                if self.editar == False:
+                    add = [(__contato, __telefone)]
+                    self.contatoAdd.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
+
+                elif self.editar == True:
+                    add = [(__contato, __telefone)]
+                    self.contatoAtualizar.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
+
+                self.ui.txtContatoTelefone.clear()
+                self.ui.txtNumeroTelefone.clear()
+
+                self.ui.txtContatoTelefone.setFocus()
+            elif len(self.ui.txtNumeroTelefone.text()) >11:
+                self.mensagem.warning( 'Mensagem', "Atenção contem digitos do telefone a mais")
+            else:
+                self.mensagem.warning( 'Mensagem', "Atenção esta faltando digitos do telefone")
+        else:
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def inserirTabelaTelefone(self, dado):
+
+        linha = self.ui.tabContatoTelefone.rowCount()
+        for info in dado:
+            self.ui.tabContatoTelefone.insertRow(linha)
+            __contato = info[0]
+            __telefone = info[1]
+
+
+            self.ui.tabContatoTelefone.setItem(linha, 0, QtGui.QTableWidgetItem(str(__contato)))
+            self.ui.tabContatoTelefone.setItem(linha, 1, QtGui.QTableWidgetItem(str(__telefone)))
+
+
+            linha += 1
+
+    def cellClickTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
+        list=[]
+        columcount = self.ui.tabContatoTelefone.columnCount()
+        row = self.ui.tabContatoTelefone.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell =self.ui.tabContatoTelefone.item(row, x).text()
+            list.append(cell)
+
+        if list in self.contatoAtualizar:
+            self.contatoAtualizar.remove(list)
+            self.ui.tabContatoTelefone.removeRow(index)
+        else:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                self.contatoRemove.append(self.contatoAdd[index])
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+    def delContatoTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
+
+        if self.editar == False:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickTelefone()
+
+    def inserirTabelaEmail(self, dado):
+
+        linha = self.ui.tabContatoEmail.rowCount()
+        for info in dado:
+            self.ui.tabContatoEmail.insertRow(linha)
+            __contato = info[0]
+            __email = info[1]
+
+            self.ui.tabContatoEmail.setItem(linha, 0, QtGui.QTableWidgetItem(str(__contato)))
+            self.ui.tabContatoEmail.setItem(linha, 1, QtGui.QTableWidgetItem(str(__email)))
+
+            linha += 1
+
+    def addContatoEmail(self):
+        if self.ui.txtContatoEmail.text() != "" and self.ui.txtEnderecoEmail.text() != "":
+                __contato = str(self.ui.txtContatoEmail.text())
+                __email = str(self.ui.txtEnderecoEmail.text())
+                if self.editar == False:
+                    add = [(__contato, __email)]
+                    self.emailAdd.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
+
+                elif self.editar == True:
+                    add = [(__contato, __email)]
+                    self.emailAtualizar.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
+
+                self.ui.txtContatoEmail.clear()
+                self.ui.txtEnderecoEmail.clear()
+
+                self.ui.txtContatoEmail.setFocus()
+        else:
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def cellClickEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+        list = []
+        columcount = self.ui.tabContatoEmail.columnCount()
+        row = self.ui.tabContatoEmail.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabContatoEmail.item(row, x).text()
+            list.append(cell)
+
+        if list in self.emailAtualizar:
+            self.emailAtualizar.remove(list)
+            self.ui.tabContatoEmail.removeRow(index)
+        else:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                self.emailRemove.append(self.emailAdd[index])
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
+    def delContatoEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+
+        if self.editar == False:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickEmail()
+
+    def setCliente(self):
+        cliente = FornecedorDao()
+        if self.ui.radBtnPessoaFisica.isChecked():
+            cli = cliente.pesquisarFornecedorIdFisico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+            else:
+                self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
+
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            cli = cliente.pesquisarFornecedorIdJuridico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+            else:
+                self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
+
+    def setClienteEditFinish(self):
+        cliente = FornecedorDao()
+        if self.ui.radBtnPessoaFisica.isChecked():
+            cli = cliente.pesquisarFornecedorIdFisico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            cli = cliente.pesquisarFornecedorIdJuridico(self.ui.txtCodigo.text())
+
+            if cli == []:
+                clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+                if clien == []:
+                    self.ui.txtCnpj.clear()
+                    self.ui.txtInscricaoEstadua.clear()
+                    self.ui.txtRazaoSocial.clear()
+                    self.ui.txtFantasia.clear()
+                else:
+                    for empres in clien:
+                        self.ui.txtCnpj.setText(str(empres[0]))
+                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                        self.ui.txtRazaoSocial.setText(str(empres[2]))
+                        self.ui.txtFantasia.setText(str(empres[3]))
+
+"""
         self.ui.txtFantasiaEmpresa.returnPressed.connect(self.focusCnpjFornecedor)
         self.ui.txtCnpjFornecedor.returnPressed.connect(self.focusInscricaoEstadualFornecedor)
         self.ui.txtInscricaoEstadualFornecedor.returnPressed.connect(self.focustxtFantasiaFornecedor)
@@ -713,3 +1101,4 @@ class CadastroFornecedores(QtGui.QDialog):
             self.ui.txtRazaoSocialEmpresa.setText(str(itens[17]))
             self.ui.txtCnpjEmpresa.setText(str(itens[18]))
             self.ui.txtInscricaoEstaduaEmpresa.setText(str(itens[19]))
+"""

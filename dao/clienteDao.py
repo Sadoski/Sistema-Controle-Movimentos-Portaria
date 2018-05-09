@@ -43,7 +43,7 @@ class ClienteDao(object):
     def cadastrarClienteJuridica(self, cliente):
         try:
             _sql = "INSERT INTO cliente(id_pessoa, id_pessoa_juridica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
-            _valores = (cliente.getIdPessoa, int(cliente.getIdPessoaJuridica), cliente.getSituacao, cliente.getObservacao, self.__dataHora)
+            _valores = (cliente.getIdPessoa, cliente.getIdPessoaJuridica, cliente.getSituacao, cliente.getObservacao, self.__dataHora)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -57,8 +57,8 @@ class ClienteDao(object):
     def atualizarCliente(self, cliente):
 
         try:
-            __sql = "UPDATE cliente SET fantasia = %s, razao_social = %s, cnpj = %s, inscricao_estadual = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, site = %s, email = %s, atualizado = %s, id_cidades = %s, id_empresa = %s WHERE id_cliente = %s"
-            _valores = (cliente.getFantasia, cliente.getRazaoSocial, cliente.getCnpj, cliente.getInscricaoEstadual, cliente.getEndereco, cliente.getNumero, cliente.getComplemento, cliente.getBairro, cliente.getTelefone, cliente.getSite, cliente.getEmail, self.__dataHora, cliente.getCidade, cliente.getEmpresa, cliente.getIdCliente)
+            __sql = "UPDATE cliente SET observacao = %s, situacao = %s WHERE id_cliente = %s"
+            _valores = (cliente.getObservacao, cliente.getSituacao, cliente.getIdCliente)
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -299,5 +299,133 @@ class ClienteDao(object):
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados  email")
+            self.__conexao.conn.rollback()
+            return False
+
+    def pesquisarPessoaCodigo(self, cliente):
+        try:
+            _sql = "SELECT p.id_pessoa FROM cliente c INNER JOIN pessoa p ON p.id_pessoa = c.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE c.id_cliente = '" + cliente + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaFisicaId(self, cliente):
+        try:
+            _sql = "SELECT f.id_pessoa_fisica FROM pessoa_fisica f INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE p.id_pessoa = '" + empresa + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaJuridicaId(self, cliente):
+        try:
+            _sql = "SELECT j.id_pessoa_juridica FROM pessoa_juridica j INNER JOIN pessoa p ON p.id_pessoa = j.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE p.id_pessoa = '" + empresa + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaTelefone(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_cliente t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_cliente  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmail(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_email, l.contato, l.email FROM email_cliente t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_cliente  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaTelefoneCliente(self, idTelefone, idCliente):
+        try:
+            _sql = "SELECT * FROM telefone_cliente t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_telefone = '"+idTelefone+"' AND  t.id_cliente = '"+idCliente+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmailCliente(self, idEmail, idCliente):
+        try:
+            _sql = "SELECT * FROM email_cliente t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_telefone = '"+idEmail+"' AND  t.id_cliente = '"+idCliente+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def deletarTelefone(self, idTelefone, idCliente):
+
+        try:
+            _sql = "DELETE FROM telefone_cliente WHERE id_telefone = %s AND id_cliente = %s"
+            __valor = (idTelefone, idCliente)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoTelefone(self, idTelefone):
+
+        try:
+            _sql = "DELETE FROM telefone WHERE id_telefone = '" + idTelefone + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarEmail(self, idEmail, idCliente):
+
+        try:
+            _sql = "DELETE FROM email_cliente WHERE id_email = %s AND id_cliente = %s"
+            __valor = (idEmail, idCliente)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoEmail(self, idEmail):
+
+        try:
+            _sql = "DELETE FROM email WHERE id_email = '" + idEmail + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
             self.__conexao.conn.rollback()
             return False
