@@ -17,7 +17,7 @@ from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
 from telas.frmEntradaNF import Ui_frmEntradaNF, _fromUtf8
 from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
 from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
-from telas.frmPesquisarFornecedor import Ui_frmConsultarFornecedores
+from telas.frmPesquisarFornecedor import Ui_frmPesquisarFornecedor
 from telas.frmPesquisarMotorista import Ui_frmConsultarMotoristas
 from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 

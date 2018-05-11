@@ -5,11 +5,18 @@ from PyQt4.QtGui import *
 
 from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
+from controller.getSetContatoEmail import ContatoEmail
+from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetFornecedor import Fornecedor
-from dao.cidadesEstadosDao import CidadesEstadosDao
-from dao.empresaDao import EmpresaDao
+from controller.getSetPessoaFisica import PessoaFisica
+from controller.getSetPessoaJuridica import PessoaJuridica
 from dao.fornecedorDao import FornecedorDao
+from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
+from dao.pesquisarPessoaJuridicaDao import PesquisarPessoaJuridicaDao
 from telas.frmCadFornecedor import Ui_frmCadastroFornecedor
+from telas.frmPesquisarFornecedor import Ui_frmPesquisarFornecedor
+from telas.frmPesquisarPessoaFisicaJuridica import Ui_frmPesquisarPessoaFisicaJuridica
+
 
 class CadastroFornecedores(QtGui.QDialog):
     def __init__(self):
@@ -18,7 +25,7 @@ class CadastroFornecedores(QtGui.QDialog):
         self.ui.setupUi(self)
         self.validator = Validator()
         self.mensagem = MensagemBox()
-        self.idCliente = int()
+        self.idFornecedor = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
         self.idPessoaJurirdica = int()
@@ -37,7 +44,7 @@ class CadastroFornecedores(QtGui.QDialog):
         #self.ui.btnSalvar.clicked.connect(self.cadastro)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         #self.ui.btnEditar.clicked.connect(self.atualizar)
-        #self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaFisicaJuridica)
+        self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaFisicaJuridica)
 
 
         self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
@@ -137,7 +144,7 @@ class CadastroFornecedores(QtGui.QDialog):
 
 
     def limparCampos(self):
-        self.idCliente = int()
+        self.idFornecedor = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
         self.idPessoaJurirdica = int()
@@ -401,6 +408,489 @@ class CadastroFornecedores(QtGui.QDialog):
                         self.ui.txtInscricaoEstadua.setText(str(empres[1]))
                         self.ui.txtRazaoSocial.setText(str(empres[2]))
                         self.ui.txtFantasia.setText(str(empres[3]))
+
+    def pesquisarPessoaFisicaJuridica(self):
+        self.dialogFisicoJuridico = QDialog(self)
+        self.__pesquisarFisicaJuridica = Ui_frmPesquisarPessoaFisicaJuridica()
+        self.__pesquisarFisicaJuridica.setupUi(self.dialogFisicoJuridico)
+        self.colunasTabela()
+        self.__pesquisarFisicaJuridica.txtPesquisar.setValidator(self.validator)
+
+        self.__pesquisarFisicaJuridica.txtPesquisar.returnPressed.connect(self.pesquisarFisicoJuridico)
+
+        self.__pesquisarFisicaJuridica.btnPesquisar.clicked.connect(self.pesquisarFisicoJuridico)
+
+        self.__pesquisarFisicaJuridica.tabPesquisar.doubleClicked.connect(self.setarCamposFisicoJuridico)
+
+        self.dialogFisicoJuridico.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogFisicoJuridico.exec_()
+
+    def colunasTabela(self):
+        if self.ui.radBtnPessoaFisica.isChecked():
+            self.__pesquisarFisicaJuridica.tabPesquisar.setColumnCount(18)
+            self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(0)
+            self.__pesquisarFisicaJuridica.tabPesquisar.setHorizontalHeaderLabels(["Cod.", "Nome", "Apelido", "CPF", "RG", "Expeditor", "UF", "Aniversario", "Sexo", "Mãe", "Pai", "Endereço", "Número", "Complemento", "Bairro", "Cidade", "Estado", "CEP"])
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            self.__pesquisarFisicaJuridica.tabPesquisar.setColumnCount(12)
+            self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(0)
+            self.__pesquisarFisicaJuridica.tabPesquisar.setHorizontalHeaderLabels(["Cod.", "Razão Social", "Fantasia", "CNPJ", "Ins. Estadual", "Endereço", "Número", "Complemento", "Bairro", "Cidade" , "Estado", "CEP"])
+
+
+    def pesquisarFisicoJuridico(self):
+        if self.__pesquisarFisicaJuridica.radBtnCodigo.isChecked():
+            if self.ui.radBtnPessoaFisica.isChecked():
+                __codigo = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaFisicaDao()
+                __retorno = __pesDao.pesquisaCodigo(__codigo)
+                self.setarTabelaPesquisaFisica(__retorno)
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                __codigo = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaJuridicaDao()
+                __retorno = __pesDao.pesquisaCodigo(__codigo)
+                self.setarTabelaPesquisaJuridico(__retorno)
+        elif self.__pesquisarFisicaJuridica.radBtnRazaoSocial.isChecked():
+            if self.ui.radBtnPessoaFisica.isChecked():
+                __razao = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaFisicaDao()
+                __retorno = __pesDao.pesquisaNome(__razao)
+                self.setarTabelaPesquisaFisica(__retorno)
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                __razao = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaJuridicaDao()
+                __retorno = __pesDao.pesquisaRazaoSocial(__razao)
+                self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisicaJuridica.radBtnFantasia.isChecked():
+            if self.ui.radBtnPessoaFisica.isChecked():
+                __fantasia = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaFisicaDao()
+                __retorno = __pesDao.pesquisaApelido(__fantasia)
+                self.setarTabelaPesquisaFisica(__retorno)
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                __fantasia = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaJuridicaDao()
+                __retorno = __pesDao.pesquisaFantasia(__fantasia)
+                self.setarTabelaPesquisaJuridico(__retorno)
+        elif self.__pesquisarFisicaJuridica.radBtnCnpj.isChecked():
+            if self.ui.radBtnPessoaFisica.isChecked():
+                __cnpj = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaFisicaDao()
+                __retorno = __pesDao.pesquisaCpf(__cnpj)
+                self.setarTabelaPesquisaFisica(__retorno)
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                __cnpj = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaJuridicaDao()
+                __retorno = __pesDao.pesquisaCnpj(__cnpj)
+                self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisicaJuridica.radBtnInsEstadual.isChecked():
+            if self.ui.radBtnPessoaFisica.isChecked():
+                __inscricao = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaFisicaDao()
+                __retorno = __pesDao.pesquisaRg(__inscricao)
+                self.setarTabelaPesquisaFisica(__retorno)
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                __inscricao = self.__pesquisarFisicaJuridica.txtPesquisar.text()
+                __pesDao = PesquisarPessoaJuridicaDao()
+                __retorno = __pesDao.pesquisaInsEstadual(__inscricao)
+                self.setarTabelaPesquisaJuridico(__retorno)
+
+        else:
+            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
+
+
+    def setarTabelaPesquisaFisica(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            nome = pesqui[1]
+            apelido = pesqui[2]
+            cpf = pesqui[3]
+            rg = pesqui[4]
+            expeditor = pesqui[5]
+            uf = pesqui[6]
+            aniversario = pesqui[7]
+            sexo = pesqui[8]
+            mae = pesqui[9]
+            pai = pesqui[10]
+            endereco = pesqui[11]
+            numero = pesqui[12]
+            complemento = pesqui[13]
+            bairro = pesqui[14]
+            cidade = pesqui[15]
+            estado = pesqui[16]
+            cep = pesqui[17]
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(apelido)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(aniversario)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(sexo)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(mae)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(pai)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cep)))
+
+            linha += 1
+
+    def setarTabelaPesquisaJuridico(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarFisicaJuridica.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            razao = pesqui[1]
+            fantasia = pesqui[2]
+            cnpj = pesqui[3]
+            inscricao = pesqui[4]
+            endereco = pesqui[5]
+            numero = pesqui[6]
+            complemento = pesqui[7]
+            bairro = pesqui[8]
+            cidade = pesqui[9]
+            estado = pesqui[10]
+            cep = pesqui[11]
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(razao)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(fantasia)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnpj)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(inscricao)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFisicaJuridica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cep)))
+
+            linha += 1
+
+
+
+    def setarCamposFisicoJuridico(self):
+        if self.ui.radBtnPessoaFisica.isChecked():
+            itens = []
+
+            for item in self.__pesquisarFisicaJuridica.tabPesquisar.selectedItems():
+                itens.append(item.text())
+
+            codigo = str(itens[0])
+            nome = str(itens[1])
+            apelido = str(itens[2])
+            cpf = str(itens[3])
+            rg = str(itens[4])
+            expeditor = str(itens[5])
+            uf = str(itens[6])
+            aniversario = str(itens[7])
+            sexo = str(itens[8])
+            endereco = str(itens[9])
+            numero = str(itens[10])
+            complemento = str(itens[11])
+            bairro = str(itens[12])
+            cidade = str(itens[13])
+            estado = str(itens[14])
+            cep = str(itens[15])
+
+            __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+            self.setCamposFisicoJuridico(__dados)
+            self.dialogFisicoJuridico.close()
+
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            itens = []
+
+            for item in self.__pesquisarFisicaJuridica.tabPesquisar.selectedItems():
+                itens.append(item.text())
+
+
+            codigo = str(itens[0])
+            razao = str(itens[1])
+            fantasia = str(itens[2])
+            cnpj = str(itens[3])
+            inscricao = str(itens[4])
+            endereco = str(itens[5])
+            numero = str(itens[6])
+            complemento = str(itens[7])
+            bairro = str(itens[8])
+            cidade = str(itens[9])
+            estado = str(itens[10])
+            cep = str(itens[11])
+
+            __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
+            self.setCamposFisicoJuridico(__dados)
+            self.dialogFisicoJuridico.close()
+
+    def setCamposFisicoJuridico(self, campos):
+        if self.ui.radBtnPessoaFisica.isChecked():
+            self.ui.txtCodigo.setText(campos.getIdPesFisica)
+            self.ui.txtCnpj.setText(campos.getCpf)
+            self.ui.txtInscricaoEstadua.setText(campos.setRg)
+            self.ui.txtFantasia.setText(campos.getApelido)
+            self.ui.txtRazaoSocial.setText(campos.getNome)
+        elif self.ui.radBtnPessoaJuridica.isChecked():
+            self.ui.txtCodigo.setText(campos.getIdPesJuridica)
+            self.ui.txtCnpj.setText(campos.getCnpj)
+            self.ui.txtInscricaoEstadua.setText(campos.setInscricao)
+            self.ui.txtFantasia.setText(campos.getFantasia)
+            self.ui.txtRazaoSocial.setText(campos.getRazao)
+
+    def cadastrarTelefone(self):
+        cli = FornecedorDao()
+        i = 0
+        for lista in self.contatoAdd:
+            a = self.contatoAdd[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, self.idCliente)
+            cli.cadastrarTelefone(__descricao)
+            id = cli.ultimoRegistro()
+            cli.cadastrarTelefoneCliente(id, self.idCliente)
+
+            i += 1
+
+    def cadastrarEmail(self):
+        cli = FornecedorDao()
+        i = 0
+        for lista in self.emailAdd:
+            a = self.emailAdd[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, self.idCliente)
+            cli.cadastrarEmail(__descricao)
+            id = cli.ultimoRegistro()
+            cli.cadastrarEmailCliente(id, self.idCliente)
+
+            i += 1
+
+    def cadastro(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+            fornecedorDao = FornecedorDao()
+            if self.ui.radBtnPessoaFisica.isChecked():
+                idPessoa = fornecedorDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
+                fornecedor = Fornecedor(None, idPessoa, self.ui.txtCodigo.text(), None, None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
+                fornecedorDao.cadastrarFornecedorFisico(fornecedor)
+                self.idFornecedor = fornecedorDao.ultimoRegistro()
+
+
+                if self.contatoAdd != []:
+                    self.cadastrarTelefone()
+
+                if self.emailAdd != []:
+                    self.cadastrarEmail()
+
+                self.cancelar()
+
+            elif self.ui.radBtnPessoaJuridica.isChecked():
+                idPessoa = fornecedorDao.pesquisarPessoaJur(self.ui.txtCodigo.text())
+                fornecedor = Fornecedor(None, idPessoa, None, self.ui.txtCodigo.text(), None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
+                fornecedorDao.cadastrarFornecedorJuridica(fornecedor)
+                self.idFornecedor = fornecedorDao.ultimoRegistro()
+
+                if self.contatoAdd != []:
+                    self.cadastrarTelefone()
+
+                if self.emailAdd != []:
+                    self.cadastrarEmail()
+
+                self.cancelar()
+
+        else:
+            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
+
+    def keyPressEvent(self, keyEvent):
+        if keyEvent.key() == (QtCore.Qt.Key_F12):
+            self.dialog = QDialog(self)
+            self.__pesquisarFornecedor = Ui_frmPesquisarFornecedor()
+            self.__pesquisarFornecedor.setupUi(self.dialog)
+
+            self.__pesquisarFornecedor.txtPesquisar.setValidator(self.validator)
+
+            self.__pesquisarFornecedor.txtPesquisar.returnPressed.connect(self.pesquisar)
+
+            self.__pesquisarFornecedor.btnPesquisar.clicked.connect(self.pesquisar)
+
+            #self.__pesquisarFornecedor.tabPesquisar.doubleClicked.connect(self.setarCampos)
+
+            self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.dialog.exec_()
+
+    def pesquisar(self):
+        __pesDao = FornecedorDao()
+        if self.__pesquisarFornecedor.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaCodigoFisica(__codigo)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnRazaoSocial.isChecked():
+            __razao = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisarNomeFisica(__razao)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnFantasia.isChecked():
+            __fantasia = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaApelidoFisica(__fantasia)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnCnpj.isChecked():
+            __cnpj = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaCpfFisica(__cnpj)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnInsEstadual.isChecked():
+            __inscricao = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaRgFisica(__inscricao)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        else:
+            self.mensagem.warning('Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisaEditar(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarFornecedor.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            tipo = pesqui[1]
+            nome = pesqui[2]
+            apelido = pesqui[3]
+            cpf = pesqui[4]
+            rg = pesqui[5]
+            expeditor = pesqui[6]
+            uf = pesqui[7]
+            aniversario = pesqui[8]
+            endereco = pesqui[9]
+            numero = pesqui[10]
+            complemento = pesqui[11]
+            bairro = pesqui[12]
+            cidade = pesqui[13]
+            estado = pesqui[14]
+            cep = pesqui[15]
+            site = pesqui[16]
+            obs = pesqui[17]
+            if pesqui[18] == 1:
+                situacao = "Ativo"
+            else:
+                situacao = "Inativo"
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipo)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(apelido)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(aniversario)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(site)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(obs)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(situacao)))
+
+            linha += 1
+
+    def setarCampos(self):
+        clienteDao = FornecedorDao()
+        itens = []
+
+        for item in self.__pesquisarFornecedor.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codigo = str(itens[0])
+        tipo = str(itens[1])
+        razao = str(itens[2])
+        fantasia = str(itens[3])
+        cnpj = str(itens[4])
+        insEstadual = str(itens[5])
+        expeditor = str(itens[6])
+        uf = str(itens[7])
+        aniversario = str(itens[8])
+        endereco = str(itens[9])
+        numero = str(itens[10])
+        complemento = str(itens[11])
+        bairro = str(itens[12])
+        cidade = str(itens[13])
+        estado = str(itens[14])
+        cep = str(itens[15])
+        site = str(itens[16])
+        obs = str(itens[17])
+        if itens[18] == 'Ativo':
+            situacao = True
+        else:
+            situacao = False
+
+        idPessoa = clienteDao.pesquisarPessoaCodigo(codigo)
+        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoaJuridica = clienteDao.pesquisarPessoaJuridicaId(idPessoa)
+
+        __dados = Fornecedor(codigo, idPessoa, idPessoaFisico, idPessoaJuridica, cnpj, insEstadual, fantasia, razao, obs, situacao, tipo)
+        self.botoesEditar()
+        self.setCampos(__dados)
+        #self.pesquisarTelefone(codigo)
+        #self.pesquisaEmail(codigo)
+        self.dialog.close()
+
+    def setCampos(self, campos):
+        self.ui.txtCodigo.setEnabled(False)
+        self.ui.btnPesquisarEmpresa.setEnabled(False)
+
+        if campos.getTipo == "PESSOA FÍSICA":
+            self.ui.radBtnPessoaFisica.setChecked(True)
+            self.idPessoaFisica = campos.getIdPessoaFisica
+        elif campos.getTipo == "PESSOA JURÍDICA":
+            self.idPessoaJurirdica = campos.getIdPessoaJuridica
+            self.ui.radBtnPessoaJuridica.setChecked(True)
+
+        self.idCliente= int(campos.getIdCliente)
+        self.idPessoa = int(campos.getIdPessoa)
+        self.ui.txtCodigo.setText(str(campos.getIdPessoa))
+        self.ui.txtCnpj.setText(campos.getCnpj)
+        self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
+        self.ui.txtFantasia.setText(campos.getFantasia)
+        self.ui.txtRazaoSocial.setText(campos.getRazaoSocial)
+
+        if campos.getSituacao == True:
+            self.ui.radBtnAtivo.setChecked(True)
+        else:
+            self.ui.radBtnDesativo.setChecked(True)
+
+        self.ui.txtObservacao.setText(str(campos.getObservacao))
+        self.editar = True
 
 """
         self.ui.txtFantasiaEmpresa.returnPressed.connect(self.focusCnpjFornecedor)

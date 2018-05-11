@@ -14,11 +14,11 @@ class Fornecedor():
 
 
     @property
-    def getIdCliente(self):
+    def getIdFornecedor(self):
         return self.__idCliente
 
-    @getIdCliente.setter
-    def setIdCliente(self, idCliente):
+    @getIdFornecedor.setter
+    def setIdFornecedor(self, idCliente):
         self.__idCliente = idCliente
 
     @property
