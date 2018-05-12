@@ -429,3 +429,23 @@ class ClienteDao(object):
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
             self.__conexao.conn.rollback()
             return False
+
+    def pesquisarClientesFisico(self, empresa):
+        try:
+            _sql = "SELECT * FROM pessoa p INNER JOIN pessoa_fisica j ON j.id_pessoa = p.id_pessoa INNER JOIN cliente e ON e.id_pessoa_fisica = j.id_pessoa_fisica INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISÍCA' AND e.id_pessoa_fisica = '"+ empresa +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarClientesJuridico(self, empresa):
+        try:
+            _sql = "SELECT * FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN cliente e ON e.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND e.id_pessoa_juridica = '"+ empresa +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

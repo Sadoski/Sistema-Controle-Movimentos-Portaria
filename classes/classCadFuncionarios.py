@@ -4,563 +4,567 @@ from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
+from classes.classMensagemBox import MensagemBox
+from classes.classValidator import Validator
 from controller.getSetFuncionario import Funcionario
+from controller.getSetPessoaFisica import PessoaFisica
 from dao.cidadesEstadosDao import CidadesEstadosDao
-from dao.empresaDao import EmpresaDao
 from dao.funcionarioDao import FuncionarioDao
+from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from dao.setoresCargosDao import SetoresCargosDao
-from telas.frmCadastroFuncionario import Ui_frmCadastroFuncionario
+from telas.frmCadFuncionario import Ui_frmCadastroFuncionario
+from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
+
 
 class CadastroFuncionario(QtGui.QDialog):
     def __init__(self):
         QtGui.QDialog.__init__(self)
-        self.__ui = Ui_frmCadastroFuncionario()
-        self.__ui.setupUi(self)
+        self.ui = Ui_frmCadastroFuncionario()
+        self.ui.setupUi(self)
+        self.validator = Validator()
+        self.mensagem = MensagemBox()
+        self.idFuncionrio = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.editar = False
+        self.contatoAdd = []
+        self.contatoRemove = []
+        self.contatoAtualizar = []
+        self.emailAdd = []
+        self.emailRemove = []
+        self.emailAtualizar = []
+        self.estadoCivil = []
+        self.deficiencia = []
+        self.categoriaTrabalho = []
+        self.setor = []
+        self.cargo = []
+        self.jornada = []
 
-        self.__ui.txtFantasia.returnPressed.connect(self.focusNomeFun)
-        self.__ui.txtNomeFuncionario.returnPressed.connect(self.focusRg)
-        self.__ui.txtRg.returnPressed.connect(self.focusExpeditor)
-        self.__ui.txtExpeditor.returnPressed.connect(self.focusCpf)
-        self.__ui.txtCpf.returnPressed.connect(self.focusData)
-        self.__ui.txtNomeMae.returnPressed.connect(self.focusNomePai)
-        self.__ui.txtNomePai.returnPressed.connect(self.focusEndereco)
-        self.__ui.txtEndereco.returnPressed.connect(self.focusNumero)
-        self.__ui.txtNumero.returnPressed.connect(self.focusComplemento)
-        self.__ui.txtComplemento.returnPressed.connect(self.focusBairro)
-        self.__ui.txtBairro.returnPressed.connect(self.focusCep)
-        self.__ui.txtCep.returnPressed.connect(self.focusTelefone)
-        self.__ui.txtTelefone.returnPressed.connect(self.focusCelular)
-        self.__ui.txtCelular.returnPressed.connect(self.focusSetores)
+        self.ui.txtContatoEmail.setValidator(self.validator)
+        self.ui.txtContatoTelefone.setValidator(self.validator)
 
-        self.__ui.txtPesquisaFuncionario.returnPressed.connect(self.pesquisarFuncionario)
-
-        self.__ui.txtFantasia.editingFinished.connect(self.pesquisarEmpresa)
-        self.__ui.txtCpf.editingFinished.connect(self.validacaoCpf)
-        self.__ui.txtCep.editingFinished.connect(self.pesquisarCidade)
-
-
-        self.__ui.btnCadNovo.clicked.connect(self.botaoNovoCadastro)
-        self.__ui.btnCadSalvar.clicked.connect(self.cadastrarFuncionario)
-        self.__ui.btnCadCancelar.clicked.connect(self.cancelarCadastro)
-        self.__ui.btnCadEditar.clicked.connect(self.atualizarFuncionario)
-
-        self.__ui.txtSetor.currentIndexChanged.connect(self.pesquisarCargo)
-
-        self.__ui.tbPesquisaFuncionario.doubleClicked.connect(self.tablePesquisa)
-
-    def focusNomeFun(self):
-        self.__ui.txtNomeFuncionario.setFocus()
-
-    def focusRg(self):
-        self.__ui.txtRg.setFocus()
-
-    def focusExpeditor(self):
-        self.__ui.txtExpeditor.setFocus()
-
-    def focusCpf(self):
-        self.__ui.txtCpf.setFocus()
-
-    def focusData(self):
-        self.__ui.txtDataNascimento.setFocus()
-
-    def focusNomeMae(self):
-        self.__ui.txtNomeMae.setFocus()
-
-    def focusNomePai(self):
-        self.__ui.txtNomePai.setFocus()
-
-    def focusEndereco(self):
-        self.__ui.txtEndereco.setFocus()
-
-    def focusNumero(self):
-        self.__ui.txtNumero.setFocus()
-
-    def focusComplemento(self):
-        self.__ui.txtComplemento.setFocus()
-
-    def focusBairro(self):
-        self.__ui.txtBairro.setFocus()
-
-    def focusCep(self):
-        self.__ui.txtCep.setFocus()
-
-    def focusTelefone(self):
-        self.__ui.txtTelefone.setFocus()
-
-    def focusCelular(self):
-        self.__ui.txtCelular.setFocus()
-
-    def focusSetores(self):
-        self.__ui.txtSetor.setFocus()
-
-    def pesquisarSetor(self):
-        __setor = SetoresCargosDao()
-        setores = __setor.pesquisaSetor()
-
-        for sett in setores:
-            self.__ui.txtSetor.addItem(sett[0])
-
-        self.pesquisarCargo()
-
-
-    def pesquisarCargo(self):
-        self.__ui.txtCargo.clear()
-
-        __cargo = SetoresCargosDao()
-        cargos = __cargo.pesquisarFuncao(str(self.__ui.txtSetor.currentText()))
-        for carg in cargos:
-            self.__ui.txtCargo.addItem(carg[0])
-
-
-    def pesquisarEmpresa(self):
-        _empresaDao = EmpresaDao()
-
-        _empresa = _empresaDao.pesquisaEmpresa(str(self.__ui.txtFantasia.text()))
-        if _empresa == False:
-            self.limparCamposEmp()
-        else:
-            self.limparCamposEmp()
-            for empe in _empresa:
-                self.__ui.txtIdEmpresa.setText(str(empe[0]))
-                self.__ui.txtRazaoSocial.setText(empe[1])
-                self.__ui.txtCnpj.setText(empe[2])
-                self.__ui.txtInscricaoEstadua.setText(empe[3])
-
-    def pesquisarCidade(self):
-        _cep = self.removerCaracter(self.__ui.txtCep.text())
-        if len(_cep) < 8:
-            self.__ui.txtCidades.clear()
-            self.__ui.txtEstados.clear()
-        else:
-            cidades = CidadesEstadosDao()
-            cid = cidades.cidade(_cep)
-
-            for cidade in cid:
-                self.__ui.txtCidades.setText(cidade[0])
-                self.__ui.txtEstados.setText(cidade[1])
-            if cid == []:
-                self.__ui.txtCidades.clear()
-                self.__ui.txtEstados.clear()
-
-    def limparCamposEmp(self):
-        self.__ui.txtIdEmpresa.clear()
-        self.__ui.txtRazaoSocial.clear()
-        self.__ui.txtCnpj.clear()
-        self.__ui.txtInscricaoEstadua.clear()
-
-    def validacaoCpf(self):
-        _cpf = self.removerCaracter(self.__ui.txtCpf.text())
-
-        _val = self.validarCpf(_cpf)
-
-        if _val  != False:
-            _valCpf = self.cpf(_cpf)
-            if _valCpf == False:
-                w = QWidget()
-                QMessageBox.warning(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
-                return False
-        else:
-            w = QWidget()
-            QMessageBox.warning(w, 'Atenção', "CPF Invalido, por favor insira um CPF Valido")
-            return False
+        self.ui.btnNovo.clicked.connect(self.novo)
+        #self.ui.btnSalvar.clicked.connect(self.cadastro)
+        self.ui.btnCancelar.clicked.connect(self.cancelar)
+        #self.ui.btnEditar.clicked.connect(self.atualizar)
+        self.ui.btnPesquisarPessoaFisica.clicked.connect(self.pesquisarPessoaFisica)
 
 
 
-    def removerCaracter(self, i):
-        i = str(i)
-        i = i.replace('.', '')
-        i = i.replace(',', '')
-        i = i.replace('/', '')
-        i = i.replace('-', '')
-        i = i.replace('(', '')
-        i = i.replace(')', '')
-        i = i.replace('\\', '')
-        return i
-
-    def formatarCpf(self, cpf):
-        return ("%s.%s.%s-%s" % (cpf[0:3], cpf[3:6], cpf[6:9], cpf[9:11]))
-
-    def validarCpf(self, cpf):
-
-        cpf_invalidos = [11 * str(i) for i in range(10)]
-        if cpf in cpf_invalidos:
-            return False
+        self.ui.txtCodigo.returnPressed.connect(self.setPessoaFisica)
+        self.ui.txtCodigo.editingFinished.connect(self.setPessoaFisicaEditFinish)
 
 
-    def cpf(self, cpf):
 
-        selfcpf = [int(x) for x in cpf]
+    def numberCodigo(self):
+        if self.ui.txtCodigo.text().isnumeric() == False:
+            self.ui.txtCodigo.backspace()
 
-        cpf = selfcpf[:9]
+    def numberTelefone(self):
+        if self.ui.txtNumeroTelefone.text().isnumeric() == False:
+            self.ui.txtNumeroTelefone.backspace()
 
-        while len(cpf) < 11:
+    def textEdite(self):
+        if (len(self.ui.txtObservacao.toPlainText()) > 255):
+            self.ui.txtObservacao.textCursor().deletePreviousChar()
 
-            r = sum([(len(cpf)+1-i)*v for i, v in [(x, cpf[x]) for x in range(len(cpf))]]) % 11
-
-            if r > 1:
-                f = 11 - r
-                cpf.append(f)
-            else:
-                f = 0
-                cpf.append(f)
-
-        return bool(cpf == selfcpf)
-
-    def botaoNovoCadastro(self):
-        self.__ui.btnCadNovo.setEnabled(False)
-        self.__ui.btnCadSalvar.setEnabled(True)
-        self.__ui.btnCadCancelar.setEnabled(True)
-
-        self.__ui.txtFantasia.setEnabled(True)
-        self.__ui.grbFuncionario.setEnabled(True)
-
-        self.__ui.txtFantasia.setFocus()
-        self.pesquisarSetor()
-
-    def cadastrarFuncionario(self):
-        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
-            _cidade = CidadesEstadosDao()
-            _funDao = FuncionarioDao()
-
-            idEmpresa = self.__ui.txtIdEmpresa.text()
-            fantasia = self.__ui.txtFantasia.text()
-            razaoSocial = self.__ui.txtRazaoSocial.text()
-
-            nome = self.__ui.txtNomeFuncionario.text()
-            rg = self.removerCaracter(self.__ui.txtRg.text())
-            expeditor = self.__ui.txtExpeditor.text()
-            cpf = self.removerCaracter(self.__ui.txtCpf.text())
-            data = self.removerCaracter(self.__ui.txtDataNascimento.text())
-            nascimento = self.formatarData(data)
-            if self.__ui.radBtnMasculino.isChecked():
-                sexo = 'MASCULINO'
-            elif self.__ui.radBtnFeminino.isChecked():
-                sexo = 'FEMININO'
-            else:
-                return None
-            mae = self.__ui.txtNomeMae.text()
-            pai = self.__ui.txtNomePai.text()
-            endereco = self.__ui.txtEndereco.text()
-            numero = self.__ui.txtNumero.text()
-            complemento = self.__ui.txtComplemento.text()
-            bairro = self.__ui.txtBairro.text()
-            _cep = self.removerCaracter(self.__ui.txtCep.text())
-            if len(_cep) == 8:
-                _cida = _cidade.idCidade(_cep, self.__ui.txtCidades.text(), self.__ui.txtEstados.text())
-            else:
-                return False
-            telefone = self.removerCaracter(self.__ui.txtTelefone.text())
-            celular = self.removerCaracter(self.__ui.txtCelular.text())
-
-            funcao = _funDao.funcao(self.__ui.txtSetor.currentText(), self.__ui.txtCargo.currentText())
-            print(_cida)
-            __funcionario = Funcionario(None, nome, rg, expeditor, cpf, nascimento, sexo, mae, pai, endereco, numero, complemento, bairro, _cida, telefone, celular, funcao, idEmpresa)
-            _funDao.cadastroFuncionario(__funcionario)
-            self.botaoCancelar()
-        else:
-            w = QWidget()
-            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
+    def novo(self):
+        self.limparCampos()
+        self.ui.grbDadosPessoaJuridica.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
 
 
-    def formatarData(self, data):
-        dia = data[:2]
-        mes = data[2:4]
-        ano = data[4:8]
+        self.setEstadoCivil()
+        self.setDeficiencia()
+        self.setCategoriaTrabalho()
+        self.setSetores()
+        self.setCargo()
+        self.setJornadaTrabalho()
 
-        return ("%s-%s-%s" % (ano, mes, dia))
+    def botaoNovo(self):
+        self.ui.txtCodigo.clear()
+        self.ui.txtCnpj.clear()
+        self.ui.txtInscricaoEstadua.clear()
+        self.ui.txtNome.clear()
+        self.ui.txtSobrenome.clear()
+
+        self.ui.tabWiAdicionais.setEnabled(True)
+
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+
+
+    def cancelar(self):
+        self.limparCampos()
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
+        self.desativarCampos()
+
+    def desativarCampos(self):
+        self.ui.grbDadosPessoaJuridica.setEnabled(False)
+        self.ui.tabWiAdicionais.setEnabled(False)
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
+    def botoesEditar(self):
+        self.limparCampos()
+        self.ui.grbAtivo.setEnabled(True)
+        self.ui.radBtnAtivo.setCheckable(True)
+        self.ui.radBtnDesativo.setCheckable(True)
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(True)
+
+    def ativarCampos(self):
+        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
 
     def limparCampos(self):
-        self.__ui.txtIdEmpresa.clear()
-        self.__ui.txtFantasia.clear()
-        self.__ui.txtRazaoSocial.clear()
-        self.__ui.txtCnpj.clear()
-        self.__ui.txtInscricaoEstadua.clear()
+        self.idFuncionrio = int()
+        self.idPessoa = int()
+        self.idPessoaFisica = int()
+        self.ui.txtCodigo.setEnabled(True)
+        self.ui.btnPesquisarPessoaFisica.setEnabled(True)
+        self.editar = False
+        self.ui.txtCodigo.clear()
+        self.ui.txtCnpj.clear()
+        self.ui.txtInscricaoEstadua.clear()
+        self.ui.txtNome.clear()
+        self.ui.txtSobrenome.clear()
 
-        self.__ui.txtidFuncionario.clear()
-        self.__ui.txtNomeFuncionario.clear()
-        self.__ui.txtRg.clear()
-        self.__ui.txtExpeditor.clear()
-        self.__ui.txtCpf.clear()
-        self.__ui.txtDataNascimento.setDate(QDate.currentDate())
-        self.__ui.txtNomeMae.clear()
-        self.__ui.txtNomePai.clear()
-        self.__ui.txtEndereco.clear()
-        self.__ui.txtNumero.clear()
-        self.__ui.txtComplemento.clear()
-        self.__ui.txtBairro.clear()
-        self.__ui.txtCep.clear()
-        self.__ui.txtCidades.clear()
-        self.__ui.txtEstados.clear()
-        self.__ui.txtTelefone.clear()
-        self.__ui.txtCelular.clear()
+        self.ui.txtObservacao.clear()
 
-        self.__ui.txtSetor.clear()
-        self.__ui.txtCargo.clear()
+        self.ui.txtContatoTelefone.clear()
+        self.ui.txtNumeroTelefone.clear()
+        self.ui.txtEnderecoEmail.clear()
+        self.ui.txtContatoEmail.clear()
 
-    def botaoCancelar(self):
-        self.__ui.btnCadNovo.setEnabled(True)
-        self.__ui.btnCadSalvar.setEnabled(False)
-        self.__ui.btnCadEditar.setEnabled(False)
-        self.__ui.btnCadCancelar.setEnabled(False)
-        self.__ui.btnCadDeletar.setEnabled(False)
+        self.ui.cBoxEstadoCivil.clear()
+        self.ui.cBoxDeficiencia.clear()
+        self.ui.cBoxCateTrabalhador.clear()
+        self.ui.cBoxCargo.clear()
+        self.ui.cBoxSetor.clear()
+        self.ui.cBoxTabelaHorario.clear()
 
-        self.__ui.txtFantasia.setEnabled(False)
-        self.__ui.grbFuncionario.setEnabled(False)
+        self.contatoAdd.clear()
+        self.contatoRemove.clear()
+        self.contatoAtualizar.clear()
+        self.emailAdd.clear()
+        self.emailRemove.clear()
+        self.emailAtualizar.clear()
+        self.estadoCivil.clear()
+        self.categoriaTrabalho.clear()
+        self.setor.clear()
+        self.cargo.clear()
+        self.jornada.clear()
 
-        self.__ui.radBtnMasculino.setChecked(False)
-        self.__ui.radBtnFeminino.setChecked(False)
+        self.deletarContatoTelefone()
+        self.deletarContatoEmail()
 
-    def cancelarCadastro(self):
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Deseja realmente cancelar a operação",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            self.botaoCancelar()
-            self.limparCampos()
+        self.ui.tabWiAdicionais.setCurrentIndex(0)
 
-    def pesquisarFuncionario(self):
-        if self.__ui.radBtnCodigoFuncionario.isChecked():
-            _funId = FuncionarioDao()
-            _pesquisar = _funId.pesquisarCodigoFuncionario(self.__ui.txtPesquisaFuncionario.text())
+        self.ui.radBtnAtivo.setCheckable(False)
+        self.ui.radBtnDesativo.setCheckable(False)
 
-            self.setarTambelaPesquisa(_pesquisar)
+    def deletarContatoTelefone(self):
+        for i in reversed(range(self.ui.tabContatoTelefone.rowCount())):
+            self.ui.tabContatoTelefone.removeRow(i)
 
-        elif self.__ui.radBtnNomeFuncionario.isChecked():
-            _funNome = FuncionarioDao()
-            _pesquisar = _funNome.pesquisarNomeFuncionario(self.__ui.txtPesquisaFuncionario.text())
+    def deletarContatoEmail(self):
+        for i in reversed(range(self.ui.tabContatoEmail.rowCount())):
+            self.ui.tabContatoEmail.removeRow(i)
 
-            self.setarTambelaPesquisa(_pesquisar)
+    def addContatoTelefone(self):
 
-        elif self.__ui.radBtnRg.isChecked():
-            _funRg = FuncionarioDao()
-            _pesquisar = _funRg.pesquisarRgFuncionario(self.__ui.txtPesquisaFuncionario.text())
+        if self.ui.txtContatoTelefone.text() != "" and self.ui.txtNumeroTelefone.text() != "":
+            if len(self.ui.txtNumeroTelefone.text()) == 10 or len(self.ui.txtNumeroTelefone.text()) == 11:
+                __contato = str(self.ui.txtContatoTelefone.text())
+                __telefone = str(self.ui.txtNumeroTelefone.text())
+                if self.editar == False:
+                    add = [(__contato, __telefone)]
+                    self.contatoAdd.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
 
-            self.setarTambelaPesquisa(_pesquisar)
+                elif self.editar == True:
+                    add = [(__contato, __telefone)]
+                    self.contatoAtualizar.append([__contato, __telefone])
+                    self.inserirTabelaTelefone(add)
 
-        elif self.__ui.radBtnCpf.isChecked():
-            _funCpf = FuncionarioDao()
-            _pesquisar = _funCpf.pesquisarCpfFuncionario(self.__ui.txtPesquisaFuncionario.text())
+                self.ui.txtContatoTelefone.clear()
+                self.ui.txtNumeroTelefone.clear()
 
-            self.setarTambelaPesquisa(_pesquisar)
+                self.ui.txtContatoTelefone.setFocus()
+            elif len(self.ui.txtNumeroTelefone.text()) >11:
+                self.mensagem.warning( 'Mensagem', "Atenção contem digitos do telefone a mais")
+            else:
+                self.mensagem.warning( 'Mensagem', "Atenção esta faltando digitos do telefone")
+        else:
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
 
-        elif self.__ui.radBtnFantasia.isChecked():
-            _funFantasia = FuncionarioDao()
-            _pesquisar = _funFantasia.pesquisarFantasiaEmpFuncionario(self.__ui.txtPesquisaFuncionario.text())
+    def inserirTabelaTelefone(self, dado):
 
-            self.setarTambelaPesquisa(_pesquisar)
+        linha = self.ui.tabContatoTelefone.rowCount()
+        for info in dado:
+            self.ui.tabContatoTelefone.insertRow(linha)
+            __contato = info[0]
+            __telefone = info[1]
 
-        elif self.__ui.radBtnRazaoSocial.isChecked():
-            _funRazaoSocial = FuncionarioDao()
-            _pesquisar = _funRazaoSocial.pesquisarRazaoSocialEmpFuncionario(self.__ui.txtPesquisaFuncionario.text())
 
-            self.setarTambelaPesquisa(_pesquisar)
+            self.ui.tabContatoTelefone.setItem(linha, 0, QtGui.QTableWidgetItem(str(__contato)))
+            self.ui.tabContatoTelefone.setItem(linha, 1, QtGui.QTableWidgetItem(str(__telefone)))
+
+
+            linha += 1
+
+    def cellClickTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
+        list=[]
+        columcount = self.ui.tabContatoTelefone.columnCount()
+        row = self.ui.tabContatoTelefone.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell =self.ui.tabContatoTelefone.item(row, x).text()
+            list.append(cell)
+
+        if list in self.contatoAtualizar:
+            self.contatoAtualizar.remove(list)
+            self.ui.tabContatoTelefone.removeRow(index)
+        else:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                self.contatoRemove.append(self.contatoAdd[index])
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+    def delContatoTelefone(self):
+        index = self.ui.tabContatoTelefone.currentRow()
+
+        if self.editar == False:
+            self.ui.tabContatoTelefone.removeRow(index)
+            if index >= 0:
+                del self.contatoAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickTelefone()
+
+    def inserirTabelaEmail(self, dado):
+
+        linha = self.ui.tabContatoEmail.rowCount()
+        for info in dado:
+            self.ui.tabContatoEmail.insertRow(linha)
+            __contato = info[0]
+            __email = info[1]
+
+            self.ui.tabContatoEmail.setItem(linha, 0, QtGui.QTableWidgetItem(str(__contato)))
+            self.ui.tabContatoEmail.setItem(linha, 1, QtGui.QTableWidgetItem(str(__email)))
+
+            linha += 1
+
+    def addContatoEmail(self):
+        if self.ui.txtContatoEmail.text() != "" and self.ui.txtEnderecoEmail.text() != "":
+                __contato = str(self.ui.txtContatoEmail.text())
+                __email = str(self.ui.txtEnderecoEmail.text())
+                if self.editar == False:
+                    add = [(__contato, __email)]
+                    self.emailAdd.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
+
+                elif self.editar == True:
+                    add = [(__contato, __email)]
+                    self.emailAtualizar.append([__contato, __email])
+                    self.inserirTabelaEmail(add)
+
+                self.ui.txtContatoEmail.clear()
+                self.ui.txtEnderecoEmail.clear()
+
+                self.ui.txtContatoEmail.setFocus()
+        else:
+            self.mensagem.warning( 'Mensagem', "Por favor preencha os campos de contato e telefone")
+
+    def cellClickEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+        list = []
+        columcount = self.ui.tabContatoEmail.columnCount()
+        row = self.ui.tabContatoEmail.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabContatoEmail.item(row, x).text()
+            list.append(cell)
+
+        if list in self.emailAtualizar:
+            self.emailAtualizar.remove(list)
+            self.ui.tabContatoEmail.removeRow(index)
+        else:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                self.emailRemove.append(self.emailAdd[index])
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
+    def delContatoEmail(self):
+        index = self.ui.tabContatoEmail.currentRow()
+
+        if self.editar == False:
+            self.ui.tabContatoEmail.removeRow(index)
+            if index >= 0:
+                del self.emailAdd[index]
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickEmail()
+
+    def setEstadoCivil(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.estadoCivil()
+
+        self.estadoCivil.append(lista)
+        for tipo in lista:
+            self.ui.cBoxEstadoCivil.addItem(tipo[1])
+
+    def setDeficiencia(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.deficiencia()
+
+        self.deficiencia.append(lista)
+        for tipo in lista:
+            self.ui.cBoxDeficiencia.addItem(tipo[1])
+
+    def setCategoriaTrabalho(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.categoriaTrabalho()
+
+        self.categoriaTrabalho.append(lista)
+        for tipo in lista:
+            self.ui.cBoxCateTrabalhador.addItem(tipo[1])
+
+    def setSetores(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.setores()
+
+        self.setor.append(lista)
+        for tipo in lista:
+            self.ui.cBoxSetor.addItem(tipo[1])
+
+    def setCargo(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.cargos()
+
+        self.cargo.append(lista)
+        for tipo in lista:
+            self.ui.cBoxCargo.addItem(tipo[1])
+
+    def setJornadaTrabalho(self):
+        funcionario = FuncionarioDao()
+        lista = funcionario.jornada()
+
+        self.jornada.append(lista)
+        for tipo in lista:
+            self.ui.cBoxTabelaHorario.addItem(tipo[1])
+
+    def setPessoaFisica(self):
+        empresa = FuncionarioDao()
+        em = empresa.pesquisarFuncionarioIdFisico(self.ui.txtCodigo.text())
+
+        if em == []:
+            emp = empresa.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+
+            if emp == []:
+                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta empresa")
+                self.ui.txtCnpj.clear()
+                self.ui.txtInscricaoEstadua.clear()
+                self.ui.txtNome.clear()
+                self.ui.txtSobrenome.clear()
+            else:
+                for empres in emp:
+                    self.ui.txtCnpj.setText(str(empres[0]))
+                    self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                    self.ui.txtNome.setText(str(empres[2]))
+                    self.ui.txtSobrenome.setText(str(empres[3]))
+        else:
+            MensagemBox().warning( 'Mensagem', "Atenção já tem um cadastro desta pessoa")
+
+    def setPessoaFisicaEditFinish(self):
+        empresa = FuncionarioDao()
+        em = empresa.pesquisarFuncionarioIdFisico(self.ui.txtCodigo.text())
+
+        if em == []:
+            emp = empresa.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+
+            if emp == []:
+                self.ui.txtCnpj.clear()
+                self.ui.txtInscricaoEstadua.clear()
+                self.ui.txtNome.clear()
+                self.ui.txtSobrenome.clear()
+            else:
+                for empres in emp:
+                    self.ui.txtCnpj.setText(str(empres[0]))
+                    self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                    self.ui.txtNome.setText(str(empres[2]))
+
+    def pesquisarPessoaFisica(self):
+        self.dialogFisicoJuridico = QDialog(self)
+        self.__pesquisarFisica = Ui_frmPesquisarPessoaFisica()
+        self.__pesquisarFisica.setupUi(self.dialogFisicoJuridico)
+        self.__pesquisarFisica.txtPesquisar.setValidator(self.validator)
+
+        self.__pesquisarFisica.txtPesquisar.returnPressed.connect(self.pesquisarFisico)
+
+        self.__pesquisarFisica.btnPesquisar.clicked.connect(self.pesquisarFisico)
+
+        self.__pesquisarFisica.tabPesquisar.doubleClicked.connect(self.setarCamposFisicoJuridico)
+
+        self.dialogFisicoJuridico.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogFisicoJuridico.exec_()
+
+    def pesquisarFisico(self):
+        if self.__pesquisarFisica.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaCodigo(__codigo)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisica.radBtnNome.isChecked():
+            __nome = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaNome(__nome)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisica.radBtncPF.isChecked():
+            __cpf = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaCpf(__cpf)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisica.radBtnRg.isChecked():
+            __rg = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaRg(__rg)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisica.radBtnMae.isChecked():
+            __mae = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaMae(__mae)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
+
+        elif self.__pesquisarFisica.radBtnPai.isChecked():
+            __pai = self.__pesquisarFisica.txtPesquisar.text()
+            __pesDao = PesquisarPessoaFisicaDao()
+            __retorno = __pesDao.pesquisaPai(__pai)
+
+            self.setarTabelaPesquisaJuridico(__retorno)
 
         else:
-            result = QMessageBox.warning(self, 'ATENÇÃO', "Selecione o dados de pesquisa desejado para realiza e pesquisa!")
+            MensagemBox().warning( 'Atenção', "Selecione uma das opções de pesquisa")
 
-
-    def setarTambelaPesquisa(self, _pesquisar):
-        qtde_registros = len(_pesquisar)
-        self.__ui.tbPesquisaFuncionario.setRowCount(qtde_registros)
+    def setarTabelaPesquisaJuridico(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarFisica.tabPesquisar.setRowCount(qtde_registros)
 
         linha = 0
-        for pesqui in _pesquisar:
+        for pesqui in __retorno:
             # capturando os dados da tupla
 
             codigo = pesqui[0]
             nome = pesqui[1]
-            rg = pesqui[2]
-            expeditor = pesqui[3]
-            cpf = pesqui[4]
-            nascimento = pesqui[5]
-            sexo = pesqui[6]
-            mae = pesqui[7]
-            pai = pesqui[8]
-            endereco = pesqui[9]
-            numero = pesqui[10]
-            complemento = pesqui[11]
-            bairro = pesqui[12]
-            cep = pesqui[13]
-            cidade = pesqui[14]
-            estado = pesqui[15]
-            telefone = pesqui[16]
-            celular = pesqui[17]
-            setor = pesqui[18]
-            cargo = pesqui[19]
-            fantasia = pesqui[20]
-            razaoSocial = pesqui[21]
-            cnpj = pesqui[22]
-            inscrEstadual = pesqui[23]
+            sobrenome = pesqui[2]
+            cpf = pesqui[3]
+            rg = pesqui[4]
+            expeditor = pesqui[5]
+            uf = pesqui[6]
+            data = pesqui[7]
+            sexo = pesqui[8]
+            mae = pesqui[9]
+            pai = pesqui[10]
+            endereco = pesqui[11]
+            numero = pesqui[12]
+            complemento = pesqui[13]
+            bairro = pesqui[14]
+            cidade = pesqui[15]
+            estado = pesqui[16]
+            cep = pesqui[17]
+
 
             # preenchendo o grid de pesquisa
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 2, QtGui.QTableWidgetItem(str(rg)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 3, QtGui.QTableWidgetItem(str(expeditor)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 5, QtGui.QTableWidgetItem(str(nascimento)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 6, QtGui.QTableWidgetItem(str(sexo)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 7, QtGui.QTableWidgetItem(str(mae)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 8, QtGui.QTableWidgetItem(str(pai)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 13, QtGui.QTableWidgetItem(str(cep)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 14, QtGui.QTableWidgetItem(str(cidade)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 15, QtGui.QTableWidgetItem(str(estado)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 16, QtGui.QTableWidgetItem(str(telefone)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 17, QtGui.QTableWidgetItem(str(celular)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 18, QtGui.QTableWidgetItem(str(setor)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 19, QtGui.QTableWidgetItem(str(cargo)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 20, QtGui.QTableWidgetItem(str(fantasia)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 21, QtGui.QTableWidgetItem(str(razaoSocial)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 22, QtGui.QTableWidgetItem(str(cnpj)))
-            self.__ui.tbPesquisaFuncionario.setItem(linha, 23, QtGui.QTableWidgetItem(str(inscrEstadual)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(sobrenome)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(data)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(sexo)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(mae)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(pai)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFisica.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cep)))
 
             linha += 1
 
-    def tablePesquisa(self, pesquisa):
-        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
-                self.setarCampos()
-                self.botaoEditarCadastro()
-        else:
-                w = QWidget()
-                result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja realizar essa operação sem finalizar a operação em processo", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-                if result == QMessageBox.Yes:
-                    self.setarCampos()
-                    self.botaoEditarCadastro()
-
-    def pesquisarSetorAtualizar(self, dado):
-        __setor = SetoresCargosDao()
-        setores = __setor.pesquisaSetor()
-
-        for sett in setores:
-            if sett[0] != dado:
-                self.__ui.txtSetor.addItem(sett[0])
-
-    def pesquisarCargoAtualizar(self, dado, pesquisa):
-
-        __cargo = SetoresCargosDao()
-        cargos = __cargo.pesquisarFuncao(pesquisa)
-        for carg in cargos:
-            if carg[0] != dado:
-                self.__ui.txtCargo.addItem(carg[0])
-
-    def setarCampos(self):
-
+    def setarCamposFisicoJuridico(self):
+        funcionario = FuncionarioDao()
         itens = []
-        for item in self.__ui.tbPesquisaFuncionario.selectedItems():
+
+        for item in self.__pesquisarFisica.tabPesquisar.selectedItems():
             itens.append(item.text())
 
-        if len(itens) == 24:
-            self.__ui.txtidFuncionario.setText(str(itens[0]))
-            self.__ui.txtNomeFuncionario.setText(str(itens[1]))
-            self.__ui.txtRg.setText(str(itens[2]))
-            self.__ui.txtExpeditor.setText(str(itens[3]))
-            self.__ui.txtCpf.setText(str(itens[4]))
-            self.__ui.txtDataNascimento.setDate(self.formatarDataRetorno(itens[5]))
-            if str(itens[6]) == 'MASCULINO':
-                self.__ui.radBtnMasculino.setChecked(True)
-            elif str(itens[6]) == 'FEMININO':
-                self.__ui.radBtnFeminino.setChecked(True)
-            else:
-                return None
-            self.__ui.txtNomeMae.setText(str(itens[7]))
-            self.__ui.txtNomePai.setText(str(itens[8]))
-            self.__ui.txtEndereco.setText(str(itens[9]))
-            self.__ui.txtNumero.setText(str(itens[10]))
-            self.__ui.txtComplemento.setText(str(itens[11]))
-            self.__ui.txtBairro.setText(str(itens[12]))
-            self.__ui.txtCep.setText(str(itens[13]))
-            self.__ui.txtCidades.setText(str(itens[14]))
-            self.__ui.txtEstados.setText(str(itens[15]))
-            self.__ui.txtTelefone.setText(str(itens[16]))
-            self.__ui.txtCelular.setText(str(itens[17]))
-            #self.__ui.txtSetor.addItem(str(itens[18]))
-            setor = str(itens[18])
-            self.__ui.txtSetor.addItem(setor)
-            self.pesquisarSetorAtualizar(setor)
-            self.__ui.txtCargo.clear()
-            cargo = str(itens[19])
-            self.__ui.txtCargo.addItem(cargo)
-            self.pesquisarCargoAtualizar(cargo, setor)
-            self.__ui.txtFantasia.setText(str(itens[20]))
-            self.__ui.txtRazaoSocial.setText(str(itens[21]))
-            self.__ui.txtCnpj.setText(str(itens[22]))
-            self.__ui.txtInscricaoEstadua.setText(str(itens[23]))
+        codigo = str(itens[0])
+        nome = str(itens[1])
+        apelido = str(itens[2])
+        cpf = str(itens[3])
+        rg = str(itens[4])
+        expeditor = str(itens[5])
+        uf = str(itens[6])
+        aniversario = str(itens[7])
+        sexo = str(itens[8])
+        endereco = str(itens[9])
+        numero = str(itens[10])
+        complemento = str(itens[11])
+        bairro = str(itens[12])
+        cidade = str(itens[13])
+        estado = str(itens[14])
+        cep = str(itens[15])
 
-    def formatarDataRetorno(self, data):
-        dia = data[8:10]
-        mes = data[5:7]
-        ano = data[:4]
-
-        return QtCore.QDate(int(ano), int(mes), int(dia))
-
-    def botaoEditarCadastro(self):
-        self.__ui.btnCadNovo.setEnabled(False)
-        self.__ui.btnCadEditar.setEnabled(True)
-        self.__ui.btnCadCancelar.setEnabled(True)
-        self.__ui.btnCadDeletar.setEnabled(True)
-
-        self.__ui.txtFantasia.setEnabled(True)
-        self.__ui.grbFuncionario.setEnabled(True)
-
-        self.__ui.txtFantasia.setFocus()
-
-    def _deletarEmpresa(self):
-
-        w = QWidget()
-        result = QMessageBox.question(w, 'Menssagem', "Tem certeza que deseja excluir esse funcionario", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            __funDao = FuncionarioDao()
-            __funDao.deletarFuncionario(self.__ui.txtidFuncionario.text())
-            self.botaoCancelar()
-            self.limparCampos()
-
-
-
-    def atualizarFuncionario(self):
-        if self.__ui.txtNomeFuncionario.text() and self.__ui.txtRg.text() and self.__ui.txtExpeditor.text() and self.__ui.txtCpf.text() and self.__ui.txtNomeMae.text() and self.__ui.txtNomePai.text() and self.__ui.txtEndereco.text() and self.__ui.txtNumero.text() and self.__ui.txtComplemento.text() and self.__ui.txtBairro.text() and self.__ui.txtCidades.text() and self.__ui.txtEstados.text() != "":
-            _cidade = CidadesEstadosDao()
-            _funDao = FuncionarioDao()
-
-            idEmpresa = self.__ui.txtIdEmpresa.text()
-            fantasia = self.__ui.txtFantasia.text()
-            razaoSocial = self.__ui.txtRazaoSocial.text()
-
-            idFuncionario = self.__ui.txtidFuncionario.text()
-            nome = self.__ui.txtNomeFuncionario.text()
-            rg = self.removerCaracter(self.__ui.txtRg.text())
-            expeditor = self.__ui.txtExpeditor.text()
-            cpf = self.removerCaracter(self.__ui.txtCpf.text())
-            data = self.removerCaracter(self.__ui.txtDataNascimento.text())
-            nascimento = self.formatarData(data)
-            if self.__ui.radBtnMasculino.isChecked():
-                sexo = 'MASCULINO'
-            elif self.__ui.radBtnFeminino.isChecked():
-                sexo = 'FEMININO'
-            else:
-                return None
-            mae = self.__ui.txtNomeMae.text()
-            pai = self.__ui.txtNomePai.text()
-            endereco = self.__ui.txtEndereco.text()
-            numero = self.__ui.txtNumero.text()
-            complemento = self.__ui.txtComplemento.text()
-            bairro = self.__ui.txtBairro.text()
-            _cep = self.removerCaracter(self.__ui.txtCep.text())
-            if len(_cep) == 8:
-                _cida = _cidade.idCidade(_cep, self.__ui.txtCidades.text(), self.__ui.txtEstados.text())
-            else:
-                return False
-            telefone = self.removerCaracter(self.__ui.txtTelefone.text())
-            celular = self.removerCaracter(self.__ui.txtCelular.text())
-
-            funcao = _funDao.funcao(self.__ui.txtSetor.currentText(), self.__ui.txtCargo.currentText())
-            __funcionario = Funcionario(idFuncionario, nome, rg, expeditor, cpf, nascimento, sexo, mae, pai, endereco, numero, complemento, bairro, _cida, telefone, celular, funcao, idEmpresa)
-            _funDao.atualizarFuncioario(__funcionario)
-
-            self.botaoCancelar()
-            self.limparCampos()
+        fun = funcionario.pesquisarFuncionarioFisico(codigo)
+        if fun == []:
+            __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+            self.setCamposFisicoJuridico(__dados)
+            self.dialogFisicoJuridico.close()
         else:
-            w = QWidget()
-            QMessageBox.warning(w, 'Atenção', "Por Favor preencha todos os campos!")
+            MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
+
+    def setCamposFisicoJuridico(self, campos):
+        self.ui.txtCodigo.setText(campos.getIdPesFisica)
+        self.ui.txtCnpj.setText(campos.getCpf)
+        self.ui.txtInscricaoEstadua.setText(campos.setRg)
+        self.ui.txtSobrenome.setText(campos.getApelido)
+        self.ui.txtNome.setText(campos.getNome)

@@ -202,6 +202,8 @@ class Empresa(QtGui.QDialog):
         self.deletarSetor()
         self.deletarCargo()
 
+        self.ui.tabWiAdicionais.setCurrentIndex(0)
+
         self.ui.radBtnAtivo.setCheckable(False)
         self.ui.radBtnDesativo.setCheckable(False)
 
@@ -910,6 +912,8 @@ class Empresa(QtGui.QDialog):
 
 
     def setarCamposJuridico(self):
+        empresa = EmpresaDao()
+
         itens = []
 
         for item in self.__pesquisarJuridica.tabPesquisar.selectedItems():
@@ -930,10 +934,14 @@ class Empresa(QtGui.QDialog):
         cep = str(itens[11])
         site = str(itens[12])
 
-        __dados = PessoaJuridica(codigo, None, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
-        self.setCamposJuridico(__dados)
-        self.ativarCampos()
-        self.dialogJuridico.close()
+        emp = empresa.pesquisarEmpresas(codigo)
+        if emp == []:
+            __dados = PessoaJuridica(codigo, None, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, site)
+            self.setCamposJuridico(__dados)
+            self.ativarCampos()
+            self.dialogJuridico.close()
+        else:
+            MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
 
     def pesquisarTelefone(self, campos):
         empresaDao = EmpresaDao()

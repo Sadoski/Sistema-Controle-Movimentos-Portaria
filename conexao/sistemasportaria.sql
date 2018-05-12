@@ -1,34 +1,34 @@
-------------------------------------------------------------------
-------------------------------------------------------------------
---            	   Script de db de um leigo :D                  --
---                                                              --
---                                                              --
---    Modelado por: Jefferson Aparecido Sadoski                 --
---    Ajudado por: Comunidades em Geral                         --
---    Email para Contato: jefferson_sadoski@hotmail.com         --
---	                      jeffersonsadoski@gmail.com            --
---                                                              --
---    Obs: Qualquer duvida, comentario, dica de melhoria,       --
---         critica é só entrar em cantato por email.            --
---                                                              --
---   LOGIM DE USUARIO DO SISTEMA SCMP: ADIMIN                   --
---   SENHA DE USUARIO DO SISTEMA SCMP ADIMIN                    --
---                                                              --
---                                                              --
---   #### ATENÇÃO SCRIPT EM CONSTATE ALTERAÇÃO PODE HAVER ####  --
---   ####  INCONSISTENCIA COM O SISTEMA SCMP POR NÃO SER  ####  --
---   ####            ATUALIZADO CONSTANTEMENTE            ####  --
-------------------------------------------------------------------
-------------------------------------------------------------------
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+--            	   Script de db de um leigo :D                   --
+--                                                               --
+--                                                               --
+--    Modelado por: Jefferson Aparecido Sadoski                  --
+--    Ajudado por: Comunidades em Geral                          --
+--    Email para Contato: jefferson_sadoski@hotmail.com          --
+--	                      jeffersonsadoski@gmail.com             --
+--                                                               --
+--    Obs: Qualquer duvida, comentario, dica de melhoria,        --
+--         critica é só entrar em cantato por email.             --
+--                                                               --
+--   LOGIM DE USUARIO DO SISTEMA SCMP: ADIMIN                    --
+--   SENHA DE USUARIO DO SISTEMA SCMP ADIMIN                     --
+--                                                               --
+--                                                               --
+--   #### ATENÇÃO SCRIPT EM CONSTATE ALTERAÇÃO PODE HAVER ####   --
+--   ####  INCONSISTENCIA COM O SISTEMA SCMP POR NÃO SER  ####   --
+--   ####            ATUALIZADO CONSTANTEMENTE            ####   --
+-------------------------------------------------------------------
+-------------------------------------------------------------------
 
 -- phpMyAdmin SQL Dump
 -- version 4.5.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 03-Fev-2018 às 21:18
+-- Generation Time: 12-Maio-2018 às 21:53
 -- Versão do servidor: 5.7.11
--- PHP Version: 5.6.19
+-- PHP Version: 7.0.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1411,6 +1411,29 @@ INSERT INTO `categoria_cnh` (`id_categoria_cnh`, `descricao`) VALUES
 (7, 'AC'),
 (8, 'AD'),
 (9, 'AE');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `categoria_trabalho`
+--
+
+CREATE TABLE `categoria_trabalho` (
+  `id_categoria_trabalho` int(11) NOT NULL,
+  `descricao` varchar(35) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `categoria_trabalho`
+--
+
+INSERT INTO `categoria_trabalho` (`id_categoria_trabalho`, `descricao`) VALUES
+(1, 'EMPREGADO'),
+(2, 'EVENTUAL'),
+(3, 'AVULSO'),
+(4, 'VOLUNTARIO'),
+(5, 'AUTÔNOMO'),
+(6, 'ESTÁGIO');
 
 -- --------------------------------------------------------
 
@@ -12099,15 +12122,40 @@ INSERT INTO `cidade` (`id_cidade`, `id_estado`, `nome`, `cep`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `civil`
+--
+
+CREATE TABLE `civil` (
+  `id_civil` int(11) NOT NULL,
+  `descricao` varchar(20) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `civil`
+--
+
+INSERT INTO `civil` (`id_civil`, `descricao`) VALUES
+(1, 'SOLTEIRO(A)'),
+(2, 'CASADO(A)'),
+(3, 'VIÚVO(A)'),
+(4, 'SEPARADO(A)'),
+(5, 'DIVORCIADO(A)');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `cliente`
 --
 
 CREATE TABLE `cliente` (
   `id_cliente` int(11) NOT NULL,
   `situacao` tinyint(1) NOT NULL,
+  `observacao` varchar(255) DEFAULT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `atualizado` timestamp NULL DEFAULT NULL,
-  `id_pessoa` int(11) NOT NULL
+  `id_pessoa` int(11) DEFAULT NULL,
+  `id_pessoa_fisica` int(11) DEFAULT NULL,
+  `id_pessoa_juridica` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -13438,7 +13486,7 @@ INSERT INTO `cnae` (`id_cnae`, `codigo_cnae`, `desc_cnae`) VALUES
 --
 
 CREATE TABLE `cnae_22` (
-  `id` int(11) NOT NULL,
+  `id_cnae_22` int(11) NOT NULL,
   `cod_secao` varchar(1) NOT NULL,
   `desc_secao` varchar(255) NOT NULL,
   `cod_divisao` varchar(2) NOT NULL,
@@ -13455,7 +13503,7 @@ CREATE TABLE `cnae_22` (
 -- Extraindo dados da tabela `cnae_22`
 --
 
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (210104, 'A', 'AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQÜICULTURA', '02', 'PRODUÇÃO FLORESTAL', '021', 'Produção florestal - florestas plantadas', '0210-1', 'Produção florestal - florestas plantadas', '0210-1/04', 'Cultivo de teca'),
 (210105, 'A', 'AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQÜICULTURA', '02', 'PRODUÇÃO FLORESTAL', '021', 'Produção florestal - florestas plantadas', '0210-1', 'Produção florestal - florestas plantadas', '0210-1/05', 'Cultivo de espécies madeireiras, exceto eucalipto, acácia-negra, pinus e teca'),
 (210106, 'A', 'AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQÜICULTURA', '02', 'PRODUÇÃO FLORESTAL', '021', 'Produção florestal - florestas plantadas', '0210-1', 'Produção florestal - florestas plantadas', '0210-1/06', 'Cultivo de mudas em viveiros florestais'),
@@ -13644,7 +13692,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (1322700, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '132', 'Tecelagem, exceto malha', '1322-7', 'Tecelagem de fios de fibras têxteis naturais, exceto algodão', '1322-7/00', 'Tecelagem de fios de fibras têxteis naturais, exceto algodão'),
 (1323500, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '132', 'Tecelagem, exceto malha', '1323-5', 'Tecelagem de fios de fibras artificiais e sintéticas', '1323-5/00', 'Tecelagem de fios de fibras artificiais e sintéticas'),
 (1330800, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '133', 'Fabricação de tecidos de malha', '1330-8', 'Fabricação de tecidos de malha', '1330-8/00', 'Fabricação de tecidos de malha');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (1340501, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '134', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5/01', 'Estamparia e texturização em fios, tecidos, artefatos têxteis e peças do vestuário'),
 (1340502, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '134', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5/02', 'Alvejamento, tingimento e torção em fios, tecidos, artefatos têxteis e peças do vestuário'),
 (1340599, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '13', 'FABRICAÇÃO DE PRODUTOS TÊXTEIS', '134', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5', 'Acabamentos em fios, tecidos e artefatos têxteis', '1340-5/99', 'Outros serviços de acabamento em fios, tecidos, artefatos têxteis e peças do vestuário'),
@@ -13815,7 +13863,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (1061902, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1061-9', 'Beneficiamento de arroz e fabricação de produtos do arroz', '1061-9/02', 'Fabricação de produtos do arroz'),
 (1062700, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1062-7', 'Moagem de trigo e fabricação de derivados', '1062-7/00', 'Moagem de trigo e fabricação de derivados'),
 (1063500, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1063-5', 'Fabricação de farinha de mandioca e derivados', '1063-5/00', 'Fabricação de farinha de mandioca e derivados');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (1064300, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1064-3', 'Fabricação de farinha de milho e derivados, exceto óleos de milho', '1064-3/00', 'Fabricação de farinha de milho e derivados, exceto óleos de milho'),
 (1065101, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1065-1', 'Fabricação de amidos e féculas de vegetais e de óleos de milho', '1065-1/01', 'Fabricação de amidos e féculas de vegetais'),
 (1065102, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '10', 'FABRICAÇÃO DE PRODUTOS ALIMENTÍCIOS', '106', 'Moagem, fabricação de produtos amiláceos e de alimentos para animais', '1065-1', 'Fabricação de amidos e féculas de vegetais e de óleos de milho', '1065-1/02', 'Fabricação de óleo de milho em bruto'),
@@ -13971,7 +14019,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (2449101, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '244', 'Metalurgia dos metais não-ferrosos', '2443-1', 'Metalurgia dos metais não-ferrosos e suas ligas não especificados anteriormente', '2449-1/01', 'Produção de zinco em formas primárias'),
 (2449102, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '244', 'Metalurgia dos metais não-ferrosos', '2443-1', 'Metalurgia dos metais não-ferrosos e suas ligas não especificados anteriormente', '2449-1/02', 'Produção de laminados de zinco'),
 (2449103, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '244', 'Metalurgia dos metais não-ferrosos', '2443-1', 'Metalurgia dos metais não-ferrosos e suas ligas não especificados anteriormente', '2449-1/03', 'Produção de ânodos para galvanoplastia');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (2449199, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '244', 'Metalurgia dos metais não-ferrosos', '2443-1', 'Metalurgia dos metais não-ferrosos e suas ligas não especificados anteriormente', '2449-1/99', 'Metalurgia de outros metais não-ferrosos e suas ligas não especificados anteriormente'),
 (2451200, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '245', 'Fundição', '2451-2', 'Fundição de ferro e aço', '2451-2/00', 'Fundição de ferro e aço'),
 (2452100, 'C', 'INDÚSTRIAS DE TRANSFORMAÇÃO', '24', 'METALURGIA', '245', 'Fundição', '2452-1', 'Fundição de metais não-ferrosos e suas ligas', '2452-1/00', 'Fundição de metais não-ferrosos e suas ligas'),
@@ -14124,7 +14172,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (4530702, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '453', 'Comércio de peças e acessórios para veículos automotores', '4530-7', 'Comércio de peças e acessórios para veículos automotores', '4530-7/02', 'Comércio por atacado de pneumáticos e câmaras-de-ar'),
 (4530703, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '453', 'Comércio de peças e acessórios para veículos automotores', '4530-7', 'Comércio de peças e acessórios para veículos automotores', '4530-7/03', 'Comércio a varejo de peças e acessórios novos para veículos automotores'),
 (4530704, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '453', 'Comércio de peças e acessórios para veículos automotores', '4530-7', 'Comércio de peças e acessórios para veículos automotores', '4530-7/04', 'Comércio a varejo de peças e acessórios usados para veículos automotores');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (4530705, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '453', 'Comércio de peças e acessórios para veículos automotores', '4530-7', 'Comércio de peças e acessórios para veículos automotores', '4530-7/05', 'Comércio a varejo de pneumáticos e câmaras-de-ar'),
 (4530706, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '453', 'Comércio de peças e acessórios para veículos automotores', '4530-7', 'Comércio de peças e acessórios para veículos automotores', '4530-7/06', 'Representantes comerciais e agentes do comércio de peças e acessórios novos e usados para veículos automotores'),
 (4541201, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '45', 'COMÉRCIO E REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '454', 'Comércio, manutenção e reparação de motocicletas, peças e acessórios', '4541-2', 'Comércio por atacado e a varejo de motocicletas, peças e acessórios', '4541-2/01', 'Comércio por atacado de motocicletas e motonetas'),
@@ -14259,7 +14307,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (4771701, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4771-7', 'Comércio varejista de produtos farmacêuticos para uso humano e veterinário', '4771-7/01', 'Comércio varejista de produtos farmacêuticos, sem manipulação de fórmulas'),
 (4771702, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4771-7', 'Comércio varejista de produtos farmacêuticos para uso humano e veterinário', '4771-7/02', 'Comércio varejista de produtos farmacêuticos, com manipulação de fórmulas'),
 (4771703, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4771-7', 'Comércio varejista de produtos farmacêuticos para uso humano e veterinário', '4771-7/03', 'Comércio varejista de produtos farmacêuticos homeopáticos');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (4771704, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4771-7', 'Comércio varejista de produtos farmacêuticos para uso humano e veterinário', '4771-7/04', 'Comércio varejista de medicamentos veterinários'),
 (4772500, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4772-5', 'Comércio varejista de cosméticos, produtos de perfumaria e de higiene pessoal', '4772-5/00', 'Comércio varejista de cosméticos, produtos de perfumaria e de higiene pessoal'),
 (4773300, 'G', 'COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS', '47', 'COMÉRCIO VAREJISTA', '477', 'Comércio varejista de produtos farmacêuticos, perfumaria e cosméticos e artigos médicos, ópticos e ortopédicos', '4773-3', 'Comércio varejista de artigos médicos e ortopédicos', '4773-3/00', 'Comércio varejista de artigos médicos e ortopédicos'),
@@ -14415,7 +14463,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (6202300, 'J', 'INFORMAÇÃO E COMUNICAÇÃO', '62', 'ATIVIDADES DOS SERVIÇOS DE TECNOLOGIA DA INFORMAÇÃO', '620', 'Atividades dos serviços de tecnologia da informação', '6202-3', 'Desenvolvimento e licenciamento de programas de computador customizáveis', '6202-3/00', 'Desenvolvimento e licenciamento de programas de computador customizáveis'),
 (6203100, 'J', 'INFORMAÇÃO E COMUNICAÇÃO', '62', 'ATIVIDADES DOS SERVIÇOS DE TECNOLOGIA DA INFORMAÇÃO', '620', 'Atividades dos serviços de tecnologia da informação', '6203-1', 'Desenvolvimento e licenciamento de programas de computador não-customizáveis', '6203-1/00', 'Desenvolvimento e licenciamento de programas de computador não-customizáveis'),
 (6462000, 'K', 'ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS', '64', 'ATIVIDADES DE SERVIÇOS FINANCEIROS', '646', 'Atividades de sociedades de participação', '6462-0', 'Holdings de instituições não-financeiras', '6462-0/00', 'Holdings de instituições não-financeiras');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (6463800, 'K', 'ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS', '64', 'ATIVIDADES DE SERVIÇOS FINANCEIROS', '646', 'Atividades de sociedades de participação', '6463-8', 'Outras sociedades de participação, exceto holdings', '6463-8/00', 'Outras sociedades de participação, exceto holdings'),
 (6470101, 'K', 'ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS', '64', 'ATIVIDADES DE SERVIÇOS FINANCEIROS', '647', 'Fundos de investimento', '6470-1', 'Fundos de investimento', '6470-1/01', 'Fundos de investimento, exceto previdenciários e imobiliários'),
 (6470102, 'K', 'ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS', '64', 'ATIVIDADES DE SERVIÇOS FINANCEIROS', '647', 'Fundos de investimento', '6470-1', 'Fundos de investimento', '6470-1/02', 'Fundos de investimento previdenciários'),
@@ -14574,7 +14622,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (8130300, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '81', 'SERVIÇOS PARA EDIFÍCIOS E ATIVIDADES PAISAGÍSTICAS', '813', 'Atividades paisagísticas', '8130-3', 'Atividades paisagísticas', '8130-3/00', 'Atividades paisagísticas'),
 (8211300, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '82', 'SERVIÇOS DE ESCRITÓRIO, DE APOIO ADMINISTRATIVO E OUTROS SERVIÇOS PRESTADOS PRINCIPALMENTE ÀS EMPRESAS', '821', 'Serviços de escritório e apoio administrativo', '8211-3', 'Serviços combinados de escritório e apoio administrativo', '8211-3/00', 'Serviços combinados de escritório e apoio administrativo'),
 (8219901, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '82', 'SERVIÇOS DE ESCRITÓRIO, DE APOIO ADMINISTRATIVO E OUTROS SERVIÇOS PRESTADOS PRINCIPALMENTE ÀS EMPRESAS', '821', 'Serviços de escritório e apoio administrativo', '8219-9', 'Fotocópias, preparação de documentos e outros serviços especializados de apoio administrativo', '8219-9/01', 'Fotocópias');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (8219999, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '82', 'SERVIÇOS DE ESCRITÓRIO, DE APOIO ADMINISTRATIVO E OUTROS SERVIÇOS PRESTADOS PRINCIPALMENTE ÀS EMPRESAS', '821', 'Serviços de escritório e apoio administrativo', '8219-9', 'Fotocópias, preparação de documentos e outros serviços especializados de apoio administrativo', '8219-9/99', 'Preparação de documentos e serviços especializados de apoio administrativo não especificados anteriormente'),
 (8220200, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '82', 'SERVIÇOS DE ESCRITÓRIO, DE APOIO ADMINISTRATIVO E OUTROS SERVIÇOS PRESTADOS PRINCIPALMENTE ÀS EMPRESAS', '822', 'Atividades de teleatendimento', '8220-2', 'Atividades de teleatendimento', '8220-2/00', 'Atividades de teleatendimento'),
 (8230001, 'N', 'ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES', '82', 'SERVIÇOS DE ESCRITÓRIO, DE APOIO ADMINISTRATIVO E OUTROS SERVIÇOS PRESTADOS PRINCIPALMENTE ÀS EMPRESAS', '823', 'Atividades de organização de eventos, exceto culturais e esportivos', '8230-0', 'Atividades de organização de eventos, exceto culturais e esportivos', '8230-0/01', 'Serviços de organização de feiras, congressos, exposições e festas'),
@@ -14735,7 +14783,7 @@ INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_div
 (9603302, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9603-3', 'Atividades funerárias e serviços relacionados', '9603-3/02', 'Serviços de cremação'),
 (9603303, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9603-3', 'Atividades funerárias e serviços relacionados', '9603-3/03', 'Serviços de sepultamento'),
 (9603304, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9603-3', 'Atividades funerárias e serviços relacionados', '9603-3/04', 'Serviços de funerárias');
-INSERT INTO `cnae_22` (`id`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
+INSERT INTO `cnae_22` (`id_cnae_22`, `cod_secao`, `desc_secao`, `cod_divisao`, `desc_divisao`, `cod_grupo`, `desc_grupo`, `cod_classe`, `desc_classe`, `cod_subclasse`, `desc_subclasse`) VALUES
 (9603305, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9603-3', 'Atividades funerárias e serviços relacionados', '9603-3/05', 'Serviços de somatoconservação'),
 (9603399, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9603-3', 'Atividades funerárias e serviços relacionados', '9603-3/99', 'Atividades funerárias e serviços relacionados não especificados anteriormente'),
 (9609202, 'S', 'OUTRAS ATIVIDADES DE SERVIÇOS', '96', 'OUTRAS ATIVIDADES DE SERVIÇOS PESSOAIS', '960', 'Outras atividades de serviços pessoais', '9609-2', 'Atividades de serviços pessoais não especificadas anteriormente', '9609-2/02', 'Agências matrimoniais'),
@@ -14915,6 +14963,87 @@ INSERT INTO `csosn` (`id_csosn`, `codigo_csosn`, `nome_csosn`, `desc_csosn`) VAL
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `cst`
+--
+
+CREATE TABLE `cst` (
+  `id_cst` int(11) NOT NULL,
+  `cod_cst` varchar(5) DEFAULT NULL,
+  `descricao` varchar(255) DEFAULT NULL,
+  `id_servico` int(11) DEFAULT NULL,
+  `id_icms` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `cst`
+--
+
+INSERT INTO `cst` (`id_cst`, `cod_cst`, `descricao`, `id_servico`, `id_icms`) VALUES
+(0, '000', 'Tributada integralmente', 0, 0),
+(1, '010', 'Tributada e com cobrança do ICMS por substituição tributária', 0, 10),
+(2, '020', 'Com redução de base de cálculo', 0, 20),
+(3, '030', 'Isenta ou não tributária e com cobrança do ICMS por substituição tributária', 0, 30),
+(4, '040', 'Isenta', 0, 40),
+(5, '041', 'Não Tributada', 0, 41),
+(6, '050', 'Suspensão', 0, 50),
+(7, '051', 'Diferimento', 0, 51),
+(8, '060', 'ICMS cobrado anteriormente por substituição tributária', 0, 60),
+(9, '070', 'Com redução de base de cálculo e cobrança do ICMS por substituição tributária', 0, 70),
+(10, '090', 'Outras', 0, 90),
+(11, '1100', 'Tributada integralmente', 1, 0),
+(12, '1110', 'Tributada e com cobrança do ICMS por substituição tributária', 1, 10),
+(13, '1120', 'Com redução de base de cálculo', 1, 20),
+(14, '1130', 'Isenta ou não tributária e com cobrança do ICMS por substituição tributária', 1, 30),
+(15, '1140', 'Isenta', 1, 40),
+(16, '1141', 'Não Tributada', 1, 41),
+(17, '1150', 'Suspensão', 1, 50),
+(18, '1151', 'Diferimento', 1, 51),
+(19, '1160', 'ICMS cobrado anteriormente por substituição tributária', 1, 60),
+(20, '1170', 'Com redução de base de cálculo e cobrança do ICMS por substituição tributária', 1, 70),
+(21, '1190', 'Outras', 1, 90),
+(22, '2200', 'Tributada integralmente', 2, 0),
+(23, '2210', 'Tributada e com cobrança do ICMS por substituição tributária', 2, 10),
+(24, '2220', 'Com redução de base de cálculo', 2, 20),
+(25, '2230', 'Isenta ou não tributária e com cobrança do ICMS por substituição tributária', 2, 30),
+(26, '2240', 'Isenta', 2, 40),
+(27, '2241', 'Não Tributada', 2, 41),
+(28, '2250', 'Suspensão', 2, 50),
+(29, '2251', 'Diferimento', 2, 51),
+(30, '2260', 'ICMS cobrado anteriormente por substituição tributária', 2, 60),
+(31, '2270', 'Com redução de base de cálculo e cobrança do ICMS por substituição tributária', 2, 70),
+(32, '2290', 'Outras', 2, 90);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `deficiencia`
+--
+
+CREATE TABLE `deficiencia` (
+  `id_deficiencia` int(11) NOT NULL,
+  `descricao` varchar(35) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `deficiencia`
+--
+
+INSERT INTO `deficiencia` (`id_deficiencia`, `descricao`) VALUES
+(1, 'NENHUMA DEFICIÊNCIA'),
+(2, 'DEFICIÊNCIA VISUAL PARCIAL'),
+(3, 'DEFICIÊNCIA VISUAL TOTAL'),
+(4, 'DEFICIÊNCIA AUDITIVA PARCIAL'),
+(5, 'DEFICIÊNCIA AUDITIVA TOTAL'),
+(6, 'DEFICIÊNCIA FÍSICA PARCIAL'),
+(7, 'DEFICIÊNCIA FÍSICA TOTAL'),
+(8, 'DEFICIÊNCIA MENTAL PARCIAL'),
+(9, 'DEFICIÊNCIA MENTAL TOTAL'),
+(10, 'DEFICIÊNCIA MULTIPLAS PARCIAL'),
+(11, 'DEFICIÊNCIA MULTIPLAS TOTAL');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `descricao_produto_nota_fiscal`
 --
 
@@ -14972,6 +15101,17 @@ CREATE TABLE `email_empresa` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `email_fornecedor`
+--
+
+CREATE TABLE `email_fornecedor` (
+  `id_fornecedor` int(11) DEFAULT NULL,
+  `id_email` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `empresa`
 --
 
@@ -14982,23 +15122,8 @@ CREATE TABLE `empresa` (
   `situacao` tinyint(1) DEFAULT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `atualizado` timestamp NULL DEFAULT NULL,
-  `id_tipo_empresa` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `endereco_pessoa`
---
-
-CREATE TABLE `endereco_pessoa` (
-  `id_endereco_pessoa` int(11) NOT NULL,
-  `endereco` varchar(50) DEFAULT NULL,
-  `numero` varchar(11) DEFAULT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
-  `id_cidade` int(11) DEFAULT NULL,
-  `id_pessoa` int(11) DEFAULT NULL
+  `id_tipo_empresa` int(11) DEFAULT NULL,
+  `id_cnae_22` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15215,37 +15340,15 @@ INSERT INTO `formularios` (`id_formularios`, `descricao`) VALUES
 
 CREATE TABLE `fornecedor` (
   `id_fornecedor` int(11) NOT NULL,
-  `fantasia` varchar(50) DEFAULT NULL,
-  `razao_social` varchar(70) DEFAULT NULL,
-  `cnpj` char(14) DEFAULT NULL,
-  `inscricao_estadual` varchar(15) DEFAULT NULL,
-  `endereco` varchar(70) DEFAULT NULL,
-  `numero_endereco` varchar(11) DEFAULT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
-  `telefone` varchar(15) DEFAULT NULL,
-  `site` varchar(50) DEFAULT NULL,
-  `email` varchar(70) DEFAULT NULL,
-  `situacao` enum('Operando','Fechado') DEFAULT NULL,
+  `situacao` tinyint(1) NOT NULL,
+  `observacao` varchar(255) NOT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `atualizado` timestamp NULL DEFAULT NULL,
-  `id_cidades` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL
+  `id_pessoa` int(11) DEFAULT NULL,
+  `id_pessoa_fisica` int(11) DEFAULT NULL,
+  `id_pessoa_juridica` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `funcao`
---
-
-CREATE TABLE `funcao` (
-  `id_funcao` int(11) NOT NULL,
-  `id_cargo` int(11) NOT NULL,
-  `id_setores` int(11) NOT NULL,
-  `cadastrado` timestamp NULL DEFAULT NULL,
-  `atualizado` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -15255,28 +15358,24 @@ CREATE TABLE `funcao` (
 
 CREATE TABLE `funcionario` (
   `id_funcionario` int(11) NOT NULL,
-  `nome` varchar(50) DEFAULT NULL,
-  `rg` varchar(10) DEFAULT NULL,
-  `expeditor` varchar(8) DEFAULT NULL,
-  `cpf` char(14) DEFAULT NULL,
-  `data_nascimento` date DEFAULT NULL,
-  `sexo` enum('MASCULINO','FEMININO') DEFAULT NULL,
-  `nome_mae` varchar(70) DEFAULT NULL,
-  `nome_pai` varchar(70) DEFAULT NULL,
-  `celular` varchar(15) DEFAULT NULL,
-  `telefone` varchar(15) DEFAULT NULL,
-  `endereco` varchar(70) DEFAULT NULL,
-  `numero_endereco` varchar(11) DEFAULT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
+  `observacao` varchar(255) DEFAULT NULL,
   `data_demissao` date DEFAULT NULL,
   `data_admissao` date DEFAULT NULL,
-  `situacao` enum('Admitido','Demitido Sem Justa Causa','Demitido Justa Causa','Fastado','Pedido Demissão') DEFAULT NULL,
+  `situacao` tinyint(1) DEFAULT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `atualizado` timestamp NULL DEFAULT NULL,
-  `id_funcao` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `id_cidade` int(11) NOT NULL
+  `id_pessoa_fisica` int(11) NOT NULL,
+  `num_carteira` varchar(15) NOT NULL,
+  `serie` varchar(15) NOT NULL,
+  `uf` char(2) NOT NULL,
+  `data_emissao` date NOT NULL,
+  `pis_pasep` varchar(15) NOT NULL,
+  `id_civil` int(11) NOT NULL,
+  `id_deficiencia` int(11) NOT NULL,
+  `Coluna id_categoria_trabalho` int(11) NOT NULL,
+  `id_setores` int(11) NOT NULL,
+  `id_cargo` int(11) NOT NULL,
+  `id_jornada_trabalho` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15297,6 +15396,26 @@ CREATE TABLE `genero` (
 INSERT INTO `genero` (`id_genero`, `sexo`) VALUES
 (1, 'MASCULINO'),
 (2, 'FEMININO');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `horario_jornada`
+--
+
+CREATE TABLE `horario_jornada` (
+  `id_horario_jornada` int(11) NOT NULL,
+  `dia` varchar(20) DEFAULT NULL,
+  `hora_entrada` time DEFAULT NULL,
+  `hora_ini_intervalo` time DEFAULT NULL,
+  `hora_fim_intervalo` time DEFAULT NULL,
+  `hora_saida` time DEFAULT NULL,
+  `min_intervalo` varchar(20) DEFAULT NULL,
+  `max_intervalo` varchar(20) DEFAULT NULL,
+  `max_horas_extra` varchar(20) DEFAULT NULL,
+  `jornada` varchar(20) DEFAULT NULL,
+  `id_jornada_trabalho` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -15492,6 +15611,32 @@ INSERT INTO `ipi_operacao` (`id_ipi_operacao`, `nome_ipi_operacao`) VALUES
 (3, 'Operação imune'),
 (4, 'Operação com suspensão'),
 (5, 'Operação com redução');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `jornada_trabalho`
+--
+
+CREATE TABLE `jornada_trabalho` (
+  `id_jornada_trabalho` int(11) NOT NULL,
+  `descricao` varchar(30) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `jornada_trabalho`
+--
+
+INSERT INTO `jornada_trabalho` (`id_jornada_trabalho`, `descricao`) VALUES
+(1, 'HORARIO NORMAL 44H'),
+(2, 'HORARIO REDUZIDO 39H'),
+(3, 'HORARIO REDUZIDO 34H'),
+(4, 'HORARIO REDUZIDO 30H'),
+(5, 'HORARIO REDUZIDO 29H'),
+(6, 'HORARIO REDUZIDO 24H'),
+(7, 'HORARIO ESPECIAL 36H'),
+(8, 'HORARIO ESPECIAL 26H'),
+(9, 'HORARIO ESPECIAL 12x36');
 
 -- --------------------------------------------------------
 
@@ -25010,6 +25155,69 @@ CREATE TABLE `permissoes` (
   `id_formularios` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Extraindo dados da tabela `permissoes`
+--
+
+INSERT INTO `permissoes` (`id_permissoes`, `ativar`, `novo`, `cadastra`, `altera`, `deleta`, `nome_formulario`, `id_formularios`) VALUES
+(1, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
+(2, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
+(3, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
+(4, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
+(5, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
+(6, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
+(7, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
+(8, NULL, NULL, NULL, NULL, NULL, 'CADASTRO USUARIO', 6),
+(9, NULL, NULL, NULL, NULL, NULL, 'CADASTRO PERMISSAO', 6),
+(10, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
+(11, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
+(12, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
+(13, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
+(14, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
+(15, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
+(16, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
+(17, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
+(18, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
+(19, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
+(20, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
+(21, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
+(22, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
+(23, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
+(24, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
+(25, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
+(28, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
+(29, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
+(30, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
+(31, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
+(32, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
+(33, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
+(34, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
+(35, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
+(36, NULL, NULL, NULL, NULL, NULL, 'CADASTRO USUARIO', 6),
+(37, NULL, NULL, NULL, NULL, NULL, 'CADASTRO PERMISSAO', 6),
+(38, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
+(39, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
+(40, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
+(41, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
+(42, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
+(43, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO DESCARREGAMENTO', 12),
+(44, NULL, NULL, NULL, NULL, NULL, 'ENTRADA CAMINHAO EMPRESA', 13),
+(45, NULL, NULL, NULL, NULL, NULL, 'ENTRA VEICULOS EMPRESA', 14),
+(46, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO EMPRESA TERCEIRO', 15),
+(47, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO  TERCEIRO', 16),
+(48, NULL, NULL, NULL, NULL, NULL, 'LOGIN', 17),
+(49, NULL, NULL, NULL, NULL, NULL, 'PRINCIPAL', 18),
+(50, NULL, NULL, NULL, NULL, NULL, 'COSULTAR EMPRESA', 19),
+(51, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR FORNECEDOR', 20),
+(52, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR MOTORISTA', 21),
+(53, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR NF E ROMANEIO', 22),
+(54, NULL, NULL, NULL, NULL, NULL, 'SAIDA CAMINHAO EMPRESA', 23),
+(55, NULL, NULL, NULL, NULL, NULL, 'SAIDA FUNCIONARIO', 24),
+(56, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS DESCARREGAMENTO', 25),
+(57, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULO CARREGAMENTO', 26),
+(58, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS EMPRESA', 27),
+(59, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS TERCEIRO', 28);
+
 -- --------------------------------------------------------
 
 --
@@ -25043,6 +25251,7 @@ CREATE TABLE `pessoa` (
   `atualizado` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
@@ -25075,7 +25284,6 @@ CREATE TABLE `pessoa_juridica` (
   `atualizado` datetime DEFAULT NULL,
   `id_pessoa` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 -- --------------------------------------------------------
 
@@ -25135,8 +25343,60 @@ INSERT INTO `pis` (`id_pis`, `codigo_pis`, `desc_pis`) VALUES
 
 CREATE TABLE `produto` (
   `id_produto` int(11) NOT NULL,
-  `descricao` varchar(50) DEFAULT NULL
+  `descricao` varchar(50) DEFAULT NULL,
+  `quantidade` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `produto`
+--
+
+INSERT INTO `produto` (`id_produto`, `descricao`, `quantidade`) VALUES
+(1, 'ALBIZZIA', NULL),
+(2, 'ANDIROBA', NULL),
+(3, 'ANGELIM', NULL),
+(4, 'ARAUCÁRIA', NULL),
+(5, 'CABREÚVA', NULL),
+(6, 'CAMBARÁ', NULL),
+(7, 'CAPIXINGUI', NULL),
+(8, 'CARVALHO AMERICANO', NULL),
+(9, 'CEDRO', NULL),
+(10, 'CEREJEIRA', NULL),
+(11, 'CINAMOMO', NULL),
+(12, 'COPAÍBA', NULL),
+(13, 'CUMARU', NULL),
+(14, 'CURUPIXÁ', NULL),
+(15, 'EUCALIPTO', NULL),
+(16, 'EUCALIPTO CITRIODORA', NULL),
+(17, 'EUCALIPTO GRANDIS', NULL),
+(18, 'FEDEGOSO', NULL),
+(19, 'GARAPA', NULL),
+(20, 'GMELINA', NULL),
+(21, 'GOIABÃO', NULL),
+(22, 'GREVÍLEA', NULL),
+(23, 'IPÊ', NULL),
+(24, 'ITAÚBA', NULL),
+(25, 'JATOBÁ', NULL),
+(26, 'LOURO-FAIA', NULL),
+(27, 'LOURO-VERMELHO', NULL),
+(28, 'MACACAÚBA', NULL),
+(29, 'MARUPÁ', NULL),
+(30, 'MAÇARANDUBA', NULL),
+(31, 'MOGNO', NULL),
+(32, 'MUIRACATIARA', NULL),
+(33, 'MUIRAPIRANGA', NULL),
+(34, 'PAU-AMARELO', NULL),
+(35, 'PAU-MARFIM', NULL),
+(36, 'PEROBA', NULL),
+(37, 'PINHEIRO', NULL),
+(38, 'PINHO', NULL),
+(39, 'PINUS ELLIOTTII', NULL),
+(40, 'ROXINHO', NULL),
+(41, 'SUCUPIRA', NULL),
+(42, 'TAMANQUEIRA', NULL),
+(43, 'TATAJUBA', NULL),
+(44, 'TAUARI', NULL),
+(45, 'TECA', NULL);
 
 -- --------------------------------------------------------
 
@@ -25255,6 +25515,26 @@ CREATE TABLE `saida_vei_emp` (
   `observacao` varchar(255) DEFAULT NULL,
   `id_veiculos_emp` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `servico`
+--
+
+CREATE TABLE `servico` (
+  `id_servico` int(11) NOT NULL,
+  `descricao` varchar(50) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `servico`
+--
+
+INSERT INTO `servico` (`id_servico`, `descricao`) VALUES
+(0, 'Nacional'),
+(1, 'Estrangeira - Importação Direta'),
+(2, 'Estrangeria - Adquirida no mercado interno');
 
 -- --------------------------------------------------------
 
@@ -25387,6 +25667,17 @@ CREATE TABLE `telefone_empresa` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `telefone_fornecedor`
+--
+
+CREATE TABLE `telefone_fornecedor` (
+  `id_fornecedor` int(11) DEFAULT NULL,
+  `id_telefone` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tipo_afazeres`
 --
 
@@ -25452,6 +25743,29 @@ INSERT INTO `tipo_empresa` (`id_tipo_empresa`, `descricao`) VALUES
 (1, 'MATRIZ'),
 (2, 'FILIAL'),
 (3, 'UNICA');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tipo_nf`
+--
+
+CREATE TABLE `tipo_nf` (
+  `id_tipo_nf` int(11) NOT NULL,
+  `tipo` varchar(10) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tipo_nf`
+--
+
+INSERT INTO `tipo_nf` (`id_tipo_nf`, `tipo`) VALUES
+(1, 'NF'),
+(2, 'NF-e'),
+(3, 'NFC-e'),
+(4, 'NFS-e'),
+(5, 'CT-e'),
+(6, 'DANFE');
 
 -- --------------------------------------------------------
 
@@ -25576,6 +25890,7 @@ CREATE TABLE `veiculo_motorista` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
+
 --
 -- Indexes for dumped tables
 --
@@ -25608,6 +25923,12 @@ ALTER TABLE `categoria_cnh`
   ADD PRIMARY KEY (`id_categoria_cnh`);
 
 --
+-- Indexes for table `categoria_trabalho`
+--
+ALTER TABLE `categoria_trabalho`
+  ADD PRIMARY KEY (`id_categoria_trabalho`);
+
+--
 -- Indexes for table `cfop`
 --
 ALTER TABLE `cfop`
@@ -25621,11 +25942,19 @@ ALTER TABLE `cidade`
   ADD KEY `id_estado` (`id_estado`);
 
 --
+-- Indexes for table `civil`
+--
+ALTER TABLE `civil`
+  ADD PRIMARY KEY (`id_civil`);
+
+--
 -- Indexes for table `cliente`
 --
 ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_cliente`),
-  ADD KEY `id_pessoa` (`id_pessoa`);
+  ADD KEY `id_pessoa` (`id_pessoa`),
+  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`),
+  ADD KEY `id_pessoa_juridica` (`id_pessoa_juridica`);
 
 --
 -- Indexes for table `cnae`
@@ -25637,7 +25966,7 @@ ALTER TABLE `cnae`
 -- Indexes for table `cnae_22`
 --
 ALTER TABLE `cnae_22`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id_cnae_22`);
 
 --
 -- Indexes for table `cofins`
@@ -25673,6 +26002,20 @@ ALTER TABLE `csosn`
   ADD PRIMARY KEY (`id_csosn`);
 
 --
+-- Indexes for table `cst`
+--
+ALTER TABLE `cst`
+  ADD PRIMARY KEY (`id_cst`),
+  ADD KEY `id_servico` (`id_servico`),
+  ADD KEY `id_icms` (`id_icms`);
+
+--
+-- Indexes for table `deficiencia`
+--
+ALTER TABLE `deficiencia`
+  ADD PRIMARY KEY (`id_deficiencia`);
+
+--
 -- Indexes for table `descricao_produto_nota_fiscal`
 --
 ALTER TABLE `descricao_produto_nota_fiscal`
@@ -25701,21 +26044,21 @@ ALTER TABLE `email_empresa`
   ADD KEY `id_empresa` (`id_empresa`);
 
 --
+-- Indexes for table `email_fornecedor`
+--
+ALTER TABLE `email_fornecedor`
+  ADD KEY `id_fornecedor` (`id_fornecedor`),
+  ADD KEY `id_email` (`id_email`);
+
+--
 -- Indexes for table `empresa`
 --
 ALTER TABLE `empresa`
   ADD PRIMARY KEY (`id_empresa`),
   ADD UNIQUE KEY `id_pessoa_juridica` (`id_pessoa_juridica`),
   ADD UNIQUE KEY `inscricao_municipal` (`inscricao_municipal`),
-  ADD KEY `id_tipo_empresa` (`id_tipo_empresa`);
-
---
--- Indexes for table `endereco_pessoa`
---
-ALTER TABLE `endereco_pessoa`
-  ADD PRIMARY KEY (`id_endereco_pessoa`),
-  ADD KEY `id_cidade` (`id_cidade`),
-  ADD KEY `id_pessoa` (`id_pessoa`);
+  ADD KEY `id_tipo_empresa` (`id_tipo_empresa`),
+  ADD KEY `id_cnae_22` (`id_cnae_22`);
 
 --
 -- Indexes for table `entrada_caminhao_empresa_carregamento`
@@ -25799,31 +26142,33 @@ ALTER TABLE `formularios`
 --
 ALTER TABLE `fornecedor`
   ADD PRIMARY KEY (`id_fornecedor`),
-  ADD KEY `id_empresa` (`id_empresa`),
-  ADD KEY `id_cidades` (`id_cidades`);
-
---
--- Indexes for table `funcao`
---
-ALTER TABLE `funcao`
-  ADD PRIMARY KEY (`id_funcao`),
-  ADD KEY `id_cargo` (`id_cargo`),
-  ADD KEY `id_setores` (`id_setores`);
+  ADD KEY `id_pessoa` (`id_pessoa`),
+  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`),
+  ADD KEY `id_pessoa_juridica` (`id_pessoa_juridica`);
 
 --
 -- Indexes for table `funcionario`
 --
 ALTER TABLE `funcionario`
   ADD PRIMARY KEY (`id_funcionario`),
-  ADD KEY `id_funcao` (`id_funcao`),
-  ADD KEY `id_empresa` (`id_empresa`),
-  ADD KEY `id_cidade` (`id_cidade`);
+  ADD KEY `id_civil` (`id_civil`),
+  ADD KEY `id_deficiencia` (`id_deficiencia`),
+  ADD KEY `id_setores` (`id_setores`),
+  ADD KEY `id_cargo` (`id_cargo`),
+  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`);
 
 --
 -- Indexes for table `genero`
 --
 ALTER TABLE `genero`
   ADD PRIMARY KEY (`id_genero`);
+
+--
+-- Indexes for table `horario_jornada`
+--
+ALTER TABLE `horario_jornada`
+  ADD PRIMARY KEY (`id_horario_jornada`),
+  ADD KEY `id_jornada_trabalho` (`id_jornada_trabalho`);
 
 --
 -- Indexes for table `icms`
@@ -25866,6 +26211,12 @@ ALTER TABLE `ipi`
 --
 ALTER TABLE `ipi_operacao`
   ADD PRIMARY KEY (`id_ipi_operacao`);
+
+--
+-- Indexes for table `jornada_trabalho`
+--
+ALTER TABLE `jornada_trabalho`
+  ADD PRIMARY KEY (`id_jornada_trabalho`);
 
 --
 -- Indexes for table `metragem`
@@ -26013,6 +26364,12 @@ ALTER TABLE `saida_vei_emp`
   ADD KEY `id_veiculos_emp` (`id_veiculos_emp`);
 
 --
+-- Indexes for table `servico`
+--
+ALTER TABLE `servico`
+  ADD PRIMARY KEY (`id_servico`);
+
+--
 -- Indexes for table `setores`
 --
 ALTER TABLE `setores`
@@ -26047,6 +26404,13 @@ ALTER TABLE `telefone_empresa`
   ADD KEY `id_empresa` (`id_empresa`);
 
 --
+-- Indexes for table `telefone_fornecedor`
+--
+ALTER TABLE `telefone_fornecedor`
+  ADD KEY `id_fornecedor` (`id_fornecedor`),
+  ADD KEY `id_telefone` (`id_telefone`);
+
+--
 -- Indexes for table `tipo_afazeres`
 --
 ALTER TABLE `tipo_afazeres`
@@ -26063,6 +26427,12 @@ ALTER TABLE `tipo_carga`
 --
 ALTER TABLE `tipo_empresa`
   ADD PRIMARY KEY (`id_tipo_empresa`);
+
+--
+-- Indexes for table `tipo_nf`
+--
+ALTER TABLE `tipo_nf`
+  ADD PRIMARY KEY (`id_tipo_nf`);
 
 --
 -- Indexes for table `tipo_pessoa`
@@ -26125,22 +26495,32 @@ ALTER TABLE `carga_produto`
 -- AUTO_INCREMENT for table `cargo`
 --
 ALTER TABLE `cargo`
-  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 --
 -- AUTO_INCREMENT for table `categoria_cnh`
 --
 ALTER TABLE `categoria_cnh`
   MODIFY `id_categoria_cnh` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
+-- AUTO_INCREMENT for table `categoria_trabalho`
+--
+ALTER TABLE `categoria_trabalho`
+  MODIFY `id_categoria_trabalho` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
 -- AUTO_INCREMENT for table `cidade`
 --
 ALTER TABLE `cidade`
   MODIFY `id_cidade` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11060;
 --
+-- AUTO_INCREMENT for table `civil`
+--
+ALTER TABLE `civil`
+  MODIFY `id_civil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
 -- AUTO_INCREMENT for table `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `cnae`
 --
@@ -26172,6 +26552,11 @@ ALTER TABLE `contato_fornecedor`
 ALTER TABLE `csosn`
   MODIFY `id_csosn` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
+-- AUTO_INCREMENT for table `deficiencia`
+--
+ALTER TABLE `deficiencia`
+  MODIFY `id_deficiencia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
 -- AUTO_INCREMENT for table `descricao_produto_nota_fiscal`
 --
 ALTER TABLE `descricao_produto_nota_fiscal`
@@ -26180,12 +26565,12 @@ ALTER TABLE `descricao_produto_nota_fiscal`
 -- AUTO_INCREMENT for table `email`
 --
 ALTER TABLE `email`
-  MODIFY `id_email` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_email` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 --
 -- AUTO_INCREMENT for table `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `endereco_pessoa`
 --
@@ -26240,7 +26625,7 @@ ALTER TABLE `formularios`
 -- AUTO_INCREMENT for table `fornecedor`
 --
 ALTER TABLE `fornecedor`
-  MODIFY `id_fornecedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_fornecedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `funcao`
 --
@@ -26256,6 +26641,11 @@ ALTER TABLE `funcionario`
 --
 ALTER TABLE `genero`
   MODIFY `id_genero` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT for table `horario_jornada`
+--
+ALTER TABLE `horario_jornada`
+  MODIFY `id_horario_jornada` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `icms`
 --
@@ -26291,6 +26681,11 @@ ALTER TABLE `ipi`
 --
 ALTER TABLE `ipi_operacao`
   MODIFY `id_ipi_operacao` int(16) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `jornada_trabalho`
+--
+ALTER TABLE `jornada_trabalho`
+  MODIFY `id_jornada_trabalho` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `metragem`
 --
@@ -26345,7 +26740,7 @@ ALTER TABLE `pis`
 -- AUTO_INCREMENT for table `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 --
 -- AUTO_INCREMENT for table `romaneios`
 --
@@ -26390,7 +26785,7 @@ ALTER TABLE `saida_vei_emp`
 -- AUTO_INCREMENT for table `setores`
 --
 ALTER TABLE `setores`
-  MODIFY `id_setores` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id_setores` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
 --
 -- AUTO_INCREMENT for table `tabelacest`
 --
@@ -26400,7 +26795,7 @@ ALTER TABLE `tabelacest`
 -- AUTO_INCREMENT for table `telefone`
 --
 ALTER TABLE `telefone`
-  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- AUTO_INCREMENT for table `tipo_afazeres`
 --
@@ -26416,6 +26811,11 @@ ALTER TABLE `tipo_carga`
 --
 ALTER TABLE `tipo_empresa`
   MODIFY `id_tipo_empresa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+--
+-- AUTO_INCREMENT for table `tipo_nf`
+--
+ALTER TABLE `tipo_nf`
+  MODIFY `id_tipo_nf` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `tipo_pessoa`
 --

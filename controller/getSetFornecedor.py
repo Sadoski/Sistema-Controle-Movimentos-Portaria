@@ -1,6 +1,6 @@
 class Fornecedor():
-    def __init__(self, idCliente, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao, tipo):
-        self.__idCliente = idCliente
+    def __init__(self, idFornecedor, idPessoa, idPessoaFisica, idPessoaJuridica,  cnpj, inscricaoEstadual, fantasia, razaoSocial, observacao, situacao, tipo):
+        self.__idFornecedor = idFornecedor
         self.__idPessoa = idPessoa
         self.__idPessoaFisica = idPessoaFisica
         self.__idPessoaJuridica = idPessoaJuridica
@@ -15,11 +15,11 @@ class Fornecedor():
 
     @property
     def getIdFornecedor(self):
-        return self.__idCliente
+        return self.__idFornecedor
 
     @getIdFornecedor.setter
-    def setIdFornecedor(self, idCliente):
-        self.__idCliente = idCliente
+    def setIdFornecedor(self, idFornecedor):
+        self.__idFornecedor = idFornecedor
 
     @property
     def getIdPessoa(self):

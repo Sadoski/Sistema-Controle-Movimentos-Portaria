@@ -3,13 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="bec4c958-f4cf-4f90-bfec-937c191b2209" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadCliente.py" afterPath="$PROJECT_DIR$/classes/classCadCliente.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadFornecedor.py" afterPath="$PROJECT_DIR$/classes/classCadFornecedor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classNotasFiscal.py" afterPath="$PROJECT_DIR$/classes/classNotasFiscal.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadFuncionarios.py" afterPath="$PROJECT_DIR$/classes/classCadFuncionarios.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classEmpresa.py" afterPath="$PROJECT_DIR$/classes/classEmpresa.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/conexao/sistemasportaria.sql" afterPath="$PROJECT_DIR$/conexao/sistemasportaria.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controller/getSetFornecedor.py" afterPath="$PROJECT_DIR$/controller/getSetFornecedor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dao/clienteDao.py" afterPath="$PROJECT_DIR$/dao/clienteDao.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dao/empresaDao.py" afterPath="$PROJECT_DIR$/dao/empresaDao.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dao/fornecedorDao.py" afterPath="$PROJECT_DIR$/dao/fornecedorDao.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telas/frmPesquisarClientes.py" afterPath="$PROJECT_DIR$/telas/frmPesquisarClientes.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telas/frmPesquisarFornecedor.py" afterPath="$PROJECT_DIR$/telas/frmPesquisarFornecedor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dao/funcionarioDao.py" afterPath="$PROJECT_DIR$/dao/funcionarioDao.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -36,8 +39,20 @@
       <file leaf-file-name="classCadCliente.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classes/classCadCliente.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="891" column="26" lean-forward="true" selection-start-line="866" selection-start-column="4" selection-end-line="891" selection-end-column="26" />
+            <state relative-caret-position="255">
+              <caret line="726" column="58" lean-forward="true" selection-start-line="720" selection-start-column="4" selection-end-line="726" selection-end-column="58" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="classEmpresa.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/classEmpresa.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="870" column="85" lean-forward="true" selection-start-line="833" selection-start-column="4" selection-end-line="870" selection-end-column="85" />
               <folding />
             </state>
           </provider>
@@ -46,18 +61,18 @@
       <file leaf-file-name="clienteDao.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dao/clienteDao.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="316" column="212" lean-forward="false" selection-start-line="316" selection-start-column="212" selection-end-line="316" selection-end-column="212" />
+            <state relative-caret-position="442">
+              <caret line="440" column="24" lean-forward="true" selection-start-line="432" selection-start-column="4" selection-end-line="440" selection-end-column="24" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="classCadFornecedor.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classes/classCadFornecedor.py">
+      <file leaf-file-name="classCadFuncionarios.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classes/classCadFuncionarios.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="35">
-              <caret line="860" column="25" lean-forward="true" selection-start-line="860" selection-start-column="25" selection-end-line="860" selection-end-column="25" />
+            <state relative-caret-position="222">
+              <caret line="558" column="29" lean-forward="false" selection-start-line="558" selection-start-column="29" selection-end-line="558" selection-end-column="29" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
@@ -65,31 +80,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="getSetFornecedor.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controller/getSetFornecedor.py">
+      <file leaf-file-name="frmCadFuncionario.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/telas/frmCadFuncionario.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1243">
+              <caret line="568" column="28" lean-forward="false" selection-start-line="568" selection-start-column="13" selection-end-line="568" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="funcionarioDao.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dao/funcionarioDao.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="187">
-              <caret line="20" column="23" lean-forward="false" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fornecedorDao.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dao/fornecedorDao.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="132" column="42" lean-forward="false" selection-start-line="132" selection-start-column="42" selection-end-line="132" selection-end-column="42" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="classNotasFiscal.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classes/classNotasFiscal.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="19" column="66" lean-forward="false" selection-start-line="19" selection-start-column="66" selection-end-line="19" selection-end-column="66" />
+              <caret line="114" column="20" lean-forward="false" selection-start-line="114" selection-start-column="20" selection-end-line="114" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -106,15 +111,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>txtIcmsPorcento</find>
-      <find>self.ui.txtIcmsPorcento</find>
-      <find>txtBaseICMS</find>
-      <find>Empresas</find>
-      <find>editar</find>
-      <find>self.editar</find>
-      <find>self.btnImportXml</find>
-      <find>lblProtocoloAuto</find>
-      <find>grbChaveAcesso</find>
       <find>SomatoriaTotalValor</find>
       <find>txtICMSRed</find>
       <find>lblValorProduto</find>
@@ -136,6 +132,15 @@
       <find>txtCn</find>
       <find>textEdit</find>
       <find>self.lblNomeFantasia</find>
+      <find>pesquisar</find>
+      <find>atualizarFornecedor</find>
+      <find>cadastrarEmail</find>
+      <find>btnpesquisarE</find>
+      <find>btnpesquisar</find>
+      <find>QtGui.QComboBox</find>
+      <find>setore</find>
+      <find>txtObser</find>
+      <find>tabWiAdicionais</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -150,9 +155,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/dao/loginDao.py" />
-        <option value="$PROJECT_DIR$/dao/loginDao.py" />
-        <option value="$PROJECT_DIR$/classes/classUsuario.py" />
         <option value="$PROJECT_DIR$/telas/frmLogin.py" />
         <option value="$PROJECT_DIR$/telas/frmCadClienteFornecedor.py" />
         <option value="$PROJECT_DIR$/telas/frmSaidaCaminhaoEmpresa.py" />
@@ -188,25 +190,28 @@
         <option value="$PROJECT_DIR$/telas/frmPesquisarPessoaFisicaJuridica.py" />
         <option value="$PROJECT_DIR$/classes/classPrincipal.py" />
         <option value="$PROJECT_DIR$/controller/getSetCliente.py" />
-        <option value="$PROJECT_DIR$/dao/empresaDao.py" />
-        <option value="$PROJECT_DIR$/classes/classEmpresa.py" />
-        <option value="$PROJECT_DIR$/classes/classEmpresa.py" />
-        <option value="$PROJECT_DIR$/classes/classCadCliente.py" />
         <option value="$PROJECT_DIR$/telas/frmCadCliente.py" />
         <option value="$PROJECT_DIR$/telas/frmCadFornecedor.py" />
         <option value="$PROJECT_DIR$/classes/classNotasFiscal.py" />
         <option value="$PROJECT_DIR$/telas/frmPesquisarClientes.py" />
         <option value="$PROJECT_DIR$/telas/frmPesquisarFornecedor.py" />
-        <option value="$PROJECT_DIR$/dao/clienteDao.py" />
-        <option value="$PROJECT_DIR$/classes/classCadFornecedor.py" />
         <option value="$PROJECT_DIR$/controller/getSetFornecedor.py" />
+        <option value="$PROJECT_DIR$/dao/empresaDao.py" />
         <option value="$PROJECT_DIR$/dao/fornecedorDao.py" />
+        <option value="$PROJECT_DIR$/dao/clienteDao.py" />
+        <option value="$PROJECT_DIR$/classes/classCadCliente.py" />
+        <option value="$PROJECT_DIR$/classes/classCadFornecedor.py" />
+        <option value="$PROJECT_DIR$/classes/classEmpresa.py" />
+        <option value="$PROJECT_DIR$/classes/classEmpresa.py" />
+        <option value="$PROJECT_DIR$/dao/funcionarioDao.py" />
+        <option value="$PROJECT_DIR$/classes/classCadFuncionarios.py" />
+        <option value="$PROJECT_DIR$/telas/frmCadFuncionario.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="65" />
-    <option name="y" value="-4" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="73" />
+    <option name="y" value="10" />
     <option name="width" value="1301" />
     <option name="height" value="772" />
   </component>
@@ -225,6 +230,23 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Sistema Controle Movimentos Portaria" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Sistema Controle Movimentos Portaria" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Sistema Controle Movimentos Portaria" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Sistema Controle Movimentos Portaria" type="462c0819:PsiDirectoryNode" />
+              <item name="telas" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Changed Files">
           <expand>
@@ -236,18 +258,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Sistema Controle Movimentos Portaria" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Sistema Controle Movimentos Portaria" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -493,10 +503,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22692889" sideWeight="0.49209487" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22995462" sideWeight="0.49209487" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973805" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22033899" sideWeight="0.5060514" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973805" sideWeight="0.4969743" order="9" side_tool="false" content_ui="tabs" />
@@ -524,40 +534,11 @@
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="33" />
+      <option name="time" value="34" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/controller/getSetCnae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="10" lean-forward="false" selection-start-line="0" selection-start-column="10" selection-end-line="0" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/telas/frmPesquisarCnae.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="24" column="6" lean-forward="true" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/telas/frmEntradaNF2.py" />
-    <entry file="file://$PROJECT_DIR$/dao/pesquisarPessoaJuridicaDao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="41" column="8" lean-forward="false" selection-start-line="41" selection-start-column="8" selection-end-line="41" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/telas/frmCadEmpresa.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1008">
-          <caret line="247" column="0" lean-forward="false" selection-start-line="247" selection-start-column="0" selection-end-line="247" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/telas/frmPesquisarEmpresa.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-525">
@@ -679,13 +660,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controller/getSetPessoaFisica.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="24" lean-forward="true" selection-start-line="2" selection-start-column="8" selection-end-line="22" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/telas/frmCadastroClientes.py" />
     <entry file="file://G:/ui.py" />
     <entry file="file://$PROJECT_DIR$/controller/getSetContatoTelefone.py">
@@ -699,13 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classes/classPrincipal.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="172" column="52" lean-forward="false" selection-start-line="172" selection-start-column="52" selection-end-line="172" selection-end-column="52" />
         </state>
       </provider>
     </entry>
@@ -724,13 +691,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/telas/frmCadastroFornecedor.py" />
-    <entry file="file://$PROJECT_DIR$/dao/empresaDao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="196" column="8" lean-forward="false" selection-start-line="196" selection-start-column="8" selection-end-line="196" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controller/getSetCliente.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -739,13 +699,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/telas/frmCadastroEmpresa.py" />
-    <entry file="file://$PROJECT_DIR$/telas/frmCadCliente.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="372" column="133" lean-forward="false" selection-start-line="372" selection-start-column="133" selection-end-line="372" selection-end-column="140" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/telas/frmCadFornecedor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6256">
@@ -763,33 +716,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes/classEmpresa.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="1287" column="0" lean-forward="false" selection-start-line="1287" selection-start-column="0" selection-end-line="1287" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/__main__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dao/pesquisarPessoaFisicaDao.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-472">
-          <caret line="7" column="8" lean-forward="false" selection-start-line="7" selection-start-column="8" selection-end-line="7" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/classes/classNotasFiscal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
+        <state relative-caret-position="323">
           <caret line="19" column="66" lean-forward="false" selection-start-line="19" selection-start-column="66" selection-end-line="19" selection-end-column="66" />
           <folding />
         </state>
@@ -807,7 +736,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="180" column="59" lean-forward="false" selection-start-line="180" selection-start-column="59" selection-end-line="180" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -815,48 +743,147 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="154">
           <caret line="78" column="66" lean-forward="false" selection-start-line="78" selection-start-column="66" selection-end-line="78" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controller/getSetFornecedor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classes/classCadCliente.py">
+    <entry file="file://$PROJECT_DIR$/telas/frmCadCliente.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="891" column="26" lean-forward="true" selection-start-line="866" selection-start-column="4" selection-end-line="891" selection-end-column="26" />
+        <state relative-caret-position="136">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dao/clienteDao.py">
+    <entry file="file://$PROJECT_DIR$/classes/classPrincipal.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="316" column="212" lean-forward="false" selection-start-line="316" selection-start-column="212" selection-end-line="316" selection-end-column="212" />
+        <state relative-caret-position="153">
+          <caret line="227" column="0" lean-forward="false" selection-start-line="227" selection-start-column="0" selection-end-line="227" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/classCadPessoaFisica.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="132" column="26" lean-forward="true" selection-start-line="132" selection-start-column="26" selection-end-line="132" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#10#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/fornecedorDao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="442" column="8" lean-forward="true" selection-start-line="442" selection-start-column="8" selection-end-line="442" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/empresaDao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-187">
+          <caret line="93" column="27" lean-forward="true" selection-start-line="93" selection-start-column="27" selection-end-line="93" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__main__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/classCadFornecedor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="35">
-          <caret line="860" column="25" lean-forward="true" selection-start-line="860" selection-start-column="25" selection-end-line="860" selection-end-column="25" />
+        <state relative-caret-position="-14276">
+          <caret line="182" column="0" lean-forward="false" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telas/frmPesquisarPessoaFisica.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="24" column="6" lean-forward="true" selection-start-line="24" selection-start-column="6" selection-end-line="24" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/pesquisarPessoaFisicaDao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="6" column="6" lean-forward="false" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/classEmpresa.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="870" column="85" lean-forward="true" selection-start-line="833" selection-start-column="4" selection-end-line="870" selection-end-column="85" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/clienteDao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="442">
+          <caret line="440" column="24" lean-forward="true" selection-start-line="432" selection-start-column="4" selection-end-line="440" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dao/funcionarioDao.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="114" column="20" lean-forward="false" selection-start-line="114" selection-start-column="20" selection-end-line="114" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classes/classCadCliente.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="726" column="58" lean-forward="true" selection-start-line="720" selection-start-column="4" selection-end-line="726" selection-end-column="58" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controller/getSetFornecedor.py">
+    <entry file="file://$PROJECT_DIR$/controller/getSetPessoaFisica.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="20" column="23" lean-forward="false" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+        <state relative-caret-position="-697">
+          <caret line="1" column="8" lean-forward="false" selection-start-line="1" selection-start-column="8" selection-end-line="1" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dao/fornecedorDao.py">
+    <entry file="file://$PROJECT_DIR$/classes/classCadFuncionarios.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="132" column="42" lean-forward="false" selection-start-line="132" selection-start-column="42" selection-end-line="132" selection-end-column="42" />
+        <state relative-caret-position="222">
+          <caret line="558" column="29" lean-forward="false" selection-start-line="558" selection-start-column="29" selection-end-line="558" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/telas/frmCadFuncionario.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1243">
+          <caret line="568" column="28" lean-forward="false" selection-start-line="568" selection-start-column="13" selection-end-line="568" selection-end-column="28" />
           <folding />
         </state>
       </provider>

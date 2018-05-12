@@ -82,7 +82,7 @@ class FornecedorDao(object):
             self.__conexao.conn.rollback()
             return False
 
-    def cadastrarTelefoneCliente(self, idTelefone, idPessoa):
+    def cadastrarTelefoneFornecedor(self, idTelefone, idPessoa):
 
         try:
             _sql = "INSERT INTO telefone_fornecedor (id_telefone, id_fornecedor) VALUES (%s, %s)"
@@ -113,7 +113,7 @@ class FornecedorDao(object):
             self.__conexao.conn.rollback()
             return False
 
-    def cadastrarEmailCliente(self, idEmail, idPessoa):
+    def cadastrarEmailFornecedor(self, idEmail, idPessoa):
 
         try:
             _sql = "INSERT INTO email_fornecedor (id_email, id_fornecedor) VALUES (%s, %s)"
@@ -130,7 +130,7 @@ class FornecedorDao(object):
 
     def cadastrarFornecedorFisico(self, fornecedor):
         try:
-            _sql = "INSERT INTO fornecedor (id_fornecedor, id_pessoa_fisica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
+            _sql = "INSERT INTO fornecedor (id_pessoa, id_pessoa_fisica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
             _valores = (fornecedor.getIdPessoa, fornecedor.getIdPessoaFisica, fornecedor.getSituacao, fornecedor.getObservacao, self.__dataHora)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
@@ -144,7 +144,7 @@ class FornecedorDao(object):
 
     def cadastrarFornecedorJuridica(self, fornecedor):
         try:
-            _sql = "INSERT INTO fornecedor(id_fornecedor, id_pessoa_juridica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
+            _sql = "INSERT INTO fornecedor(id_pessoa, id_pessoa_juridica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
             _valores = (fornecedor.getIdPessoa, fornecedor.getIdPessoaJuridica, fornecedor.getSituacao, fornecedor.getObservacao, self.__dataHora)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
@@ -164,9 +164,9 @@ class FornecedorDao(object):
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
+            QMessageBox.warning(QWidget(), 'Erro', "Cadastro atualizar com sucesso")
         except mysql.connector.Error as e:
-            w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
+            QMessageBox.warning(QWidget(), 'Erro', "Erro ao atualizar as informações no banco de dados")
             self.__conexao.conn.rollback()
             return False
 
@@ -188,20 +188,6 @@ class FornecedorDao(object):
             # self.__cursor.close()
             return result
         except BaseException as os:
-            return False
-
-    def atualizarFornecedor(self, fornecedor):
-
-        try:
-            __sql = "UPDATE fornecedor SET fantasia = %s, razao_social = %s, cnpj = %s, inscricao_estadual = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, site = %s, email = %s, atualizado = %s, id_cidades = %s, id_empresa = %s WHERE id_fornecedor = %s"
-            _valores = (fornecedor.getFantasia, fornecedor.getRazaoSocial, fornecedor.getCnpj, fornecedor.getInscricaoEstadual, fornecedor.getEndereco, fornecedor.getNumero, fornecedor.getComplemento, fornecedor.getBairro, fornecedor.getTelefone, fornecedor.getSite, fornecedor.getEmail, self.__dataHora, fornecedor.getCidade, fornecedor.getEmpresa, fornecedor.getIdFornecedor)
-            self.__cursor.execute(__sql, _valores)
-            self.__conexao.conn.commit()
-            # self.__cursor.close()
-        except mysql.connector.Error as e:
-            w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
-            self.__conexao.conn.rollback()
             return False
 
     def deletarFornecedor(self, fornecedor):
@@ -318,7 +304,7 @@ class FornecedorDao(object):
 
     def pesquisarPessoaCodigo(self, fornecedor):
         try:
-            _sql = "SELECT p.id_pessoa FROM cliente c INNER JOIN pessoa p ON p.id_pessoa = c.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE c.id_cliente = '" + fornecedor + "'"
+            _sql = "SELECT p.id_pessoa FROM fornecedor c INNER JOIN pessoa p ON p.id_pessoa = c.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE c.id_fornecedor = '" + fornecedor + "'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -341,6 +327,124 @@ class FornecedorDao(object):
             _sql = "SELECT j.id_pessoa_juridica FROM pessoa_juridica j INNER JOIN pessoa p ON p.id_pessoa = j.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE p.id_pessoa = '" + fornecedor + "'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaTelefone(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_fornecedor t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN fornecedor c ON c.id_fornecedor = t.id_fornecedor WHERE t.id_fornecedor  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmail(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_email, l.contato, l.email FROM email_fornecedor t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN fornecedor c ON c.id_fornecedor = t.id_fornecedor WHERE t.id_fornecedor  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def deletarTelefone(self, idTelefone, idFornecedor):
+
+        try:
+            _sql = "DELETE FROM telefone_fornecedor WHERE id_telefone = %s AND id_fornecedor = %s"
+            __valor = (idTelefone, idFornecedor)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoTelefone(self, idTelefone):
+
+        try:
+            _sql = "DELETE FROM telefone WHERE id_telefone = '" + idTelefone + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarEmail(self, idEmail, idFornecedor):
+
+        try:
+            _sql = "DELETE FROM email_fornecedor WHERE id_email = %s AND id_fornecedor = %s"
+            __valor = (idEmail, idFornecedor)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoEmail(self, idEmail):
+
+        try:
+            _sql = "DELETE FROM email WHERE id_email = '" + idEmail + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def pesquisaTelefoneFornecedor(self, idTelefone, idFornecedor):
+        try:
+            _sql = "SELECT * FROM telefone_cliente t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_telefone = '"+idTelefone+"' AND  t.id_cliente = '"+idFornecedor+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmailFornecedor(self, idEmail, idFornecedor):
+        try:
+            _sql = "SELECT * FROM email_cliente t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN cliente c ON c.id_cliente = t.id_cliente WHERE t.id_telefone = '"+idEmail+"' AND  t.id_cliente = '"+idFornecedor+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarFornecedoresFisico(self, empresa):
+        try:
+            _sql = "SELECT * FROM pessoa p INNER JOIN pessoa_fisica j ON j.id_pessoa = p.id_pessoa INNER JOIN fornecedor e ON e.id_pessoa_fisica = j.id_pessoa_fisica INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISÍCA' AND e.id_pessoa_fisica = '" + empresa + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarFornecedoresJuridico(self, empresa):
+        try:
+            _sql = "SELECT * FROM pessoa p INNER JOIN pessoa_juridica j ON j.id_pessoa = p.id_pessoa INNER JOIN fornecedor e ON e.id_pessoa_juridica = j.id_pessoa_juridica INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA JURIDICA' AND e.id_pessoa_juridica = '" + empresa + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
             # self.__cursor.close()
             return result
         except BaseException as os:

@@ -177,6 +177,8 @@ class CadastroClientes(QtGui.QDialog):
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
 
+        self.ui.tabWiAdicionais.setCurrentIndex(0)
+
         self.ui.radBtnAtivo.setCheckable(False)
         self.ui.radBtnDesativo.setCheckable(False)
 
@@ -656,6 +658,7 @@ class CadastroClientes(QtGui.QDialog):
 
 
     def setarCamposFisicoJuridico(self):
+        cliente= ClienteDao()
         if self.ui.radBtnPessoaFisica.isChecked():
             itens = []
 
@@ -679,9 +682,13 @@ class CadastroClientes(QtGui.QDialog):
             estado = str(itens[14])
             cep = str(itens[15])
 
-            __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
-            self.setCamposFisicoJuridico(__dados)
-            self.dialogFisicoJuridico.close()
+            cli = cliente.pesquisarClientesFisico(codigo)
+            if cli == []:
+                __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+                self.setCamposFisicoJuridico(__dados)
+                self.dialogFisicoJuridico.close()
+            else:
+                MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
 
         elif self.ui.radBtnPessoaJuridica.isChecked():
             itens = []
@@ -703,9 +710,13 @@ class CadastroClientes(QtGui.QDialog):
             estado = str(itens[10])
             cep = str(itens[11])
 
-            __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
-            self.setCamposFisicoJuridico(__dados)
-            self.dialogFisicoJuridico.close()
+            cli = cliente.pesquisarClientesJuridico(codigo)
+            if cli == []:
+                __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
+                self.setCamposFisicoJuridico(__dados)
+                self.dialogFisicoJuridico.close()
+            else:
+                MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
 
     def setCamposFisicoJuridico(self, campos):
         if self.ui.radBtnPessoaFisica.isChecked():
