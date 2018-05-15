@@ -120,6 +120,93 @@ class FuncionarioDao(object):
         except BaseException as os:
             return False
 
+    def pesquisarPessoaFisico(self, pessoaFisica):
+        try:
+            _sql = "SELECT p.id_pessoa FROM pessoa_fisica f INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE f.id_pessoa_fisica = '"+pessoaFisica+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def cadastrarTelefone(self, empresa):
+
+        try:
+            _sql = "INSERT INTO telefone (contato, telefone) VALUES (%s, %s)"
+            _valores = (empresa.getContato, empresa.getTelefone)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarTelefoneFuncionario(self, idTelefone, idPessoa):
+
+        try:
+            _sql = "INSERT INTO telefone_funcionario (id_telefone, id_cliente) VALUES (%s, %s)"
+            _valores = (idTelefone, idPessoa)
+
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarEmail(self, empresa):
+
+        try:
+            _sql = "INSERT INTO email (contato, email) VALUES (%s, %s)"
+            _valores = (empresa.getContato, empresa.getEmail)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarEmailFuncionario(self, idEmail, idPessoa):
+
+        try:
+            _sql = "INSERT INTO email_funcionario (id_email, id_cliente) VALUES (%s, %s)"
+            _valores = (idEmail, idPessoa)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados  email")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarFuncionarioFisico(self, funcionario):
+        try:
+            _sql = "INSERT INTO funcionario (id_pessoa, id_pessoa_fisica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
+            _valores = (funcionario.getIdPessoa, funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, self.__dataHora)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+        except mysql.connector.Error as e:
+            QMessageBox.warning(QWidget(), 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+
+
 
 
 

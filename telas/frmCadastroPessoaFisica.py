@@ -217,6 +217,7 @@ class Ui_frmCadastroPessoaFisica(object):
         self.txtPai.setObjectName(_fromUtf8("txtPai"))
 
         self.dateData = QtGui.QDateEdit(self.grbDados)
+        self.dateData.setDate(QtCore.QDate.currentDate())
         self.dateData.setGeometry(QtCore.QRect(450, 110, 110, 26))
         self.dateData.setCalendarPopup(True)
         self.dateData.setObjectName(_fromUtf8("dateData"))

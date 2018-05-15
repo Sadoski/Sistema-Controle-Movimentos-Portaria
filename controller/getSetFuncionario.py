@@ -1,24 +1,24 @@
 class Funcionario():
-
-    def __init__(self, idFuncionario, nome, rg, expeditor, cpf, nascimento, sexo, mae, pai, endereco, numero, complemento, bairro, cidade, telefone, celular, funcao, empresa):
+    def __init__(self, idFuncionario, idPessoa, idPessoaFisica, cpf, rg, nome, sobrenome, observacao, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, emissao):
         self.__idFuncionario = idFuncionario
-        self.__nome = nome
-        self.__rg = rg
-        self.__expeditor = expeditor
+        self.__idPessoa = idPessoa
+        self.__idPessoaFisica = idPessoaFisica
         self.__cpf = cpf
-        self.__nascimento = nascimento
-        self.__sexo = sexo
-        self.__mae = mae
-        self.__pai = pai
-        self.__endereco = endereco
-        self.__numero = numero
-        self.__complemento = complemento
-        self.__bairro = bairro
-        self.__cidade = cidade
-        self.__telefone = telefone
-        self.__celular = celular
-        self.__funcao = funcao
-        self.__empresa = empresa
+        self.__rg = rg
+        self.__nome = nome
+        self.__sobrenome = sobrenome
+        self.__observacao = observacao
+        self.__situacao = situacao
+        self.__civil = civil
+        self.__deficiencia = deficiencia
+        self.__categoria = categoria
+        self.__setor = setor
+        self.__cargo = cargo
+        self.__jornada = jornada
+        self.__admissao = admissao
+        self.__demissao = demissao
+        self.__emissao = emissao
+
 
     @property
     def getIdFuncionario(self):
@@ -29,12 +29,36 @@ class Funcionario():
         self.__idFuncionario = idFuncionario
 
     @property
+    def getIdPessoa(self):
+        return self.__idPessoa
+
+    @getIdPessoa.setter
+    def setIdPessoa(self, idPessoa):
+        self.__idPessoa = idPessoa
+
+    @property
+    def getIdPessoaFisica(self):
+        return self.__idPessoa
+
+    @getIdPessoaFisica.setter
+    def setIdPessoaFisica(self, idPessoaFisica):
+        self.__idPessoaFisica = idPessoaFisica
+
+    @property
     def getNome(self):
         return self.__nome
 
     @getNome.setter
     def setNome(self, nome):
         self.__nome = nome
+
+    @property
+    def getSobrenome(self):
+        return self.__sobrenome
+
+    @getSobrenome.setter
+    def setSobrenome(self, sobrenome):
+        self.__sobrenome = sobrenome
 
     @property
     def getRg(self):
@@ -45,14 +69,6 @@ class Funcionario():
         self.__rg = rg
 
     @property
-    def getExpeditor(self):
-        return self.__expeditor
-
-    @getExpeditor.setter
-    def setExpeditor(self, expeditor):
-        self.__expeditor = expeditor
-
-    @property
     def getCpf(self):
         return self.__cpf
 
@@ -61,105 +77,89 @@ class Funcionario():
         self.__cpf = cpf
 
     @property
-    def getNascimento(self):
-        return self.__nascimento
+    def getObservacao(self):
+        return self.__observacao
 
-    @getNascimento.setter
-    def setNacimento(self, nascimento):
-        self.__nascimento = nascimento
-
-    @property
-    def getSexo(self):
-        return self.__sexo
-
-    @getSexo.setter
-    def setSexo(self, sexo):
-        self.__sexo = sexo
+    @getObservacao.setter
+    def setObservcao(self, observacao):
+        self.__observacao = observacao
 
     @property
-    def getMae(self):
-        return  self.__mae
+    def getSituacao(self):
+        return self.__situacao
 
-    @getMae.setter
-    def setMae(self, mae):
-        self.__mae = mae
-
-    @property
-    def getPai(self):
-        return self.__pai
-
-    @getPai.setter
-    def setPai(self, pai):
-        self.__pai = pai
+    @getSituacao.setter
+    def setSituacao(self, situacao):
+        self.__situcao = situacao
 
     @property
-    def getEndereco(self):
-        return self.__endereco
+    def getCivil(self):
+        return self.__civil
 
-    @getEndereco.setter
-    def setEndereco(self, endereco):
-        self.__endereco = endereco
-
-    @property
-    def getNumero(self):
-        return self.__numero
-
-    @getNumero.setter
-    def setNumero(self, numero):
-        self.__numero = numero
+    @getCivil.setter
+    def setCivil(self, civil):
+        self.__civil= civil
 
     @property
-    def getComplemento(self):
-        return self.__complemento
+    def getDeficiencia(self):
+        return self.__situacao
 
-    @getComplemento.setter
-    def setComplemento(self, complemento):
-        self.__complemento = complemento
-
-    @property
-    def getBairro(self):
-        return self.__bairro
-
-    @getBairro.setter
-    def setBairro(self, bairro):
-        self.__bairro = bairro
+    @getDeficiencia.setter
+    def setDeficiencia(self, deficiencia):
+        self.__deficiencia = deficiencia
 
     @property
-    def getCidade(self):
-        return self.__cidade
+    def getCategoria(self):
+        return self.__categoria
 
-    @getCidade.setter
-    def setCidade(self, cidade):
-        self.__cidade = cidade
-
-    @property
-    def getTelefone(self):
-        return self.__telefone
-
-    @getTelefone.setter
-    def setTelefone(self, telefone):
-        self.__telefone = telefone
+    @getCategoria.setter
+    def setCategoria(self, categoria):
+        self.__categoria = categoria
 
     @property
-    def getCelular(self):
-        return self.__celular
+    def getJornada(self):
+        return self.__jornada
 
-    @getCelular.setter
-    def setCelular(self, celular):
-        self.__celular = celular
-
-    @property
-    def getFuncao(self):
-        return self.__funcao
-
-    @getFuncao.setter
-    def setFuncao(self, funcao):
-        self.__funcao = funcao
+    @getJornada.setter
+    def setJornada(self, jornada):
+        self.__jornada = jornada
 
     @property
-    def getEmpresa(self):
-        return self.__empresa
+    def getSetor(self):
+        return self.__setor
 
-    @getEmpresa.setter
-    def setEmpresa(self, empresa):
-        self.__empresa = empresa
+    @getSetor.setter
+    def setSetor(self, setor):
+        self.__setor = setor
+
+    @property
+    def getCargo(self):
+        return self.__cargo
+
+    @getCargo.setter
+    def setCargo(self, cargo):
+        self.__cargo = cargo
+
+    @property
+    def getAdmissao(self):
+        return self.__admissao
+
+    @getAdmissao.setter
+    def setAdmissao(self, admissao):
+        self.__admissao = admissao
+
+    @property
+    def getDemissao(self):
+        return self.__demissao
+
+    @getDemissao.setter
+    def setDemissao(self, demissao):
+        self.__demissao = demissao
+
+    @property
+    def getEmissao(self):
+        return self.__emissao
+
+    @getEmissao.setter
+    def setEmissao(self, emissao):
+        self.__emissao = emissao

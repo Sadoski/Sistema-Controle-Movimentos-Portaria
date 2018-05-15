@@ -3,9 +3,13 @@ import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from datetime import datetime, timedelta, time
+
 
 from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
+from controller.getSetContatoEmail import ContatoEmail
+from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetFuncionario import Funcionario
 from controller.getSetPessoaFisica import PessoaFisica
 from dao.cidadesEstadosDao import CidadesEstadosDao
@@ -23,6 +27,7 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.setupUi(self)
         self.validator = Validator()
         self.mensagem = MensagemBox()
+        self.addTableHorarios()
         self.idFuncionrio = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
@@ -39,12 +44,13 @@ class CadastroFuncionario(QtGui.QDialog):
         self.setor = []
         self.cargo = []
         self.jornada = []
+        self.horarios = []
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
 
         self.ui.btnNovo.clicked.connect(self.novo)
-        #self.ui.btnSalvar.clicked.connect(self.cadastro)
+        self.ui.btnSalvar.clicked.connect(self.getTime)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
         #self.ui.btnEditar.clicked.connect(self.atualizar)
         self.ui.btnPesquisarPessoaFisica.clicked.connect(self.pesquisarPessoaFisica)
@@ -53,6 +59,8 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtCodigo.returnPressed.connect(self.setPessoaFisica)
         self.ui.txtCodigo.editingFinished.connect(self.setPessoaFisicaEditFinish)
+
+        self.ui.cBoxTabelaHorario.currentIndexChanged.connect(self.setTableHorarios)
 
 
 
@@ -150,6 +158,11 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtObservacao.clear()
 
+        self.ui.txtNumCarteira.clear()
+        self.ui.txtSerie.clear()
+        self.ui.txtPis.clear()
+        self.ui.txtDataAdmissao.setSpecialValueText("Null")
+
         self.ui.txtContatoTelefone.clear()
         self.ui.txtNumeroTelefone.clear()
         self.ui.txtEnderecoEmail.clear()
@@ -173,6 +186,7 @@ class CadastroFuncionario(QtGui.QDialog):
         self.setor.clear()
         self.cargo.clear()
         self.jornada.clear()
+        self.horarios.clear()
 
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
@@ -189,6 +203,163 @@ class CadastroFuncionario(QtGui.QDialog):
     def deletarContatoEmail(self):
         for i in reversed(range(self.ui.tabContatoEmail.rowCount())):
             self.ui.tabContatoEmail.removeRow(i)
+
+    def getTabe(self):
+        for row in range(0, self.ui.tabHorario.rowCount()):
+            semana = self.ui.tabHorario.item(row, 0).text()
+            inicio = self.ui.tabHorario.cellWidget(row, 1).text()
+            iniIntervalo = self.ui.tabHorario.cellWidget(row, 2).text()
+            fimIntervalo = self.ui.tabHorario.cellWidget(row, 3).text()
+            termino = self.ui.tabHorario.cellWidget(row, 4).text()
+
+            self.horarios.append((semana, inicio, iniIntervalo, fimIntervalo, termino))
+
+
+    def addTableHorarios(self):
+        linha = 0
+        for add in range(7):
+            self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit())
+            self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit())
+            self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit())
+            self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit())
+
+            linha+=1
+
+    def setTableHorarios(self):
+        if self.ui.cBoxTabelaHorario.currentIndex() == 0:
+           # 8 horas e mais 4 horas
+            linha = 0
+            for add in range(5):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6,0,0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(11,0,0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(13,0,0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(16,48,0)))
+
+                linha+=1
+
+            linhas = 5
+            for add in range(2):
+                self.ui.tabHorario.setCellWidget(linhas , 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linhas , 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linhas , 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linhas , 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                linhas +=1
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 1:
+            # 7 horas
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(11, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(13, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(15, 0, 0)))
+
+                linha += 1
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 2:
+            # 6 horas mais 40
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(11, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(13, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(14, 40, 0)))
+
+                linha += 1
+
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 3:
+            # 6 horas
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(12, 0, 0)))
+
+                linha += 1
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 4:
+            # 5 horas
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(11, 0, 0)))
+
+                linha += 1
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 5:
+            # 4 horas
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(10, 0, 0)))
+
+                linha += 1
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 6:
+            # 2 horas
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(6, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(8, 0, 0)))
+
+                linha += 1
+
+            self.ui.tabHorario.setCellWidget(6, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+            self.ui.tabHorario.setCellWidget(6, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 7:
+            linha = 0
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                linha+=2
+
+            linha = 1
+            for add in range(6):
+                self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(0, 0, 0)))
+                linha += 2
+
 
     def addContatoTelefone(self):
 
@@ -568,3 +739,236 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.txtInscricaoEstadua.setText(campos.setRg)
         self.ui.txtSobrenome.setText(campos.getApelido)
         self.ui.txtNome.setText(campos.getNome)
+
+    def getIndexCivil(self):
+        index = self.ui.cBoxEstadoCivil.currentIndex()
+
+        for lista in self.estadoCivil:
+            a = lista[index]
+        idCivil = int(a[0])
+
+        return idCivil
+
+    def getIndexDeficiencia(self):
+        index = self.ui.cBoxDeficiencia.currentIndex()
+
+        for lista in self.deficiencia:
+            a = lista[index]
+        idDeficiencia = int(a[0])
+
+        return idDeficiencia
+
+    def getIndexCategoria(self):
+        index = self.ui.cBoxCateTrabalhador.currentIndex()
+
+        for lista in self.categoriaTrabalho:
+            a = lista[index]
+        idCategoria = int(a[0])
+
+        return idCategoria
+
+    def getIndexSetor(self):
+        index = self.ui.cBoxSetor.currentIndex()
+
+        for lista in self.setor:
+            a = lista[index]
+        idSetor = int(a[0])
+
+        return idSetor
+
+    def getIndexCargo(self):
+        index = self.ui.cBoxCargo.currentIndex()
+
+        for lista in self.cargo:
+            a = lista[index]
+        idCargo = int(a[0])
+
+        return idCargo
+
+    def getIndexJornada(self):
+        index = self.ui.cBoxTabelaHorario.currentIndex()
+
+        for lista in self.jornada:
+            a = lista[index]
+        idJornada = int(a[0])
+
+        return idJornada
+
+    def cadastrarTelefone(self):
+        cli = FuncionarioDao()
+        i = 0
+        for lista in self.contatoAdd:
+            a = self.contatoAdd[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, self.idCliente)
+            cli.cadastrarTelefone(__descricao)
+            id = cli.ultimoRegistro()
+            cli.cadastrarTelefoneFuncionario(id, self.idCliente)
+
+            i += 1
+
+    def cadastrarEmail(self):
+        cli = FuncionarioDao()
+        i = 0
+        for lista in self.emailAdd:
+            a = self.emailAdd[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, self.idCliente)
+            cli.cadastrarEmail(__descricao)
+            id = cli.ultimoRegistro()
+            cli.cadastrarEmailFuncionario(id, self.idCliente)
+
+            i += 1
+
+    def getHoraMinutos(self, minutos, dias):
+        hora, minuto, segundo = minutos
+        segundos = timedelta(hours=hora, minutes=minuto, seconds=segundo).total_seconds()*dias
+        return segundos//3600
+
+    def getIntervalo(self, inicio, fim, intervalo):
+
+        now = datetime.now()
+        inicio = datetime(now.year, now.month, now.day, *inicio)
+        fim = datetime(now.year, now.month, now.day, *fim)
+
+        iHoras, iMinutos, iSegundos = intervalo
+
+        intervalo = timedelta(hours=iHoras, minutes=iMinutos, seconds=iSegundos)
+
+        while inicio <= fim:
+            yield inicio.time()
+            inicio += intervalo
+
+    def convertTime(self, time):
+        h = time[:2]
+        m = time[3:5]
+        s = time[6:8]
+
+        return (int(h), int(m), int(s))
+
+
+    def intervalo(self, inicio, fim, intervalo):
+        lista = []
+        for hora in self.getIntervalo(inicio, fim, intervalo):
+            lista.append(hora)
+
+        qtd = len(lista)
+        qtd -= 1
+        return qtd
+
+
+    def getTime(self):
+        self.getTabe()
+
+        listaMatutino = []
+        listaVespertino = []
+        intervalo = (1, 0, 0)
+
+        horario = []
+        for horarios in self.horarios:
+            inicio = self.convertTime(horarios[1])
+            iniIntervalo = self.convertTime(horarios[2])
+            fimIntervalo = self.convertTime(horarios[3])
+            fim = self.convertTime(horarios[4])
+            horario.append((inicio, iniIntervalo, fimIntervalo, fim))
+        i=0
+        segunda = int()
+        terca = int()
+        quarta = int()
+        quinta = int()
+        sexta = int()
+        sabado = int()
+        domingo = int()
+        for a in range(7):
+            h = horario[i]
+            hora1 = self.intervalo(h[0], h[1], intervalo)
+            if a == 0:
+                segunda=hora1
+            elif a == 1:
+                terca=hora1
+            elif a == 2:
+                quarta=hora1
+            elif a == 3:
+                quinta=hora1
+            elif a == 4:
+                sexta=hora1
+            elif a == 5:
+                sabado=hora1
+            elif a == 6:
+                domingo=hora1
+            i+=1
+        print(segunda, terca, quarta, quinta, sexta, sabado, domingo)
+
+        segunda2 = int()
+        terca2 = int()
+        quarta2 = int()
+        quinta2 = int()
+        sexta2 = int()
+        sabado2 = int()
+        domingo2 = int()
+        i=0
+        for a in range(7):
+            h = horario[i]
+            hora2 = self.intervalo(h[2], h[3], intervalo)
+            if a == 0:
+                segunda2 = hora2
+            elif a == 1:
+                terca2 = hora2
+            elif a == 2:
+                quarta2 = hora2
+            elif a == 3:
+                quinta2 = hora2
+            elif a == 4:
+                sexta2 = hora2
+            elif a == 5:
+                sabado2 = hora2
+            elif a == 6:
+                domingo2 = hora2
+            i += 1
+        print(segunda2, terca2, quarta2, quinta2, sexta2, sabado2, domingo2)
+
+
+        listaDia = []
+        for dia in self.horarios:
+            semana = dia[0]
+            h1, m1, s1 = self.convertTime(dia[1])
+            h2, m2, s2 = self.convertTime(dia[2])
+            h3, m3, s3 = self.convertTime(dia[3])
+            h4, m4, s4 = self.convertTime(dia[4])
+
+            if h1 != 0 or m1 != 0 or s1 != 0 and h2 != 0 or m2 != 0 or s2 != 0 and h3 != 0 or m3 != 0 or s3 != 0 and h4 != 0 or m4 != 0 or s4 != 0:
+                listaDia.append("DIA DE TRABALHO")
+
+        dia = len(listaDia)
+
+
+
+
+    def cadastrar(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '':
+            funcionarioDao = FuncionarioDao()
+            idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
+            idCivil = self.getIndexCivil()
+            idDeficiencia = self.getIndexDeficiencia()
+            idCategoria = self.getIndexCategoria()
+            idSetor = self.getIndexSetor()
+            idCargo = self.getIndexCargo()
+            idJornada = self.getIndexJornada()
+            funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, idJornada, self.ui.txtDataAdmissao.text(), self.ui.txtDataDemissao.text(), self.ui.txtDataEmissao.text())
+
+            funcionarioDao.cadastrarFuncionarioFisico(funcionario)
+            self.idFuncionrio = funcionarioDao.ultimoRegistro()
+
+            if self.contatoAdd != []:
+                self.cadastrarTelefone()
+
+            if self.emailAdd != []:
+                self.cadastrarEmail()
+
+            self.cancelar()
