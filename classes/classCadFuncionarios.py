@@ -840,7 +840,7 @@ class CadastroFuncionario(QtGui.QDialog):
         iHoras, iMinutos, iSegundos = intervalo
 
         intervalo = timedelta(hours=iHoras, minutes=iMinutos, seconds=iSegundos)
-
+        
         while inicio <= fim:
             yield inicio.time()
             inicio += intervalo
@@ -865,6 +865,9 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def getTime(self):
         self.getTabe()
+        time1 = timedelta(hours=iHoras, minutes=iMinutos, seconds=iSegundos).seconds
+        time2 = timedelta(hours=12, minutes=0, seconds=0).seconds
+        h = (time2-time1)//3600
 
         listaMatutino = []
         listaVespertino = []
