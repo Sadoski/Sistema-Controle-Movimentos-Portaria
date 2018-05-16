@@ -903,7 +903,6 @@ class CadastroFuncionario(QtGui.QDialog):
             elif a == 6:
                 domingo=hora1
             i+=1
-        print(segunda, terca, quarta, quinta, sexta, sabado, domingo)
 
         segunda2 = int()
         terca2 = int()
@@ -931,12 +930,10 @@ class CadastroFuncionario(QtGui.QDialog):
             elif a == 6:
                 domingo2 = hora2
             i += 1
-        print(segunda2, terca2, quarta2, quinta2, sexta2, sabado2, domingo2)
 
 
         listaDia = []
         for dia in self.horarios:
-            semana = dia[0]
             h1, m1, s1 = self.convertTime(dia[1])
             h2, m2, s2 = self.convertTime(dia[2])
             h3, m3, s3 = self.convertTime(dia[3])
@@ -946,6 +943,20 @@ class CadastroFuncionario(QtGui.QDialog):
                 listaDia.append("DIA DE TRABALHO")
 
         dia = len(listaDia)
+
+        seg = (segunda + segunda2)*dia
+        ter = (terca + terca2)*dia
+        qua = (quarta + quarta2)*dia
+        qui = (quinta + quinta2)*dia
+        sex = (sexta + sexta2)*dia
+        sab = (sabado + sabado2)*dia
+        dom = (domingo + domingo2)*dia
+
+        print(seg)
+
+
+
+
 
 
 
