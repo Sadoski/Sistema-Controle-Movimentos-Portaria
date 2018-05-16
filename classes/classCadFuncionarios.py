@@ -840,7 +840,7 @@ class CadastroFuncionario(QtGui.QDialog):
         iHoras, iMinutos, iSegundos = intervalo
 
         intervalo = timedelta(hours=iHoras, minutes=iMinutos, seconds=iSegundos)
-
+        
         while inicio <= fim:
             yield inicio.time()
             inicio += intervalo
@@ -865,6 +865,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def getTime(self):
         self.getTabe()
+        
 
         listaMatutino = []
         listaVespertino = []
@@ -935,10 +936,20 @@ class CadastroFuncionario(QtGui.QDialog):
         listaDia = []
         for dia in self.horarios:
             h1, m1, s1 = self.convertTime(dia[1])
-            h2, m2, s2 = self.convertTime(dia[2])
+            h2, h2, s2 = self.convertTime(dia[2])
             h3, m3, s3 = self.convertTime(dia[3])
             h4, m4, s4 = self.convertTime(dia[4])
-
+            
+            time1 = timedelta(hours=h1, minutes=m1, seconds=s1).seconds
+            time2 = timedelta(hours=h2, minutes=h2, seconds=s2).seconds
+            time3 = timedelta(hours=h3, minutes=m3, seconds=s3).seconds
+            time4 = timedelta(hours=h4, minutes=h4, seconds=s4).seconds
+            
+            turno1 = (time2-time1)//3600
+            turno2 = (time4-time3)//3600
+            total = turno1+turno2
+            print(total)
+            
             if h1 != 0 or m1 != 0 or s1 != 0 and h2 != 0 or m2 != 0 or s2 != 0 and h3 != 0 or m3 != 0 or s3 != 0 and h4 != 0 or m4 != 0 or s4 != 0:
                 listaDia.append("DIA DE TRABALHO")
 
