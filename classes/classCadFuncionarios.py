@@ -3,7 +3,7 @@ import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 
 from classes.classMensagemBox import MensagemBox
@@ -831,27 +831,26 @@ class CadastroFuncionario(QtGui.QDialog):
         segundos = timedelta(hours=hora, minutes=minuto, seconds=segundo).total_seconds()*dias
         return segundos//3600
 
-    def getIntervalo(self, inicio, fim, intervalo):
-
-        now = datetime.now()
-        inicio = datetime(now.year, now.month, now.day, *inicio)
-        fim = datetime(now.year, now.month, now.day, *fim)
-
-        iHoras, iMinutos, iSegundos = intervalo
-
-        intervalo = timedelta(hours=iHoras, minutes=iMinutos, seconds=iSegundos)
-        
-        while inicio <= fim:
-            yield inicio.time()
-            inicio += intervalo
 
     def convertTime(self, time):
         h = time[:2]
         m = time[3:5]
         s = time[6:8]
-
         return (int(h), int(m), int(s))
 
+    def convertTimeReal(self, time):
+        t = str(time)
+
+        if len(t) == 7:
+            h = time[:1]
+            m = time[2:4]
+            s = time[5:7]
+            return (int(h), int(m), int(s))
+        else:
+            h = time[:2]
+            m = time[3:5]
+            s = time[6:8]
+            return (int(h), int(m), int(s))
 
     def intervalo(self, inicio, fim, intervalo):
         lista = []
@@ -865,132 +864,153 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def getTime(self):
         self.getTabe()
-        
 
-        listaMatutino = []
-        listaVespertino = []
-        intervalo = (1, 0, 0)
+        segundaH = int()
+        segundaM = int()
+        segundaS = int()
+        tercaH= int()
+        tercaM= int()
+        tercaS = int()
+        quartaH= int()
+        quartaM= int()
+        quartaS = int()
+        quintaH= int()
+        quintaM= int()
+        quintaS = int()
+        sextaH= int()
+        sextaM= int()
+        sextaS = int()
+        sabadoH= int()
+        sabadoM= int()
+        sabadoS = int()
+        domingoH= int()
+        domingoM= int()
+        domingoS = int()
 
-        horario = []
-        for horarios in self.horarios:
-            inicio = self.convertTime(horarios[1])
-            iniIntervalo = self.convertTime(horarios[2])
-            fimIntervalo = self.convertTime(horarios[3])
-            fim = self.convertTime(horarios[4])
-            horario.append((inicio, iniIntervalo, fimIntervalo, fim))
-        i=0
-        segunda = int()
-        terca = int()
-        quarta = int()
-        quinta = int()
-        sexta = int()
-        sabado = int()
-        domingo = int()
-        for a in range(7):
-            h = horario[i]
-            hora1 = self.intervalo(h[0], h[1], intervalo)
-            if a == 0:
-                segunda=hora1
-            elif a == 1:
-                terca=hora1
-            elif a == 2:
-                quarta=hora1
-            elif a == 3:
-                quinta=hora1
-            elif a == 4:
-                sexta=hora1
-            elif a == 5:
-                sabado=hora1
-            elif a == 6:
-                domingo=hora1
-            i+=1
+        dias = []
 
-        segunda2 = int()
-        terca2 = int()
-        quarta2 = int()
-        quinta2 = int()
-        sexta2 = int()
-        sabado2 = int()
-        domingo2 = int()
-        i=0
-        for a in range(7):
-            h = horario[i]
-            hora2 = self.intervalo(h[2], h[3], intervalo)
-            if a == 0:
-                segunda2 = hora2
-            elif a == 1:
-                terca2 = hora2
-            elif a == 2:
-                quarta2 = hora2
-            elif a == 3:
-                quinta2 = hora2
-            elif a == 4:
-                sexta2 = hora2
-            elif a == 5:
-                sabado2 = hora2
-            elif a == 6:
-                domingo2 = hora2
-            i += 1
-
-
-        listaDia = []
+        i= 0
         for dia in self.horarios:
             h1, m1, s1 = self.convertTime(dia[1])
-            h2, h2, s2 = self.convertTime(dia[2])
+            h2, m2, s2 = self.convertTime(dia[2])
             h3, m3, s3 = self.convertTime(dia[3])
             h4, m4, s4 = self.convertTime(dia[4])
             
-            time1 = timedelta(hours=h1, minutes=m1, seconds=s1).seconds
-            time2 = timedelta(hours=h2, minutes=h2, seconds=s2).seconds
-            time3 = timedelta(hours=h3, minutes=m3, seconds=s3).seconds
-            time4 = timedelta(hours=h4, minutes=h4, seconds=s4).seconds
-            
-            turno1 = (time2-time1)//3600
-            turno2 = (time4-time3)//3600
+            time1 = (timedelta(hours=h1, minutes=m1, seconds=s1))
+            time2 = (timedelta(hours=h2, minutes=m2, seconds=s2))
+            time3 = (timedelta(hours=h3, minutes=m3, seconds=s3))
+            time4 = (timedelta(hours=h4, minutes=m4, seconds=s4))
+
+            turno1 = (time2-time1)
+            turno2 = (time4-time3)
             total = turno1+turno2
-            print(total)
-            
-            if h1 != 0 or m1 != 0 or s1 != 0 and h2 != 0 or m2 != 0 or s2 != 0 and h3 != 0 or m3 != 0 or s3 != 0 and h4 != 0 or m4 != 0 or s4 != 0:
-                listaDia.append("DIA DE TRABALHO")
+            dias.append(str(total))
 
-        dia = len(listaDia)
+            i +=1
 
-        seg = (segunda + segunda2)*dia
-        ter = (terca + terca2)*dia
-        qua = (quarta + quarta2)*dia
-        qui = (quinta + quinta2)*dia
-        sex = (sexta + sexta2)*dia
-        sab = (sabado + sabado2)*dia
-        dom = (domingo + domingo2)*dia
+        index = 0
+        for d in dias:
+            h1, m1, s1 = self.convertTimeReal(str(dias[index]))
 
-        print(seg)
+            if index  == 0:
+                segundaH = h1
+                segundaM = m1
+                segundaS = s1
+            elif index  == 1:
+                tercaH = h1
+                tercaM = m1
+                tercaS = s1
+            elif index  == 2:
+                quartaH = h1
+                quartaM = m1
+                quartaS = s1
+            elif index  == 3:
+                quintaH = h1
+                quintaM = m1
+                quintaS = s1
+            elif index  == 4:
+                sextaH = h1
+                sextaM = m1
+                sextaS = s1
+            elif index  == 5:
+                sabadoH = h1
+                sabadoM = m1
+                sabadoS = s1
+            elif index  == 6:
+                domingoH = h1
+                domingoM = m1
+                domingoS = s1
+            index +=1
+
+
+        hhs = (segundaH+tercaH+quartaH+quintaH+sextaH+sabadoH+domingoH)
+        mms = (segundaM+tercaM+quartaM+quintaM+sextaM+sabadoM+domingoM)
+        sss = (segundaS+tercaS+quartaS+quintaS+sextaS+sabadoS+domingoS)
+        hor, min, seg = self.convertTimeReal(str(timedelta(minutes=mms, seconds=sss)))
+
+        timeFinal  = hhs+hor+min+seg
+        #print("Total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+        self.horarios.clear()
+        dias.clear()
 
 
 
+        if self.ui.cBoxTabelaHorario.currentIndex() == 0 and timeFinal != 44:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 44h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 1 and timeFinal != 42:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 42h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 2 and timeFinal != 40:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 40h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 3 and timeFinal != 36:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 36h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 4 and timeFinal != 30:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 30h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 5 and timeFinal != 24:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 24h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        elif self.ui.cBoxTabelaHorario.currentIndex() == 6 and timeFinal != 12:
+            self.mensagem.warning('Atenção', "Quantidade de horas não equivale as 12h selecionada em Carga Horaria, total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
+            return False
+        else:
+            return True
 
+    def cadastrarHorarios(self):
+        for row in range(0, self.ui.tabHorario.rowCount()):
+            semana = self.ui.tabHorario.item(row, 0).text()
+            inicio = self.ui.tabHorario.cellWidget(row, 1).text()
+            iniIntervalo = self.ui.tabHorario.cellWidget(row, 2).text()
+            fimIntervalo = self.ui.tabHorario.cellWidget(row, 3).text()
+            termino = self.ui.tabHorario.cellWidget(row, 4).text()
 
-
-
+            funcionarioDao = FuncionarioDao()
+            funcionarioDao.cadastrarHorarios(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idFuncionrio)
 
     def cadastrar(self):
         if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '':
-            funcionarioDao = FuncionarioDao()
-            idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
-            idCivil = self.getIndexCivil()
-            idDeficiencia = self.getIndexDeficiencia()
-            idCategoria = self.getIndexCategoria()
-            idSetor = self.getIndexSetor()
-            idCargo = self.getIndexCargo()
-            idJornada = self.getIndexJornada()
-            funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, idJornada, self.ui.txtDataAdmissao.text(), self.ui.txtDataDemissao.text(), self.ui.txtDataEmissao.text())
+            if self.getTime() == True:
+                funcionarioDao = FuncionarioDao()
+                idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
+                idCivil = self.getIndexCivil()
+                idDeficiencia = self.getIndexDeficiencia()
+                idCategoria = self.getIndexCategoria()
+                idSetor = self.getIndexSetor()
+                idCargo = self.getIndexCargo()
+                idJornada = self.getIndexJornada()
+                funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, idJornada, self.ui.txtDataAdmissao.text(), self.ui.txtDataDemissao.text(), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.ui.txtDataEmissao.text())
 
-            funcionarioDao.cadastrarFuncionarioFisico(funcionario)
-            self.idFuncionrio = funcionarioDao.ultimoRegistro()
+                funcionarioDao.cadastrarFuncionarioFisico(funcionario)
+                self.idFuncionrio = funcionarioDao.ultimoRegistro()
+                self.cadastrarHorarios()
 
-            if self.contatoAdd != []:
-                self.cadastrarTelefone()
+                if self.contatoAdd != []:
+                    self.cadastrarTelefone()
 
-            if self.emailAdd != []:
-                self.cadastrarEmail()
+                if self.emailAdd != []:
+                    self.cadastrarEmail()
 
-            self.cancelar()
+                self.cancelar()

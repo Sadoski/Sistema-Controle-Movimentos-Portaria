@@ -1,5 +1,5 @@
 class Funcionario():
-    def __init__(self, idFuncionario, idPessoa, idPessoaFisica, cpf, rg, nome, sobrenome, observacao, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, emissao):
+    def __init__(self, idFuncionario, idPessoa, idPessoaFisica, cpf, rg, nome, sobrenome, observacao, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao):
         self.__idFuncionario = idFuncionario
         self.__idPessoa = idPessoa
         self.__idPessoaFisica = idPessoaFisica
@@ -17,6 +17,10 @@ class Funcionario():
         self.__jornada = jornada
         self.__admissao = admissao
         self.__demissao = demissao
+        self.__carteira = carteira
+        self.__pis = pis
+        self.__serie = serie
+        self.__uf = uf
         self.__emissao = emissao
 
 
@@ -155,6 +159,38 @@ class Funcionario():
     @getDemissao.setter
     def setDemissao(self, demissao):
         self.__demissao = demissao
+
+    @property
+    def getNumCarteira(self):
+        return self.__carteira
+
+    @getNumCarteira.setter
+    def setNumCarteira(self, carteira):
+        self.__carteira = carteira
+
+    @property
+    def getPis(self):
+        return self.__pis
+
+    @getPis.setter
+    def setPis(self, pis):
+        self.__pis = pis
+
+    @property
+    def getSerie(self):
+        return self.__serie
+
+    @getSerie.setter
+    def setSerie(self, serie):
+        self.__serie = serie
+
+    @property
+    def getUf(self):
+        return self.__uf
+
+    @getUf.setter
+    def setUf(self, uf):
+        self.__uf = uf
 
     @property
     def getEmissao(self):

@@ -193,8 +193,22 @@ class FuncionarioDao(object):
 
     def cadastrarFuncionarioFisico(self, funcionario):
         try:
-            _sql = "INSERT INTO funcionario (id_pessoa, id_pessoa_fisica, situacao, observacao, cadastrado) VALUES (%s, %s, %s, %s, %s)"
-            _valores = (funcionario.getIdPessoa, funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, self.__dataHora)
+            _sql = "INSERT INTO funcionario (id_pessoa_fisica, situacao, observacao, data_demissao, data_admissao, num_carteira, serie, uf, data_emissao, pis_pasep, id_civil, id_deficiencia, id_categoria_trabalho, id_setores, id_cargo, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, funcionario.getPis, self.__dataHora)
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+
+        except mysql.connector.Error as e:
+            QMessageBox.warning(QWidget(), 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def cadastrarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, idFuncionario):
+        try:
+            _sql = "INSERT INTO horario_jornada (dia, hora_entrada, hora_ini_intervalo, hora_fim_intervalo, hora_saida, id_jornada_trabalho, id_funcionario) VALUES (%s, %s, %s, %s, %s, %s)"
+            _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, idFuncionario)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
