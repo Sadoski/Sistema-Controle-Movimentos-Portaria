@@ -31,6 +31,9 @@ class Ui_frmPesquisarFornecedor(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmPesquisarFornecedor.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmPesquisarFornecedor.setWindowIcon(icon)
         frmPesquisarFornecedor.setSizeGripEnabled(True)
         frmPesquisarFornecedor.setModal(True)
 

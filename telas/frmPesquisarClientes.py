@@ -31,37 +31,49 @@ class Ui_frmPesquisarCliente(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmPesquisarCliente.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmPesquisarCliente.setWindowIcon(icon)
         frmPesquisarCliente.setSizeGripEnabled(True)
         frmPesquisarCliente.setModal(True)
+
         self.grbTipoPesquisa = QtGui.QGroupBox(frmPesquisarCliente)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 331, 91))
         self.grbTipoPesquisa.setObjectName(_fromUtf8("grbTipoPesquisa"))
+
         self.radBtnRazaoSocial = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnRazaoSocial.setGeometry(QtCore.QRect(10, 40, 161, 23))
         self.radBtnRazaoSocial.setObjectName(_fromUtf8("radBtnRazaoSocial"))
+
         self.radBtnFantasia = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnFantasia.setGeometry(QtCore.QRect(10, 60, 171, 23))
         self.radBtnFantasia.setObjectName(_fromUtf8("radBtnFantasia"))
+
         self.radBtnCnpj = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnCnpj.setGeometry(QtCore.QRect(180, 20, 91, 23))
         self.radBtnCnpj.setObjectName(_fromUtf8("radBtnCnpj"))
+
         self.radBtnInsEstadual = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnInsEstadual.setGeometry(QtCore.QRect(180, 40, 141, 23))
         self.radBtnInsEstadual.setObjectName(_fromUtf8("radBtnInsEstadual"))
+
         self.radBtnCodigo = QtGui.QRadioButton(self.grbTipoPesquisa)
         self.radBtnCodigo.setGeometry(QtCore.QRect(10, 20, 63, 23))
         self.radBtnCodigo.setObjectName(_fromUtf8("radBtnCodigo"))
+
         self.txtPesquisar = QtGui.QLineEdit(frmPesquisarCliente)
         self.txtPesquisar.setGeometry(QtCore.QRect(350, 70, 391, 25))
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))
+
         self.btnPesquisar = QtGui.QPushButton(frmPesquisarCliente)
         self.btnPesquisar.setGeometry(QtCore.QRect(750, 70, 31, 27))
         self.btnPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.btnPesquisar.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../Sistema Contorle Movimentos Portaria/imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisar.setIcon(icon)
         self.btnPesquisar.setObjectName(_fromUtf8("btnPesquisar"))
+
         self.tabPesquisar = QtGui.QTableWidget(frmPesquisarCliente)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 110, 771, 381))
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)

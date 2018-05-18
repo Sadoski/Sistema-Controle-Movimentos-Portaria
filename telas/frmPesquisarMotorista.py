@@ -32,8 +32,10 @@ class Ui_frmConsultarMotoristas(object):
         font.setPointSize(11)
         frmConsultarMotoristas.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmConsultarMotoristas.setWindowIcon(icon)
+        frmConsultarMotoristas.setSizeGripEnabled(True)
+        frmConsultarMotoristas.setModal(True)
 
         self.grbTipoPesquisa = QtGui.QGroupBox(frmConsultarMotoristas)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 281, 81))

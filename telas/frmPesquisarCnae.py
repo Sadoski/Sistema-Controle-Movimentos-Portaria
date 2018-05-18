@@ -31,6 +31,9 @@ class Ui_frmPesquisarCnae(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmPesquisarCnae.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmPesquisarCnae.setWindowIcon(icon)
         frmPesquisarCnae.setSizeGripEnabled(True)
         frmPesquisarCnae.setModal(True)
 

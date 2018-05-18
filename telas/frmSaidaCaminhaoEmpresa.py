@@ -32,7 +32,12 @@ class Ui_frmSaidaCaminhoaEmpresa(object):
         font.setFamily(_fromUtf8("Tahoma"))
         font.setPointSize(11)
         frmSaidaCaminhoaEmpresa.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal,QtGui.QIcon.Off)
+        frmSaidaCaminhoaEmpresa.setWindowIcon(icon)
+        frmSaidaCaminhoaEmpresa.setSizeGripEnabled(True)
         frmSaidaCaminhoaEmpresa.setModal(True)
+
         self.grbBotoes = QtGui.QGroupBox(frmSaidaCaminhoaEmpresa)
         self.grbBotoes.setGeometry(QtCore.QRect(10, 600, 851, 80))
         self.grbBotoes.setTitle(_fromUtf8(""))

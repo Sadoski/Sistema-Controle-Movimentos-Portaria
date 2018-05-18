@@ -576,28 +576,35 @@ class CadastroPessoaFisica(QtGui.QDialog):
             MensagemBox().warning( 'Atenção', 'Por Favor, preencham os campos obrigtorios ')
 
     def deletar(self):
-        try:
-            _fromUtf8 = QtCore.QString.fromUtf8
-        except AttributeError:
-            def _fromUtf8(s):
-                return s
+        fisicaDao = PessoaFisicaDao()
+        clie = fisicaDao.pesquisarTabelaCliente(self.pessoa)
+        forn = fisicaDao.pesquisarTabelaFornecedor(self.pessoa)
+        func = fisicaDao.pesquisarTabelaFuncionario(self.pessoa)
+        if clie == "" or forn == "" or func == "":
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
 
-        self.msgBox = QtGui.QMessageBox()
-        self.msgBox.setWindowTitle('Menssagem')
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.msgBox.setWindowIcon(icon)
-        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
-        self.msgBox.setText("Tem certeza que deseja excluir esse registro")
-        btnSim = QtGui.QPushButton('Sim')
-        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
-        btnNao = QtGui.QPushButton('Não')
-        self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
-        btnSim.clicked.connect(self.simDeletar)
-        btnNao.clicked.connect(self.fechar)
-        btnNao.setFocus()
-        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.msgBox.exec_()
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle('Menssagem')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
+            btnSim.clicked.connect(self.simDeletar)
+            btnNao.clicked.connect(self.fechar)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+        else:
+            MensagemBox().warning('Atenção', 'Impossivel fazer essa operação, pois essa pessoa esta relacionada com outro formulario')
 
     def simDeletar(self):
             fisicaDao = PessoaFisicaDao()

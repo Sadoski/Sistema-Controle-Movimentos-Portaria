@@ -114,3 +114,33 @@ class PessoaJuridicaDao(object):
             return True
         except mysql.connector.Error as e:
             return False
+
+    def pesquisarTabelaCliente(self, pessoa):
+        try:
+            __sql = "SELECT * FROM cliente c INNER JOIN pessoa_juridica f ON f.id_pessoa_juridica = c.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE p.id_pessoa = '" + pessoa + "'"
+            self.__cursor.execute(__sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except mysql.connector.Error as e:
+            return False
+
+    def pesquisarTabelaFornecedor(self, pessoa):
+        try:
+            __sql = "SELECT * FROM fornecedor c INNER JOIN pesssoa_juridica f ON f.id_pessoa_juridica = c.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE p.id_pessoa = '" + pessoa + "'"
+            self.__cursor.execute(__sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except mysql.connector.Error as e:
+            return False
+
+    def pesquisarTabelaEmpresa(self, pessoa):
+        try:
+            __sql = "SELECT * FROM empresa c INNER JOIN pessoa_juridica f ON f.id_pessoa_juridica = c.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE p.id_pessoa = '" + pessoa + "'"
+            self.__cursor.execute(__sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except mysql.connector.Error as e:
+            return False

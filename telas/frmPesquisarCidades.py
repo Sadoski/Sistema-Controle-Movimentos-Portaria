@@ -31,6 +31,11 @@ class Ui_frmConsultarCidades(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmConsultarCidades.setFont(font)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        frmConsultarCidades.setWindowIcon(icon)
+        frmConsultarCidades.setSizeGripEnabled(True)
+        frmConsultarCidades.setModal(True)
 
         self.grbTipoPesquisa = QtGui.QGroupBox(frmConsultarCidades)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 221, 71))

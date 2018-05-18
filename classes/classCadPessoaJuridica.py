@@ -485,27 +485,34 @@ class CadastroPessoaJuridica(QtGui.QDialog):
             MensagemBox().critico('Atenção', "Por Favor, preencham os campos obrigtorios ")
 
     def deletar(self):
-        try:
-            _fromUtf8 = QtCore.QString.fromUtf8
-        except AttributeError:
-            def _fromUtf8(s):
-                return s
-        self.msgBox = QtGui.QMessageBox()
-        self.msgBox.setWindowTitle("Mensagem")
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.msgBox.setWindowIcon(icon)
-        self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
-        self.msgBox.setText("Tem certeza que deseja excluir esse registro?")
-        btnSim = QtGui.QPushButton('Sim')
-        self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
-        btnSim.clicked.connect(self.deletarRegistro)
-        btnNao = QtGui.QPushButton('Não')
-        self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
-        btnNao.clicked.connect(self.closeMesagem)
-        btnNao.setFocus()
-        self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.msgBox.exec_()
+        juridicoDao = PessoaJuridicaDao()
+        clie = juridicoDao.pesquisarTabelaCliente(self.pessoa)
+        forn = juridicoDao.pesquisarTabelaFornecedor(self.pessoa)
+        empr = juridicoDao.pesquisarTabelaEmpresa(self.pessoa)
+        if clie == "" or forn == "" or empr == "":
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle("Mensagem")
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro?")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnSim.clicked.connect(self.deletarRegistro)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.YesRole)
+            btnNao.clicked.connect(self.closeMesagem)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+        else:
+            MensagemBox().warning('Atenção', 'Impossivel fazer essa operação, pois essa pessoa esta relacionada com outro formulario')
 
     def deletarRegistro(self):
             fisicaDao = PessoaJuridicaDao()

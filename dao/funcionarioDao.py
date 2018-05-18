@@ -198,22 +198,20 @@ class FuncionarioDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
 
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao inserir as informações no banco de dados ")
             self.__conexao.conn.rollback()
             return False
 
-    def cadastrarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, idFuncionario):
+    def cadastrarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, s):
         try:
             _sql = "INSERT INTO horario_jornada (dia, hora_entrada, hora_ini_intervalo, hora_fim_intervalo, hora_saida, id_jornada_trabalho, id_funcionario) VALUES (%s, %s, %s, %s, %s, %s)"
             _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, idFuncionario)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
-
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao inserir as informações no banco de dados ")
             self.__conexao.conn.rollback()

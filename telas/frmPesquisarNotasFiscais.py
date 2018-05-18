@@ -32,7 +32,7 @@ class Ui_frmConsultarNotasFiscais(object):
         font.setPointSize(11)
         frmConsultarNotasFiscais.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmConsultarNotasFiscais.setWindowIcon(icon)
         frmConsultarNotasFiscais.setSizeGripEnabled(False)
         frmConsultarNotasFiscais.setModal(True)

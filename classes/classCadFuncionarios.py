@@ -17,6 +17,7 @@ from dao.funcionarioDao import FuncionarioDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from dao.setoresCargosDao import SetoresCargosDao
 from telas.frmCadFuncionario import Ui_frmCadastroFuncionario
+from telas.frmPesquisarFuncionario import Ui_frmPesquisarFuncionario
 from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
 
 
@@ -1014,3 +1015,144 @@ class CadastroFuncionario(QtGui.QDialog):
                     self.cadastrarEmail()
 
                 self.cancelar()
+
+    def keyPressEvent(self, keyEvent):
+        if keyEvent.key() == (QtCore.Qt.Key_F12):
+            self.dialog = QDialog(self)
+            self.__pesquisarPessoa =  Ui_frmPesquisarFuncionario()
+            self.__pesquisarPessoa.setupUi(self.dialog)
+
+            #self.__pesquisarPessoa.txtPesquisar.returnPressed.connect(self.pesquisar)
+
+            #self.__pesquisarPessoa.btnPesquisar.clicked.connect(self.pesquisar)
+
+            #self.__pesquisarPessoa.tabPesquisar.doubleClicked.connect(self.setarCampos)
+
+            self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.dialog.exec_()
+
+    def pesquisar(self):
+        if self.__pesquisarPessoa.radBtnCodigo.isChecked():
+            __nome = self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaCodigo(__nome)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisarPessoa.radBtnNome.isChecked():
+            __nome = self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaNome(__nome)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisarPessoa.radBtncPF.isChecked():
+            __cpf= self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaCpf(__cpf)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisarPessoa.radBtnRg.isChecked():
+            __rg = self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaRg(__rg)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisarPessoa.radBtnNumCarteira.isChecked():
+            __mae = self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaNumCarteira(__mae)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        elif self.__pesquisarPessoa.radBtnPis.isChecked():
+            __pai = self.__pesquisarPessoa.txtPesquisar.text()
+            __pesDao = FuncionarioDao()
+            __retorno = __pesDao.pesquisaPis(__pai)
+
+            self.setarTabelaPesquisa(__retorno)
+
+        else:
+            MensagemBox().warning('Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisa(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarPessoa.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            nome = pesqui[1]
+            segundoNome = pesqui[2]
+            cpf = pesqui[3]
+            rg = pesqui[4]
+            expeditor = pesqui[5]
+            uf = pesqui[6]
+            data = pesqui[7]
+            sexo = pesqui[8]
+            endereco = pesqui[9]
+            numero = pesqui[10]
+            complemento = pesqui[11]
+            bairro = pesqui[12]
+            cidade = pesqui[13]
+            estado = pesqui[14]
+            cep = pesqui[15]
+            mae = pesqui[16]
+            pai = pesqui[17]
+            admissao = pesqui[18]
+            demissao = pesqui[19]
+            carteira = pesqui[20]
+            serie = pesqui[21]
+            uff = pesqui[22]
+            emissao = pesqui[23]
+            pis = pesqui[24]
+            civil = pesqui[25]
+            deficiencia = pesqui[26]
+            categoria = pesqui[27]
+            setor = pesqui[28]
+            cargo = pesqui[29]
+            situacao = pesqui[30]
+
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(segundoNome)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(data)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(sexo)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(mae)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(pai)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(admissao)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(demissao)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(carteira)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(serie)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 22, QtGui.QTableWidgetItem(str(uff)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 23, QtGui.QTableWidgetItem(str(emissao)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 24, QtGui.QTableWidgetItem(str(pis)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 25, QtGui.QTableWidgetItem(str(civil)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 26, QtGui.QTableWidgetItem(str(deficiencia)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 27, QtGui.QTableWidgetItem(str(categoria)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 28, QtGui.QTableWidgetItem(str(cargo)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 29, QtGui.QTableWidgetItem(str(setor)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 30, QtGui.QTableWidgetItem(str(situacao)))
+
+
+
+
+            linha += 1

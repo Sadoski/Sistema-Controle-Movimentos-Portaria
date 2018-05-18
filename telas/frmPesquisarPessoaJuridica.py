@@ -31,11 +31,11 @@ class Ui_frmPesquisarPessoaJuridica(object):
         font = QtGui.QFont()
         font.setPointSize(11)
         frmPesquisarPessoaJuridica.setFont(font)
-        frmPesquisarPessoaJuridica.setSizeGripEnabled(True)
-        frmPesquisarPessoaJuridica.setModal(True)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmPesquisarPessoaJuridica.setWindowIcon(icon)
+        frmPesquisarPessoaJuridica.setSizeGripEnabled(True)
+        frmPesquisarPessoaJuridica.setModal(True)
 
         self.grbTipoPesquisa = QtGui.QGroupBox(frmPesquisarPessoaJuridica)
         self.grbTipoPesquisa.setGeometry(QtCore.QRect(10, 10, 251, 91))
