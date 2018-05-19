@@ -1115,7 +1115,10 @@ class CadastroFuncionario(QtGui.QDialog):
             categoria = pesqui[27]
             setor = pesqui[28]
             cargo = pesqui[29]
-            situacao = pesqui[30]
+            if pesqui[30] == 1:
+                situacao = "Ativo"
+            else:
+                situacao = "Desativo"
 
 
 
