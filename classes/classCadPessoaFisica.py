@@ -65,6 +65,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.txtCep.cursorPositionChanged.connect(self.positionCursorCep)
         self.ui.txtCpf.cursorPositionChanged.connect(self.positionCursorCpf)
 
+
     def numberRg(self):
         if self.ui.txtRg.text().isnumeric() == False:
             self.ui.txtRg.backspace()
