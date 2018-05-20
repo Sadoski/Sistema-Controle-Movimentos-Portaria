@@ -31,6 +31,7 @@ class CadastroFuncionario(QtGui.QDialog):
         self.idFuncionrio = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
+        self.idJornada = int()
         self.editar = False
         self.contatoAdd = []
         self.contatoRemove = []
@@ -48,6 +49,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
+        self.ui.txtUf.setValidator(self.validator)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -62,13 +64,39 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.cBoxTabelaHorario.currentIndexChanged.connect(self.setTableHorarios)
 
+        self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
+        self.ui.txtNumCarteira.textChanged.connect(self.numberCarteira)
+        self.ui.txtSerie.textChanged.connect(self.numberSerie)
+        self.ui.txtPis.textChanged.connect(self.numberPis)
+        self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
+        self.ui.txtObservacao.textChanged.connect(self.textEdite)
+
         self.ui.txtDataAdmissao.cursorPositionChanged.connect(self.positionCursorDataAdmissao)
         self.ui.txtDataDemissao.cursorPositionChanged.connect(self.positionCursorDataDemissao)
         self.ui.txtDataEmissao.cursorPositionChanged.connect(self.positionCursorDataEmissao)
 
+        self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
+        self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
+
+        self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
+        self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
+
+
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
             self.ui.txtCodigo.backspace()
+
+    def numberCarteira(self):
+        if self.ui.txtNumCarteira.text().isnumeric() == False:
+            self.ui.txtNumCarteira.backspace()
+
+    def numberSerie(self):
+        if self.ui.txtSerie.text().isnumeric() == False:
+            self.ui.txtSerie.backspace()
+
+    def numberPis(self):
+        if self.ui.txtPis.text().isnumeric() == False:
+            self.ui.txtPis.backspace()
 
     def numberTelefone(self):
         if self.ui.txtNumeroTelefone.text().isnumeric() == False:
@@ -220,8 +248,12 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtObservacao.clear()
 
+        self.ui.txtDataAdmissao.clear()
+        self.ui.txtDataDemissao.clear()
         self.ui.txtNumCarteira.clear()
         self.ui.txtSerie.clear()
+        self.ui.txtUf.clear()
+        self.ui.txtDataEmissao.clear()
         self.ui.txtPis.clear()
 
         self.ui.txtContatoTelefone.clear()
@@ -864,10 +896,10 @@ class CadastroFuncionario(QtGui.QDialog):
             contato = a[0]
             telefone = a[1]
 
-            __descricao = ContatoTelefone(None, contato, telefone, self.idCliente)
+            __descricao = ContatoTelefone(None, contato, telefone, self.idFuncionrio)
             cli.cadastrarTelefone(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarTelefoneFuncionario(id, self.idCliente)
+            cli.cadastrarTelefoneFuncionario(id, self.idFuncionrio)
 
             i += 1
 
@@ -880,10 +912,10 @@ class CadastroFuncionario(QtGui.QDialog):
             contato = a[0]
             email = a[1]
 
-            __descricao = ContatoEmail(None, contato, email, self.idCliente)
+            __descricao = ContatoEmail(None, contato, email, self.idFuncionrio)
             cli.cadastrarEmail(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarEmailFuncionario(id, self.idCliente)
+            cli.cadastrarEmailFuncionario(id, self.idFuncionrio)
 
             i += 1
 
@@ -1047,21 +1079,21 @@ class CadastroFuncionario(QtGui.QDialog):
             iniIntervalo = self.ui.tabHorario.cellWidget(row, 2).text()
             fimIntervalo = self.ui.tabHorario.cellWidget(row, 3).text()
             termino = self.ui.tabHorario.cellWidget(row, 4).text()
-
+            print(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idFuncionrio)
             funcionarioDao = FuncionarioDao()
-            funcionarioDao.cadastrarHorarios(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idFuncionrio)
+            funcionarioDao.cadastrarHorarios(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idJornada, self.idFuncionrio)
 
     def converterData(self, data):
         if len(self.removerCaracter(data)) == 8:
             dia = data[:2]
             mes = data[3:5]
             ano = data[6:10]
-            return QDate(ano,mes,dia)
+            return ("%s%s%s"%(ano,mes,dia))
         elif len(self.removerCaracter(data)) > 0 and len(self.removerCaracter(data)) <8:
             self.mensagem.warning('Atenção', "Data invalidas, por favor insira uma data valida")
 
     def cadastrar(self):
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '' and len(self.removerCaracter(self.ui.txtDataEmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataAdmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataDemissao.text())) != '':
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '' and len(self.removerCaracter(self.ui.txtDataEmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataAdmissao.text())) != '' :
             if self.getTime() == True:
                 funcionarioDao = FuncionarioDao()
                 idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
@@ -1070,11 +1102,12 @@ class CadastroFuncionario(QtGui.QDialog):
                 idCategoria = self.getIndexCategoria()
                 idSetor = self.getIndexSetor()
                 idCargo = self.getIndexCargo()
-                idJornada = self.getIndexJornada()
-                funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
+                self.idJornada = self.getIndexJornada()
+                funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
 
                 funcionarioDao.cadastrarFuncionarioFisico(funcionario)
                 self.idFuncionrio = funcionarioDao.ultimoRegistro()
+                print(self.idFuncionrio)
                 self.cadastrarHorarios()
 
                 if self.contatoAdd != []:
@@ -1084,6 +1117,8 @@ class CadastroFuncionario(QtGui.QDialog):
                     self.cadastrarEmail()
 
                 self.cancelar()
+            else:
+                self.mensagem.warning('Atenção',"Por Favor preencha os campos obrigatorios")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):

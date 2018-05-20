@@ -148,7 +148,7 @@ class FuncionarioDao(object):
     def cadastrarTelefoneFuncionario(self, idTelefone, idPessoa):
 
         try:
-            _sql = "INSERT INTO telefone_funcionario (id_telefone, id_cliente) VALUES (%s, %s)"
+            _sql = "INSERT INTO telefone_funcionario (id_telefone, id_funcionario) VALUES (%s, %s)"
             _valores = (idTelefone, idPessoa)
 
             self.__cursor.execute(_sql, _valores)
@@ -179,7 +179,7 @@ class FuncionarioDao(object):
     def cadastrarEmailFuncionario(self, idEmail, idPessoa):
 
         try:
-            _sql = "INSERT INTO email_funcionario (id_email, id_cliente) VALUES (%s, %s)"
+            _sql = "INSERT INTO email_funcionario (id_email, id_funcionario) VALUES (%s, %s)"
             _valores = (idEmail, idPessoa)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
@@ -194,7 +194,8 @@ class FuncionarioDao(object):
     def cadastrarFuncionarioFisico(self, funcionario):
         try:
             _sql = "INSERT INTO funcionario (id_pessoa_fisica, situacao, observacao, data_demissao, data_admissao, num_carteira, serie, uf, data_emissao, pis_pasep, id_civil, id_deficiencia, id_categoria_trabalho, id_setores, id_cargo, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, funcionario.getPis, self.__dataHora)
+            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, self.__dataHora)
+            print(_valores)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -205,10 +206,10 @@ class FuncionarioDao(object):
             self.__conexao.conn.rollback()
             return False
 
-    def cadastrarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, s):
+    def cadastrarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario):
         try:
-            _sql = "INSERT INTO horario_jornada (dia, hora_entrada, hora_ini_intervalo, hora_fim_intervalo, hora_saida, id_jornada_trabalho, id_funcionario) VALUES (%s, %s, %s, %s, %s, %s)"
-            _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, idFuncionario)
+            _sql = "INSERT INTO horario_jornada (dia, hora_entrada, hora_ini_intervalo, hora_fim_intervalo, hora_saida, id_jornada_trabalho, id_funcionario) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario)
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()

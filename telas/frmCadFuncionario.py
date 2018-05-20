@@ -120,7 +120,6 @@ class Ui_frmCadastroFuncionario(object):
 
         self.txtObservacao = QtGui.QTextEdit(self.geral)
         self.txtObservacao.setGeometry(QtCore.QRect(10, 110, 851, 71))
-        self.txtObservacao.setCursorWidth(0)
         self.txtObservacao.setObjectName(_fromUtf8("txtObservacao"))
 
         self.lblObservacao = QtGui.QLabel(self.geral)
@@ -341,7 +340,7 @@ class Ui_frmCadastroFuncionario(object):
 
         self.txtUf = QtGui.QLineEdit(self.cadastroSetores)
         self.txtUf.setGeometry(QtCore.QRect(420, 174, 51, 25))
-        self.txtUf.setMaxLength(25)
+        self.txtUf.setMaxLength(2)
         self.txtUf.setObjectName(_fromUtf8("txtUf"))
 
         self.lblDataEmissao = QtGui.QLabel(self.cadastroSetores)
