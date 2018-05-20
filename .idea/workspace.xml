@@ -2,15 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bec4c958-f4cf-4f90-bfec-937c191b2209" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/classes/classRelatorio.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/CSV.py" afterPath="$PROJECT_DIR$/classes/CSV.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classCadFuncionarios.py" afterPath="$PROJECT_DIR$/classes/classCadFuncionarios.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classPrincipal.py" afterPath="$PROJECT_DIR$/classes/classPrincipal.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dao/funcionarioDao.py" afterPath="$PROJECT_DIR$/dao/funcionarioDao.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telas/frmCadFuncionario.py" afterPath="$PROJECT_DIR$/telas/frmCadFuncionario.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telas/frmMainHouse.py" afterPath="$PROJECT_DIR$/telas/frmMainHouse.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/telas/frmPesquisarFuncionario.py" afterPath="$PROJECT_DIR$/telas/frmPesquisarFuncionario.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/HTML.py" afterPath="$PROJECT_DIR$/classes/HTML.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -61,8 +53,8 @@
       <file leaf-file-name="HTML.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/classes/HTML.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="141" column="0" lean-forward="true" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+            <state relative-caret-position="170">
+              <caret line="85" column="295" lean-forward="false" selection-start-line="85" selection-start-column="295" selection-end-line="85" selection-end-column="295" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -201,7 +193,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="73" />
     <option name="y" value="10" />
     <option name="width" value="1301" />
@@ -495,7 +487,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23718888" sideWeight="0.49209487" order="0" side_tool="false" content_ui="combo" />
@@ -847,7 +839,7 @@
         <state relative-caret-position="155">
           <caret line="51" column="20" lean-forward="true" selection-start-line="51" selection-start-column="20" selection-end-line="51" selection-end-column="20" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -874,8 +866,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/classes/HTML.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="141" column="0" lean-forward="true" selection-start-line="141" selection-start-column="0" selection-end-line="141" selection-end-column="0" />
+        <state relative-caret-position="170">
+          <caret line="85" column="295" lean-forward="false" selection-start-line="85" selection-start-column="295" selection-end-line="85" selection-end-column="295" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>

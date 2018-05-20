@@ -83,6 +83,7 @@ class TAG:
 
     def gerar(dados):
         head = HEAD(TITLE('Relatório Pessoa Fisíca'))
+        head <= STYLE("table{width: 90%; margin: 0 auto; text-align: justify; border: 1px solid black; border-collapse: collapse; white-space: pre-line; table-layout: auto; width: content-box; height: content-box;} th{border: 2px solid black; background-color: #D3D3D3; text-align: center; heigt: 100%} td{border: 1px solid black; text-align: justify; }")
         body = BODY()
         body <= H1('Relatório Pessoa Fisíca')
         tab = TABLE()
