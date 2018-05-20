@@ -12,6 +12,7 @@ from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
 from classes.classEntradaVeiEmpresa import EntradaVeiEmpresa
 from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from classes.classCadPessoaJuridica import CadastroPessoaJuridica
+from classes.classRelatorio import Relatorio
 from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
 from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
 from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
@@ -66,6 +67,7 @@ class Principal(QtGui.QMainWindow):
         self.ui.camiEmpSubMenuEntrada.triggered.connect(self._entradaCaminEmp)
         self.ui.camiEmpSubMenuSaida.triggered.connect(self._saidaCaminEmp)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
+        self.ui.subMenuRelatorios.triggered.connect(self._relatorio)
         '''
         #Menu Cosultas
         self.ui.subMenuConsultasEmpresas.triggered.connect(self.__consultasEmpresas)
@@ -323,6 +325,11 @@ class Principal(QtGui.QMainWindow):
         _email = Email()
         _email.show()
         _email.exec_()
+
+    def _relatorio(self):
+        _relatorio = Relatorio()
+        _relatorio.show()
+        _relatorio.exec_()
 
 
 

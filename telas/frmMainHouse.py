@@ -253,7 +253,6 @@ class Ui_frmMainHouse(object):
 
         self.subMenuRelatorios = QtGui.QAction(frmMainHouse)
         self.subMenuRelatorios.setShortcut('Ctrl+R')
-        self.subMenuRelatorios.setEnabled(False)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/relatorio.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.subMenuRelatorios.setIcon(icon)

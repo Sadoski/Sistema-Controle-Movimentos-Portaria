@@ -217,10 +217,116 @@ class FuncionarioDao(object):
             self.__conexao.conn.rollback()
             return False
 
+    def pesquisarFuncionarioCodigo(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.id_funcionario = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarFuncionarioNome(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.nome_razao = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarFuncionarioCPF(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.cpf_cnpj = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
 
 
+    def pesquisarFuncionarioRg(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.rg_inscricao = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
 
+    def pesquisarFuncionarioNumCarteira(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.num_carteira = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
 
+    def pesquisarFuncionarioPis(self, funcionario):
+        try:
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.pis_pasep = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaCodigo(self, funcionario):
+        try:
+            _sql = "SELECT p._id_pessoa FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.pis_pasep = '"+ funcionario +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaFisicaId(self, funcionario):
+        try:
+            _sql = "SELECT f.id_pessoa_fisica FROM pessoa_fisica f INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa WHERE p.id_pessoa = '" + funcionario + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaTelefone(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_funcionrio t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_funcionario  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmail(self, pesquisa):
+        try:
+            _sql = "SELECT t.id_email, l.contato, l.email FROM email_funcionario t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_funcionario  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaHorarios(self, pesquisa):
+        try:
+            _sql = "SELECT h.dia, h.hora_entrada, h.hora_ini_intervalo, h.hora_fim_intervalo, h.hora_saida FROM horario_jornada h INNER JOIN funcionario f ON f.id_funcionario = h.id_funcionario WHERE f.id_funcionario  = '"+pesquisa+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
 
 
 

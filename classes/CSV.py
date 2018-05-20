@@ -10,9 +10,7 @@ class RelatorioPessoaFisicaCSV():
 
     lista = []
 
-    def __init__(self):
-        fisicaDao = PesquisarPessoaFisicaDao()
-        dados = fisicaDao.pesquisa()
+    def __init__(self, dados):
         self.findAll(dados)
         self.dir = self.salvar()
         self.gerarCsv()
@@ -51,12 +49,13 @@ class RelatorioPessoaFisicaCSV():
             
             listaParaGerarCsv.append(listaInterna)
 
-        with open(self.dir, 'w') as csvfile:
-            spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
-            spamwriter.writerow(['Relatório Pessoa Fisica'])
-            spamwriter.writerow(['Codigo', 'Nome', 'Sobrenome', 'CPF', 'RG', 'Expeditor', 'UF', 'Aniversario', 'Gênero', 'Mãe', 'Pai', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Cidade', 'Estado', 'CEP'])
-            for linha in listaParaGerarCsv:
-                spamwriter.writerow(linha)
+        if self.dir:
+            with open(self.dir, 'w') as csvfile:
+                spamwriter = csv.writer(csvfile, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+                spamwriter.writerow(['Relatório Pessoa Fisica'])
+                spamwriter.writerow(['Codigo', 'Nome', 'Sobrenome', 'CPF', 'RG', 'Expeditor', 'UF', 'Aniversario', 'Gênero', 'Mãe', 'Pai', 'Endereco', 'Numero', 'Complemento', 'Bairro', 'Cidade', 'Estado', 'CEP'])
+                for linha in listaParaGerarCsv:
+                    spamwriter.writerow(linha)
 
     def salvar(self):
 
@@ -67,11 +66,11 @@ class RelatorioPessoaFisicaCSV():
         else:
             diretorioBase = os.getenv("HOME")
 
-        caminhoAbsoluto = diretorioBase + os.sep + 'SCMP' + os.sep + 'Relatório' + os.sep + 'csv' + os.sep
+        caminhoAbsoluto = diretorioBase + os.sep + 'SCMP' + os.sep + 'Relatório' + os.sep + 'html' + os.sep
 
         if not os.path.exists(caminhoAbsoluto):
             os.makedirs(caminhoAbsoluto)
 
-        name = QFileDialog.getSaveFileName(None, 'Salvar', caminhoAbsoluto, 'CSV (*.csv)')
+        name = QFileDialog.getSaveFileName(None, 'Salvar', caminhoAbsoluto, 'HTML (*.html)')
 
         return name

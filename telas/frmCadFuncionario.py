@@ -6,7 +6,9 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt4 import QtCore, QtGui
+from PyQt4 import QtGui, QtCore
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -279,14 +281,14 @@ class Ui_frmCadastroFuncionario(object):
         self.lblSetor.setGeometry(QtCore.QRect(10, 76, 66, 19))
         self.lblSetor.setObjectName(_fromUtf8("lblSetor"))
 
-        self.txtDataDemissao = QtGui.QDateEdit(self.cadastroSetores)
+        self.txtDataDemissao = QtGui.QLineEdit(self.cadastroSetores)
         self.txtDataDemissao.setGeometry(QtCore.QRect(640, 96, 121, 25))
-        self.txtDataDemissao.setCalendarPopup(True)
+        self.txtDataDemissao.setText(_fromUtf8("//"))
         self.txtDataDemissao.setObjectName(_fromUtf8("txtDataDemissao"))
 
-        self.txtDataAdmissao = QtGui.QDateEdit(self.cadastroSetores)
+        self.txtDataAdmissao = QtGui.QLineEdit(self.cadastroSetores)
         self.txtDataAdmissao.setGeometry(QtCore.QRect(500, 96, 121, 25))
-        self.txtDataAdmissao.setCalendarPopup(True)
+        self.txtDataAdmissao.setText(_fromUtf8("//"))
         self.txtDataAdmissao.setObjectName(_fromUtf8("txtDataAdmissao"))
 
         self.cBoxSetor = QtGui.QComboBox(self.cadastroSetores)
@@ -346,9 +348,9 @@ class Ui_frmCadastroFuncionario(object):
         self.lblDataEmissao.setGeometry(QtCore.QRect(480, 157, 101, 16))
         self.lblDataEmissao.setObjectName(_fromUtf8("lblDataEmissao"))
 
-        self.txtDataEmissao = QtGui.QDateEdit(self.cadastroSetores)
+        self.txtDataEmissao = QtGui.QLineEdit(self.cadastroSetores)
         self.txtDataEmissao.setGeometry(QtCore.QRect(480, 174, 121, 25))
-        self.txtDataEmissao.setCalendarPopup(True)
+        self.txtDataEmissao.setText(_fromUtf8("//"))
         self.txtDataEmissao.setObjectName(_fromUtf8("txtDataEmissao"))
 
         self.tabWiAdicionais.addTab(self.cadastroSetores, _fromUtf8(""))
@@ -667,4 +669,7 @@ class Ui_frmCadastroFuncionario(object):
         self.btnEditar.setWhatsThis(_translate("frmCadastroFuncionario", "<html><head/><body><p>Botão para salvar o registo editado da pessoa jurídica</p></body></html>", None))
         self.btnEditar.setText(_translate("frmCadastroFuncionario", "Editar", None))
         self.lblPesquisar.setText(_translate("frmCadastroFuncionario", "[F12] Pesquisar", None))
+        self.txtDataDemissao.setInputMask(_translate("frmCadastroFuncionario", "00/00/0000; ", None))
+        self.txtDataAdmissao.setInputMask(_translate("frmCadastroFuncionario", "00/00/0000; ", None))
+        self.txtDataEmissao.setInputMask(_translate("frmCadastroFuncionario", "00/00/0000; ", None))
 
