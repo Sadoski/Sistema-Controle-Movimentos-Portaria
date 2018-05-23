@@ -69,6 +69,7 @@ class Relatorio(QtGui.QDialog):
             self.ui.radBtn6.setEnabled(False)
             self.rowTab()
 
+
     def pesquisar(self):
         if self.ui.radBtnPessoaFisica.isChecked():
 

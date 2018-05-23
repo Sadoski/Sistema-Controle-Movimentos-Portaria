@@ -14,7 +14,6 @@ from controller.getSetFuncionario import Funcionario
 from controller.getSetPessoaFisica import PessoaFisica
 from dao.funcionarioDao import FuncionarioDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
-from dao.setoresCargosDao import SetoresCargosDao
 from telas.frmCadFuncionario import Ui_frmCadastroFuncionario
 from telas.frmPesquisarFuncionario import Ui_frmPesquisarFuncionario
 from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
@@ -54,10 +53,9 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
-        #self.ui.btnEditar.clicked.connect(self.atualizar)
+        self.ui.btnEditar.clicked.connect(self.atualizar)
+        self.ui.btnDeletar.clicked.connect(self.deletar)
         self.ui.btnPesquisarPessoaFisica.clicked.connect(self.pesquisarPessoaFisica)
-
-
 
         self.ui.txtCodigo.returnPressed.connect(self.setPessoaFisica)
         self.ui.txtCodigo.editingFinished.connect(self.setPessoaFisicaEditFinish)
@@ -70,6 +68,9 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.txtPis.textChanged.connect(self.numberPis)
         self.ui.txtNumeroTelefone.textChanged.connect(self.numberTelefone)
         self.ui.txtObservacao.textChanged.connect(self.textEdite)
+        self.ui.txtDataAdmissao.textChanged.connect(self.changeDataAdimissao)
+        self.ui.txtDataDemissao.textChanged.connect(self.changeDataDemissao)
+        self.ui.txtDataEmissao.textChanged.connect(self.changeDataEmissao)
 
         self.ui.txtDataAdmissao.cursorPositionChanged.connect(self.positionCursorDataAdmissao)
         self.ui.txtDataDemissao.cursorPositionChanged.connect(self.positionCursorDataDemissao)
@@ -80,6 +81,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
         self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
+
 
 
     def numberCodigo(self):
@@ -159,6 +161,32 @@ class CadastroFuncionario(QtGui.QDialog):
         i = i.replace('\\', '')
         return i
 
+    def changeDataAdimissao(self):
+        if self.changeData(self.ui.txtDataAdmissao.text()) == False:
+            self.ui.txtDataAdmissao.clear()
+
+    def changeDataDemissao(self):
+        if self.changeData(self.ui.txtDataDemissao.text()) == False:
+            self.ui.txtDataDemissao.clear()
+
+    def changeDataEmissao(self):
+        if self.changeData(self.ui.txtDataEmissao.text()) == False:
+            self.ui.txtDataEmissao.clear()
+
+    def changeData(self, data):
+        if len(str(self.removerCaracter(data))) ==2 and int(data[:2]) >31:
+            self.mensagem.warning('Mensagem', "Atenção dia inexitente")
+            return False
+        elif len(str(self.removerCaracter(data))) == 4 and int(data[3:5]) >12:
+            self.mensagem.warning('Mensagem', "Atenção mes inexitente")
+            return False
+        elif len(str(self.removerCaracter(data))) == 4 and data[3:5] == "02" and int(data[:2]) >28:
+            self.mensagem.warning('Mensagem', "Atenção mes com menos dias")
+            return False
+        elif len(str(self.removerCaracter(data))) == 8 and int(data[6:10]) <1500:
+            self.mensagem.warning('Mensagem', "Atenção ano muito antigo")
+            return False
+
     def novo(self):
         self.limparCampos()
         self.ui.grbDadosPessoaJuridica.setEnabled(True)
@@ -217,12 +245,12 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(True)
         self.ui.btnDeletar.setEnabled(True)
 
-        self.setEstadoCivil()
-        self.setDeficiencia()
-        self.setCategoriaTrabalho()
         self.setSetores()
         self.setCargo()
         self.setJornadaTrabalho()
+        self.setCategoriaTrabalho()
+        self.setEstadoCivil()
+        self.setDeficiencia()
 
     def ativarCampos(self):
         self.ui.tabWiAdicionais.setEnabled(True)
@@ -237,9 +265,9 @@ class CadastroFuncionario(QtGui.QDialog):
         self.idFuncionrio = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
+        self.idJornada = int()
         self.ui.txtCodigo.setEnabled(True)
         self.ui.btnPesquisarPessoaFisica.setEnabled(True)
-        self.editar = False
         self.ui.txtCodigo.clear()
         self.ui.txtCnpj.clear()
         self.ui.txtInscricaoEstadua.clear()
@@ -264,9 +292,10 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.cBoxEstadoCivil.clear()
         self.ui.cBoxDeficiencia.clear()
         self.ui.cBoxCateTrabalhador.clear()
-        self.ui.cBoxCargo.clear()
-        self.ui.cBoxSetor.clear()
         self.ui.cBoxTabelaHorario.clear()
+        self.ui.cBoxSetor.clear()
+        self.ui.cBoxCargo.clear()
+
 
         self.contatoAdd.clear()
         self.contatoRemove.clear()
@@ -275,6 +304,7 @@ class CadastroFuncionario(QtGui.QDialog):
         self.emailRemove.clear()
         self.emailAtualizar.clear()
         self.estadoCivil.clear()
+        self.deficiencia.clear()
         self.categoriaTrabalho.clear()
         self.setor.clear()
         self.cargo.clear()
@@ -288,6 +318,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.radBtnAtivo.setCheckable(False)
         self.ui.radBtnDesativo.setCheckable(False)
+        self.editar = False
 
     def deletarContatoTelefone(self):
         for i in reversed(range(self.ui.tabContatoTelefone.rowCount())):
@@ -1042,7 +1073,6 @@ class CadastroFuncionario(QtGui.QDialog):
         hor, min, seg = self.convertTimeReal(str(timedelta(minutes=mms, seconds=sss)))
 
         timeFinal  = hhs+hor+min+seg
-        #print("Total de " + str(hhs + hor) + ":" + str(min) + ":" + str(seg))
         self.horarios.clear()
         dias.clear()
 
@@ -1079,7 +1109,7 @@ class CadastroFuncionario(QtGui.QDialog):
             iniIntervalo = self.ui.tabHorario.cellWidget(row, 2).text()
             fimIntervalo = self.ui.tabHorario.cellWidget(row, 3).text()
             termino = self.ui.tabHorario.cellWidget(row, 4).text()
-            print(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idFuncionrio)
+
             funcionarioDao = FuncionarioDao()
             funcionarioDao.cadastrarHorarios(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idJornada, self.idFuncionrio)
 
@@ -1107,7 +1137,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
                 funcionarioDao.cadastrarFuncionarioFisico(funcionario)
                 self.idFuncionrio = funcionarioDao.ultimoRegistro()
-                print(self.idFuncionrio)
+
                 self.cadastrarHorarios()
 
                 if self.contatoAdd != []:
@@ -1117,8 +1147,8 @@ class CadastroFuncionario(QtGui.QDialog):
                     self.cadastrarEmail()
 
                 self.cancelar()
-            else:
-                self.mensagem.warning('Atenção',"Por Favor preencha os campos obrigatorios")
+        else:
+            self.mensagem.warning('Atenção',"Por Favor preencha os campos obrigatorios")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -1219,7 +1249,9 @@ class CadastroFuncionario(QtGui.QDialog):
             categoria = pesqui[27]
             setor = pesqui[28]
             cargo = pesqui[29]
-            if pesqui[30] == 1:
+            obs =pesqui[30]
+            jornada = pesqui[31]
+            if pesqui[32] == 1:
                 situacao = "Ativo"
             else:
                 situacao = "Desativo"
@@ -1257,7 +1289,9 @@ class CadastroFuncionario(QtGui.QDialog):
             self.__pesquisarPessoa.tabPesquisar.setItem(linha, 27, QtGui.QTableWidgetItem(str(categoria)))
             self.__pesquisarPessoa.tabPesquisar.setItem(linha, 28, QtGui.QTableWidgetItem(str(cargo)))
             self.__pesquisarPessoa.tabPesquisar.setItem(linha, 29, QtGui.QTableWidgetItem(str(setor)))
-            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 30, QtGui.QTableWidgetItem(str(situacao)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 30, QtGui.QTableWidgetItem(str(obs)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 31, QtGui.QTableWidgetItem(str(jornada)))
+            self.__pesquisarPessoa.tabPesquisar.setItem(linha, 32, QtGui.QTableWidgetItem(str(situacao)))
 
             linha += 1
 
@@ -1265,7 +1299,7 @@ class CadastroFuncionario(QtGui.QDialog):
         funcionarioDao = FuncionarioDao()
         itens = []
 
-        for item in self.__pesquisarCliente.tabPesquisar.selectedItems():
+        for item in self.__pesquisarPessoa.tabPesquisar.selectedItems():
             itens.append(item.text())
 
         codigo = itens[0]
@@ -1296,35 +1330,37 @@ class CadastroFuncionario(QtGui.QDialog):
         civil = itens[25]
         deficiencia = itens[26]
         categoria = itens[27]
-        jornada = itens[28]
-        setor = itens[29]
-        cargo = itens[30]
-        obs = itens[31]
+        setor = itens[28]
+        cargo = itens[29]
+        obs = itens[30]
+        jornada = itens[31]
         if itens[32] == 'Ativo':
             situacao = True
         else:
             situacao = False
 
+
         idPessoa = funcionarioDao.pesquisarPessoaCodigo(codigo)
         idPessoaFisico = funcionarioDao.pesquisarPessoaFisicaId(idPessoa)
 
-        __dados = Funcionario(codigo, idPessoa, idPessoaFisico, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uff, emissao)
+        __dados = Funcionario(codigo, idPessoa, idPessoaFisico, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao)
         self.botoesEditar()
         self.setCampos(__dados)
         self.pesquisarTelefone(codigo)
         self.pesquisaEmail(codigo)
+        self.pesquisaHorarios(codigo)
         self.dialog.close()
 
     def retornoData(self, data):
-            dia = data[:4]
-            mes = data[4:6]
-            ano = data[6:8]
-            return '%d%d%d'%dia,mes,ano
+            ano = data[:4]
+            mes = data[5:7]
+            dia = data[8:10]
+            return '%s%s%s'%(str(dia),str(mes),str(ano))
 
     def setCampos(self, campos):
         self.ui.txtCodigo.setEnabled(False)
 
-        self.idFuncionario= int(campos.getIdCliente)
+        self.idFuncionario= int(campos.getIdFuncionario)
         self.idPessoa = int(campos.getIdPessoa)
         self.ui.txtCodigo.setText(str(campos.getIdPessoaFisica))
         self.ui.txtCnpj.setText(campos.getCpf)
@@ -1340,10 +1376,10 @@ class CadastroFuncionario(QtGui.QDialog):
             self.ui.radBtnDesativo.setChecked(True)
 
         self.ui.txtObservacao.setText(str(campos.getObservacao))
-
         self.ui.cBoxCateTrabalhador.setCurrentIndex(self.ui.cBoxCateTrabalhador.findText(campos.getCategoria))
-        self.ui.cBoxSetor.setCurrentIndex(self.ui.cBoxSetor.findText(campos.getSetor))
-        self.ui.cBoxCargo.setCurrentIndex(self.ui.cBoxCargo.findText(campos.getCargo))
+        self.ui.cBoxSetor.setCurrentIndex(self.test(campos.getCargo))
+        self.ui.cBoxCargo.setCurrentIndex(self.ui.cBoxCargo.findText(campos.getSetor))
+
 
         self.ui.txtDataAdmissao.setText(self.retornoData(campos.getAdmissao))
         self.ui.txtDataDemissao.setText(self.retornoData(campos.getDemissao))
@@ -1352,19 +1388,17 @@ class CadastroFuncionario(QtGui.QDialog):
         self.ui.txtUf.setText(campos.getUf)
         self.ui.txtDataEmissao.setText(self.retornoData(campos.getEmissao))
         self.ui.txtPis.setText(campos.getPis)
-
         self.ui.cBoxTabelaHorario.setCurrentIndex(self.ui.cBoxTabelaHorario.findText(campos.getJornada))
-
-        self.pesquisarTelefone(self.idFuncionario)
-        self.pesquisaEmail(self.idFuncionario)
-        self.pesquisaHorarios(self.idFuncionario)
 
 
         self.editar = True
 
+    def test(self, test):
+        return self.ui.cBoxSetor.findText(test)
     def pesquisarTelefone(self, campos):
         funcionarioDao = FuncionarioDao()
         id = funcionarioDao.pesquisaTelefone(campos)
+
         if id != []:
             self.setTabelaTelefone(id)
 
@@ -1420,18 +1454,183 @@ class CadastroFuncionario(QtGui.QDialog):
 
             self.setTabHorarios(id)
 
+    def retornoHoras(self, dado):
+        if len( dado) == 7:
+            h =  dado[:1]
+            m =  dado[2:4]
+            s =  dado[5:7]
+            return (int(h), int(m), int(s))
+        else:
+            h =  dado[:2]
+            m =  dado[3:5]
+            s =  dado[6:8]
+            return (int(h), int(m), int(s))
+
     def setTabHorarios(self, __retorno):
         linha=0
         for pesqui in __retorno:
-            entrada = pesqui[1]
-            iniIntervalo = pesqui[2]
-            fimIntervalo = pesqui[3]
-            saida = pesqui[4]
+            h1, m1, s1 = self.retornoHoras(str(pesqui[1]))
+            h2, m2, s2 = self.retornoHoras(str(pesqui[2]))
+            h3, m3, s3 = self.retornoHoras(str(pesqui[3]))
+            h4, m4, s4 = self.retornoHoras(str(pesqui[4]))
 
-            self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit().setTime(entrada))
-            self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit().setTime(iniIntervalo))
-            self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit().setTime(fimIntervalo))
-            self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit().setTime(saida))
+            self.ui.tabHorario.setCellWidget(linha, 1, QtGui.QTimeEdit(QtCore.QTime(h1, m1, s1)))
+            self.ui.tabHorario.setCellWidget(linha, 2, QtGui.QTimeEdit(QtCore.QTime(h2, m2, s2)))
+            self.ui.tabHorario.setCellWidget(linha, 3, QtGui.QTimeEdit(QtCore.QTime(h3, m3, s3)))
+            self.ui.tabHorario.setCellWidget(linha, 4, QtGui.QTimeEdit(QtCore.QTime(h4, m4, s4)))
 
             linha+=1
 
+    def deletarTelefone(self):
+        emp = FuncionarioDao()
+        i = 0
+        for lista in self.contatoRemove :
+            a = self.contatoRemove[i]
+
+            idTelefone = int(a[0])
+
+            emp.deletarTelefone(idTelefone, self.idFuncionrio)
+            pesquisa = emp.pesquisaTelefoneFuncionario(idTelefone, self.idFuncionrio)
+            if pesquisa == "":
+                emp.deletarContatoTelefone(idTelefone)
+
+            i += 1
+
+    def deletarEmail(self):
+        emp = FuncionarioDao()
+        i = 0
+        for lista in self.emailRemove:
+            a = self.emailRemove[i]
+
+            idEmail = a[0]
+
+            emp.deletarEmail(idEmail, self.idFuncionrio)
+            pesquisa = emp.pesquisaEmailFuncionario(idEmail, self.idFuncionrio)
+            if pesquisa == "":
+                emp.deletarContatoEmail(idEmail)
+
+            i += 1
+
+    def atualizaTelefone(self):
+        emp = FuncionarioDao()
+        i = 0
+        for lista in self.contatoAtualizar:
+            a = self.contatoAtualizar[i]
+
+            contato = a[0]
+            telefone = a[1]
+
+            __descricao = ContatoTelefone(None, contato, telefone, self.idFuncionrio)
+            emp.cadastrarTelefone(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarTelefoneFuncionario(id, self.idFuncionrio)
+
+            i += 1
+
+    def atualizaEmail(self):
+        emp = FuncionarioDao()
+        i = 0
+        for lista in self.emailAtualizar:
+            a = self.emailAtualizar[i]
+
+            contato = a[0]
+            email = a[1]
+
+            __descricao = ContatoEmail(None, contato, email, self.idFuncionrio)
+            emp.cadastrarEmail(__descricao)
+            id = emp.ultimoRegistro()
+            emp.cadastrarEmailFuncionario(id, self.idFuncionrio)
+
+            i += 1
+
+    def atualizar(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '' and len(self.removerCaracter(self.ui.txtDataEmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataAdmissao.text())) != '' :
+            if self.getTime() == True:
+                if self.contatoRemove  != []:
+                    self.deletarTelefone()
+
+                if self.emailRemove != []:
+                    self.deletarEmail()
+
+                if self.contatoAtualizar != []:
+                    self.atualizaTelefone()
+
+                if self.emailAtualizar != []:
+                    self.atualizaEmail()
+
+
+                if self.ui.radBtnAtivo.isChecked():
+                    ativo = 1
+                elif self.ui.radBtnDesativo.isChecked():
+                    ativo = 0
+
+                self.atualizarHorarios()
+                idCivil = self.getIndexCivil()
+                idDeficiencia = self.getIndexDeficiencia()
+                idCategoria = self.getIndexCategoria()
+                idSetor = self.getIndexSetor()
+                idCargo = self.getIndexCargo()
+                self.idJornada = self.getIndexJornada()
+
+                funcionarioDao = FuncionarioDao()
+                funcionario = Funcionario(self.idFuncionrio, self.idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), ativo, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
+                funcionarioDao.atualizarFuncionario(funcionario)
+
+                self.cancelar()
+        else:
+            self.mensagem.warning('Atenção', "Por Favor preencha os campos obrigatorios")
+
+    def atualizarHorarios(self):
+        for row in range(0, self.ui.tabHorario.rowCount()):
+            semana = self.ui.tabHorario.item(row, 0).text()
+            inicio = self.ui.tabHorario.cellWidget(row, 1).text()
+            iniIntervalo = self.ui.tabHorario.cellWidget(row, 2).text()
+            fimIntervalo = self.ui.tabHorario.cellWidget(row, 3).text()
+            termino = self.ui.tabHorario.cellWidget(row, 4).text()
+
+            funcionarioDao = FuncionarioDao()
+            funcionarioDao.atualizarHorarios(semana, inicio, iniIntervalo, fimIntervalo, termino, self.idJornada, self.idFuncionrio)
+
+    def deletar(self):
+        fisicaDao = FuncionarioDao()
+        usuario = fisicaDao.pesquisarTabelaUsuario(self.pessoa)
+        if usuario == "":
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
+
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle('Menssagem')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
+            btnSim.clicked.connect(self.simDeletar)
+            btnNao.clicked.connect(self.fechar)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+        else:
+            MensagemBox().warning('Atenção', 'Impossivel fazer essa operação, pois essa pessoa esta relacionada com outro formulario')
+
+    def simDeletar(self):
+            fisicaDao = FuncionarioDao()
+            codigo = self.idFuncionrio
+            a = fisicaDao.deletarFuncionario(codigo)
+            if a  == True:
+                MensagemBox().informacao('Mensagem', 'Cadastro deletar com sucesso!')
+                self.desativarCampos()
+            else:
+                MensagemBox().critico('Erro', 'Erro ao deletar as informações no banco de dados')
+
+            self.msgBox.close()
+
+    def fechar(self):
+        self.msgBox.close()

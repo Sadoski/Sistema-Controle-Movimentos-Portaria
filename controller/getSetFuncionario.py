@@ -106,7 +106,7 @@ class Funcionario():
 
     @property
     def getDeficiencia(self):
-        return self.__situacao
+        return self.__deficiencia
 
     @getDeficiencia.setter
     def setDeficiencia(self, deficiencia):
@@ -130,6 +130,7 @@ class Funcionario():
 
     @property
     def getSetor(self):
+        print(self.__setor)
         return self.__setor
 
     @getSetor.setter

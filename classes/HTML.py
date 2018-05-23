@@ -114,8 +114,9 @@ class TAG:
         tab <= tbody
         trr = TR()
         tbody <= trr
-
         for a in dados:
+            trr = TR()
+            tbody <= trr
             trr <= TD(a[0])
             trr <= TD(a[1])
             trr <= TD(a[2])

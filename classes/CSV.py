@@ -66,11 +66,11 @@ class RelatorioPessoaFisicaCSV():
         else:
             diretorioBase = os.getenv("HOME")
 
-        caminhoAbsoluto = diretorioBase + os.sep + 'SCMP' + os.sep + 'Relatório' + os.sep + 'html' + os.sep
+        caminhoAbsoluto = diretorioBase + os.sep + 'SCMP' + os.sep + 'Relatório' + os.sep + 'csv' + os.sep
 
         if not os.path.exists(caminhoAbsoluto):
             os.makedirs(caminhoAbsoluto)
 
-        name = QFileDialog.getSaveFileName(None, 'Salvar', caminhoAbsoluto, 'HTML (*.html)')
+        name = QFileDialog.getSaveFileName(None, 'Salvar', caminhoAbsoluto, 'CSV (*.csv)')
 
         return name

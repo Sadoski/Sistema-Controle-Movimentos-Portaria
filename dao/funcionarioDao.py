@@ -193,9 +193,9 @@ class FuncionarioDao(object):
 
     def cadastrarFuncionarioFisico(self, funcionario):
         try:
-            _sql = "INSERT INTO funcionario (id_pessoa_fisica, situacao, observacao, data_demissao, data_admissao, num_carteira, serie, uf, data_emissao, pis_pasep, id_civil, id_deficiencia, id_categoria_trabalho, id_setores, id_cargo, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, self.__dataHora)
-            print(_valores)
+            _sql = "INSERT INTO funcionario (id_pessoa_fisica, situacao, observacao, data_demissao, data_admissao, num_carteira, serie, uf, data_emissao, pis_pasep, id_civil, id_deficiencia, id_categoria_trabalho, id_setores, id_cargo, id_jornada_trabalho, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, funcionario.getJornada, self.__dataHora)
+
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -220,7 +220,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioCodigo(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.id_funcionario = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE f.id_funcionario = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -230,7 +230,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioNome(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.nome_razao = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE p.nome_razao LIKE '%"+ funcionario +"%'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -240,7 +240,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioCPF(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.cpf_cnpj = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE p.cpf_cnpj = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -251,7 +251,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioRg(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE p.rg_inscricao = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE p.rg_inscricao = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -261,7 +261,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioNumCarteira(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.num_carteira = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE f.num_carteira = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -271,7 +271,7 @@ class FuncionarioDao(object):
 
     def pesquisarFuncionarioPis(self, funcionario):
         try:
-            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, i.expeditor, i.uf, i.aniversario, n.sexo, i.mae, i.pai, c.nome, e.nome, c.cep, f.data_demissao, f.data_admissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, f.observacao, f.situacao FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.pis_pasep = '"+ funcionario +"'"
+            _sql = "SELECT f.id_funcionario, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, s.expeditor, s.uf, s.aniversario, g.sexo, p.endereco, p.numero, p.complemento, p.bairro, s.mae, s.pai, c.nome, e.nome, c.cep, f.data_admissao, f.data_demissao, f.num_carteira, f.serie, f.uf, f.data_emissao, f.pis_pasep, i.descricao, d.descricao, r.descricao, t.descricao,  o.descricao, f.observacao, b.descricao, f.situacao  FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE f.pis_pasep = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -281,7 +281,7 @@ class FuncionarioDao(object):
 
     def pesquisarPessoaCodigo(self, funcionario):
         try:
-            _sql = "SELECT p._id_pessoa FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.pis_pasep = '"+ funcionario +"'"
+            _sql = "SELECT p.id_pessoa FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE id_funcionario = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -301,7 +301,7 @@ class FuncionarioDao(object):
 
     def pesquisaTelefone(self, pesquisa):
         try:
-            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_funcionrio t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_funcionario  = '"+pesquisa+"'"
+            _sql = "SELECT t.id_telefone, l.contato, l.telefone FROM telefone_funcionario t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_funcionario = '"+pesquisa+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -330,63 +330,14 @@ class FuncionarioDao(object):
             return False
 
 
-
-
-
-
-
-
-
-    def funcao(self, setor, cargo):
-        try:
-            _sql = "SELECT f.id_funcao FROM funcao f INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo c ON c.id_cargo = f.id_cargo WHERE s.descricao = %s AND c.descricao = %s"
-            _valores = (setor, cargo)
-            self.__cursor.execute(_sql, _valores)
-            result = self.__cursor.fetchone()[0]
-            # self.__cursor.close()
-            return result
-        except BaseException as os:
-            return False
-
-    def cadastroFuncionario(self, funcionario):
-
-        try:
-            _sql = "INSERT INTO funcionario (nome,rg,expeditor,cpf,data_nascimento,sexo,nome_mae,nome_pai,telefone,celular,endereco,numero_endereco,complemento,bairro,cadastrado,id_funcao,id_empresa,id_cidade) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            _valores = (funcionario.getNome, funcionario.getRg, funcionario.getExpeditor, funcionario.getCpf, funcionario.getNascimento, funcionario.getSexo, funcionario.getMae, funcionario.getPai, funcionario.getTelefone, funcionario.getCelular, funcionario.getEndereco, funcionario.getNumero, funcionario.getComplemento, funcionario.getBairro, self.__dataHora,  funcionario.getFuncao, funcionario.getEmpresa, funcionario.getCidade)
-            self.__cursor.execute(_sql, _valores)
-            self.__conexao.conn.commit()
-            #self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
-
-        except mysql.connector.Error as e:
-            w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
-            self.__conexao.conn.rollback()
-            return False
-
-    def atualizarFuncioario(self, funcionario):
-
-        try:
-            __sql = "UPDATE funcionario SET nome = %s, rg = %s, expeditor = %s, cpf = %s, data_nascimento = %s, sexo = %s, nome_mae = %s, nome_pai = %s, endereco = %s, numero_endereco = %s, complemento = %s, bairro = %s, telefone = %s, celular = %s, atualizado = %s, id_funcao = %s, id_empresa = %s,  id_cidade = %s WHERE id_funcionario = %s"
-            _valores = (funcionario.getNome, funcionario.getRg, funcionario.getExpeditor, funcionario.getCpf, funcionario.getNascimento, funcionario.getSexo, funcionario.getMae, funcionario.getPai, funcionario.getEndereco, funcionario.getNumero, funcionario.getComplemento, funcionario.getBairro,  funcionario.getTelefone, funcionario.getCelular, self.__dataHora,  funcionario.getFuncao, funcionario.getEmpresa, funcionario.getCidade, funcionario.getIdFuncionario)
-
-            self.__cursor.execute(__sql, _valores)
-            self.__conexao.conn.commit()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Edição realizado com sucesso!")
-            #self.__cursor.close()
-        except mysql.connector.Error as e:
-            w = QWidget()
-            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
-            self.__conexao.conn.rollback()
-            return False
-
     def deletarFuncionario(self, funcionario):
         try:
             __sql = "DELETE FROM funcionario WHERE id_funcionario = '" + funcionario + "'"
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Exclusão realizado com sucesso!")
+
+            return True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao deletar as informações no banco de dados")
@@ -449,6 +400,122 @@ class FuncionarioDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def deletarTelefone(self, idTelefone, idCliente):
+
+        try:
+            _sql = "DELETE FROM telefone_funcionario WHERE id_telefone = %s AND id_funcionario = %s"
+            __valor = (idTelefone, idCliente)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoTelefone(self, idTelefone):
+
+        try:
+            _sql = "DELETE FROM telefone WHERE id_telefone = '" + idTelefone + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarEmail(self, idEmail, idCliente):
+
+        try:
+            _sql = "DELETE FROM email_funcionario WHERE id_email = %s AND id_funcionario = %s"
+            __valor = (idEmail, idCliente)
+            self.__cursor.execute(_sql, __valor)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarContatoEmail(self, idEmail):
+
+        try:
+            _sql = "DELETE FROM email WHERE id_email = '" + idEmail + "'"
+            self.__cursor.execute(_sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados email ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def pesquisaTelefoneFuncionario(self, idTelefone, idFuncionario):
+        try:
+            _sql = "SELECT * FROM telefone_funcionario t INNER JOIN telefone l ON l.id_telefone = t.id_telefone INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_telefone = '"+idTelefone+"' AND  t.id_funcionario = '"+idFuncionario+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisaEmailFuncionario(self, idEmail, idFuncionario):
+        try:
+            _sql = "SELECT * FROM email_cliente t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_telefone = '"+idEmail+"' AND  t.id_funcionario = '"+idFuncionario+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def atualizarFuncionario(self, funcionario):
+
+        try:
+            __sql = "UPDATE funcionario SET  id_pessoa_fisica = %s, situacao = %s, observacao = %s, data_demissao = %s, data_admissao = %s, num_carteira = %s, serie = %s, uf = %s, data_emissao = %s, pis_pasep = %s, id_civil = %s, id_deficiencia = %s, id_categoria_trabalho = %s, id_setores = %s, id_cargo = %s, atualiza = %s WHERE  id_funcioanrio = %s"
+            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, self.__dataHora, funcionario.getIdFuncionario)
+            self.__cursor.execute(__sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
+            self.__conexao.conn.rollback()
+            return False
+
+    def atualizarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario):
+
+        try:
+            __sql = "UPDATE horario_jornada SET  dia = %s, hora_entrada = %s, hora_ini_intervalo = %s, hora_fim_intervalo = %s, hora_saida = %s, id_jornada_trabalho = %s WHERE  id_funcioanrio = %s"
+            _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario)
+            self.__cursor.execute(__sql, _valores)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
+            self.__conexao.conn.rollback()
+            return False
+
+    def pesquisarTabelaUsuario(self, idFuncionario):
+        try:
+            _sql = "SELECT * FROM usuarios u INNER JOIN funcionario f ON f.id_funcionario = u.id_funcionario WHERE f.id_funcionario = '"+idFuncionario+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
             return result
         except BaseException as os:
             return False

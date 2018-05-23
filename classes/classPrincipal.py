@@ -6,6 +6,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from classes.classCadPessoaFisica import CadastroPessoaFisica
+from classes.classCadUsuario import CadastroUsuarios
 from classes.classCarreSaida import CarregamentoSaida
 from classes.classEntraVeiEmpTer import EntradaVeiculoEmpresaTerceiro
 from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
@@ -232,7 +233,7 @@ class Principal(QtGui.QMainWindow):
         _funcionario.exec_()
 
     def _cadastroUsuarioPermissao(self):
-        _usuario = UsuarioPermissao()
+        _usuario = CadastroUsuarios()
         _usuario.show()
         _usuario.exec_()
 

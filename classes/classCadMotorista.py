@@ -7,7 +7,7 @@ from controller.getSetMotorista import Motorista
 from controller.getSetVeiculoMotorista import VeiculoMotorista
 from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.motoristaDao import MotoristaDao
-from telas.frmCadastroMotorista import Ui_frmCadastroMotorista
+from telas.frmCadMotorista import Ui_frmCadastroMotorista
 
 class CadastroMotoristas(QtGui.QDialog):
     def __init__(self):
@@ -16,6 +16,9 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.setupUi(self)
         self.ui.txtPlaca.setCursorPosition(0)
 
+
+
+        '''
         self.ui.txtNomeMotorista.returnPressed.connect(self.focusDataNacimento)
         self.ui.txtRg.returnPressed.connect(self.focusExpeditor)
         self.ui.txtExpeditor.returnPressed.connect(self.focusCpf)
@@ -948,3 +951,4 @@ class CadastroMotoristas(QtGui.QDialog):
             if __dao != False:
                 self.limparCampos()
                 self.botaoCancelar()
+    '''
