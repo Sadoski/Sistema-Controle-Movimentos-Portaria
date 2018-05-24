@@ -130,7 +130,6 @@ class Funcionario():
 
     @property
     def getSetor(self):
-        print(self.__setor)
         return self.__setor
 
     @getSetor.setter

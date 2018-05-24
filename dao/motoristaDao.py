@@ -14,6 +14,30 @@ class MotoristaDao(object):
         self.__ts = time.time()
         self.__dataHora = datetime.datetime.fromtimestamp(self.__ts).strftime('%Y-%m-%d %H:%M:%S')
 
+    def ultimoRegistro(self):
+        try:
+            _sql = "SELECT LAST_INSERT_ID()"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+
+            return result
+
+        except BaseException as os:
+            return False
+
+    def pesquisarMotoristaFisico(self, motorista):
+        try:
+            _sql = "SELECT * FROM pessoa p INNER JOIN pessoa_fisica j ON j.id_pessoa = p.id_pessoa INNER JOIN motorista e ON e.id_pessoa_fisica = j.id_pessoa_fisica INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE  t.descricao = 'PESSOA FISÍCA' AND e.id_pessoa_fisica  = '"+ motorista +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+
+    '''
     def pesquisarCategoria(self):
         try:
             _sql = "SELECT descricao FROM categoria_cnh"
@@ -213,3 +237,4 @@ class MotoristaDao(object):
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False
+    '''

@@ -226,8 +226,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.txtEstado.clear()
         self.ui.txtMae.clear()
         self.ui.txtPai.clear()
-        self.pessoa=''
-        self.idCidade=''
+        self.pessoa=int()
+        self.idCidade=int()
 
     def removerCaracter(self, i):
         i = str(i)

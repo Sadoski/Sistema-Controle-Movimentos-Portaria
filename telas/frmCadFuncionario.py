@@ -281,6 +281,7 @@ class Ui_frmCadastroFuncionario(object):
         self.lblSetor.setObjectName(_fromUtf8("lblSetor"))
 
         self.txtDataDemissao = QtGui.QLineEdit(self.cadastroSetores)
+        self.txtDataDemissao.setEnabled(False)
         self.txtDataDemissao.setGeometry(QtCore.QRect(640, 96, 121, 25))
         self.txtDataDemissao.setText(_fromUtf8("//"))
         self.txtDataDemissao.setObjectName(_fromUtf8("txtDataDemissao"))

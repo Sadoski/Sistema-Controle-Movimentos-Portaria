@@ -329,10 +329,23 @@ class FuncionarioDao(object):
         except BaseException as os:
             return False
 
-
     def deletarFuncionario(self, funcionario):
         try:
-            __sql = "DELETE FROM funcionario WHERE id_funcionario = '" + funcionario + "'"
+            __sql = "DELETE FROM funcionario WHERE id_funcionario = '" + str(funcionario) + "'"
+            self.__cursor.execute(__sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+
+            return True
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao deletar as informações no banco de dados")
+            self.__conexao.conn.rollback()
+            return False
+
+    def deletarHorario(self, funcionario):
+        try:
+            __sql = "DELETE FROM horario_jornada WHERE id_funcionario = '" + str(funcionario) + "'"
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -485,10 +498,12 @@ class FuncionarioDao(object):
     def atualizarFuncionario(self, funcionario):
 
         try:
-            __sql = "UPDATE funcionario SET  id_pessoa_fisica = %s, situacao = %s, observacao = %s, data_demissao = %s, data_admissao = %s, num_carteira = %s, serie = %s, uf = %s, data_emissao = %s, pis_pasep = %s, id_civil = %s, id_deficiencia = %s, id_categoria_trabalho = %s, id_setores = %s, id_cargo = %s, atualiza = %s WHERE  id_funcioanrio = %s"
-            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, self.__dataHora, funcionario.getIdFuncionario)
+            __sql = "UPDATE funcionario SET  id_pessoa_fisica = %s, situacao = %s, observacao = %s, data_demissao = %s, data_admissao = %s, num_carteira = %s, serie = %s, uf = %s, data_emissao = %s, pis_pasep = %s, id_civil = %s, id_deficiencia = %s, id_categoria_trabalho = %s, id_setores = %s, id_cargo = %s, id_jornada_trabalho = %s, atualizado = %s WHERE  id_funcionario = %s"
+            _valores = (funcionario.getIdPessoaFisica, funcionario.getSituacao, funcionario.getObservacao, funcionario.getDemissao, funcionario.getAdmissao, funcionario.getNumCarteira,  funcionario.setSerie, funcionario.getUf, funcionario.getEmissao, funcionario.getPis, funcionario.getCivil, funcionario.getDeficiencia, funcionario.getCategoria, funcionario.getSetor, funcionario.getCargo, funcionario.getJornada, self.__dataHora, funcionario.getIdFuncionario)
+
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
+            QMessageBox.information(QWidget(), 'Mensagem', "Cadastro atualizado com sucesso")
             # self.__cursor.close()
         except mysql.connector.Error as e:
             w = QWidget()
@@ -499,8 +514,9 @@ class FuncionarioDao(object):
     def atualizarHorarios(self, semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario):
 
         try:
-            __sql = "UPDATE horario_jornada SET  dia = %s, hora_entrada = %s, hora_ini_intervalo = %s, hora_fim_intervalo = %s, hora_saida = %s, id_jornada_trabalho = %s WHERE  id_funcioanrio = %s"
-            _valores = (semana, inicio, iniIntervalo, fimIntervalo, termino, jornada, idFuncionario)
+            __sql = "UPDATE horario_jornada SET hora_entrada = %s, hora_ini_intervalo = %s, hora_fim_intervalo = %s, hora_saida = %s, id_jornada_trabalho = %s WHERE dia = %s AND  id_funcionario = %s"
+            _valores = (inicio, iniIntervalo, fimIntervalo, termino, jornada, semana, idFuncionario)
+
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
@@ -512,10 +528,10 @@ class FuncionarioDao(object):
 
     def pesquisarTabelaUsuario(self, idFuncionario):
         try:
-            _sql = "SELECT * FROM usuarios u INNER JOIN funcionario f ON f.id_funcionario = u.id_funcionario WHERE f.id_funcionario = '"+idFuncionario+"'"
+            _sql = "SELECT * FROM usuarios u INNER JOIN funcionario f ON f.id_funcionario = u.id_funcionario WHERE u.id_funcionario = '"+str(idFuncionario)+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
-            #self.__cursor.close()
+            # self.__cursor.close()
             return result
         except BaseException as os:
             return False
