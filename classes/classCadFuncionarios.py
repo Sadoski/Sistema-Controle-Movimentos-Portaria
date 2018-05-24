@@ -1401,8 +1401,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.editar = True
 
-    def test(self, test):
-        return self.ui.cBoxSetor.findText(test)
+
     def pesquisarTelefone(self, campos):
         funcionarioDao = FuncionarioDao()
         id = funcionarioDao.pesquisaTelefone(campos)

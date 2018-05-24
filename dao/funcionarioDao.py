@@ -281,7 +281,7 @@ class FuncionarioDao(object):
 
     def pesquisarPessoaCodigo(self, funcionario):
         try:
-            _sql = "SELECT p.id_pessoa FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE id_funcionario = '"+ funcionario +"'"
+            _sql = "SELECT p.id_pessoa FROM funcionario f INNER JOIN civil v ON v.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho t ON t.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo g ON g.id_cargo = f.id_cargo INNER JOIN jornada_trabalho j ON j.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica i ON i.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero n ON n.id_genero = i.id_genero INNER JOIN pessoa p ON p.id_pessoa = i.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE f.id_funcionario = '"+ funcionario +"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -487,7 +487,7 @@ class FuncionarioDao(object):
 
     def pesquisaEmailFuncionario(self, idEmail, idFuncionario):
         try:
-            _sql = "SELECT * FROM email_cliente t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_telefone = '"+idEmail+"' AND  t.id_funcionario = '"+idFuncionario+"'"
+            _sql = "SELECT * FROM email_funcionario t INNER JOIN email l ON l.id_email = t.id_email INNER JOIN funcionario c ON c.id_funcionario = t.id_funcionario WHERE t.id_telefone = '"+idEmail+"' AND  t.id_funcionario = '"+idFuncionario+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()

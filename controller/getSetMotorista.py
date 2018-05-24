@@ -1,23 +1,22 @@
 class Motorista():
 
-    def __init__(self, idMotorista, nome, nascimento, rg, expeditor, cpf, pis, cnh, categoria, endereco, numero, complemento, bairro, cidade, telefone, celular, sexo):
+    def __init__(self, idMotorista, idPessoa, idPessoaFisica, nome, sobrenome, rg, cpf, pis, cnh, categoria, marca, modelo, placa, obs, situacao):
         self.__idMotorista = idMotorista
+        self.__idPessoa = idPessoa
+        self.__idPessoaFisica = idPessoaFisica
         self.__nome = nome
-        self.__nascimento = nascimento
+        self.__sobrenome = sobrenome
         self.__rg = rg
-        self.__expeditor = expeditor
         self.__cpf = cpf
         self.__pis = pis
         self.__cnh = cnh
         self.__categoria = categoria
-        self.__endereco = endereco
-        self.__numero = numero
-        self.__complemento = complemento
-        self.__bairro = bairro
-        self.__cidade = cidade
-        self.__telefone = telefone
-        self.__celular = celular
-        self.__sexo = sexo
+        self.__marca = marca
+        self.__modelo = modelo
+        self.__placa = placa
+        self.__obs = obs
+        self.__situacao = situacao
+
 
     @property
     def getIdMotorista(self):
@@ -28,6 +27,22 @@ class Motorista():
         self.__idMotorista = idMotorista
 
     @property
+    def getIdPessoa(self):
+        return self.__idPessoa
+
+    @getIdPessoa.setter
+    def setIdPessoa(self, idPessoa):
+        self.__idPessoa = idPessoa
+
+    @property
+    def getIdPessoaFisica(self):
+        return self.__idPessoa
+
+    @getIdPessoaFisica.setter
+    def setIdPessoaFisica(self, idPessoaFisica):
+        self.__idPessoaFisica = idPessoaFisica
+
+    @property
     def getNome(self):
         return self.__nome
 
@@ -36,12 +51,12 @@ class Motorista():
         self.__nome = nome
 
     @property
-    def getNascimento(self):
-        return self.__nascimento
+    def getSobrenome(self):
+        return self.__sobrenome
 
-    @getNascimento.setter
-    def setNasciemento(self, nascimento):
-        self.__nascimento = nascimento
+    @getSobrenome.setter
+    def setSobrenome(self, sobrenome):
+        self.__sobrenome = sobrenome
 
     @property
     def getRg(self):
@@ -50,14 +65,6 @@ class Motorista():
     @getRg.setter
     def setRg(self, rg):
         self.__rg = rg
-
-    @property
-    def getExpeditor(self):
-        return self.__expeditor
-
-    @getExpeditor.setter
-    def setExpeditor(self, expeditor):
-        self.__expeditor = expeditor
 
     @property
     def getCpf(self):
@@ -92,65 +99,41 @@ class Motorista():
         self.__categoria = categoria
 
     @property
-    def getEndereco(self):
-        return self.__endereco
+    def getMarca(self):
+        return self.__marca
 
-    @getEndereco.setter
-    def setEndereco(self, endereco):
-        self.__endereco = endereco
-
-    @property
-    def getNumero(self):
-        return self.__numero
-
-    @getNumero.setter
-    def setNumero(self, numero):
-        self.__numero = numero
+    @getMarca.setter
+    def setMarca(self, marca):
+        self.__marca = marca
 
     @property
-    def getComplemento(self):
-        return self.__complemento
+    def getModelo(self):
+        return self.__modelo
 
-    @getComplemento.setter
-    def setComplemento(self, complemento):
-        self.__complemento = complemento
-
-    @property
-    def getBairro(self):
-        return self.__bairro
-
-    @getBairro.setter
-    def setBairro(self, bairro):
-        self.__bairro = bairro
+    @getModelo.setter
+    def setModelo(self, modelo):
+        self.__modelo = modelo
 
     @property
-    def getCidade(self):
-        return self.__cidade
+    def getPlaca(self):
+        return self.__placa
 
-    @getCidade.setter
-    def setCidade(self, cidae):
-        self.__cidade = cidae
-
-    @property
-    def getTelefone(self):
-        return self.__telefone
-
-    @getTelefone.setter
-    def setTelefone(self, telefone):
-        self.__telefone = telefone
+    @getPlaca.setter
+    def setPlaca(self, placa):
+        self.__placa = placa
 
     @property
-    def getCelular(self):
-        return self.__celular
+    def getObservacao(self):
+        return self.__obs
 
-    @getCelular.setter
-    def setCelular(self, celular):
-        self.__celular = celular
+    @getObservacao.setter
+    def setObservacao(self, obs):
+        self.__obs = obs
 
     @property
-    def getSexo(self):
-        return self.__sexo
+    def getSituacao(self):
+        return self.__situacao
 
-    @getSexo.setter
-    def setSexo(self, sexo):
-        self.__sexo = sexo
+    @getSituacao.setter
+    def setSituacao(self, situacao):
+        self.__situacao = situacao

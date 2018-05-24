@@ -32,7 +32,7 @@ class Ui_frmPesquisarFuncionario(object):
         font.setPointSize(11)
         frmPesquisarFuncionario.setFont(font)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/folder_saved_search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         frmPesquisarFuncionario.setWindowIcon(icon)
         frmPesquisarFuncionario.setSizeGripEnabled(True)
         frmPesquisarFuncionario.setModal(True)
