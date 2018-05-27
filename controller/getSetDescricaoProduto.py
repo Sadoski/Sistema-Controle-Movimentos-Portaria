@@ -1,5 +1,5 @@
 class DescricaoProduto():
-    def __init__(self, idDescricao, notaFiscal, codigoNosso, codigoProduto, produto, ncm, cst, cfop, un, qtd, valorUnitario, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi):
+    def __init__(self, idDescricao, notaFiscal, codigoNosso, codigoProduto, produto, ncm, cst, cfop, csosn, un, qtd, valorUnitario, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi, qtdTotal, insMunicipal, valTotServico, baseIssqn, valorIssqn):
         self.__idDescricao = idDescricao
         self.__notaFiscal = notaFiscal
         self.__codigoNosso = codigoNosso
@@ -8,6 +8,7 @@ class DescricaoProduto():
         self.__ncm = ncm
         self.__cst = cst
         self.__cfop = cfop
+        self.__csosn = csosn
         self.__un = un
         self.__qtd = qtd
         self.__valorUnitario = valorUnitario
@@ -16,6 +17,11 @@ class DescricaoProduto():
         self.__valorIpi = valorIpi
         self.__alicotaIcms = alicotaIcms
         self.__alicotaIpi = alicotaIpi
+        self.__qtdTotal = qtdTotal
+        self.__insMunicipal = insMunicipal
+        self.__valTotServico = valTotServico
+        self.__baseIssqn = baseIssqn
+        self.__valorIssqn = valorIssqn
 
 
     @property
@@ -73,6 +79,14 @@ class DescricaoProduto():
     @getCfop.setter
     def setCfop(self, cfop):
         self.__cfop = cfop
+
+    @property
+    def getCsosn(self):
+        return self.__csosn
+
+    @getCsosn.setter
+    def setCsosn(self, csosn):
+        self.__csosn = csosn
 
     @property
     def getUn(self):
@@ -137,3 +151,43 @@ class DescricaoProduto():
     @getAlicotaIpi.setter
     def setAlicotaIpi(self, alicotaIpi):
         self.__alicotaIpi = alicotaIpi
+
+    @property
+    def getQtdTotal(self):
+        return self.__qtdTotal
+
+    @getQtdTotal.setter
+    def setQtdTotal(self, qtdTotal):
+        self.__qtdTotal = qtdTotal
+
+    @property
+    def getInsMunicipal(self):
+        return self.__insMunicipal
+
+    @getInsMunicipal.setter
+    def setInsMunicipal(self, insMunicipal):
+        self.__insMunicipal = insMunicipal
+
+    @property
+    def getValorTotalServico(self):
+        return self.__valTotServico
+
+    @getValorTotalServico.setter
+    def setInsMunicipal(self, valTotServico):
+        self.__valTotServico = valTotServico
+
+    @property
+    def getBaseIssqn(self):
+        return self.__baseIssqn
+
+    @getBaseIssqn.setter
+    def setInsMunicipal(self, baseIssqn):
+        self.__baseIssqn = baseIssqn
+
+    @property
+    def getValorIssqn(self):
+        return self.__valorIssqn
+
+    @getValorIssqn.setter
+    def setValorIssqn(self, valorIssqn):
+        self.__valorIssqn = valorIssqn

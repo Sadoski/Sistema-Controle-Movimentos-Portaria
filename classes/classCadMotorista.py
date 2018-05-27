@@ -9,8 +9,6 @@ from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetMotorista import Motorista
 from controller.getSetPessoaFisica import PessoaFisica
-from controller.getSetVeiculoMotorista import VeiculoMotorista
-from dao.cidadesEstadosDao import CidadesEstadosDao
 from dao.motoristaDao import MotoristaDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from telas.frmCadMotorista import Ui_frmCadastroMotorista
@@ -28,7 +26,9 @@ class CadastroMotoristas(QtGui.QDialog):
         self.idMotorista = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
+        self.IdVeiculo = int()
         self.editar = False
+        self.novoVei = False
         self.contatoAdd = []
         self.contatoRemove = []
         self.contatoAtualizar = []
@@ -37,11 +37,17 @@ class CadastroMotoristas(QtGui.QDialog):
         self.emailAtualizar = []
         self.categoriaCnh = []
 
+        self.ui.txtMarca.setValidator(self.validator)
+        self.ui.txtModelo.setValidator(self.validator)
+        self.ui.txtPlaca.setValidator(self.validator)
+        self.ui.txtContatoTelefone.setValidator(self.validator)
+        self.ui.txtContatoEmail.setValidator(self.validator)
+
         self.ui.btnNovo.clicked.connect(self.novo)
-        #self.ui.btnSalvar.clicked.connect(self.cadastrar)
+        self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
-        #self.ui.btnEditar.clicked.connect(self.atualizar)
-        #self.ui.btnDeletar.clicked.connect(self.deletar)
+        self.ui.btnEditar.clicked.connect(self.atualizar)
+        self.ui.btnDeletar.clicked.connect(self.deletar)
         self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaFisica)
 
         self.ui.txtCodigo.textChanged.connect(self.numberCodigo)
@@ -54,6 +60,14 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtCodigo.returnPressed.connect(self.setMotorista)
 
         self.ui.txtCodigo.editingFinished.connect(self.setMotoristaEditFinish)
+
+        self.ui.btnAddTelefone.clicked.connect(self.addContatoTelefone)
+        self.ui.btnRemoverTelefone.clicked.connect(self.delContatoTelefone)
+
+        self.ui.btnAddEmail.clicked.connect(self.addContatoEmail)
+        self.ui.btnRemoverEmail.clicked.connect(self.delContatoEmail)
+
+        self.ui.btnAddNovoVeiculo.clicked.connect(self.novoVeiculo)
 
     def numberCodigo(self):
         if self.ui.txtCodigo.text().isnumeric() == False:
@@ -85,7 +99,7 @@ class CadastroMotoristas(QtGui.QDialog):
 
     def positionCursorPlaca(self):
         texto = self.removerCaracter(self.ui.txtPlaca.text())
-        print(texto)
+
         if len(texto) == 0:
             self.ui.txtPlaca.setCursorPosition(0)
         elif len(texto) <= 2:
@@ -201,6 +215,7 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.btnCancelar.setEnabled(True)
         self.ui.btnDeletar.setEnabled(True)
 
+        self.addCategoria()
 
     def ativarCampos(self):
         self.ui.tabWiAdicionais.setEnabled(True)
@@ -214,7 +229,7 @@ class CadastroMotoristas(QtGui.QDialog):
         self.idMotorista = int()
         self.idPessoa = int()
         self.idPessoaFisica = int()
-        self.idJornada = int()
+        self.IdVeiculo = int()
         self.ui.txtCodigo.setEnabled(True)
         self.ui.btnPesquisarEmpresa.setEnabled(True)
         self.ui.txtCodigo.clear()
@@ -223,8 +238,13 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtNome.clear()
         self.ui.txtSobrenome.clear()
 
+        self.ui.txtCnh.clear()
+        self.ui.txtPis.clear()
         self.ui.txtCategoriaCnh.clear()
         self.ui.txtObservacao.clear()
+        self.ui.txtModelo.clear()
+        self.ui.txtMarca.clear()
+        self.ui.txtPlaca.clear()
 
         self.ui.txtContatoTelefone.clear()
         self.ui.txtNumeroTelefone.clear()
@@ -247,7 +267,17 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.radBtnAtivo.setCheckable(False)
         self.ui.radBtnDesativo.setCheckable(False)
         self.ui.btnAddNovoVeiculo.setEnabled(False)
+        self.novoVei = False
         self.editar = False
+
+    def novoVeiculo(self):
+        self.ui.txtModelo.clear()
+        self.ui.txtMarca.clear()
+        self.ui.txtPlaca.clear()
+        self.ui.txtModelo.setEnabled(True)
+        self.ui.txtMarca.setEnabled(True)
+        self.ui.txtPlaca.setEnabled(True)
+        self.novoVei = True
 
     def deletarContatoTelefone(self):
         for i in reversed(range(self.ui.tabContatoTelefone.rowCount())):
@@ -560,7 +590,7 @@ class CadastroMotoristas(QtGui.QDialog):
             __descricao = ContatoTelefone(None, contato, telefone, self.idMotorista)
             cli.cadastrarTelefone(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarTelefoneMotorista(id, self.idCliente)
+            cli.cadastrarTelefoneMotorista(id, self.idMotorista)
 
             i += 1
 
@@ -576,11 +606,11 @@ class CadastroMotoristas(QtGui.QDialog):
             __descricao = ContatoEmail(None, contato, email, self.idMotorista)
             cli.cadastrarEmail(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarEmailMotorista(id, self.idCliente)
+            cli.cadastrarEmailMotorista(id, self.idMotorista)
 
             i += 1
 
-    def getIndexCivil(self):
+    def getIndexCategoria(self):
         index = self.ui.txtCategoriaCnh.currentIndex()
 
         for lista in self.categoriaCnh:
@@ -594,11 +624,11 @@ class CadastroMotoristas(QtGui.QDialog):
         if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtCnh.text() != '' and self.ui.txtPis.text() != '' and self.ui.txtMarca.text() != '' and self.ui.txtModelo.text() != '' and self.removerCaracter(self.ui.txtPlaca.text()) != '':
             motoDao = MotoristaDao()
             idPessoa = motoDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
-            categoria = self.getIndexCivil()
+            categoria = self.getIndexCategoria()
             motoris = Motorista(None, idPessoa, self.ui.txtCodigo.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtCnpj.text(), self.ui.txtPis.text(), self.ui.txtCnh.text(), categoria, self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.ui.txtObservacao.toPlainText(), 1)
             motoDao.cadastrarMotorista(motoris)
             self.idMotorista = motoDao.ultimoRegistro()
-            motoDao.cadastrarVeiculoMotorista(self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()))
+            motoDao.cadastrarVeiculoMotorista(self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.idMotorista)
 
             if self.contatoAdd != []:
                 self.cadastrarTelefone()
@@ -689,11 +719,12 @@ class CadastroMotoristas(QtGui.QDialog):
             cidade = pesqui[17]
             estado = pesqui[18]
             cep = pesqui[19]
-            marca = pesqui[20]
-            modelo = pesqui[21]
-            placa = pesqui[22]
-            obs = pesqui[23]
-            if pesqui[24] == 1:
+            categoria = pesqui[20]
+            marca = pesqui[21]
+            modelo = pesqui[22]
+            placa = pesqui[23]
+            obs = pesqui[24]
+            if pesqui[25] == 1:
                 situacao = "Ativo"
             else:
                 situacao = "Inativo"
@@ -720,19 +751,20 @@ class CadastroMotoristas(QtGui.QDialog):
             self.__pesquisarMotorista.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cidade)))
             self.__pesquisarMotorista.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(estado)))
             self.__pesquisarMotorista.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(cep)))
-            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(marca)))
-            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(modelo)))
-            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 22, QtGui.QTableWidgetItem(str(placa)))
-            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 23, QtGui.QTableWidgetItem(str(obs)))
-            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 24, QtGui.QTableWidgetItem(str(situacao)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(categoria)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(marca)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 22, QtGui.QTableWidgetItem(str(modelo)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 23, QtGui.QTableWidgetItem(str(placa)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 24, QtGui.QTableWidgetItem(str(obs)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 25, QtGui.QTableWidgetItem(str(situacao)))
 
             linha += 1
 
     def setarCampos(self):
-        funcionarioDao = MotoristaDao()
+        motoDao = MotoristaDao()
         itens = []
 
-        for item in self.__pesquisarPessoa.tabPesquisar.selectedItems():
+        for item in self.__pesquisarMotorista.tabPesquisar.selectedItems():
             itens.append(item.text())
 
         codigo = itens[0]
@@ -766,12 +798,13 @@ class CadastroMotoristas(QtGui.QDialog):
             situacao = False
 
 
-        idPessoa = funcionarioDao.pesquisarPessoaCodigo(codigo)
-        idPessoaFisico = funcionarioDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoa = motoDao.pesquisarPessoaCodigo(codigo)
+        idPessoaFisico = motoDao.pesquisarPessoaFisicaId(idPessoa)
 
         __dados = Motorista(codigo, idPessoa, idPessoaFisico, nome, sobrenome, rg, cpf, pis, cnh, categoria, marca, modelo, placa, obs, situacao)
         self.botoesEditar()
         self.setCampos(__dados)
+        self.IdVeiculo = motoDao.pesquisarVeiculo(str(codigo), str(1))
         self.pesquisarTelefone(codigo)
         self.pesquisaEmail(codigo)
         self.dialog.close()
@@ -780,7 +813,7 @@ class CadastroMotoristas(QtGui.QDialog):
     def setCampos(self, campos):
         self.ui.txtCodigo.setEnabled(False)
 
-        self.idMotorista = int(campos.getIdFuncionario)
+        self.idMotorista = int(campos.getIdMotorista)
         self.idPessoa = int(campos.getIdPessoa)
         self.ui.txtCodigo.setText(str(campos.getIdPessoaFisica))
         self.ui.txtCnpj.setText(campos.getCpf)
@@ -872,8 +905,8 @@ class CadastroMotoristas(QtGui.QDialog):
 
             idTelefone = int(a[0])
 
-            emp.deletarTelefone(idTelefone, self.idMotorista)
-            pesquisa = emp.pesquisaTelefoneMotorista(idTelefone, self.idMotorista)
+            emp.deletarTelefone(idTelefone, str(self.idMotorista))
+            pesquisa = emp.pesquisaTelefoneMotorista(idTelefone, str(self.idMotorista))
             if pesquisa == "":
                 emp.deletarContatoTelefone(idTelefone)
 
@@ -887,8 +920,8 @@ class CadastroMotoristas(QtGui.QDialog):
 
             idEmail = a[0]
 
-            emp.deletarEmail(idEmail, self.idMotorista)
-            pesquisa = emp.pesquisaEmailMotorista(idEmail, self.idMotorista)
+            emp.deletarEmail(idEmail, str(self.idMotorista))
+            pesquisa = emp.pesquisaEmailMotorista(idEmail, str(self.idMotorista))
             if pesquisa == "":
                 emp.deletarContatoEmail(idEmail)
 
@@ -903,10 +936,10 @@ class CadastroMotoristas(QtGui.QDialog):
             contato = a[0]
             telefone = a[1]
 
-            __descricao = ContatoTelefone(None, contato, telefone, self.idMotorista)
+            __descricao = ContatoTelefone(None, contato, telefone, str(self.idMotorista))
             emp.cadastrarTelefone(__descricao)
             id = emp.ultimoRegistro()
-            emp.cadastrarTelefoneMotorista(id, self.idMotorista)
+            emp.cadastrarTelefoneMotorista(id, str(self.idMotorista))
 
             i += 1
 
@@ -919,9 +952,133 @@ class CadastroMotoristas(QtGui.QDialog):
             contato = a[0]
             email = a[1]
 
-            __descricao = ContatoEmail(None, contato, email, self.idMotorista)
+            __descricao = ContatoEmail(None, contato, email, str(self.idMotorista))
             emp.cadastrarEmail(__descricao)
             id = emp.ultimoRegistro()
-            emp.cadastrarEmailMotorista(id, self.idMotorista)
+            emp.cadastrarEmailMotorista(id, str(self.idMotorista))
+
+            i += 1
+
+    def atualizar(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtCnh.text() != '' and self.ui.txtPis.text() != '' and self.ui.txtMarca.text() != '' and self.ui.txtModelo.text() != '' and self.removerCaracter(self.ui.txtPlaca.text()) != '':
+
+            if self.contatoRemove  != []:
+                self.deletarTelefone()
+
+            if self.emailRemove != []:
+                self.deletarEmail()
+
+            if self.contatoAtualizar != []:
+                self.atualizaTelefone()
+
+            if self.emailAtualizar != []:
+                self.atualizaEmail()
+
+
+            if self.ui.radBtnAtivo.isChecked():
+                ativo = 1
+            elif self.ui.radBtnDesativo.isChecked():
+                ativo = 0
+
+            categoria = self.getIndexCategoria()
+
+            motoDao = MotoristaDao()
+            motorista = Motorista(self.idMotorista, self.idPessoa, self.ui.txtCodigo.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtCnpj.text(), self.ui.txtPis.text(), self.ui.txtCnh.text(), categoria, self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.ui.txtObservacao.toPlainText(), ativo)
+
+            motoDao.atualizarMotorista(motorista)
+            if self.novoVei == True:
+                motoDao.alterarVeiculo(0, self.IdVeiculo)
+                motoDao.cadastrarVeiculoMotorista(self.ui.txtMarca.text(), self.ui.txtModelo.text(),self.removerCaracter(self.ui.txtPlaca.text()), self.idMotorista)
+
+            self.cancelar()
+        else:
+            self.mensagem.warning('Atenção', "Por Favor preencha os campos obrigatorios")
+
+    def deletar(self):
+        fisicaDao = MotoristaDao()
+        nf = fisicaDao.pesquisarTabelaNf(self.idMotorista)
+
+        if nf == []:
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
+
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle('Menssagem')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
+            btnSim.clicked.connect(self.simDeletar)
+            btnNao.clicked.connect(self.fechar)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+        else:
+            MensagemBox().warning('Atenção', 'Impossivel fazer essa operação, pois essa pessoa esta relacionada com outro formulario')
+
+    def simDeletar(self):
+            motoDao = MotoristaDao()
+            codigo = self.idMotorista
+            a = motoDao.deletarMotorista(codigo)
+            b = motoDao.deletarVeiculoMotorista(codigo)
+            if self.contatoAdd != []:
+                self.deletarTelefoneFrom()
+
+            if self.emailAdd != []:
+                self.deletarEmailFrom()
+
+            if self.contatoRemove != []:
+                self.deletarTelefone()
+
+            if self.emailRemove != []:
+                self.deletarEmail()
+
+            if a  == True:
+                MensagemBox().informacao('Mensagem', 'Cadastro deletar com sucesso!')
+                self.desativarCampos()
+            else:
+                MensagemBox().critico('Erro', 'Erro ao deletar as informações no banco de dados')
+
+            self.cancelar()
+            self.msgBox.close()
+
+    def fechar(self):
+        self.msgBox.close()
+
+    def deletarTelefoneFrom(self):
+        emp = MotoristaDao()
+        i = 0
+        for lista in self.contatoAdd :
+            a = self.contatoAdd[i]
+
+            idTelefone = int(a[0])
+
+            emp.deletarTelefone(idTelefone, str(self.idMotorista))
+            pesquisa = emp.pesquisaTelefoneMotorista(idTelefone, str(self.idMotorista))
+            if pesquisa == "":
+                emp.deletarContatoTelefone(idTelefone)
+
+            i += 1
+
+    def deletarEmailFrom(self):
+        emp = MotoristaDao()
+        i = 0
+        for lista in self.emailAdd:
+            a = self.emailAdd[i]
+
+            idEmail = a[0]
+
+            emp.deletarEmail(idEmail, str(self.idMotorista))
+            pesquisa = emp.pesquisaEmailMotorista(idEmail, str(self.idMotorista))
+            if pesquisa == "":
+                emp.deletarContatoEmail(idEmail)
 
             i += 1

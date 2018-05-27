@@ -1,11 +1,14 @@
 class NotaFiscal():
-    def __init__(self, idNotaFiscal, idFornecedor, idEmpresa, idMotorista, numNotaFiscal, dataEmissao, valorTotal):
+    def __init__(self, idNotaFiscal, idFornecedor, idTipoNf, idMotorista, serie, modelo, numNotaFiscal, dataEmissao, dataEntrada, valorTotal):
         self.__idNotaFiscal = idNotaFiscal
         self.__idFornecedor = idFornecedor
-        self.__idEmpresa = idEmpresa
+        self.__idTipoNf = idTipoNf
         self.__idMotorista = idMotorista
+        self.__serie = serie
+        self.__modelo = modelo
         self.__numNotaFiscal = numNotaFiscal
         self.__dataEmissao = dataEmissao
+        self.__dataEntrada = dataEntrada
         self.__valorTotal = valorTotal
 
     @property
@@ -17,12 +20,12 @@ class NotaFiscal():
         self.__idFornecedor = idFornecedor
 
     @property
-    def getIdEmpresa(self):
-        return self.__idEmpresa
+    def getIdTipoNf(self):
+        return self.__idTipoNf
 
-    @getIdEmpresa.setter
-    def setIdEmpresa(self, idEmpresa):
-        self.__idEmpresa = idEmpresa
+    @getIdTipoNf.setter
+    def setIdTipoNf(self, tipoNf):
+        self.__idTipoNf = tipoNf
 
     @property
     def getIdMotorista(self):
@@ -31,6 +34,22 @@ class NotaFiscal():
     @getIdMotorista.setter
     def setIdMotorista(self, idMotorista):
         self.__idMotorista = idMotorista
+
+    @property
+    def getSerie(self):
+        return self.__serie
+
+    @getSerie.setter
+    def setSerie(self, serie):
+        self.__serie = serie
+
+    @property
+    def getModelo(self):
+        return self.__modelo
+
+    @getModelo.setter
+    def setModelo(self, modelo):
+        self.__modelo = modelo
 
     @property
     def getNumNotaFiscal(self):
@@ -47,6 +66,14 @@ class NotaFiscal():
     @getDataEmissao.setter
     def setDataEmissao(self, dataEmissao):
         self.__dataEmissao = dataEmissao
+
+    @property
+    def getDataEntrada(self):
+        return self.__dataEntrada
+
+    @getDataEntrada.setter
+    def setDataEntrada(self, dataEntrada):
+        self.__dataEntrada = dataEntrada
 
     @property
     def getValorTotal(self):

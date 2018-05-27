@@ -679,7 +679,7 @@ class CadastroFornecedores(QtGui.QDialog):
             __descricao = ContatoTelefone(None, contato, telefone, self.idFornecedor)
             cli.cadastrarTelefone(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarTelefoneCliente(id, self.idFornecedor)
+            cli.cadastrarTelefoneFornecedor(id, self.idFornecedor)
 
             i += 1
 
@@ -695,7 +695,7 @@ class CadastroFornecedores(QtGui.QDialog):
             __descricao = ContatoEmail(None, contato, email, self.idFornecedor)
             cli.cadastrarEmail(__descricao)
             id = cli.ultimoRegistro()
-            cli.cadastrarEmailCliente(id, self.idFornecedor)
+            cli.cadastrarEmailFornecedor(id, self.idFornecedor)
 
             i += 1
 

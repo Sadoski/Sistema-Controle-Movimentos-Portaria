@@ -4,11 +4,16 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from decimal import Decimal
 
-
+from classes.classMensagemBox import MensagemBox
+from classes.classValidator import Validator
 from controller.getSetDescricaoProduto import DescricaoProduto
+from controller.getSetFornecedor import Fornecedor
+from controller.getSetMotorista import Motorista
 from controller.getSetNotaFiscal import NotaFiscal
 from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
 from controller.getSetRomaneio import Romaneio
+from dao.fornecedorDao import FornecedorDao
+from dao.motoristaDao import MotoristaDao
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
 from dao.pesquisaEmpresa import PesquisaEmpresaDao
 from dao.pesquisarFornecedor import PesquisarFornecedorDao
@@ -27,19 +32,33 @@ class CadastroNotaFiscal(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaNF()
         self.ui.setupUi(self)
+        self.validator = Validator()
+        self.mensagem = MensagemBox()
         self.validarCamposFlutuante()
+        self.editar = False
         self.desc = []
+        self.ncm = []
+        self.cfop = []
+        self.csosn = []
+        self.cst = []
+        self.tipos = []
+        self.produto = []
+        self.decricao = []
+        self.removeDescricao = []
+        self.atuaDecricao = []
 
-        self.unidadeMedida()
-        self.tiposNF()
-        self.ncm()
-        self.cfop()
-        self.csosn()
-        self.cst()
-        self.produtos()
+        self.ui.btnNovo.clicked.connect(self.novo)
+        #self.ui.btnSalvar.clicked.connect(self.cadastrar)
+        self.ui.btnCancelar.clicked.connect(self.cancelar)
+        #self.ui.btnEditar.clicked.connect(self.atualizar)
+        #self.ui.btnDeletar.clicked.connect(self.deletar)
 
+        self.ui.btnPesquisarMotorista.clicked.connect(self.pesquisarMotoristas)
+        self.ui.btnPesquisarFornecedor.clicked.connect(self.pesquisarFornecedores)
 
-        self.ui.txtIcmsPorcento.textChanged.connect(self.validatorChangedDoublePorcentoICMS)
+        self.ui.btnAdd.clicked.connect(self.addProdutos)
+        self.ui.btnRemove.clicked.connect(self.delDescricao)
+
         self.ui.txtBaseICMS.textChanged.connect(self.validatorChangedDoubleBaseICMS)
         self.ui.txtValorICMS.textChanged.connect(self.validatorChangedDoubleValorICMS)
         self.ui.txtBaseICMSST.textChanged.connect(self.validatorChangedDoubleBaseICMSST)
@@ -56,6 +75,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorIssqn.textChanged.connect(self.validatorChangedDoubleValorIssqn)
         self.ui.txtValorUnotario.textChanged.connect(self.validatorChangedDoubleValorUnitario)
         self.ui.txtValorTotal.textChanged.connect(self.validatorChangedDoubleValorTotal)
+        self.ui.txtSomatoriaTotalValor.textChanged.connect(self.validatorChangedDoubleSomatoriaTotal)
 
 
         self.ui.txtCodig.textChanged.connect(self.numberCodigoFornecedor)
@@ -66,13 +86,87 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtQtd.textChanged.connect(self.numberQuantidade)
         self.ui.txtInsMunicipal.textChanged.connect(self.numberInsMunicipal)
 
+        self.ui.txtValorTotal.editingFinished.connect(self.setFloatDecimalValorTotal)
+        self.ui.txtValorUnotario.editingFinished.connect(self.setFloatDecimalValorUni)
+
+        self.ui.txtCodig.returnPressed.connect(self.setFornecedor)
+        self.ui.txtCodigoMotorista.returnPressed.connect(self.setMotorista)
+
+        self.ui.txtCodig.editingFinished.connect(self.setFornecedorFinish)
+        self.ui.txtCodigoMotorista.editingFinished.connect(self.setMotoristaFinish)
+        self.ui.txtValorUnotario.editingFinished.connect(self.somarUniValor)
+
+    def somarUniValor(self):
+
+        self.ui.txtValorTotal.setText(str(int(self.ui.txtQtd.text())*float(self.reformatar(self.ui.txtValorUnotario.text()))))
+
+    def totalNf(self):
+        if self.ui.txtSomatoriaTotalValor.text() == "":
+            total = 0
+        else:
+            total = float(self.reformatar(self.ui.txtSomatoriaTotalValor.text()))
+
+        soma = int(self.ui.txtQtd.text()) * float(self.reformatar(self.ui.txtValorUnotario.text()))
+
+        result = total+soma
+
+        self.ui.txtSomatoriaTotalValor.setText(str(self.alterarCaracter(str(result)+self.setDecimal(str(result)))))
+
+    def subtrairTotal(self, soma):
+        total = float(self.reformatar(self.ui.txtSomatoriaTotalValor.text()))
+
+        result = total - float(self.reformatar(soma))
+
+        self.ui.txtSomatoriaTotalValor.setText(str(self.alterarCaracter(str(result)+self.setDecimal(str(result)))))
+
+    def novo(self):
+        self.ui.grbFornecedor.setEnabled(True)
+        self.ui.grbTransportadoraMotorista.setEnabled(True)
+        self.ui.grbData.setEnabled(True)
+        self.ui.grbDadosNF.setEnabled(True)
+        self.ui.grbImpostos.setEnabled(True)
+        self.ui.grbCalculoImposto.setEnabled(True)
+        self.ui.grbIssqn.setEnabled(True)
+        self.ui.grbDescricaoProduto.setEnabled(True)
+
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnDeletar.setEnabled(False)
+
+        self.unidadeMedida()
+        self.tiposNF()
+        self.setNcm()
+        self.setCfop()
+        self.setCsosn()
+        self.setCst()
+        self.setProdutos()
+
+    def cancelar(self):
+        self.limparCampos()
+        self.ui.grbFornecedor.setEnabled(False)
+        self.ui.grbTransportadoraMotorista.setEnabled(False)
+        self.ui.grbData.setEnabled(False)
+        self.ui.grbDadosNF.setEnabled(False)
+        self.ui.grbImpostos.setEnabled(False)
+        self.ui.grbCalculoImposto.setEnabled(False)
+        self.ui.grbIssqn.setEnabled(False)
+        self.ui.grbDescricaoProduto.setEnabled(False)
+
+        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(False)
+        self.ui.btnCancelar.setEnabled(False)
+        self.ui.btnDeletar.setEnabled(False)
+
     def validarCamposFlutuante(self):
 
         validarReal = QtGui.QDoubleValidator(0.00, 999999999.99, 2, self)
         validarReal.setNotation(QtGui.QDoubleValidator.StandardNotation)
         validarReal.setDecimals(2)
 
-        listaObj = [self.ui.txtIcmsPorcento, self.ui.txtBaseICMS,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
+        listaObj = [self.ui.txtBaseICMS,  self.ui.txtValorICMS, self.ui.txtBaseICMSST,
                     self.ui.txtValorICMSSub, self.ui.txtValorPIS, self.ui.txtValorConfins, self.ui.txtValorFrete,
                     self.ui.txtValorSeguro, self.ui.txtValorDesconto, self.ui.txtOutrasDespesas, self.ui.txtValorIPI,
                     self.ui.txtValorUnotario, self.ui.txtValorTotal, self.ui.txtValorTotalServico, self.ui.txtBaseIssqn, self.ui.txtValorIssqn]
@@ -115,17 +209,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         i = i.replace(',', '.')
         return i
 
-    def validatorChangedDoublePorcentoICMS(self):
-        ponto = self.alterarCaracterNum(self.ui.txtIcmsPorcento.text())
-
-        if len(ponto) >1:
-            self.ui.txtIcmsPorcento.backspace()
-        elif len(ponto) == 1:
-            self.ui.txtIcmsPorcento.setText(self.alterarCaracter(self.ui.txtIcmsPorcento.text()))
-            numero = self.reformatar(self.ui.txtIcmsPorcento.text())
-            formatar = str(numero).split('.')
-            if len(formatar[1]) >2:
-                self.ui.txtIcmsPorcento.backspace()
 
     def validatorChangedDoubleBaseICMS(self):
         ponto = self.alterarCaracterNum(self.ui.txtBaseICMS.text())
@@ -319,6 +402,18 @@ class CadastroNotaFiscal(QtGui.QDialog):
             if len(formatar[1]) >2:
                 self.ui.txtValorTotal.backspace()
 
+    def validatorChangedDoubleSomatoriaTotal(self):
+        ponto = self.alterarCaracterNum(self.ui.txtSomatoriaTotalValor.text())
+
+        if len(ponto) >1:
+            self.ui.txtSomatoriaTotalValor.backspace()
+        elif len(ponto) == 1:
+            self.ui.txtSomatoriaTotalValor.setText(self.alterarCaracter(self.ui.txtSomatoriaTotalValor.text()))
+            numero = self.reformatar(self.ui.txtSomatoriaTotalValor.text())
+            formatar = str(numero).split('.')
+            if len(formatar[1]) >2:
+                self.ui.txtSomatoriaTotalValor.backspace()
+
     def numberCodigoFornecedor(self):
         if self.ui.txtCodig.text().isnumeric() == False:
             self.ui.txtCodig.backspace()
@@ -358,37 +453,43 @@ class CadastroNotaFiscal(QtGui.QDialog):
         nf = NotaFiscalRomanieo()
         tipo = nf.pesquisarNf()
         for i in tipo:
-            self.ui.cboxTipos.addItem(str(i[0]))
+            self.ui.cboxTipos.addItem(str(i[1]))
+        self.tipos.append(tipo)
 
-    def ncm(self):
+    def setNcm(self):
         nf = NotaFiscalRomanieo()
         ncm = nf.pesquisarNcm()
         for i in ncm:
-            self.ui.cBoxNcm.addItem(str(i[0]))
+            self.ui.cBoxNcm.addItem(str(i[1]))
+        self.ncm.append(ncm)
 
-    def cfop(self):
+    def setCfop(self):
         nf = NotaFiscalRomanieo()
         cfop = nf.pesquisarCfop()
         for i in cfop:
             self.ui.cBoxCfop.addItem(str(i[0]))
+        self.cfop.append(cfop)
 
-    def csosn(self):
+    def setCsosn(self):
         nf = NotaFiscalRomanieo()
-        csosn = nf.pesquisarCfop()
+        csosn = nf.pesquisarCsosn()
         for i in csosn:
-            self.ui.cBoxCsosn.addItem(str(i[0]))
+            self.ui.cBoxCsosn.addItem(str(i[1]))
+        self.csosn.append(csosn)
 
-    def cst(self):
+    def setCst(self):
         nf = NotaFiscalRomanieo()
         cst = nf.pesquisarCst()
         for i in cst:
-            self.ui.cBoxCst.addItem(str(i[0]))
+            self.ui.cBoxCst.addItem(str(i[1]))
+        self.cst.append(cst)
 
-    def produtos(self):
+    def setProdutos(self):
         nf = NotaFiscalRomanieo()
-        cst = nf.pesquisarProduto()
-        for i in cst:
-            self.ui.cBoxProduto.addItem(str(i[0]))
+        produto = nf.pesquisarProduto()
+        for i in produto:
+            self.ui.cBoxProduto.addItem(str(i[1]))
+        self.produto.append(produto)
 
     def substituirCaracterMetros(self, i):
         i = str(i)
@@ -446,7 +547,6 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtSerie.clear()
         self.ui.txtModelo.clear()
         self.ui.txtNumNF.clear()
-        self.ui.txtIcmsPorcento.clear()
         self.ui.dateDataEmissao.setDate(QDate.currentDate())
         self.ui.dateDataEntrada.setDate(QDate.currentDate())
 
@@ -467,19 +567,532 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtValorTotal.clear()
 
         self.ui.txtSomatoriaTotalValor.clear()
-        self.ui.txtSomatoriaTotalQtd.clear()
 
         self.ui.txtInsMunicipal.clear()
         self.ui.txtValorTotalServico.clear()
         self.ui.txtBaseIssqn.clear()
         self.ui.txtValorIssqn.clear()
 
+        self.ui.cBoxNcm.clear()
+        self.ui.cBoxCfop.clear()
+        self.ui.cBoxCsosn.clear()
+        self.ui.cBoxCst.clear()
+        self.ui.cBoxProduto.clear()
+        self.ui.cBoxUn.clear()
+        self.ui.cboxTipos.clear()
+
+    def pesquisarMotoristas(self):
+            self.dialogMotoristas = QDialog(self)
+            self.__pesquisarMotorista = Ui_frmConsultarMotoristas()
+            self.__pesquisarMotorista.setupUi(self.dialogMotoristas)
+
+            self.__pesquisarMotorista.txtPesquisar.setValidator(self.validator)
+
+            self.__pesquisarMotorista.txtPesquisar.returnPressed.connect(self.pesquisarMotorista)
+
+            self.__pesquisarMotorista.btnPesquisar.clicked.connect(self.pesquisarMotorista)
+
+            self.__pesquisarMotorista.tabPesquisar.doubleClicked.connect(self.setarCamposMotorista)
+
+            self.dialogMotoristas.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.dialogMotoristas.exec_()
+
+    def pesquisarMotorista(self):
+        __pesDao = MotoristaDao()
+        if self.__pesquisarMotorista.radBtnCodigo.isChecked():
+                __codigo = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisaCodigoFisica(__codigo)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        elif self.__pesquisarMotorista.radBtnNome.isChecked():
+                __razao = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisarNomeFisica(__razao)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        elif self.__pesquisarMotorista.radBtnCpf.isChecked():
+                __fantasia = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisaCpfFisica(__fantasia)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        elif self.__pesquisarMotorista.radBtnRg.isChecked():
+                __cnpj = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisaRgFisica(__cnpj)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        elif self.__pesquisarMotorista.radBtnNumCarteira.isChecked():
+                __inscricao = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisaNumCarteira(__inscricao)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        elif self.__pesquisarMotorista.radBtnPis.isChecked():
+                __inscricao = self.__pesquisarMotorista.txtPesquisar.text()
+                __retorno = __pesDao.pesquisaPis(__inscricao)
+                self.setarTabelaPesquisaEditarMotorista(__retorno)
+
+        else:
+            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisaEditarMotorista(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarMotorista.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            nome = pesqui[1]
+            apelido = pesqui[2]
+            cnh = pesqui[3]
+            cpf = pesqui[4]
+            rg = pesqui[5]
+            expeditor = pesqui[6]
+            uf = pesqui[7]
+            pis = pesqui[8]
+            aniversario = pesqui[9]
+            genero = pesqui[10]
+            mae = pesqui[11]
+            pai = pesqui[12]
+            endereco = pesqui[13]
+            numero = pesqui[14]
+            complemento = pesqui[15]
+            bairro = pesqui[16]
+            cidade = pesqui[17]
+            estado = pesqui[18]
+            cep = pesqui[19]
+            categoria = pesqui[20]
+            marca = pesqui[21]
+            modelo = pesqui[22]
+            placa = pesqui[23]
+            obs = pesqui[24]
+            if pesqui[25] == 1:
+                situacao = "Ativo"
+            else:
+                situacao = "Inativo"
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(apelido)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cnh)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(pis)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(aniversario)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(genero)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(mae)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(pai)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 19, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 20, QtGui.QTableWidgetItem(str(categoria)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 21, QtGui.QTableWidgetItem(str(marca)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 22, QtGui.QTableWidgetItem(str(modelo)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 23, QtGui.QTableWidgetItem(str(placa)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 24, QtGui.QTableWidgetItem(str(obs)))
+            self.__pesquisarMotorista.tabPesquisar.setItem(linha, 25, QtGui.QTableWidgetItem(str(situacao)))
+
+            linha += 1
+
+    def setarCamposMotorista(self):
+        motoDao = MotoristaDao()
+        itens = []
+
+        for item in self.__pesquisarMotorista.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codigo = itens[0]
+        nome = itens[1]
+        sobrenome = itens[2]
+        cnh = itens[3]
+        cpf = itens[4]
+        rg = itens[5]
+        expeditor = itens[6]
+        uf = itens[7]
+        pis = itens[8]
+        data = itens[9]
+        sexo = itens[10]
+        mae = itens[11]
+        pai = itens[12]
+        endereco = itens[13]
+        numero = itens[14]
+        complemento = itens[15]
+        bairro = itens[16]
+        cidade = itens[17]
+        estado = itens[18]
+        cep = itens[19]
+        categoria = itens[20]
+        marca = itens[21]
+        modelo = itens[22]
+        placa = itens[23]
+        obs = itens[24]
+        if itens[25] == 'Ativo':
+            situacao = True
+        else:
+            situacao = False
+
+
+        __dados = Motorista(codigo, None, None, nome, sobrenome, rg, cpf, pis, cnh, categoria, marca, modelo, placa, obs, situacao)
+        self.setCamposMotorista(__dados)
+        self.dialogMotoristas.close()
+
+
+    def setCamposMotorista(self, campos):
+        self.ui.txtCodigoMotorista.setText(campos.getIdMotorista)
+        self.ui.txtMotorista.setText(campos.getNome + " " + campos.getSobrenome)
+
+    def pesquisarFornecedores(self):
+        self.dialogFornecedores = QDialog(self)
+        self.__pesquisarFornecedor = Ui_frmPesquisarFornecedor()
+        self.__pesquisarFornecedor.setupUi(self.dialogFornecedores)
+
+        self.__pesquisarFornecedor.txtPesquisar.setValidator(self.validator)
+
+        self.__pesquisarFornecedor.txtPesquisar.returnPressed.connect(self.pesquisarFornecedor)
+
+        self.__pesquisarFornecedor.btnPesquisar.clicked.connect(self.pesquisarFornecedor)
+
+        self.__pesquisarFornecedor.tabPesquisar.doubleClicked.connect(self.setarCamposFornecedor)
+
+        self.dialogFornecedores.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+        self.dialogFornecedores.exec_()
+
+    def pesquisarFornecedor(self):
+        __pesDao = FornecedorDao()
+        if self.__pesquisarFornecedor.radBtnCodigo.isChecked():
+            __codigo = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaCodigoFisica(__codigo)
+            self.setarTabelaPesquisaEditarFornecedor(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnRazaoSocial.isChecked():
+            __razao = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisarNomeFisica(__razao)
+            self.setarTabelaPesquisaEditarFornecedor(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnFantasia.isChecked():
+            __fantasia = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaApelidoFisica(__fantasia)
+            self.setarTabelaPesquisaEditarFornecedor(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnCnpj.isChecked():
+            __cnpj = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaCpfFisica(__cnpj)
+            self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarFornecedor.radBtnInsEstadual.isChecked():
+            __inscricao = self.__pesquisarFornecedor.txtPesquisar.text()
+            __retorno = __pesDao.pesquisaRgFisica(__inscricao)
+            self.setarTabelaPesquisaEditarFornecedor(__retorno)
+
+        else:
+            self.mensagem.warning('Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisaEditarFornecedor(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarFornecedor.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            tipo = pesqui[1]
+            nome = pesqui[2]
+            apelido = pesqui[3]
+            cpf = pesqui[4]
+            rg = pesqui[5]
+            expeditor = pesqui[6]
+            uf = pesqui[7]
+            aniversario = pesqui[8]
+            endereco = pesqui[9]
+            numero = pesqui[10]
+            complemento = pesqui[11]
+            bairro = pesqui[12]
+            cidade = pesqui[13]
+            estado = pesqui[14]
+            cep = pesqui[15]
+            site = pesqui[16]
+            obs = pesqui[17]
+            if pesqui[18] == 1:
+                situacao = "Ativo"
+            else:
+                situacao = "Inativo"
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipo)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(apelido)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(cpf)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(rg)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(expeditor)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(uf)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(aniversario)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(endereco)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(numero)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(complemento)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(bairro)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(cidade)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 14, QtGui.QTableWidgetItem(str(estado)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 15, QtGui.QTableWidgetItem(str(cep)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 16, QtGui.QTableWidgetItem(str(site)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 17, QtGui.QTableWidgetItem(str(obs)))
+            self.__pesquisarFornecedor.tabPesquisar.setItem(linha, 18, QtGui.QTableWidgetItem(str(situacao)))
+
+            linha += 1
+
+    def setarCamposFornecedor(self):
+        itens = []
+
+        for item in self.__pesquisarFornecedor.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codigo = str(itens[0])
+        tipo = str(itens[1])
+        razao = str(itens[2])
+        fantasia = str(itens[3])
+        cnpj = str(itens[4])
+        insEstadual = str(itens[5])
+        expeditor = str(itens[6])
+        uf = str(itens[7])
+        aniversario = str(itens[8])
+        endereco = str(itens[9])
+        numero = str(itens[10])
+        complemento = str(itens[11])
+        bairro = str(itens[12])
+        cidade = str(itens[13])
+        estado = str(itens[14])
+        cep = str(itens[15])
+        site = str(itens[16])
+        obs = str(itens[17])
+        if itens[18] == 'Ativo':
+            situacao = True
+        else:
+            situacao = False
+
+        __dados = Fornecedor(codigo, None, None, None, cnpj, insEstadual, fantasia, razao, obs, situacao, tipo)
+        self.setCamposFornecedor(__dados)
+        self.dialogFornecedores.close()
+
+    def setCamposFornecedor(self, campos):
+        self.ui.txtCodig.setText(campos.getIdFornecedor)
+        self.ui.txtFornecedor.setText(campos.getRazaoSocial)
+
+    def setFornecedor(self):
+        forne = NotaFiscalRomanieo()
+        emp = forne.pesquisaFornecedor(self.ui.txtCodig.text())
+
+        if emp == []:
+            MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta fornecedor ou esta inativo")
+            self.ui.txtFornecedor.clear()
+
+        else:
+            for empres in emp:
+                self.ui.txtFornecedor.setText(str(empres[2]))
+
+
+    def setFornecedorFinish(self):
+        forne = NotaFiscalRomanieo()
+        emp = forne.pesquisaFornecedor(self.ui.txtCodig.text())
+
+        if emp == []:
+            self.ui.txtFornecedor.clear()
+
+        else:
+            for empres in emp:
+                self.ui.txtFornecedor.setText(str(empres[2]))
+
+    def setMotorista(self):
+        moto = NotaFiscalRomanieo()
+        emp = moto.pesquisarMotorista(self.ui.txtCodigoMotorista.text())
+        if emp == []:
+            MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro deste motorista ou esta inativo")
+            self.ui.txtMotorista.clear()
+        else:
+            for empres in emp:
+                self.ui.txtMotorista.setText(empres[1] + " " +empres[2])
+
+
+    def setMotoristaFinish(self):
+        forne = NotaFiscalRomanieo()
+
+        emp = forne.pesquisarMotorista(self.ui.txtCodigoMotorista.text())
+
+        if emp == []:
+            self.ui.txtMotorista.clear()
+
+        else:
+            for empres in emp:
+                self.ui.txtMotorista.setText(empres[1] + " " +empres[2])
+
+    def tabDescricao(self):
+        lista = []
+        columcount = self.ui.tabDescricaoProduto.columnCount()
+        row = self.ui.tabDescricaoProduto.currentItem().row()
+        for x in range(0, columcount, 1):
+            cell = self.ui.tabDescricaoProduto.item(row, x).text()
+            lista.append(cell)
+        return lista
+
+    def cellClickDescricao(self):
+        index = self.ui.tabDescricaoProduto.currentRow()
+
+        lista = self.tabDescricao()
+        if lista in self.atuaDecricao:
+            self.atuaDecricao.remove(list)
+            self.ui.tabDescricaoProduto.removeRow(index)
+        else:
+            self.ui.tabDescricaoProduto.removeRow(index)
+            if index >= 0:
+                self.removeDescricao.append(self.decricao[index])
+                del self.decricao[index]
+            else:
+                MensagemBox().warning( 'Mensagem',"Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+
+
+    def delDescricao(self):
+        index = self.ui.tabDescricaoProduto.currentRow()
+
+        if self.editar == False:
+
+            if index >= 0:
+                self.subtrairTotal(self.tabDescricao()[9])
+                del self.decricao[index]
+                self.ui.tabDescricaoProduto.removeRow(index)
+            else:
+                MensagemBox().warning('Mensagem', "Impossivel realizar essa ação, por favor selecione um item da lista para excluir")
+        elif self.editar == True:
+            self.cellClickDescricao()
+
     def deletarDescricaoProduto(self):
         for i in reversed(range(self.ui.tabDescricaoProduto.rowCount())):
             self.ui.tabDescricaoProduto.removeRow(i)
 
-        def cadastro(self):
-            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+    def setFloatDecimalValorTotal(self):
+        self.ui.txtValorTotal.setText(self.ui.txtValorTotal.text()+self.setDecimal(self.ui.txtValorTotal.text()))
+
+    def setFloatDecimalValorUni(self):
+        self.ui.txtValorUnotario.setText(self.ui.txtValorUnotario.text() + self.setDecimal(self.ui.txtValorUnotario.text()))
+
+
+    def setDecimal(self, flutuante):
+
+        ponto = self.alterarCaracterNum(flutuante)
+
+        if len(ponto) == 1:
+            retorno = "0"
+        elif len(ponto) == 0:
+            retorno = ",00"
+
+        return retorno
+
+    def addProdutos(self):
+        if self.ui.txtQtd.text() != "" and self.ui.txtValorUnotario.text() != "" and self.ui.txtValorTotal.text() != "":
+            ncm = self.ui.cBoxNcm.currentText()
+            cfop = self.ui.cBoxCfop.currentText()
+            csosn = self.ui.cBoxCsosn.currentText()
+            cst = self.ui.cBoxCst.currentText()
+
+            valorIcms = self.ui.txtValorICMS.text()
+            if valorIcms == "":
+                valorIcms = 0
+            valorIpi = self.ui.txtValorIPI.text()
+            if valorIpi == "":
+                valorIpi = 0
+            alicotaIcms = self.ui.txtAlicotaICMS.text()
+            if alicotaIcms == "":
+                alicotaIcms = 0
+            alicotaIpi = self.ui.txtAlicotaIPI.text()
+            if alicotaIpi == "":
+                alicotaIpi = 0
+
+            idProduto = self.getIndexProduto()
+            produto = self.ui.cBoxProduto.currentText()
+            uni = self.ui.cBoxUn.currentText()
+            qtd = self.ui.txtQtd.text()
+            valUni = self.ui.txtValorUnotario.text()
+            valTotal = self.ui.txtValorTotal.text()
+
+            add = [(idProduto, produto, ncm, cst,  cfop, csosn, uni, qtd, valUni, valTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi)]
+            self.inserirTabela(add)
+
+            self.decricao.append(add)
+            self.totalNf()
+            self.ui.txtQtd.clear()
+            self.ui.txtValorUnotario.clear()
+            self.ui.txtValorTotal.clear()
+        else:
+            MensagemBox().warning('Mensagem', "Atenção prencha todos os campos obrigatorio")
+
+    def inserirTabela(self, dado):
+
+        linha = self.ui.tabDescricaoProduto.rowCount()
+        for info in dado:
+            self.ui.tabDescricaoProduto.insertRow(linha)
+            idProduto = info[0]
+            produto = info[1]
+            ncm = info[2]
+            cst = info[3]
+            cfop = info[4]
+            csosn = info[5]
+            uni = info[6]
+            qtd = info[7]
+            valUni = info[8]
+            valTotal = info[9]
+            valorIcms = info[10]
+            valorIpi = info[11]
+            alicotaIcms = info[12]
+            alicotaIpi = info[13]
+
+            self.ui.tabDescricaoProduto.setItem(linha, 0, QtGui.QTableWidgetItem(str(idProduto)))
+            self.ui.tabDescricaoProduto.setItem(linha, 1, QtGui.QTableWidgetItem(str(produto)))
+            self.ui.tabDescricaoProduto.setItem(linha, 2, QtGui.QTableWidgetItem(str(ncm)))
+            self.ui.tabDescricaoProduto.setItem(linha, 3, QtGui.QTableWidgetItem(str(cst)))
+            self.ui.tabDescricaoProduto.setItem(linha, 4, QtGui.QTableWidgetItem(str(cfop)))
+            self.ui.tabDescricaoProduto.setItem(linha, 5, QtGui.QTableWidgetItem(str(csosn)))
+            self.ui.tabDescricaoProduto.setItem(linha, 6, QtGui.QTableWidgetItem(str(uni)))
+            self.ui.tabDescricaoProduto.setItem(linha, 7, QtGui.QTableWidgetItem(str(qtd)))
+            self.ui.tabDescricaoProduto.setItem(linha, 8, QtGui.QTableWidgetItem(str(valUni)))
+            self.ui.tabDescricaoProduto.setItem(linha, 9, QtGui.QTableWidgetItem(str(valTotal)))
+            self.ui.tabDescricaoProduto.setItem(linha, 10, QtGui.QTableWidgetItem(str(valorIcms)))
+            self.ui.tabDescricaoProduto.setItem(linha, 11, QtGui.QTableWidgetItem(str(valorIpi)))
+            self.ui.tabDescricaoProduto.setItem(linha, 12, QtGui.QTableWidgetItem(str(alicotaIcms)))
+            self.ui.tabDescricaoProduto.setItem(linha, 13, QtGui.QTableWidgetItem(str(alicotaIpi)))
+
+            linha += 1
+
+    def getIndexProduto(self):
+        index = self.ui.cBoxProduto.currentIndex()
+
+        for lista in self.produto:
+            a = lista[index]
+        idProduto = int(a[0])
+
+        return idProduto
+
+    def cadastro(self):
+            if self.ui.txtCodig.text() != '' and self.ui.txtFornecedor != '' and self.ui.txtCodigoMotorista.text() != '' and self.ui.txtMotorista.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtModelo.text() != '' and self.ui.txtNumNF.text() != '':
+                pass
+
+
+
+
+
+
+
+
+
+
+
+
                 '''
                 empresa = Empresas(None, self.ui.txtCodigo.text(), self.ui.cBoxTipoEmpresa.currentText(),
                                    self.ui.txtInscricaoMunicipal.text())
@@ -516,9 +1129,7 @@ class CadastroNotaFiscal(QtGui.QDialog):
                         #__notaFiscalRomaneio.cadastrarDescricaoProduto(__descricao)
 
                         i += 1
-                '''
 
-        '''
         self.ui.txtNomeEmitente.editingFinished.connect(self.pesquisarFornecedor)
         self.ui.txtFantasiaDestinatario.editingFinished.connect(self.pesquisarEmpresa)
         self.ui.txtNomeMotorista.editingFinished.connect(self.pesquisarMotorista)
