@@ -1,9 +1,8 @@
 class DescricaoProduto():
-    def __init__(self, idDescricao, notaFiscal, codigoNosso, codigoProduto, produto, ncm, cst, cfop, csosn, un, qtd, valorUnitario, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi, qtdTotal, insMunicipal, valTotServico, baseIssqn, valorIssqn):
+    def __init__(self, idDescricao, notaFiscal, idProduto, produto, ncm, cst, cfop, csosn, un, qtd, valorUnitario, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi):
         self.__idDescricao = idDescricao
         self.__notaFiscal = notaFiscal
-        self.__codigoNosso = codigoNosso
-        self.__codigoProduto = codigoProduto
+        self.__idProduto = idProduto
         self.__produto = produto
         self.__ncm = ncm
         self.__cst = cst
@@ -17,11 +16,7 @@ class DescricaoProduto():
         self.__valorIpi = valorIpi
         self.__alicotaIcms = alicotaIcms
         self.__alicotaIpi = alicotaIpi
-        self.__qtdTotal = qtdTotal
-        self.__insMunicipal = insMunicipal
-        self.__valTotServico = valTotServico
-        self.__baseIssqn = baseIssqn
-        self.__valorIssqn = valorIssqn
+
 
 
     @property
@@ -41,20 +36,12 @@ class DescricaoProduto():
         self.__notaFiscal = notaFiscal
 
     @property
-    def getCodigoNosso(self):
-        return self.__codigoNosso
+    def getIdProduto(self):
+        return self.__idProduto
 
-    @getCodigoNosso.setter
-    def setCodigoNosso(self, codigoNosso):
-        self.__codigoNosso = codigoNosso
-
-    @property
-    def getCodigoProduto(self):
-        return self.__codigoProduto
-
-    @getCodigoProduto.setter
-    def setCodigoProduto(self, codigoProduto):
-        self.__codigoProduto = codigoProduto
+    @getIdProduto.setter
+    def setIdProduto(self, idProduto):
+        self.__idProduto = idProduto
 
     @property
     def getProduto(self):
@@ -63,6 +50,14 @@ class DescricaoProduto():
     @getProduto.setter
     def setProduto(self, produto):
         self.__produto = produto
+
+    @property
+    def getNcm(self):
+        return self.__ncm
+
+    @getNcm.setter
+    def setCst(self, ncm):
+        self.__ncm = ncm
 
     @property
     def getCst(self):
@@ -151,43 +146,3 @@ class DescricaoProduto():
     @getAlicotaIpi.setter
     def setAlicotaIpi(self, alicotaIpi):
         self.__alicotaIpi = alicotaIpi
-
-    @property
-    def getQtdTotal(self):
-        return self.__qtdTotal
-
-    @getQtdTotal.setter
-    def setQtdTotal(self, qtdTotal):
-        self.__qtdTotal = qtdTotal
-
-    @property
-    def getInsMunicipal(self):
-        return self.__insMunicipal
-
-    @getInsMunicipal.setter
-    def setInsMunicipal(self, insMunicipal):
-        self.__insMunicipal = insMunicipal
-
-    @property
-    def getValorTotalServico(self):
-        return self.__valTotServico
-
-    @getValorTotalServico.setter
-    def setInsMunicipal(self, valTotServico):
-        self.__valTotServico = valTotServico
-
-    @property
-    def getBaseIssqn(self):
-        return self.__baseIssqn
-
-    @getBaseIssqn.setter
-    def setInsMunicipal(self, baseIssqn):
-        self.__baseIssqn = baseIssqn
-
-    @property
-    def getValorIssqn(self):
-        return self.__valorIssqn
-
-    @getValorIssqn.setter
-    def setValorIssqn(self, valorIssqn):
-        self.__valorIssqn = valorIssqn

@@ -637,7 +637,8 @@ class CadastroMotoristas(QtGui.QDialog):
                 self.cadastrarEmail()
 
             self.cancelar()
-
+        else:
+            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):

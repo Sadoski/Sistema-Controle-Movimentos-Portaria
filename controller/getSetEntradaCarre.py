@@ -1,11 +1,12 @@
 class EntradaCarre():
-    def __init__(self, data, hora, cargaProduto, idMotorista, idCliente, idEmpresa, ):
+    def __init__(self, data, hora, cargaProduto, produto, idMotorista, idCliente):
         self.__data = data
         self.__hora = hora
         self.__cargaProduto = cargaProduto
+        self.__produto = produto
         self.__idMotorista = idMotorista
         self.__idCliente = idCliente
-        self.__idEmpresa = idEmpresa
+
 
     @property
     def getData(self):
@@ -24,12 +25,12 @@ class EntradaCarre():
         self.__hora = hora
 
     @property
-    def getCargaProduto(self):
+    def getCarga(self):
         return self.__cargaProduto
 
-    @getCargaProduto.setter
-    def setCargaProduto(self, cargaProduto):
-        self.__cargaProduto = cargaProduto
+    @getCarga.setter
+    def setCarga(self, carga):
+        self.__cargaProduto = carga
 
     @property
     def getIdMotorista(self):
@@ -48,9 +49,9 @@ class EntradaCarre():
         self.__idCliente = idCliente
 
     @property
-    def getIdEmpresa(self):
-        return self.__idEmpresa
+    def getProduto(self):
+        return self.__produto
 
-    @getIdEmpresa.setter
-    def setIdEmpresa(self, idEmpresa):
-        self.__idEmpresa = idEmpresa
+    @getProduto.setter
+    def setProduto(self, produto):
+        self.__produto = produto

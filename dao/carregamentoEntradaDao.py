@@ -14,7 +14,7 @@ class CarregamentoEntradaDao(object):
 
     def pesquisarTipoCarga(self):
         try:
-            _sql = "SELECT descricao FROM tipo_carga"
+            _sql = "SELECT * FROM tipo_carga"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -35,9 +35,9 @@ class CarregamentoEntradaDao(object):
         except BaseException as os:
             return False
 
-    def pesquisarProduto(self, produto):
+    def pesquisarProduto(self):
         try:
-            _sql = "SELECT p.descricao FROM carga_produto a INNER JOIN tipo_carga c ON c.id_tipo_carga = a.id_tipo_carga INNER JOIN produto p ON p.id_produto = a.id_produto WHERE c.descricao = '"+produto+"'"
+            _sql = "SELECT * FROM produto"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -77,17 +77,17 @@ class CarregamentoEntradaDao(object):
 
     def pesquisarMotorista(self, motorista):
         try:
-            _sql = "SELECT m.id_motorista, v.marca, v.modelo, v.placa FROM veiculo_motorista v INNER JOIN tipo_veiculo t ON t.id_tipo_veiculo = v.id_tipo_veiculo INNER JOIN motorista m On m.id_motorista = v.id_motorista INNER JOIN categoria_cnh n ON n.id_categoria_cnh = m.id_categoria_cnh INNER JOIN cidade c ON c.id_cidade = m.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.nome = '"+motorista+"'"
+            _sql = "SELECT m.id_motorista, p.nome_razao, p.sobrenome_fantasia, m.cnh, p.cpf_cnpj, p.rg_inscricao, f.expeditor, f.uf, m.pis, f.aniversario, g.sexo, f.mae, f.pai, p.endereco, p.numero, p.complemento, p.bairro, c.nome, e.nome, c.cep, t.descricao, v.marca, v.modelo, v.placa, m.observacao, m.situacao FROM motorista m INNER JOIN veiculo_motorista v ON v.id_motorista = m.id_motorista INNER JOIN categoria_cnh t ON t.id_categoria_cnh = m.id_categoria_cnh INNER JOIN pessoa_fisica f ON f.id_pessoa_fisica = m.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado WHERE m.id_motorista = '"+motorista+"' AND v.situacao = 1"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
-            #self.__cursor.close()
+            # self.__cursor.close()
             return result
         except BaseException as os:
             return False
 
     def pesquisarCliente(self, cliente):
         try:
-            _sql = "SELECT f.id_cliente, f.razao_social, f.cnpj, f.inscricao_estadual FROM cliente f INNER JOIN cidade c ON c.id_cidade = f.id_cidades INNER JOIN estado s ON s.id_estado = c.id_estado INNER JOIN empresa e ON e.id_empresa = f.id_empresa WHERE f.fantasia = '"+cliente+"'"
+            _sql = "SELECT c.id_cliente, t.descricao, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, f.expeditor, f.uf, f.aniversario, p.endereco, p.numero, p.complemento, p.bairro, i.nome, e.nome, i.cep, j.site, c.observacao, c.situacao FROM cliente c LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = c.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = c.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = c.id_pessoa INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade i ON i.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = i.id_estado WHERE c.id_cliente = '"+cliente+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -97,8 +97,8 @@ class CarregamentoEntradaDao(object):
 
     def cadastrar(self, entrada):
         try:
-            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_carga_produto, id_motorista, id_cliente, id_empresa, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            _valores = (entrada.getData, entrada.getHora, entrada.getCargaProduto, entrada.getIdMotorista, entrada.getIdCliente, entrada.getIdEmpresa, 'Aberto')
+            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_produto, id_carga, id_motorista, id_cliente, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+            _valores = (entrada.getData, entrada.getHora, entrada.getProduto, entrada.getCarga, entrada.getIdMotorista, entrada.getIdCliente, 'Aberto')
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()

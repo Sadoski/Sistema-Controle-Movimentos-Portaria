@@ -242,8 +242,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
     def formatarData(self, data):
         dia = data[:2]
-        mes = data[2:4]
-        ano = data[4:8]
+        mes = data[4:6]
+        ano = data[8:10]
 
         return ("%s-%s-%s" % (ano, mes, dia))
 
