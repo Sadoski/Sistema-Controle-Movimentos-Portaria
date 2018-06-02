@@ -11,11 +11,13 @@ class EntradaFuncionarioDao(object):
     def __init__(self):
         self.__conexao = ConexaoDb()
         self.__cursor = self.__conexao.conn.cursor()
+        self.__ts = time.time()
+        self.__dataHora = datetime.datetime.fromtimestamp(self.__ts).strftime('%Y-%m-%d')
 
 
-    def pesquisarNome(self, nome):
+    def pesquisarSaida(self):
         try:
-            _sql = "SELECT p.id_saida_funcionario, f.id_funcionario, f.nome, t.descricao, l.descricao, p.data, p.hora FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN funcao d ON d.id_funcao = f.id_funcao INNER JOIN setores t ON t.id_setores = d.id_setores INNER JOIN cargo l ON l.id_cargo = d.id_cargo WHERE f.nome like '%"+nome+"%'"
+            _sql = "SELECT p.id_saida_funcionario, p.data, p.hora, s.nome_razao, s.sobrenome_fantasia, t.descricao, l.descricao FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE p.status = 'Aberto' and p.data = '"+self.__dataHora+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()
@@ -23,41 +25,12 @@ class EntradaFuncionarioDao(object):
         except BaseException as os:
             return False
 
-    def pesquisarCpf(self, cpf):
+    def pesquisarIdFuncionario(self, codigo):
         try:
-            _sql = "SELECT p.id_saida_funcionario, f.id_funcionario, f.nome, t.descricao, l.descricao, p.data, p.hora FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN funcao d ON d.id_funcao = f.id_funcao INNER JOIN setores t ON t.id_setores = d.id_setores INNER JOIN cargo l ON l.id_cargo = d.id_cargo WHERE f.cpf = '"+cpf+"'"
+            _sql = "SELECT p.id_funcionario FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE p.id_saida_funcionario = '"+codigo+"'"
+            print(_sql)
             self.__cursor.execute(_sql)
-            result = self.__cursor.fetchall()
-            # self.__cursor.close()
-            return result
-        except BaseException as os:
-            return False
-
-    def pesquisarRg(self, rg):
-        try:
-            _sql = "SELECT p.id_saida_funcionario, f.id_funcionario, f.nome, t.descricao, l.descricao, p.data, p.hora FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN funcao d ON d.id_funcao = f.id_funcao INNER JOIN setores t ON t.id_setores = d.id_setores INNER JOIN cargo l ON l.id_cargo = d.id_cargo WHERE f.rg = '"+rg+"'"
-            self.__cursor.execute(_sql)
-            result = self.__cursor.fetchall()
-            # self.__cursor.close()
-            return result
-        except BaseException as os:
-            return False
-
-    def pesquisarSetor(self, setor):
-        try:
-            _sql = "SELECT p.id_saida_funcionario, f.id_funcionario, f.nome, t.descricao, l.descricao, p.data, p.hora FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN funcao d ON d.id_funcao = f.id_funcao INNER JOIN setores t ON t.id_setores = d.id_setores INNER JOIN cargo l ON l.id_cargo = d.id_cargo WHERE t.descricao = '"+setor+"'"
-            self.__cursor.execute(_sql)
-            result = self.__cursor.fetchall()
-            # self.__cursor.close()
-            return result
-        except BaseException as os:
-            return False
-
-    def pesquisarCargo(self, cargo):
-        try:
-            _sql = "SELECT p.id_saida_funcionario, f.id_funcionario, f.nome, t.descricao, l.descricao, p.data, p.hora FROM saida_funcionario p INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN funcao d ON d.id_funcao = f.id_funcao INNER JOIN setores t ON t.id_setores = d.id_setores INNER JOIN cargo l ON l.id_cargo = d.id_cargo WHERE l.descricao = '"+cargo+"'"
-            self.__cursor.execute(_sql)
-            result = self.__cursor.fetchall()
+            result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
             return result
         except BaseException as os:
@@ -71,10 +44,22 @@ class EntradaFuncionarioDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(QWidget(), 'Mensagem', "Entrada realizado com sucesso!")
             return True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
+            self.__conexao.conn.rollback()
+            return False
+
+    def updateSaidaFuncionario(self):
+        try:
+            __sql = "UPDATE saida_funcionario SET status = 'Fechado'"
+            self.__cursor.execute(__sql)
+            self.__conexao.conn.commit()
+            # self.__cursor.close()
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao atualizar as informações no banco de dados")
             self.__conexao.conn.rollback()
             return False

@@ -97,15 +97,26 @@ class CarregamentoEntradaDao(object):
 
     def cadastrar(self, entrada):
         try:
-            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_produto, id_carga, id_motorista, id_cliente, status) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            _valores = (entrada.getData, entrada.getHora, entrada.getProduto, entrada.getCarga, entrada.getIdMotorista, entrada.getIdCliente, 'Aberto')
+            _sql = "INSERT INTO entrada_veiculo_carregamento (data, hora, id_produto, id_tipo_carga, id_motorista, id_veiculo, id_cliente, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+            _valores = (entrada.getData, entrada.getHora, entrada.getProduto, entrada.getCarga, entrada.getIdMotorista, entrada.getIdVeiculo, entrada.getIdCliente, 'Aberto')
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(QWidget(), 'Mensagem', "Entrada realizado com sucesso!")
             return  True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
             self.__conexao.conn.rollback()
+            return False
+
+    def pesquisarVeiculo(self, idMotorista, modelo, marca, placa):
+        try:
+            _sql = "SELECT id_veiculo FROM veiculo_motorista  WHERE id_motorista = '"+idMotorista+"' AND marca = '"+marca+"' AND modelo = '"+modelo+"' AND placa = '"+placa+"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
             return False

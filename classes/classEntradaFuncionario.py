@@ -12,187 +12,18 @@ class EntradaFuncionarios(QtGui.QDialog):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroEntradaFuncionario()
         self.ui.setupUi(self)
-        self.idSaida = None
+        self.idSaida = int()
 
-        self.ui.txtPesquisaNomeFuncionario.returnPressed.connect(self.pesquisar)
 
-        self.ui.btnPesquisar.clicked.connect(self.pesquisar)
         self.ui.tabPesquisa.doubleClicked.connect(self.tablePesquisa)
-
-        self.ui.radBtnNome.clicked.connect(self.ativarPesquisa)
-        self.ui.radBtnCpf.clicked.connect(self.ativarPesquisa)
-        self.ui.radBtnRg.clicked.connect(self.ativarPesquisa)
-        self.ui.radBtnSetor.clicked.connect(self.ativarPesquisa)
-        self.ui.radBtnCargo.clicked.connect(self.ativarPesquisa)
 
         self.ui.btnNovo.clicked.connect(self.botaoNovoCadastro)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
 
     def ativarPesquisa(self):
-        self.ui.txtPesquisaNomeFuncionario.setEnabled(True)
         self.ui.tabPesquisa.setEnabled(True)
-        self.ui.btnPesquisar.setEnabled(True)
-        self.ui.txtPesquisaNomeFuncionario.setFocus()
 
-    def pesquisar(self):
-        if self.ui.radBtnNome.isChecked():
-            __pesquisar = self.ui.txtPesquisaNomeFuncionario.text()
-            __entFunci = EntradaFuncionarioDao()
-            __resultado = __entFunci.pesquisarNome(__pesquisar)
-
-            qtde_registros = len(__resultado)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __resultado:
-                # capturando os dados da tupla
-
-                idSaida = pesqui[0]
-                codigo = pesqui[1]
-                nome = pesqui[2]
-                setor = pesqui[3]
-                cargo = pesqui[4]
-                data = pesqui[5]
-                hora = pesqui[6]
-
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idSaida)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(setor)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(cargo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(hora)))
-
-
-                linha += 1
-
-        elif self.ui.radBtnCpf.isChecked():
-            __pesquisar = self.ui.txtPesquisaNomeFuncionario.text()
-            __entFunci = EntradaFuncionarioDao()
-            __resultado = __entFunci.pesquisarCpf(__pesquisar)
-
-            qtde_registros = len(__resultado)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __resultado:
-                # capturando os dados da tupla
-
-                idSaida = pesqui[0]
-                codigo = pesqui[1]
-                nome = pesqui[2]
-                setor = pesqui[3]
-                cargo = pesqui[4]
-                data = pesqui[5]
-                hora = pesqui[6]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idSaida)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(setor)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(cargo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(hora)))
-
-
-                linha += 1
-
-        elif self.ui.radBtnRg.isChecked():
-            __pesquisar = self.ui.txtPesquisaNomeFuncionario.text()
-            __entFunci = EntradaFuncionarioDao()
-            __resultado = __entFunci.pesquisarRg(__pesquisar)
-
-            qtde_registros = len(__resultado)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __resultado:
-                # capturando os dados da tupla
-
-                idSaida = pesqui[0]
-                codigo = pesqui[1]
-                nome = pesqui[2]
-                setor = pesqui[3]
-                cargo = pesqui[4]
-                data = pesqui[5]
-                hora = pesqui[6]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idSaida)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(setor)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(cargo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(hora)))
-
-                linha += 1
-
-        elif self.ui.radBtnSetor.isChecked():
-            __pesquisar = self.ui.txtPesquisaNomeFuncionario.text()
-            __entFunci = EntradaFuncionarioDao()
-            __resultado = __entFunci.pesquisarSetor(__pesquisar)
-
-            qtde_registros = len(__resultado)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __resultado:
-                # capturando os dados da tupla
-
-                idSaida = pesqui[0]
-                codigo = pesqui[1]
-                nome = pesqui[2]
-                setor = pesqui[3]
-                cargo = pesqui[4]
-                data = pesqui[5]
-                hora = pesqui[6]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idSaida)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(setor)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(cargo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(hora)))
-
-                linha += 1
-
-        elif self.ui.radBtnCargo.isChecked():
-            __pesquisar = self.ui.txtPesquisaNomeFuncionario.text()
-            __entFunci = EntradaFuncionarioDao()
-            __resultado = __entFunci.pesquisarCargo(__pesquisar)
-
-            qtde_registros = len(__resultado)
-            self.ui.tabPesquisa.setRowCount(qtde_registros)
-
-            linha = 0
-            for pesqui in __resultado:
-                # capturando os dados da tupla
-
-                idSaida = pesqui[0]
-                codigo = pesqui[1]
-                nome = pesqui[2]
-                setor = pesqui[3]
-                cargo = pesqui[4]
-                data = pesqui[5]
-                hora = pesqui[6]
-
-                # preenchendo o grid de pesquisa
-                self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(idSaida)))
-                self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(codigo)))
-                self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(nome)))
-                self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(setor)))
-                self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(cargo)))
-                self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(data)))
-                self.ui.tabPesquisa.setItem(linha, 6, QtGui.QTableWidgetItem(str(hora)))
-
-                linha += 1
 
     def cancelarCad(self):
         self.botaoCancelarCadastro()
@@ -201,35 +32,56 @@ class EntradaFuncionarios(QtGui.QDialog):
     def botaoEditarCadastro(self):
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
         self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
 
         self.ui.grbDadosSaidaFuncionario.setEnabled(True)
 
     def botaoNovoCadastro(self):
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(True)
-        self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(False)
 
-        self.ui.grbTipoPesquisa.setEnabled(True)
+        self.ui.tabPesquisa.setEnabled(True)
         self.ui.grbDadosSaidaFuncionario.setEnabled(True)
+        self.pesquisarSaidaFuncionario()
 
     def botaoCancelarCadastro(self):
         self.ui.btnNovo.setEnabled(True)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
-        self.ui.btnDeletar.setEnabled(False)
 
-        self.ui.grbTipoPesquisa.setEnabled(False)
-        self.ui.txtPesquisaNomeFuncionario.setEnabled(False)
-        self.ui.txtPesquisaNomeFuncionario.clear()
         self.ui.tabPesquisa.setEnabled(False)
-        self.ui.btnPesquisar.setEnabled(False)
         self.ui.grbDadosSaidaFuncionario.setEnabled(False)
+
+    def pesquisarSaidaFuncionario(self):
+        entDao = EntradaFuncionarioDao()
+        __retorno = entDao.pesquisarSaida()
+        qtde_registros = len(__retorno)
+        self.ui.tabPesquisa.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            data = pesqui[1]
+            hora = pesqui[2]
+            funcionario= pesqui[3]
+            sobrenome = pesqui[4]
+            setor = pesqui[5]
+            cargo = pesqui[6]
+
+
+            # preenchendo o grid de pesquisa
+            self.ui.tabPesquisa.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.ui.tabPesquisa.setItem(linha, 1, QtGui.QTableWidgetItem(str(data)))
+            self.ui.tabPesquisa.setItem(linha, 2, QtGui.QTableWidgetItem(str(hora)))
+            self.ui.tabPesquisa.setItem(linha, 3, QtGui.QTableWidgetItem(str(funcionario + ' ' +sobrenome)))
+            self.ui.tabPesquisa.setItem(linha, 4, QtGui.QTableWidgetItem(str(setor)))
+            self.ui.tabPesquisa.setItem(linha, 5, QtGui.QTableWidgetItem(str(cargo)))
+
+
+            linha += 1
 
 
     def formatarDataRetorno(self, data):
@@ -260,12 +112,14 @@ class EntradaFuncionarios(QtGui.QDialog):
         for item in self.ui.tabPesquisa.selectedItems():
             itens.append(item.text())
 
-        if len(itens) == 7:
-            self.idSaida = itens[0]
-            self.ui.txtidFuncionario.setText(str(itens[1]))
-            self.ui.txtNomeFuncionario.setText(str(itens[2]))
-            self.ui.txtSetor.setText(str(itens[3]))
-            self.ui.txtCargos.setText(str(itens[4]))
+        entDao = EntradaFuncionarioDao()
+        idFuncionario = entDao.pesquisarIdFuncionario(itens[0])
+
+        self.idSaida = itens[0]
+        self.ui.txtidFuncionario.setText(str(idFuncionario))
+        self.ui.txtNomeFuncionario.setText(str(itens[3]))
+        self.ui.txtSetor.setText(str(itens[4]))
+        self.ui.txtCargos.setText(str(itens[5]))
 
     def formatarData(self, data):
         dia = data[:2]
@@ -287,17 +141,18 @@ class EntradaFuncionarios(QtGui.QDialog):
 
     def cadastro(self):
         if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeFuncionario.text() != "" and self.ui.txtCargos.text() != "" and self.ui.txtSetor.text() != "":
-            __data = self.formatarData(self.removerCaracter(self.ui.txtData.text()))
-            __hora = self.ui.txtHoraEntrda.text()
-            __id = self.idSaida
-            print(__id)
+            __data = self.formatarData(self.removerCaracter(self.ui.txtDataEntrada.text()))
+            __hora = self.ui.txtHoraEntrada.text()
+            __id = str(self.idSaida)
+
             __dados = EntradaFuncionario(__id, __data, __hora)
             __entFunci = EntradaFuncionarioDao()
-            __result = __entFunci.cadastro(__dados)
-            if __result == True:
-                self.limparCampos()
-                self.botaoCancelarCadastro()
-                self.deletarPesquisa()
+            __entFunci.cadastro(__dados)
+            __entFunci.updateSaidaFuncionario()
+
+            self.limparCampos()
+            self.botaoCancelarCadastro()
+            self.deletarPesquisa()
 
     def deletarPesquisa(self):
         for i in reversed(range(self.ui.tabPesquisa.rowCount())):
@@ -308,8 +163,8 @@ class EntradaFuncionarios(QtGui.QDialog):
         self.ui.txtNomeFuncionario.clear()
         self.ui.txtSetor.clear()
         self.ui.txtCargos.clear()
-        self.ui.txtData.setDate(QDate.currentDate())
-        self.ui.txtHoraEntrda.setTime(QTime.currentTime())
+        self.ui.txtDataEntrada.setDate(QDate.currentDate())
+        self.ui.txtHoraEntrada.setTime(QTime.currentTime())
 
     def cancelar(self):
         if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeFuncionario.text() != "" and self.ui.txtCargos.text() != "" and self.ui.txtSetor.text() != "":
@@ -318,3 +173,7 @@ class EntradaFuncionarios(QtGui.QDialog):
                 self.botaoCancelarCadastro()
                 self.limparCampos()
                 self.deletarPesquisa()
+        else:
+            self.botaoCancelarCadastro()
+            self.limparCampos()
+            self.deletarPesquisa()

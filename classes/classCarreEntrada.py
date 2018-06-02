@@ -157,9 +157,10 @@ class CarregamentoEntrada(QtGui.QDialog):
             produto = self.getIndexProduto()
             carga = self.getIndexCarga()
             idMotorista = self.ui.txtidMotorista.text()
+            idVeiculo = __entCarre.pesquisarVeiculo(str(idMotorista), self.ui.txtMarcaMotorista.text(), self.ui.txtModeloMotorista.text(), self.removerCaracter(self.ui.txtPlacaMotorista.text()))
             idCliente = self.ui.txtIdClienteDestinatario.text()
 
-            __dados = EntradaCarre(data, hora, carga, produto, idMotorista, idCliente)
+            __dados = EntradaCarre(data, hora, carga, produto, idMotorista, idVeiculo, idCliente)
             __cad = __entCarre.cadastrar(__dados)
             if __cad == True:
                 self.limparCampos()

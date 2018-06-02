@@ -79,6 +79,8 @@ class Ui_frmConsultarEmpresa(object):
         self.tabPesquisar = QtGui.QTableWidget(frmConsultarEmpresa)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 110, 771, 381))
         self.tabPesquisar.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.tabPesquisar.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.tabPesquisar.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
         self.tabPesquisar.setColumnCount(16)
         self.tabPesquisar.setRowCount(0)

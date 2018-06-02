@@ -690,7 +690,7 @@ class CadastroFuncionario(QtGui.QDialog):
             emp = empresa.pesquisarPessoaFisica(self.ui.txtCodigo.text())
 
             if emp == []:
-                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta empresa")
+                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta pessoa")
                 self.ui.txtCnpj.clear()
                 self.ui.txtInscricaoEstadua.clear()
                 self.ui.txtNome.clear()
@@ -721,6 +721,7 @@ class CadastroFuncionario(QtGui.QDialog):
                     self.ui.txtCnpj.setText(str(empres[0]))
                     self.ui.txtInscricaoEstadua.setText(str(empres[1]))
                     self.ui.txtNome.setText(str(empres[2]))
+                    self.ui.txtSobrenome.setText(str(empres[3]))
 
     def pesquisarPessoaFisica(self):
         self.dialogFisicoJuridico = QDialog(self)

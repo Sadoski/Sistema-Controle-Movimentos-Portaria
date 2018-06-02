@@ -5,6 +5,7 @@ from PyQt4.QtGui import *
 
 from classes.classMensagemBox import MensagemBox
 from classes.classValidator import Validator
+from controller.getSetEntradaDesca import EntradaDesca
 from controller.getSetFornecedor import Fornecedor
 from controller.getSetMotorista import Motorista
 from controller.getSetNotaFiscal import NotaFiscal
@@ -28,11 +29,12 @@ class DescaEntrada(QtGui.QDialog):
         self.mensagem = MensagemBox()
 
         self.ui.btnNovo.clicked.connect(self.novo)
+        self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
 
         self.ui.btnPesquisarNotaFiscal.clicked.connect(self.pesquisarNf)
         self.ui.btnPesquisarFornecedor.clicked.connect(self.pesquisarFornecedor)
-        self.ui.btnPesquisarMotorista.clicked.connect(self.pesquisarMotor)
+        self.ui.btnPesquisarMotorista.clicked.connect(self.pesquisarMotorista)
 
         self.ui.txtidMotorista.returnPressed.connect(self.setMotorista)
         self.ui.txtIdFornecedor.returnPressed.connect(self.setFornecedor)
@@ -705,3 +707,43 @@ class DescaEntrada(QtGui.QDialog):
                 self.ui.txtMarcaMotorista.setText(empres[22])
                 self.ui.txtPlacaMotorista.setText(empres[23])
 
+    def formatarDataRetorno(self, data):
+        dia = data[8:10]
+        mes = data[5:7]
+        ano = data[:4]
+
+        return QtCore.QDate(int(ano), int(mes), int(dia))
+
+
+    def formatarData(self, data):
+        dia = data[:2]
+        mes = data[2:4]
+        ano = data[4:8]
+
+        return ("%s-%s-%s" % (ano, mes, dia))
+
+    def removerCaracter(self, i):
+        i = str(i)
+        i = i.replace('.', '')
+        i = i.replace(',', '')
+        i = i.replace('/', '')
+        i = i.replace('-', '')
+        i = i.replace('(', '')
+        i = i.replace(')', '')
+        i = i.replace('\\', '')
+        return i
+
+    def cadastrar(self):
+        if self.ui.txtCodigo.text() != '' and self.ui.txtProduto.text() != '' and self.ui.txtidMotorista.text() != '' and self.ui.txtNomeMotorista.text() != '' and self.ui.txtIdFornecedor.text() != '' and self.ui.txtNomeFornecedor.text() != '':
+            descaDao = DescarreEntradaDao()
+            data = self.formatarData(self.removerCaracter(str(self.ui.txtData.text())))
+            hora = self.ui.txtHora.text()
+            idNf = self.ui.txtCodigo.text()
+            idMot = self.ui.txtidMotorista.text()
+            idFor = self.ui.txtIdFornecedor.text()
+
+            desca = EntradaDesca(data, hora, idNf, idMot, idFor)
+            descaDao.cadastrar(desca)
+            self.cancelar()
+        else:
+            self.mensagem.warning('Atenção', "Preencha os campos obrigatorio")

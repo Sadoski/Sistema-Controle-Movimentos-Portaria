@@ -1,8 +1,7 @@
 class FuncionarioSaida():
-    def __init__(self, idSaida, idFuncionario, idfuncao, data, hora):
+    def __init__(self, idSaida, idFuncionario, data, hora):
         self.__idSaida = idSaida
         self.__idFuncionario = idFuncionario
-        self.__idFuncao = idfuncao
         self.__data = data
         self.__hora = hora
 
@@ -21,14 +20,6 @@ class FuncionarioSaida():
     @getIdFuncionario.setter
     def setIdFuncionario(self, idFuncionario):
         self.__idFuncionario = idFuncionario
-
-    @property
-    def getIdFuncao(self):
-        return self.__idFuncao
-
-    @getIdFuncao.setter
-    def setIdFuncao(self, idFuncao):
-        self.__idFuncao = idFuncao
 
     @property
     def getData(self):

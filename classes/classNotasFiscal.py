@@ -10,18 +10,11 @@ from controller.getSetDescricaoProduto import DescricaoProduto
 from controller.getSetFornecedor import Fornecedor
 from controller.getSetMotorista import Motorista
 from controller.getSetNotaFiscal import NotaFiscal
-from controller.getSetPesquisaNotaFiscal import PesquisaNotaFiscal
-from controller.getSetRomaneio import Romaneio
 from dao.fornecedorDao import FornecedorDao
 from dao.motoristaDao import MotoristaDao
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
 from dao.pesquisaEmpresa import PesquisaEmpresaDao
-from dao.pesquisarFornecedor import PesquisarFornecedorDao
-from dao.pesquisarMotorista import PesquisarMotoristaDao
-from dao.pesquisarNotaFiscalRomaneioDao import PesquisarNotaFiscalRomaneioDao
-from telas.frmEntradaNF import Ui_frmEntradaNF, _fromUtf8
-from telas.frmEntradaNotasRomaneios import Ui_frmEntradaNotaRomaneios
-from telas.frmPesquisarEmpresa import Ui_frmConsultarEmpresa
+from telas.frmEntradaNF import Ui_frmEntradaNF
 from telas.frmPesquisarFornecedor import Ui_frmPesquisarFornecedor
 from telas.frmPesquisarMotorista import Ui_frmConsultarMotoristas
 from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais

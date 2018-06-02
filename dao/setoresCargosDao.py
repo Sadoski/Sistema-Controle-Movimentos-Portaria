@@ -26,7 +26,7 @@ class SetoresCargosDao(object):
             self.__conexao.conn.commit()
             # self.__cursor.close()
             w = QWidget()
-            QMessageBox.warning(w, 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(w, 'Mensagem', "Cadastro realizado com sucesso!")
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
@@ -41,7 +41,7 @@ class SetoresCargosDao(object):
             self.__conexao.conn.commit()
             # self.__cursor.close()
             w = QWidget()
-            QMessageBox.warning(w, 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(w, 'Mensagem', "Cadastro realizado com sucesso!")
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")
@@ -56,7 +56,7 @@ class SetoresCargosDao(object):
             self.__conexao.conn.commit()
             # self.__cursor.close()
             w = QWidget()
-            QMessageBox.warning(w, 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(w, 'Mensagem', "Cadastro realizado com sucesso!")
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados ")

@@ -144,7 +144,7 @@ class MotoristaDao(object):
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.warning(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+            QMessageBox.information(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
 
         except mysql.connector.Error as e:
             w = QWidget()

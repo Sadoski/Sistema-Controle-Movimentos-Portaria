@@ -18,7 +18,7 @@ class DescarreEntradaDao(object):
     def pesquisarNumNotaFiscal(self, pesquisa):
         try:
             _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor WHERE n.id_entrada_notas_fiscais = '"+pesquisa+"'"
-            print(_sql)
+
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             #self.__cursor.close()
@@ -55,4 +55,18 @@ class DescarreEntradaDao(object):
             #self.__cursor.close()
             return result
         except BaseException as os:
+            return False
+
+    def cadastrar(self, campos):
+        try:
+            _sql = "INSERT INTO entrada_veiculo_descarregamento (data, hora, id_entrada_notas_fiscais, id_fornecedor, id_motorista, status) VALUES (%s, %s, %s, %s, %s, %s)"
+            _valores = (campos.getData, campos.getHora, campos.getIdNf, campos.getIdFornecedor, campos.getIdMotorista, 'Aberto')
+            self.__cursor.execute(_sql, _valores)
+            self.__conexao.conn.commit()
+            #self.__cursor.close()
+            QMessageBox.information(QWidget(), 'Mensagem', "Cadastro realizado com sucesso!")
+        except mysql.connector.Error as e:
+            w = QWidget()
+            QMessageBox.warning(w, 'Erro', "Erro ao inserir as informações no banco de dados  email")
+            self.__conexao.conn.rollback()
             return False

@@ -16,7 +16,7 @@ class CidadesEstadosDao(object):
             _sql = "SELECT c.id_cidade, c.nome, e.nome FROM cidade c INNER JOIN estado e ON e.id_estado = c.id_estado WHERE c.cep = '"+cep+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
-            self.__cursor.close()
+            #self.__cursor.close()
             return result
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
@@ -29,7 +29,7 @@ class CidadesEstadosDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False
@@ -40,7 +40,7 @@ class CidadesEstadosDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False
@@ -51,7 +51,7 @@ class CidadesEstadosDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False
@@ -62,7 +62,7 @@ class CidadesEstadosDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False
@@ -73,7 +73,7 @@ class CidadesEstadosDao(object):
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             return result
-            self.__cursor.close()
+            #self.__cursor.close()
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao pesquisar a cidade no banco de dados ")
             return False

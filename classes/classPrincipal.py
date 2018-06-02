@@ -6,22 +6,11 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from classes.classCadPessoaFisica import CadastroPessoaFisica
-from classes.classCadUsuario import CadastroUsuarios
 from classes.classCarreSaida import CarregamentoSaida
-from classes.classEntraVeiEmpTer import EntradaVeiculoEmpresaTerceiro
-from classes.classEntradaCaminhaoEmp import EntradaCaminhaoEmpresa
-from classes.classEntradaVeiEmpresa import EntradaVeiEmpresa
-from classes.classPesquisarNotaFiscal import PesquisarNotaFiscal
 from classes.classCadPessoaJuridica import CadastroPessoaJuridica
 from classes.classRelatorio import Relatorio
-from classes.classSaidaCaminhaoEmp import SaidaCaminhaoEmpresa
-from classes.classSaidaVeiEmpTer import SaidaVeiEmpTer
-from classes.classSaidaVeiEmpresa import SaidaVeiEmpresa
 from classes.classUsuarioPermissao import UsuarioPermissao
-from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmMainHouse import Ui_frmMainHouse
-from telas.frmMesagemSair import Ui_frmMensagemSair
-from telas.frmMesagemTrocaUsuario import Ui_frmMensagemTrocaUsuario
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
 from .classCadFornecedor import CadastroFornecedores
@@ -56,77 +45,12 @@ class Principal(QtGui.QMainWindow):
         self.ui.subMenuCadastroMotoristas.triggered.connect(self._cadastroMotoristas)
         self.ui.subMenuEntradaNotasTeca.triggered.connect(self._entradaNotasTeca)
         self.ui.entSaiFuncSubMenuEntrada.triggered.connect(self._entradaFuncionrio)
-        self.ui.entSaiFuncSubMenuSaida.triggered.connect(self._saidaFuncionrio)
         self.ui.menuCarregEntrada.triggered.connect(self._entradaCarregamento)
         self.ui.menuCarregSaida.triggered.connect(self._saidaCarregamento)
         self.ui.menuDescaEntrada.triggered.connect(self._entradaDescarregamento)
         self.ui.menuDescaSaida.triggered.connect(self._saidaDescarregamento)
-        self.ui.veiTerSubMenuEntrada.triggered.connect(self._entradaVeiEmpTer)
-        self.ui.veicTerSubMenuSaida.triggered.connect(self._saidaVeiEmpTer)
-        self.ui.veicEmpSubMenuEntrada.triggered.connect(self._entradaVeiEmpresa)
-        self.ui.veicEmpSaida.triggered.connect(self._saidaVeiEmpresa)
-        self.ui.camiEmpSubMenuEntrada.triggered.connect(self._entradaCaminEmp)
-        self.ui.camiEmpSubMenuSaida.triggered.connect(self._saidaCaminEmp)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
         self.ui.subMenuRelatorios.triggered.connect(self._relatorio)
-        '''
-        #Menu Cosultas
-        self.ui.subMenuConsultasEmpresas.triggered.connect(self.__consultasEmpresas)
-        self.ui.subMenuConsultasFuncionarios.triggered.connect(self.__consultasFuncionarios)
-        self.ui.subMenuConsultasFornecedores.triggered.connect(self.__consultasFornecedores)
-        self.ui.subMenuConsultasClientes.triggered.connect(self.__consultasClientes)
-        self.ui.subMenuConsultasMotoristas.triggered.connect(self.__consultasMotoristas)
-        self.ui.subMenuConsultasNotas.triggered.connect(self.__consultasNotas)
-
-        self.ui.carreConsSubMenuMadeira.triggered.connect(self.__consultasMadeira)
-        self.ui.carreConsSubMenuCavacoSerragem.triggered.connect(self.__consultasCavacoSerragem)
-        self.ui.descaConsSubMenuTeca.triggered.connect(self.__consultasTeca)
-        self.ui.descaConsSubMenuCavacoSerragem.triggered.connect(self.__consultasCavacoSerragem)
-        self.ui.descaConsSubMenuOutros.triggered.connect(self.__consultasOutros)
-        self.ui.veiLevConsSubMenuEmpresa.triggered.connect(self.__consultasEmpresa)
-        self.ui.veiLevConsSubMenuTerceiros.triggered.connect(self.__consultasTerceiros)
-        self.ui.camiConsSubMenuEmpresa.triggered.connect(self.__consultasEmpresa)
-        self.ui.camiConsSubMenuTerceiros.triggered.connect(self.__consultasTerceiros)
-        self.ui.consEntSaidSubMenuMaquinas.triggered.connect(self.__consultasMaquinas)
-        self.ui.consEntSaidSubMenuNotas.triggered.connect(self.__consultasNotas)
-        self.ui.consEntSaidSubMenuFuncionarios.triggered.connect(self.__consultasFuncionarios)
-
-
-        #Menu Movimentos
-        self.ui.carreMadeiraEntrada.triggered.connect(self.__carreMadeiraEntrada)
-        self.ui.carreMadeiraSaida.connect(self.__carreMadeiraSaida)
-
-        self.ui.carreCavacoPoSerragemEntrada.triggered.connect(self.__carreCavacoPoSerragemEntrada)
-        self.ui.carreCavacoPoSerragemSaida.connect(self.__carreCavacoPoSerragemSaida)
-
-        self.ui.descTecaEntrada.triggered.connect(self.__descTecaEntrada)
-        self.ui.descTecaSaida.connect(self.__descTecaSaida)
-
-        self.ui.descCavacoPoSerragemEntrada.triggered.connect(self.__descCavacoPoSerragemEntrada)
-        self.ui.descCavacoPoSerragemSaida.connect(self.__descCavacoPoSerragemSaida)
-
-        self.ui.veicEmpSubMenuEntrada.triggered.connect(self.__veicEmpEntrada)
-        self.ui.veicEmpSaida.connect(self.__veicEmpSaida)
-
-        self.ui.veiTerSubMenuEntrada.triggered.connect(self.__veiTerEntrada)
-        self.ui.veicTerSubMenuSaida.connect(self.__veicTerSaida)
-
-        self.ui.camiEmpSubMenuEntrada.triggered.connect(self.__camiEmpSubEntrada)
-        self.ui.camiEmpSubMenuSaida.connect(self.__camiEmpSaida)
-
-        self.ui.camiTerSubMenuEntrada.triggered.connect(self.__camiTerEntrada)
-        self.ui.camiTerSubMenuSaida.connect(self.__camiTerSaida)
-
-        self.ui.entSadMaquiSubMenuEntrada.triggered.connect(self.__entSadMaquiEntrada)
-        self.ui.entSadMaquiSubMenuSaida.connect(self.__entSadMaquiSaida)
-
-        self.ui.entSaiFuncSubMenuEntrada.triggered.connect(self.__entSaiFuncEntrada)
-        self.ui.entSaiFuncSubMenuSaida.connect(self.__entSaiFuncSaida)
-
-        #Menu Relatorios
-        self.ui.subMenuRelatorios.triggered.connect(self.__relatorios)
-        self.ui.subMenuGraficos.connect(self.__graficos)
-        '''
 
     def status(self, nome):
         self.label = QtGui.QLabel("Bem-Vindo " + nome)
@@ -233,7 +157,7 @@ class Principal(QtGui.QMainWindow):
         _funcionario.exec_()
 
     def _cadastroUsuarioPermissao(self):
-        _usuario = CadastroUsuarios()
+        _usuario = UsuarioPermissao()
         _usuario.show()
         _usuario.exec_()
 
@@ -286,36 +210,6 @@ class Principal(QtGui.QMainWindow):
         _saiDesca = DescaSaida()
         _saiDesca.show()
         _saiDesca.exec_()
-
-    def _entradaVeiEmpTer(self):
-        _entrada = EntradaVeiculoEmpresaTerceiro()
-        _entrada.show()
-        _entrada.exec_()
-
-    def _saidaVeiEmpTer(self):
-        _saida = SaidaVeiEmpTer()
-        _saida.show()
-        _saida.exec_()
-
-    def _entradaVeiEmpresa(self):
-        _entrada = EntradaVeiEmpresa()
-        _entrada.show()
-        _entrada.exec_()
-
-    def _saidaVeiEmpresa(self):
-        _saida = SaidaVeiEmpresa()
-        _saida.show()
-        _saida.exec_()
-
-    def _entradaCaminEmp(self):
-        _entrada = EntradaCaminhaoEmpresa()
-        _entrada.show()
-        _entrada.exec_()
-
-    def _saidaCaminEmp(self):
-        _saida = SaidaCaminhaoEmpresa()
-        _saida.show()
-        _saida.exec_()
 
     def _sobre(self):
         _sobre = Sobre()
