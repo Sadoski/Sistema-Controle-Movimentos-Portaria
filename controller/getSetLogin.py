@@ -2,21 +2,21 @@ import this
 
 class LoginGetSet(object):
     def __init__(self, login, senha):
-        _login = login
-        _senha = senha
+        self._login = login
+        self._senha = senha
 
     @property
     def getLogin(self):
-        return self.__login
+        return self._login
 
     @getLogin.setter
     def setLogin(self, login):
-        this.__login = login
+        self.__login = login
 
     @property
     def getSenha(self):
-        return self.__senha
+        return self._senha
 
     @getSenha.setter
     def setSenha(self, senha):
-        this.__senha = senha
+        self.__senha = senha

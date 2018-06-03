@@ -33,7 +33,6 @@ class Login(QtGui.QDialog):
 
         self._ui.btnLogin.clicked.connect(self._login)
         self._ui.btnSair.clicked.connect(self._sair)
-        #self._ui.btnEsqueciSenha.clicked.connect(self._esqueciSenha)
 
         self._ui.txtUsuario.returnPressed.connect(self.focusSenha)
         self._ui.txtSenha.returnPressed.connect(self._login)
