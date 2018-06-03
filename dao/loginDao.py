@@ -50,3 +50,13 @@ class LogarDao(object):
 
         except BaseException as os:
             MensagemBox().critico('Erro', 'Erro ao autenticar usuario')
+
+    def pesqPermissoesUsuario(self, codigo):
+        try:
+            _sql = "SELECT p.id_formularios, p.ativar, p.cadastra, p.cancelar, p.deleta, p.altera from permissoes_usuarios pu INNER JOIN permissoes p ON p.id_permissoes = pu.id_permissoes INNER JOIN usuarios u ON u.id_usuarios = pu.id_usuarios WHERE pu.id_usuarios = '" + codigo + "' ORDER BY p.id_formularios"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

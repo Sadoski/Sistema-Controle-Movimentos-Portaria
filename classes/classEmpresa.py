@@ -22,7 +22,7 @@ from telas.frmPesquisarPessoaJuridica import Ui_frmPesquisarPessoaJuridica
 class Empresa(QtGui.QDialog):
 
 
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroEmpresa()
         self.ui.setupUi(self)
@@ -44,6 +44,12 @@ class Empresa(QtGui.QDialog):
         self.cargoAdd = []
         self.cargoRemove = []
         self.cargoAtualizar = []
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
@@ -58,6 +64,7 @@ class Empresa(QtGui.QDialog):
         self.ui.btnSalvar.clicked.connect(self.cadastro)
         self.ui.btnEditar.clicked.connect(self.atualizar)
         self.ui.btnCancelar.clicked.connect(self.cancelar)
+        self.ui.btnDeletar.clicked.connect(self.deletar)
         self.ui.btnPesquisarEmpresa.clicked.connect(self.pesquisarPessoaJuridica)
         self.ui.btnPesquisarCnae.clicked.connect(self.pesquisarCnae)
 
@@ -128,12 +135,12 @@ class Empresa(QtGui.QDialog):
 
     def novo(self):
         self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
         self.setTipoEmpresa()
@@ -148,16 +155,16 @@ class Empresa(QtGui.QDialog):
 
 
     def botoesEditar(self):
-        self.ui.grbDadosPessoaJuridica.setEnabled(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
-        self.ui.radBtnAtivo.setCheckable(True)
-        self.ui.radBtnDesativo.setCheckable(True)
-        self.ui.grbAtivo.setEnabled(True)
+        self.ui.grbDadosPessoaJuridica.setEnabled(self.edit)
+        self.ui.tabWiAdicionais.setEnabled(self.edit)
+        self.ui.radBtnAtivo.setCheckable(self.edit)
+        self.ui.radBtnDesativo.setCheckable(self.edit)
+        self.ui.grbAtivo.setEnabled(self.edit)
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
 
     def limparCampos(self):
@@ -227,19 +234,19 @@ class Empresa(QtGui.QDialog):
     def desativarCampos(self):
         self.ui.grbDadosPessoaJuridica.setEnabled(False)
         self.ui.tabWiAdicionais.setEnabled(False)
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
 
     def ativarCampos(self):
-        self.ui.grbDadosPessoaJuridica.setEnabled(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
     def setTipoEmpresa(self):
@@ -1305,3 +1312,92 @@ class Empresa(QtGui.QDialog):
     def setCamposCnae(self, campos):
         self.ui.txtCnae.setText(campos.getCodSubclasse)
         self.ui.txtCnaeDescricao.setText(campos.getSubclasse)
+
+
+    def deletar(self):
+        fisicaDao = EmpresaDao()
+        func = fisicaDao.pesquisarTabelaFuncionario(self.idEmpresa)
+
+        if func == []:
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
+
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle('Menssagem')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
+            btnSim.clicked.connect(self.simDeletar)
+            btnNao.clicked.connect(self.fechar)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+        else:
+            MensagemBox().warning('Atenção', 'Impossivel fazer essa operação, pois essa pessoa esta relacionada com outro formulario')
+
+    def simDeletar(self):
+            motoDao = EmpresaDao()
+            codigo = self.idEmpresa
+            a = motoDao.deletarEmpresa(str(codigo))
+            if self.contatoAdd != []:
+                self.deletarTelefoneFrom()
+
+            if self.emailAdd != []:
+                self.deletarEmailFrom()
+
+            if self.contatoRemove != []:
+                self.deletarTelefone()
+
+            if self.emailRemove != []:
+                self.deletarEmail()
+
+            if a  == True:
+                MensagemBox().informacao('Mensagem', 'Cadastro deletar com sucesso!')
+                self.desativarCampos()
+            else:
+                MensagemBox().critico('Erro', 'Erro ao deletar as informações no banco de dados')
+
+            self.cancelar()
+            self.msgBox.close()
+
+    def fechar(self):
+        self.msgBox.close()
+
+    def deletarTelefoneFrom(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.contatoAdd :
+            a = self.contatoAdd[i]
+
+            idTelefone = int(a[0])
+
+            emp.deletarTelefone(idTelefone, str(self.idEmpresa))
+            pesquisa = emp.pesquisaTelefoneEmpresa(idTelefone, str(self.idEmpresa))
+            if pesquisa == "":
+                emp.deletarContatoTelefone(idTelefone)
+
+            i += 1
+
+    def deletarEmailFrom(self):
+        emp = EmpresaDao()
+        i = 0
+        for lista in self.emailAdd:
+            a = self.emailAdd[i]
+
+            idEmail = a[0]
+
+            emp.deletarEmail(idEmail, str(self.idEmpresa))
+            pesquisa = emp.pesquisaEmailEmpresa(idEmail, str(self.idEmpresa))
+            if pesquisa == "":
+                emp.deletarContatoEmail(idEmail)
+
+            i += 1

@@ -449,3 +449,13 @@ class ClienteDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisarTabelaCarreg(self, carrega):
+        try:
+            _sql = "SELECT * FROM entrada_veiculo_carregamento c INNER JOIN cliente l ON l.id_cliente = c.id_cliente WHERE c.id_cliente = '"+ carrega +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

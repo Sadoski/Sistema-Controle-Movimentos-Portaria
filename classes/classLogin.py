@@ -5,6 +5,22 @@ from PyQt4.QtGui import *
 
 from classes.classMensagemBox import MensagemBox
 from classes.classUsuario import Usuario
+from controller.permissaoFormCarreEnt import PermissaoFormCarreEnt
+from controller.permissaoFormCarreSai import PermissaoFormCarreSai
+from controller.permissaoFormCliente import PermissaoFormCliente
+from controller.permissaoFormDescaEnt import PermissaoFormDescaEnt
+from controller.permissaoFormDescaSai import PermissaoFormDescaSai
+from controller.permissaoFormEmpresa import PermissaoFormEmpresa
+from controller.permissaoFormFornecedor import PermissaoFormFornecedor
+from controller.permissaoFormFuncEnt import PermissaoFormFunceEnt
+from controller.permissaoFormFuncSai import PermissaoFormFunceSai
+from controller.permissaoFormFuncionario import PermissaoFormFuncionario
+from controller.permissaoFormMotorista import PermissaoFormMotorista
+from controller.permissaoFormNF import PermissaoFormNF
+from controller.permissaoFormPesFis import PermissaoFormPesFis
+from controller.permissaoFormPesJur import PermissaoFormPesJur
+from controller.permissaoFormRelatori import PermissaoFormRelatorio
+from controller.permissaoFormUsuPer import PermissaoFormUsuPer
 from .classValidator import Validator
 from controller.getSetDadosUsuarios import DadosUsuario
 from telas.frmLogin import Ui_frmLogin
@@ -61,6 +77,7 @@ class Login(QtGui.QDialog):
                 for log in _empresa:
                     id = int(log[0])
                     nome = str(log[1])
+                    principal.setPermissoes(self._logarDao.pesqPermissoesUsuario(str(id)))
                     DadosUsuario(id, nome)
                     principal.status(nome)
                     principal.hora()
@@ -68,6 +85,8 @@ class Login(QtGui.QDialog):
                     self.close()
         else:
             MensagemBox().warning('Mensagem', "Usuário incorreto ou inexistente!")
+
+
 
 
     def _sair(self):

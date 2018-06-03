@@ -8,11 +8,15 @@ from dao.carregamentoSaidaDao import CarregamentoSaidaDao
 from telas.frmSaidaVeiculosCarregamentos import Ui_frmSaidaVeiculosCarregamento
 
 class CarregamentoSaida(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela ):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmSaidaVeiculosCarregamento()
         self.ui.setupUi(self)
         self.idEntrada = int()
+        self.cada = cadatra
+        self.canc = cancela
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.botoesNovoCadastro)
         self.ui.btnSalvar.clicked.connect(self.cadastrosEntradaVazio)
@@ -24,16 +28,16 @@ class CarregamentoSaida(QtGui.QDialog):
     def botoesNovoCadastro(self):
 
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
+        self.ui.btnCancelar.setEnabled(self.canc)
 
-        self.ui.tabPesquisa.setEnabled(True)
+        self.ui.tabPesquisa.setEnabled(self.cada)
         self.dados()
 
 
     def botoesCancelarCadastro(self):
 
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
 
@@ -117,12 +121,12 @@ class CarregamentoSaida(QtGui.QDialog):
 
 
     def habilitarCampos(self):
-        self.ui.grbDadosMotorista.setEnabled(True)
-        self.ui.grbDadosClienteDestinatario.setEnabled(True)
-        self.ui.txtData.setEnabled(True)
-        self.ui.txtHora.setEnabled(True)
-        self.ui.txtTipoCarga.setEnabled(True)
-        self.ui.txtProduto.setEnabled(True)
+        self.ui.grbDadosMotorista.setEnabled(self.cada)
+        self.ui.grbDadosClienteDestinatario.setEnabled(self.cada)
+        self.ui.txtData.setEnabled(self.cada)
+        self.ui.txtHora.setEnabled(self.cada)
+        self.ui.txtTipoCarga.setEnabled(self.cada)
+        self.ui.txtProduto.setEnabled(self.cada)
 
     def limparCampos(self):
         self.idEntrada = int()

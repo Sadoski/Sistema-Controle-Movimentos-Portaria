@@ -107,6 +107,7 @@ class Ui_frmMainHouse(object):
         self.subMenuEntradaSaidaFuncionario.setIcon(icon)
         self.subMenuEntradaSaidaFuncionario.setObjectName(_fromUtf8("subMenuEntradaSaidaFuncionario"))
 
+
         self.menuRelatorios = QtGui.QMenu(self.menubar)
         self.menuRelatorios.setObjectName(_fromUtf8("menuRelatorios"))
 
@@ -189,12 +190,11 @@ class Ui_frmMainHouse(object):
         self.entSaiFuncSubMenuEntrada.setIcon(icon)
         self.entSaiFuncSubMenuEntrada.setObjectName(_fromUtf8("entSaiFuncSubMenuEntrada"))
 
-        self.consEntSaidSubMenuFuncionarios = QtGui.QAction(frmMainHouse)
-        self.consEntSaidSubMenuFuncionarios.setObjectName(_fromUtf8("consEntSaidSubMenuFuncionarios"))
-
-        self.consEntSaidSubMenuNotas = QtGui.QAction(frmMainHouse)
-        self.consEntSaidSubMenuNotas.setObjectName(_fromUtf8("consEntSaidSubMenuNotas"))
-
+        self.entSaiFuncSubMenuSaida = QtGui.QAction(frmMainHouse)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("imagens/seta-vermelha-esquerda.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.entSaiFuncSubMenuSaida.setIcon(icon)
+        self.entSaiFuncSubMenuSaida.setObjectName(_fromUtf8("entSaiFuncSubMenuSaida"))
 
         self.menuDescaEntrada = QtGui.QAction(frmMainHouse)
         icon = QtGui.QIcon()
@@ -245,6 +245,7 @@ class Ui_frmMainHouse(object):
         self.subMenuCarregamentos.addAction(self.menuCarregEntrada)
         self.subMenuCarregamentos.addAction(self.menuCarregSaida)
         self.subMenuEntradaSaidaFuncionario.addAction(self.entSaiFuncSubMenuEntrada)
+        self.subMenuEntradaSaidaFuncionario.addAction(self.entSaiFuncSubMenuSaida)
         self.menuMovimentoPortaria.addAction(self.subMenuCarregamentos.menuAction())
         self.menuMovimentoPortaria.addAction(self.subMenuDescarregamento.menuAction())
         self.menuMovimentoPortaria.addSeparator()
@@ -286,8 +287,7 @@ class Ui_frmMainHouse(object):
         self.subMenuEntradaNotasTeca.setText(_translate("frmMainHouse", "Entrada de Notas", None))
         self.subMenuConsultasNotas.setText(_translate("frmMainHouse", "Notas", None))
         self.entSaiFuncSubMenuEntrada.setText(_translate("frmMainHouse", "Entrada", None))
-        self.consEntSaidSubMenuFuncionarios.setText(_translate("frmMainHouse", "Funcionarios", None))
-        self.consEntSaidSubMenuNotas.setText(_translate("frmMainHouse", "Notas", None))
+        self.entSaiFuncSubMenuSaida.setText(_translate("frmMainHouse", "Saida", None))
         self.menuDescaEntrada.setText(_translate("frmMainHouse", "Entrada", None))
         self.menuDescaSaida.setText(_translate("frmMainHouse", "Saida", None))
         self.menuCarregEntrada.setText(_translate("frmMainHouse", "Entrada", None))

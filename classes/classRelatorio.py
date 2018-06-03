@@ -12,11 +12,16 @@ from telas.frmRelatorio import Ui_frmRelatorio
 
 
 class Relatorio(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, gerCvs, gerHtml):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmRelatorio()
         self.ui.setupUi(self)
         self.validator = Validator()
+        self.gerCvs = gerCvs
+        self.gerHtml = gerHtml
+
+        self.ui.btnGerarCsv.setEnabled(self.gerCvs)
+        self.ui.btnGerarHtml.setEnabled(self.gerHtml)
 
         self.ui.radBtnPessoaFisica.clicked.connect(self.ativarTab)
         self.ui.radBtnPessoaJuridica.clicked.connect(self.ativarTab)

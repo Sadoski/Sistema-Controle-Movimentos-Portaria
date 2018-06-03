@@ -600,3 +600,13 @@ class EmpresaDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisarTabelaFuncionario(self, empresa):
+        try:
+            _sql = "SELECT * FROM funcionario f INNER JOIN setores s ON s.id_setores = f.id_setores INNER JOIN cargo c ON c.id_cargo = f.id_cargo LEFT OUTER JOIN empresa e ON e.id_empresa = s.id_setores OR e.id_empresa = c.id_cargo  = '"+ empresa +"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

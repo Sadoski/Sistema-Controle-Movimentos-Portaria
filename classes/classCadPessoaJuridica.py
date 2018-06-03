@@ -17,13 +17,19 @@ from telas.frmPesquisarPessoaJuridica import Ui_frmPesquisarPessoaJuridica
 
 
 class CadastroPessoaJuridica(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroPessoaJuridica()
         self.ui.setupUi(self)
         self.validator = Validator()
         self.pessoa = int()
         self.idCidade = int()
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -144,17 +150,17 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
     def novo(self):
         self.limparCampos()
-        self.ui.grbDados.setEnabled(True)
+        self.ui.grbDados.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
     def desativarCampos(self):
         self.limparCampos()
         self.ui.grbDados.setEnabled(False)
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
@@ -444,12 +450,12 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
 
     def botoesEditar(self):
-        self.ui.grbDados.setEnabled(True)
+        self.ui.grbDados.setEnabled(self.edit)
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
     def editar(self):
         if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and  self.ui.txtComplemento.text() != '' and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '' and self.ui.txtSite.text() != '':

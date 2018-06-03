@@ -10,6 +10,23 @@ from classes.classCarreSaida import CarregamentoSaida
 from classes.classCadPessoaJuridica import CadastroPessoaJuridica
 from classes.classRelatorio import Relatorio
 from classes.classUsuarioPermissao import UsuarioPermissao
+from controller.permissaoFormCarreEnt import PermissaoFormCarreEnt
+from controller.permissaoFormCarreSai import PermissaoFormCarreSai
+from controller.permissaoFormCliente import PermissaoFormCliente
+from controller.permissaoFormDescaEnt import PermissaoFormDescaEnt
+from controller.permissaoFormDescaSai import PermissaoFormDescaSai
+from controller.permissaoFormEmpresa import PermissaoFormEmpresa
+from controller.permissaoFormFornecedor import PermissaoFormFornecedor
+from controller.permissaoFormFuncEnt import PermissaoFormFunceEnt
+from controller.permissaoFormFuncSai import PermissaoFormFunceSai
+from controller.permissaoFormFuncionario import PermissaoFormFuncionario
+from controller.permissaoFormMotorista import PermissaoFormMotorista
+from controller.permissaoFormNF import PermissaoFormNF
+from controller.permissaoFormPesFis import PermissaoFormPesFis
+from controller.permissaoFormPesJur import PermissaoFormPesJur
+from controller.permissaoFormRelatori import PermissaoFormRelatorio
+from controller.permissaoFormUsuPer import PermissaoFormUsuPer
+
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
@@ -51,6 +68,183 @@ class Principal(QtGui.QMainWindow):
         self.ui.menuDescaSaida.triggered.connect(self._saidaDescarregamento)
         self.ui.subMenuSobre.triggered.connect(self._sobre)
         self.ui.subMenuRelatorios.triggered.connect(self._relatorio)
+        self.ui.entSaiFuncSubMenuSaida.triggered.connect(self._saidaFuncionrio)
+
+    def setPermissoes(self, permissao):
+
+        for lis in permissao:
+
+
+            idFormulario = lis[0]
+            if lis[1] == 1:
+                ativo = True
+            else:
+                ativo = False
+
+            if lis[2] == 1:
+                cadastro = True
+            else:
+                cadastro = False
+
+            if lis[3] == 1:
+                cancela = True
+            else:
+                cancela = False
+
+            if lis[4] == 1:
+                deleta = True
+            else:
+                deleta = False
+
+            if lis[5] == 1:
+                edita = True
+            else:
+                edita = False
+
+            if idFormulario == 1:
+                #Empresa
+                self.permiEmpAtivo = ativo
+                self.permiEmpCadastrar = cadastro
+                self.permiEmpCancelar = cancela
+                self.permiEmpDeletar = deleta
+                self.permiEmpEditar = edita
+
+            elif idFormulario == 2:
+                #funcionario
+                self.permiFuncAtivo = ativo
+                self.permiFuncCadastrar=cadastro
+                self.permiFuncCancelar=cancela
+                self.permiFuncsetDeletar=deleta
+                self.permiFuncsetEditar=edita
+
+            elif idFormulario == 3:
+                #fornecedor
+                self.permiFornAtivo=ativo
+                self.permiFornCadastrar=cadastro
+                self.permiFornCancelar=cancela
+                self.permiFornDeletar=deleta
+                self.permiFornEditar=edita
+
+            elif idFormulario == 4:
+                #cliente
+                self.permiClieAtivo=ativo
+                self.permiClieCadastrar=cadastro
+                self.permiClieCancelar=cancela
+                self.permiClieDeletar=deleta
+                self.permiClieEditar=edita
+
+            elif idFormulario == 5:
+                #usuario
+                self.permiUsuAtivo=ativo
+                self.permiUsusetCadastrar=cadastro
+                self.permiUsusetCancelar=cancela
+                self.permiUsusetDeletar=deleta
+                self.permiUsusetEditar=edita
+
+            elif idFormulario == 6:
+                #motorista
+                self.permiMotoAtivo=ativo
+                self.permiMotoCadastrar=cadastro
+                self.permiMotoCancelar=cancela
+                self.permiMotoDeletar=deleta
+                self.permiMotoEditar=edita
+
+            elif idFormulario == 7:
+                #Entrada Funcionario
+                self.permiEntFunAtivo=ativo
+                self.permiEntFunCadastrar=cadastro
+                self.permiEntFunCancelar=cancela
+                self.permiEntFunDeletar=deleta
+                self.permiEntFunEditar=edita
+
+            elif idFormulario == 8:
+                #NF
+                self.permiNFAtivo=ativo
+                self.permiNFCadastrar=cadastro
+                self.permiNFCancelar=cancela
+                self.permiNFDeletar=deleta
+                self.permiNFEditar=edita
+
+            elif idFormulario == 9:
+                #Entrada Carregamento
+                self.permiEntCarreAtivo=ativo
+                self.permiEntCarresetCadastrar=cadastro
+                self.permiEntCarresetCancelar=cancela
+                self.permiEntCarresetDeletar=deleta
+                self.permiEntCarresetEditar=edita
+
+            elif idFormulario == 10:
+                #Entrada Descarregamento
+                self.permiEntDescAtivo=ativo
+                self.permiEntDescsetCadastrar=cadastro
+                self.permiEntDescsetCancelar=cancela
+                self.permiEntDescsetDeletar=deleta
+                self.permiEntDescsetEditar=edita
+
+            elif idFormulario == 11:
+                #Relatorio
+                self.permiRelAtivo=ativo
+                self.permiRelCadastrar=cadastro
+                self.permiRelCancelar=cancela
+                self.permiRelDeletar=deleta
+                self.permiRelEditar=edita
+
+            elif idFormulario == 12:
+                #Saida Funcionario
+                self.permiSaiFuncAtivo=ativo
+                self.permiSaiFuncCadastrar=cadastro
+                self.permiSaiFuncCancelar=cancela
+                self.permiSaiFuncDeletar=deleta
+                self.permiSaiFuncEditar=edita
+
+            elif idFormulario == 13:
+                #Saida Descarregamento
+                self.permiSaiDescAtivo=ativo
+                self.permiSaiDescCadastrar=cadastro
+                self.permiSaiDescCancelar=cancela
+                self.permiSaiDescDeletar=deleta
+                self.permiSaiDescEditar=edita
+
+            elif idFormulario == 14:
+                #Saida Carregamento
+                self.permiSaiCarreAtivo=ativo
+                self.permiSaiCarreCadastrar=cadastro
+                self.permiSaiCarreCancelar=cancela
+                self.permiSaiCarreDeletar=deleta
+                self.permiSaiCarreEditar=edita
+
+            elif idFormulario == 15:
+                #Pessoa Fisica
+                self.permiPesFisAtivo=ativo
+                self.permiPesFisCadastrar=cadastro
+                self.permiPesFisCancelar=cancela
+                self.permiPesFisDeletar=deleta
+                self.permiPesFisEditar=edita
+
+            elif idFormulario == 16:
+                #Pessoa Juridica
+                self.permiPesJurAtivo=ativo
+                self.permiPesJurCadastrar=cadastro
+                self.permiPesJurCancelar=cancela
+                self.permiPesJurDeletar=deleta
+                self.permiPesJurEditar=edita
+
+        self.ui.subMenuCadastroEmpresa.setEnabled(self.permiEmpAtivo)
+        self.ui.subMenuCadastroFuncionarios.setEnabled(self.permiFuncAtivo)
+        self.ui.subMenuCadastroFornecedor.setEnabled(self.permiFornAtivo)
+        self.ui.subMenuCadastroClintes.setEnabled(self.permiClieAtivo)
+        self.ui.menuCadUsuario.setEnabled(self.permiUsuAtivo)
+        self.ui.subMenuCadastroMotoristas.setEnabled(self.permiMotoAtivo)
+        self.ui.entSaiFuncSubMenuEntrada.setEnabled(self.permiEntFunAtivo)
+        self.ui.subMenuEntradaNotasTeca.setEnabled(self.permiNFAtivo)
+        self.ui.menuCarregEntrada.setEnabled(self.permiEntCarreAtivo)
+        self.ui.menuDescaEntrada.setEnabled(self.permiEntDescAtivo)
+        self.ui.subMenuRelatorios.setEnabled(self.permiRelAtivo)
+        self.ui.entSaiFuncSubMenuSaida.setEnabled(self.permiSaiFuncAtivo)
+        self.ui.menuDescaSaida.setEnabled(self.permiSaiDescAtivo)
+        self.ui.menuCarregSaida.setEnabled(self.permiSaiCarreAtivo)
+        self.ui.menuCadPesFisica.setEnabled(self.permiPesFisAtivo)
+        self.ui.menuCadPesJuridica.setEnabled(self.permiPesJurAtivo)
 
     def status(self, nome):
         self.label = QtGui.QLabel("Bem-Vindo " + nome)
@@ -137,77 +331,77 @@ class Principal(QtGui.QMainWindow):
         self.dialogTrocaUsuario.close()
 
     def _cadastroPessoaFisica(self):
-        _fisica = CadastroPessoaFisica()
+        _fisica = CadastroPessoaFisica(self.permiPesFisCadastrar,self.permiPesFisCancelar,self.permiPesFisDeletar,self.permiPesFisEditar)
         _fisica.show()
         _fisica.exec_()
 
     def _cadastroPessoaJurisdica(self):
-        _juridica = CadastroPessoaJuridica()
+        _juridica = CadastroPessoaJuridica(self.permiPesJurCadastrar,self.permiPesJurCancelar,self.permiPesJurDeletar,self.permiPesJurEditar)
         _juridica.show()
         _juridica.exec_()
 
     def _cadastroEmpresa(self):
-        _empresa = Empresa()
+        _empresa = Empresa(self.permiEmpCadastrar, self.permiEmpCancelar, self.permiEmpDeletar, self.permiEmpEditar)
         _empresa.show()
         _empresa.exec_()
 
     def _cadastroFuncionario(self):
-        _funcionario = CadastroFuncionario()
+        _funcionario = CadastroFuncionario(self.permiFuncCadastrar,self.permiFuncCancelar,self.permiFuncsetDeletar,self.permiFuncsetEditar )
         _funcionario.show()
         _funcionario.exec_()
 
     def _cadastroUsuarioPermissao(self):
-        _usuario = UsuarioPermissao()
+        _usuario = UsuarioPermissao(self.permiUsusetCadastrar,self.permiUsusetCancelar,self.permiUsusetDeletar,self.permiUsusetEditar)
         _usuario.show()
         _usuario.exec_()
 
     def _cadastroFornecedor(self):
-        _fornecedor = CadastroFornecedores()
+        _fornecedor = CadastroFornecedores(self.permiFornCadastrar,self.permiFornCancelar,self.permiFornDeletar,self.permiFornEditar)
         _fornecedor.show()
         _fornecedor.exec_()
 
     def _cadastroClintes(self):
-        _cintes = CadastroClientes()
+        _cintes = CadastroClientes(self.permiClieCadastrar,self.permiClieCancelar,self.permiClieDeletar,self.permiClieEditar)
         _cintes.show()
         _cintes.exec_()
 
     def _cadastroMotoristas(self):
-        _motoristas = CadastroMotoristas()
+        _motoristas = CadastroMotoristas(self.permiMotoCadastrar,self.permiMotoCancelar,self.permiMotoDeletar,self.permiMotoEditar)
         _motoristas.show()
         _motoristas.exec_()
 
     def _entradaNotasTeca(self):
-        _notas = CadastroNotaFiscal()
+        _notas = CadastroNotaFiscal(self.permiNFCadastrar,self.permiNFCancelar,self.permiNFDeletar,self.permiNFEditar)
         _notas.show()
         _notas.exec_()
 
     def _entradaFuncionrio(self):
-        _entFun = EntradaFuncionarios()
+        _entFun = EntradaFuncionarios(self.permiEntFunCadastrar,self.permiEntFunCancelar)
         _entFun.show()
         _entFun.exec_()
 
     def _saidaFuncionrio(self):
-        _entFun = SaidaFuncionario()
+        _entFun = SaidaFuncionario(self.permiSaiFuncCadastrar,self.permiSaiFuncCancelar)
         _entFun.show()
         _entFun.exec_()
 
     def _entradaCarregamento(self):
-        _entCarre = CarregamentoEntrada()
+        _entCarre = CarregamentoEntrada(self.permiEntCarresetCadastrar,self.permiEntCarresetCancelar )
         _entCarre.show()
         _entCarre.exec_()
 
     def _saidaCarregamento(self):
-        _saiCarre = CarregamentoSaida()
+        _saiCarre = CarregamentoSaida(self.permiSaiCarreCadastrar,self.permiSaiCarreCancelar )
         _saiCarre.show()
         _saiCarre.exec_()
 
     def _entradaDescarregamento(self):
-        _entDesca = DescaEntrada()
+        _entDesca = DescaEntrada(self.permiEntDescsetCadastrar,self.permiEntDescsetCancelar )
         _entDesca.show()
         _entDesca.exec_()
 
     def _saidaDescarregamento(self):
-        _saiDesca = DescaSaida()
+        _saiDesca = DescaSaida( self.permiSaiDescCadastrar,self.permiSaiDescCancelar )
         _saiDesca.show()
         _saiDesca.exec_()
 
@@ -222,10 +416,9 @@ class Principal(QtGui.QMainWindow):
         _email.exec_()
 
     def _relatorio(self):
-        _relatorio = Relatorio()
+        _relatorio = Relatorio(self.permiRelCadastrar,self.permiRelCancelar)
         _relatorio.show()
         _relatorio.exec_()
-
 
 
     def changeEvent(self, event):

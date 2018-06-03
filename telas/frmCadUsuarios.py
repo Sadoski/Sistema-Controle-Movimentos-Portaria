@@ -495,7 +495,7 @@ class Ui_frmCadastroUsuarios(object):
         self.btnDeletar.setGeometry(QtCore.QRect(700, 10, 88, 27))
         self.btnDeletar.setFocusPolicy(QtCore.Qt.ClickFocus)
         icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../Sistema Contorle Movimentos Portaria/imagens/critical.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/critical.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnDeletar.setIcon(icon3)
         self.btnDeletar.setObjectName(_fromUtf8("btnDeletar"))
         self.btnEditar = QtGui.QPushButton(self.grbBotoes)

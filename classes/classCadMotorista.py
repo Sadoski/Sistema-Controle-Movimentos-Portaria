@@ -17,7 +17,7 @@ from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
 
 
 class CadastroMotoristas(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroMotorista()
         self.ui.setupUi(self)
@@ -36,6 +36,12 @@ class CadastroMotoristas(QtGui.QDialog):
         self.emailRemove = []
         self.emailAtualizar = []
         self.categoriaCnh = []
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.txtMarca.setValidator(self.validator)
         self.ui.txtModelo.setValidator(self.validator)
@@ -163,12 +169,12 @@ class CadastroMotoristas(QtGui.QDialog):
 
     def novo(self):
         self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.edit)
         self.ui.btnDeletar.setEnabled(False)
 
         self.addCategoria()
@@ -180,10 +186,10 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtNome.clear()
         self.ui.txtSobrenome.clear()
 
-        self.ui.tabWiAdicionais.setEnabled(True)
-        self.ui.txtModelo.setEnabled(True)
-        self.ui.txtMarca.setEnabled(True)
-        self.ui.txtPlaca.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
+        self.ui.txtModelo.setEnabled(self.cada)
+        self.ui.txtMarca.setEnabled(self.cada)
+        self.ui.txtPlaca.setEnabled(self.cada)
 
         self.deletarContatoTelefone()
         self.deletarContatoEmail()
@@ -197,7 +203,7 @@ class CadastroMotoristas(QtGui.QDialog):
     def desativarCampos(self):
         self.ui.grbDadosPessoaJuridica.setEnabled(False)
         self.ui.tabWiAdicionais.setEnabled(False)
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
@@ -205,24 +211,24 @@ class CadastroMotoristas(QtGui.QDialog):
 
     def botoesEditar(self):
         self.limparCampos()
-        self.ui.grbAtivo.setEnabled(True)
-        self.ui.radBtnAtivo.setCheckable(True)
-        self.ui.radBtnDesativo.setCheckable(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbAtivo.setEnabled(self.edit)
+        self.ui.radBtnAtivo.setCheckable(self.edit)
+        self.ui.radBtnDesativo.setCheckable(self.edit)
+        self.ui.tabWiAdicionais.setEnabled(self.edit)
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
         self.addCategoria()
 
     def ativarCampos(self):
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
     def limparCampos(self):

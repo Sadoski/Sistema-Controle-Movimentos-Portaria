@@ -8,22 +8,30 @@ from classes.classUsuario import Usuario
 from classes.classValidator import Validator
 from controller.getSetFuncionario import Funcionario
 from controller.getSetUsuario import UsuarioGetSet
+from controller.getSetUsuarioPermissao import UsuarioPermissoes
 from dao.funcionarioDao import FuncionarioDao
-from dao.usuarioDao import UsuarioDao
 from dao.usuarioPermissaoDao import UsuarioPermissaoDao
 from telas.frmCadUsuarios import Ui_frmCadastroUsuarios
 from telas.frmPesquisarFuncionario import Ui_frmPesquisarFuncionario
+from telas.frmPesquisarUsuario import Ui_frmPesquisarPessoaUsuario
 
 
 class UsuarioPermissao(QtGui.QDialog):
 
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroUsuarios()
         self.ui.setupUi(self)
         self.validator = Validator()
         self.mensagem = MensagemBox()
         self.idUsuario = int()
+        self.permissoes = []
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.txtLoginFuncionario.setValidator(self.validator)
         self.ui.txtSenhaFuncionario.setValidator(self.validator)
@@ -32,6 +40,8 @@ class UsuarioPermissao(QtGui.QDialog):
         self.ui.btnNovo.clicked.connect(self.ativarPesquisaUsuario)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
         self.ui.btnCancelar.clicked.connect(self.cancelarUsuario)
+        self.ui.btnEditar.clicked.connect(self.editar)
+        self.ui.btnDeletar.clicked.connect(self.deletar)
         # fim botoes usuario
 
         # inicio botoes permissão
@@ -78,18 +88,27 @@ class UsuarioPermissao(QtGui.QDialog):
         self.ui.stackedWidget.setCurrentIndex(2)
 
     def ativarPesquisaUsuario(self):
-        self.ui.grbFuncionarioPesquisa.setEnabled(True)
-        self.ui.tabwCadPermUsuario.setEnabled(True)
+        self.ui.grbFuncionarioPesquisa.setEnabled(self.cada)
+        self.ui.tabwCadPermUsuario.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.edit)
         self.ui.btnDeletar.setEnabled(False)
+
+    def botoesEditar(self):
+        self.ui.grbFuncionarioPesquisa.setEnabled(self.edit)
+        self.ui.tabwCadPermUsuario.setEnabled(self.edit)
+        self.ui.btnNovo.setEnabled(False)
+        self.ui.btnSalvar.setEnabled(False)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
     def desativarPesquisaUsuario(self):
         self.ui.grbFuncionarioPesquisa.setEnabled(False)
         self.ui.tabwCadPermUsuario.setEnabled(False)
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
@@ -398,6 +417,7 @@ class UsuarioPermissao(QtGui.QDialog):
 
     def limparCamposUsuario(self):
         self.idUsuario = int()
+        self.permissoes.clear()
         self.ui.txtidFuncionario.clear()
         self.ui.txtNomeFuncionario.clear()
         self.ui.txtCargo.clear()
@@ -410,6 +430,7 @@ class UsuarioPermissao(QtGui.QDialog):
         if result == QMessageBox.Yes:
             self.limparCamposCheckBox()
             self.limparCamposUsuario()
+            self.changeClic()
             self.desativarPesquisaUsuario()
 
     def pesquiFuncionario(self):
@@ -715,11 +736,316 @@ class UsuarioPermissao(QtGui.QDialog):
             else:
                 edita = 0
 
+            print(ativo, cadastro, cancela,deleta)
             permi = usuDao.pesquisarPermissoes(idFormulario, ativo, cadastro, cancela, deleta, edita)
-
-            if permi != '':
+            print(permi)
+            if permi == False:
                 usuDao.cadatrarPermissao(idFormulario, ativo, cadastro, cancela, deleta, edita)
                 idPer = usuDao.ultimoRegistro()
                 usuDao.cadatrarPermissaoUsuario(idPer, self.idUsuario)
             else:
                 usuDao.cadatrarPermissaoUsuario(permi, self.idUsuario)
+
+    def keyPressEvent(self, keyEvent):
+        if keyEvent.key() == (QtCore.Qt.Key_F12):
+            self.dialog = QDialog(self)
+            self.__pesquisarUsuario = Ui_frmPesquisarPessoaUsuario()
+            self.__pesquisarUsuario.setupUi(self.dialog)
+
+            self.__pesquisarUsuario.txtPesquisar.setValidator(self.validator)
+
+            self.__pesquisarUsuario.txtPesquisar.returnPressed.connect(self.pesquisarUsuario)
+
+            self.__pesquisarUsuario.btnPesquisar.clicked.connect(self.pesquisarUsuario)
+
+            self.__pesquisarUsuario.tabPesquisar.doubleClicked.connect(self.setarCamposUsu)
+
+            self.dialog.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.dialog.exec_()
+
+    def pesquisarUsuario(self):
+        usuDao = UsuarioPermissaoDao()
+        if self.__pesquisarUsuario.radBtnCodigo.isChecked():
+                __codigo = self.__pesquisarUsuario.txtPesquisar.text()
+                __retorno = usuDao.pesquisaCodigoUsuario(__codigo)
+                self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarUsuario.radBtnFuncionario.isChecked():
+                __razao = self.__pesquisarUsuario.txtPesquisar.text()
+                __retorno = usuDao.pesquisarNomeFuncionario(__razao)
+                self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarUsuario.radBtnSetor.isChecked():
+                __fantasia = self.__pesquisarUsuario.txtPesquisar.text()
+                __retorno = usuDao.pesquisaSetor(__fantasia)
+                self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarUsuario.radBtnCargo.isChecked():
+                __cnpj = self.__pesquisarUsuario.txtPesquisar.text()
+                __retorno = usuDao.pesquisaCargo(__cnpj)
+                self.setarTabelaPesquisaEditar(__retorno)
+
+        elif self.__pesquisarUsuario.radBtnLogin.isChecked():
+                __inscricao = self.__pesquisarUsuario.txtPesquisar.text()
+                __retorno = usuDao.pesquisaLogin(__inscricao)
+                self.setarTabelaPesquisaEditar(__retorno)
+
+        else:
+            self.mensagem.warning( 'Atenção', "Selecione uma das opções de pesquisa")
+
+    def setarTabelaPesquisaEditar(self, __retorno):
+        qtde_registros = len(__retorno)
+        self.__pesquisarUsuario.tabPesquisar.setRowCount(qtde_registros)
+
+        linha = 0
+        for pesqui in __retorno:
+            # capturando os dados da tupla
+
+            codigo = pesqui[0]
+            nome = pesqui[1]
+            sobrenome = pesqui[2]
+            setor = pesqui[3]
+            cargo = pesqui[4]
+            login = pesqui[5]
+
+
+
+            # preenchendo o grid de pesquisa
+            self.__pesquisarUsuario.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+            self.__pesquisarUsuario.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome + ' ' + sobrenome)))
+            self.__pesquisarUsuario.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(setor)))
+            self.__pesquisarUsuario.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cargo)))
+            self.__pesquisarUsuario.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str( login)))
+
+
+            linha += 1
+
+    def setarCamposUsu(self):
+        usuDao = UsuarioPermissaoDao()
+        itens = []
+
+        for item in self.__pesquisarUsuario.tabPesquisar.selectedItems():
+            itens.append(item.text())
+
+        codigo = str(itens[0])
+        funcionario = str(itens[1])
+        setor = str(itens[2])
+        cargo = str(itens[3])
+        login = str(itens[4])
+
+        idFuncionario = usuDao.pesquisarIdFuncionario(codigo)
+        __dados = UsuarioPermissoes(codigo, idFuncionario, funcionario, setor, cargo, login)
+        self.botoesEditar()
+        self.setCamposUsuario(__dados)
+        self.setPermissao(codigo)
+        self.dialog.close()
+
+    def setCamposUsuario(self, campos):
+        self.ui.txtidFuncionario.setEnabled(False)
+        self.ui.btnPesquisar.setEnabled(False)
+
+        self.idUsuario= int(campos.getIdCodigo)
+        self.ui.txtidFuncionario.setText(str(campos.getIdFuncionario))
+        self.ui.txtNomeFuncionario.setText(campos.getFuncionario)
+        self.ui.txtSetor.setText(campos.getSetor)
+        self.ui.txtCargo.setText(campos.getCargo)
+        self.ui.txtLoginFuncionario.setText(campos.getLogin)
+
+    def setPermissao(self, codigo):
+        usuDao = UsuarioPermissaoDao()
+        per = usuDao.pesqPermissoesUsuario(codigo)
+        self.permissoes.append(per)
+        i = 0
+        for lis in per:
+
+
+            idFormulario = lis[0]
+            if lis[1] == 1:
+                ativo = True
+            else:
+                ativo = False
+
+            if lis[2] == 1:
+                cadastro = True
+            else:
+                cadastro = False
+
+            if lis[3] == 1:
+                cancela = True
+            else:
+                cancela = False
+
+            if lis[4] == 1:
+                deleta = True
+            else:
+                deleta = False
+
+            if lis[5] == 1:
+                edita = True
+            else:
+                edita = False
+
+
+            if idFormulario == 1:
+                self.ui.cBoxEmpresaAtivar.setChecked(ativo)
+                self.ui.cBoxEmpresaCadastro.setChecked(cadastro)
+                self.ui.cBoxEmpresaCancelar.setChecked(cancela)
+                self.ui.cBoxEmpresaDeletar.setChecked(deleta)
+                self.ui.cBoxEmpresaEditar.setChecked(edita)
+
+            elif idFormulario == 2:
+                self.ui.cBoxFuncionarioAtivar.setChecked(ativo)
+                self.ui.cBoxFuncionarioCadastrar.setChecked(cadastro)
+                self.ui.cBoxFuncionarioCancelar.setChecked(cancela)
+                self.ui.cBoxFuncionarioDeletar.setChecked(deleta)
+                self.ui.cBoxFuncionarioEditar.setChecked(edita)
+
+            elif idFormulario == 3:
+                self.ui.cBoxFornecedorAtivar.setChecked(ativo)
+                self.ui.cBoxFornecedorCadastro.setChecked(cadastro)
+                self.ui.cBoxFornecedorCancelar.setChecked(cancela)
+                self.ui.cBoxFornecedorDeletar.setChecked(deleta)
+                self.ui.cBoxFornecedorEditar.setChecked(edita)
+
+            elif idFormulario == 4:
+                self.ui.cBoxClienteAtivar.setChecked(ativo)
+                self.ui.cBoxClienteCadastro.setChecked(cadastro)
+                self.ui.cBoxClienteCancelar.setChecked(cancela)
+                self.ui.cBoxClienteDeletar.setChecked(deleta)
+                self.ui.cBoxClienteEditar.setChecked(edita)
+
+            elif idFormulario == 5:
+                self.ui.cBoxUsuPermAtivar.setChecked(ativo)
+                self.ui.cBoxUsuPermCadastro.setChecked(cadastro)
+                self.ui.cBoxUsuPermCancelar.setChecked(cancela)
+                self.ui.cBoxUsuPermDeletar.setChecked(deleta)
+                self.ui.cBoxUsuPermEditar.setChecked(edita)
+
+            elif idFormulario == 6:
+                self.ui.cBoxMotoristaAtivar.setChecked(ativo)
+                self.ui.cBoxMotoristaCadastro.setChecked(cadastro)
+                self.ui.cBoxMotoristaCancelar.setChecked(cancela)
+                self.ui.cBoxMotoristaDeletar.setChecked(deleta)
+                self.ui.cBoxMotoristaEditar.setChecked(edita)
+
+            elif idFormulario == 7:
+                self.ui.cheBoxEntrdaFuncionarioAtivar.setChecked(ativo)
+                self.ui.cheBoxEntrdaFuncionarioCadastro.setChecked(cadastro)
+                self.ui.cheBoxEntrdaFuncionarioCancelar.setChecked(cancela)
+
+            elif idFormulario == 8:
+                self.ui.cBoxNotaFiscalAtivar.setChecked(ativo)
+                self.ui.cBoxNotaFiscalCadastro.setChecked(cadastro)
+                self.ui.cBoxNotaFiscalCancelar.setChecked(cancela)
+                self.ui.cBoxNotaFiscalDeletar.setChecked(deleta)
+                self.ui.cBoxNotaFiscalEditar.setChecked(edita)
+
+            elif idFormulario == 9:
+                self.ui.cheBoxEntradaVeiculosCarregamentoAtivar.setChecked(ativo)
+                self.ui.cheBoxEntradaVeiculosCarregamentoCadastro.setChecked(cadastro)
+                self.ui.cheBoxEntradaVeiculosCarregamentoCancelar.setChecked(cancela)
+
+            elif idFormulario == 10:
+                self.ui.cheBoxEntradaVeiculosDescarregamentoAtivar.setChecked(ativo)
+                self.ui.cheBoxEntradaVeiculosDescarregamentoCadastro.setChecked(cadastro)
+                self.ui.cheBoxEntradaVeiculosDescarregamentoCancelar.setChecked(cancela)
+
+            elif idFormulario == 11:
+                self.ui.cBoxRelatorioAtivar.setChecked(ativo)
+                self.ui.cBoxRelatorioGerarCsv.setChecked(cadastro)
+                self.ui.cBoxRelatorioGerarHtml.setChecked(cancela)
+
+            elif idFormulario == 12:
+                self.ui.cheBoxSaidaFuncionarioAtivar.setChecked(ativo)
+                self.ui.cheBoxSaidaFuncionarioCadastro.setChecked(cadastro)
+                self.ui.cheBoxSaidaFuncionarioCancelar.setChecked(cancela)
+
+            elif idFormulario == 13:
+                self.ui.cheBoxSaidaVeiculosDescarregamentoAtivar.setChecked(ativo)
+                self.ui.cheBoxSaidaVeiculosDescarregamentoCadastro.setChecked(cadastro)
+                self.ui.cheBoxSaidaVeiculosDescarregamentoCancelar.setChecked(cancela)
+
+            elif idFormulario == 14:
+                self.ui.cheBoxSaidaVeiculosCarregamentoAtivar.setChecked(ativo)
+                self.ui.cheBoxSaidaVeiculosCarregamentoCadastro.setChecked(cadastro)
+                self.ui.cheBoxSaidaVeiculosCarregamentoCancelar.setChecked(cancela)
+
+            elif idFormulario == 15:
+                self.ui.cBoxPessoaJuridicaAtivar.setChecked(ativo)
+                self.ui.cBoxPessoaJuridicaCadastro.setChecked(cadastro)
+                self.ui.cBoxPessoaJuridicaCancelar.setChecked(cancela)
+                self.ui.cBoxPessoaJuridicaDeletar.setChecked(deleta)
+                self.ui.cBoxPessoaJuridicaEditar.setChecked(edita)
+
+            elif idFormulario == 16:
+                self.ui.cBoxPessoaFisica.setChecked(ativo)
+                self.ui.cBoxPessoaFisicaCadastro.setChecked(cadastro)
+                self.ui.cBoxPessoaFisicaCancelar.setChecked(cancela)
+                self.ui.cBoxPessoaFisicaDeletar.setChecked(deleta)
+                self.ui.cBoxPessoaFisicaEditar.setChecked(edita)
+
+            self.changeClic()
+
+            i+=1
+
+    def editar(self):
+        if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeFuncionario.text() != "" and self.ui.txtCargo.text() != "" and self.ui.txtSetor.text() != "" and self.ui.txtLoginFuncionario.text() != "" :
+            idUsuario = self.idUsuario
+            login = self.ui.txtLoginFuncionario.text()
+            senha = self.ui.txtSenhaFuncionario.text()
+
+            usuDao = UsuarioPermissaoDao()
+            if senha != '':
+                __usuario = Usuario()
+                __saltoCripto = __usuario.getSalto()
+                salto = __saltoCripto.decode('utf-8')
+                __senhaCripto = __usuario.criptografar(senha, salto)
+                usu = UsuarioGetSet(idUsuario, login, __senhaCripto, salto)
+
+                usuDao.editarUsuarioSenha(usu)
+            else:
+                usuDao.editarUsuario(login, idUsuario)
+
+            usuDao.deletarPermissoesUsuario(idUsuario)
+            self.cadastroPermissoes()
+            self.limparCamposCheckBox()
+            self.limparCamposUsuario()
+            self.desativarPesquisaUsuario()
+
+    def deletar(self):
+            try:
+                _fromUtf8 = QtCore.QString.fromUtf8
+            except AttributeError:
+                def _fromUtf8(s):
+                    return s
+
+            self.msgBox = QtGui.QMessageBox()
+            self.msgBox.setWindowTitle('Menssagem')
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/question.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.msgBox.setWindowIcon(icon)
+            self.msgBox.setIconPixmap(QtGui.QPixmap(_fromUtf8("./imagens/icon-question.png")))
+            self.msgBox.setText("Tem certeza que deseja excluir esse registro")
+            btnSim = QtGui.QPushButton('Sim')
+            self.msgBox.addButton(btnSim, QtGui.QMessageBox.YesRole)
+            btnNao = QtGui.QPushButton('Não')
+            self.msgBox.addButton(btnNao, QtGui.QMessageBox.NoRole)
+            btnSim.clicked.connect(self.simDeletar)
+            btnNao.clicked.connect(self.fechar)
+            btnNao.setFocus()
+            self.msgBox.setAttribute(QtCore.Qt.WA_DeleteOnClose)
+            self.msgBox.exec_()
+
+    def simDeletar(self):
+            usuDao = UsuarioPermissaoDao()
+            codigo = self.idUsuario
+            usuDao.deletarUsuario(codigo)
+            usuDao.deletarPermissoesUsuario(codigo)
+
+            self.limparCamposCheckBox()
+            self.limparCamposUsuario()
+            self.desativarPesquisaUsuario()
+            self.msgBox.close()
+
+    def fechar(self):
+        self.msgBox.close()

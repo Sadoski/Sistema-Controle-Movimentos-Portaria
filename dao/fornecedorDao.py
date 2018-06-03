@@ -449,3 +449,23 @@ class FornecedorDao(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisarTabelaDesca(self, fornecedor):
+        try:
+            _sql = "SELECT * FROM entrada_veiculo_descarregamento d INNER JOIN fornecedor f ON f.id_fornecedor = d.id_fornecedor WHERE d.id_fornecedor = '" + str(fornecedor) + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarTabelaNf(self, fornecedor):
+        try:
+            _sql = "SELECT * FROM notas_fiscais WHERE id_fornecedor = '" + str(fornecedor) + "'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

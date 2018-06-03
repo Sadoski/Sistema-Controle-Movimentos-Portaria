@@ -21,12 +21,16 @@ from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 
 class DescaEntrada(QtGui.QDialog):
 
-    def __init__(self):
+    def __init__(self, cadatra, cancela ):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaVeiculosDescarregamento()
         self.ui.setupUi(self)
         self.validator = Validator()
         self.mensagem = MensagemBox()
+        self.cada = cadatra
+        self.canc = cancela
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -47,16 +51,16 @@ class DescaEntrada(QtGui.QDialog):
 
     def novo(self):
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.grbNotaFiscal.setEnabled(True)
-        self.ui.grbDadosFornecedor.setEnabled(True)
-        self.ui.grbDadosMotorista.setEnabled(True)
-        self.ui.txtData.setEnabled(True)
-        self.ui.txtHora.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.grbNotaFiscal.setEnabled(self.cada)
+        self.ui.grbDadosFornecedor.setEnabled(self.cada)
+        self.ui.grbDadosMotorista.setEnabled(self.cada)
+        self.ui.txtData.setEnabled(self.cada)
+        self.ui.txtHora.setEnabled(self.cada)
 
     def cancelar(self):
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
 
@@ -84,12 +88,12 @@ class DescaEntrada(QtGui.QDialog):
 
         self.limparNotasFiscal()
 
-        self.ui.txtData.setEnabled(True)
-        self.ui.txtHora.setEnabled(True)
+        self.ui.txtData.setEnabled(self.cada)
+        self.ui.txtHora.setEnabled(self.cada)
 
-        self.ui.grbNotaFiscal.setEnabled(True)
-        self.ui.grbDadosFornecedor.setEnabled(True)
-        self.ui.grbDadosMotorista.setEnabled(True)
+        self.ui.grbNotaFiscal.setEnabled(self.cada)
+        self.ui.grbDadosFornecedor.setEnabled(self.cada)
+        self.ui.grbDadosMotorista.setEnabled(self.cada)
 
 
     def limparNotasFiscal(self):

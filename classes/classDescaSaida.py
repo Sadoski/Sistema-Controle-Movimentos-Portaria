@@ -8,11 +8,15 @@ from dao.descarregamentoSaidaDao import DescarreSaidaDao
 from telas.frmSaidaVeiculoDescarregamento import Ui_frmSaidaVeiculoDescarregamento
 
 class DescaSaida(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela ):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmSaidaVeiculoDescarregamento()
         self.ui.setupUi(self)
         self.idSaida = int()
+        self.cada = cadatra
+        self.canc = cancela
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.botoesNovoCadastro)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
@@ -23,15 +27,15 @@ class DescaSaida(QtGui.QDialog):
     def botoesNovoCadastro(self):
 
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
+        self.ui.btnCancelar.setEnabled(self.canc)
 
-        self.ui.tabPesquisa.setEnabled(True)
+        self.ui.tabPesquisa.setEnabled(self.cada)
         self.pesquisarEntradaDescarre()
 
     def botoesCancelarCadastro(self):
 
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
 

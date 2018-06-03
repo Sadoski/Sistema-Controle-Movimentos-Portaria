@@ -13,7 +13,6 @@ from controller.getSetNotaFiscal import NotaFiscal
 from dao.fornecedorDao import FornecedorDao
 from dao.motoristaDao import MotoristaDao
 from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
-from dao.pesquisaEmpresa import PesquisaEmpresaDao
 from telas.frmEntradaNF import Ui_frmEntradaNF
 from telas.frmPesquisarFornecedor import Ui_frmPesquisarFornecedor
 from telas.frmPesquisarMotorista import Ui_frmConsultarMotoristas
@@ -21,7 +20,7 @@ from telas.frmPesquisarNotasFiscais import Ui_frmConsultarNotasFiscais
 
 
 class CadastroNotaFiscal(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmEntradaNF()
         self.ui.setupUi(self)
@@ -42,6 +41,12 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.decricao = []
         self.removeDescricao = []
         self.atuaDecricao = []
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
@@ -108,18 +113,18 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.txtSomatoriaTotalValor.setText(str(self.alterarCaracter(str(result)+self.setDecimal(str(result)))))
 
     def novo(self):
-        self.ui.grbFornecedor.setEnabled(True)
-        self.ui.grbTransportadoraMotorista.setEnabled(True)
-        self.ui.grbData.setEnabled(True)
-        self.ui.grbDadosNF.setEnabled(True)
-        self.ui.grbImpostos.setEnabled(True)
-        self.ui.grbCalculoImposto.setEnabled(True)
-        self.ui.grbDescricaoProduto.setEnabled(True)
+        self.ui.grbFornecedor.setEnabled(self.cada)
+        self.ui.grbTransportadoraMotorista.setEnabled(self.cada)
+        self.ui.grbData.setEnabled(self.cada)
+        self.ui.grbDadosNF.setEnabled(self.cada)
+        self.ui.grbImpostos.setEnabled(self.cada)
+        self.ui.grbCalculoImposto.setEnabled(self.cada)
+        self.ui.grbDescricaoProduto.setEnabled(self.cada)
 
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
         self.unidadeMedida()
@@ -140,26 +145,26 @@ class CadastroNotaFiscal(QtGui.QDialog):
         self.ui.grbCalculoImposto.setEnabled(False)
         self.ui.grbDescricaoProduto.setEnabled(False)
 
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
         self.ui.btnDeletar.setEnabled(False)
 
     def botoesEditar(self):
-        self.ui.grbFornecedor.setEnabled(True)
-        self.ui.grbTransportadoraMotorista.setEnabled(True)
-        self.ui.grbData.setEnabled(True)
-        self.ui.grbDadosNF.setEnabled(True)
-        self.ui.grbImpostos.setEnabled(True)
-        self.ui.grbCalculoImposto.setEnabled(True)
-        self.ui.grbDescricaoProduto.setEnabled(True)
+        self.ui.grbFornecedor.setEnabled(self.edit)
+        self.ui.grbTransportadoraMotorista.setEnabled(self.edit)
+        self.ui.grbData.setEnabled(self.edit)
+        self.ui.grbDadosNF.setEnabled(self.edit)
+        self.ui.grbImpostos.setEnabled(self.edit)
+        self.ui.grbCalculoImposto.setEnabled(self.edit)
+        self.ui.grbDescricaoProduto.setEnabled(self.edit)
 
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
         self.unidadeMedida()
         self.tiposNF()

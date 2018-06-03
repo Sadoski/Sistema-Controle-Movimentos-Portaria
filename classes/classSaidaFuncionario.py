@@ -13,12 +13,16 @@ from telas.frmPesquisarFuncionario import Ui_frmPesquisarFuncionario
 from telas.frmSaidaFuncionario import Ui_frmSaidaFuncionario
 
 class SaidaFuncionario(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmSaidaFuncionario()
         self.ui.setupUi(self)
         self.validator = Validator()
         self.mensagem = MensagemBox()
+        self.cada = cadatra
+        self.canc = cancela
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.btnNovo.clicked.connect(self.botaoNovoCadastro)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -111,22 +115,16 @@ class SaidaFuncionario(QtGui.QDialog):
         self.botaoCancelarCadastro()
         self.limparCamposCad()
 
-    def botaoEditarCadastro(self):
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
-
-        self.ui.grbDadosSaidaFuncionario.setEnabled(True)
 
     def botaoNovoCadastro(self):
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
+        self.ui.btnCancelar.setEnabled(self.canc)
 
-        self.ui.grbDadosSaidaFuncionario.setEnabled(True)
+        self.ui.grbDadosSaidaFuncionario.setEnabled(self.cada)
 
     def botaoCancelarCadastro(self):
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
 

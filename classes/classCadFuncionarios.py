@@ -20,7 +20,7 @@ from telas.frmPesquisarPessoaFisica import Ui_frmPesquisarPessoaFisica
 
 
 class CadastroFuncionario(QtGui.QDialog):
-    def __init__(self):
+    def __init__(self, cadatra, cancela, deleta, edita):
         QtGui.QDialog.__init__(self)
         self.ui = Ui_frmCadastroFuncionario()
         self.ui.setupUi(self)
@@ -45,6 +45,12 @@ class CadastroFuncionario(QtGui.QDialog):
         self.cargo = []
         self.jornada = []
         self.horarios = []
+        self.cada = cadatra
+        self.canc = cancela
+        self.dele = deleta
+        self.edit = edita
+
+        self.ui.btnNovo.setEnabled(self.cada)
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
@@ -197,12 +203,12 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def novo(self):
         self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
 
@@ -235,7 +241,7 @@ class CadastroFuncionario(QtGui.QDialog):
     def desativarCampos(self):
         self.ui.grbDadosPessoaJuridica.setEnabled(False)
         self.ui.tabWiAdicionais.setEnabled(False)
-        self.ui.btnNovo.setEnabled(True)
+        self.ui.btnNovo.setEnabled(self.cada)
         self.ui.btnSalvar.setEnabled(False)
         self.ui.btnEditar.setEnabled(False)
         self.ui.btnCancelar.setEnabled(False)
@@ -243,15 +249,15 @@ class CadastroFuncionario(QtGui.QDialog):
 
     def botoesEditar(self):
         self.limparCampos()
-        self.ui.grbAtivo.setEnabled(True)
-        self.ui.radBtnAtivo.setCheckable(True)
-        self.ui.radBtnDesativo.setCheckable(True)
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.grbAtivo.setEnabled(self.edit)
+        self.ui.radBtnAtivo.setCheckable(self.edit)
+        self.ui.radBtnDesativo.setCheckable(self.edit)
+        self.ui.tabWiAdicionais.setEnabled(self.edit)
         self.ui.btnNovo.setEnabled(False)
         self.ui.btnSalvar.setEnabled(False)
-        self.ui.btnEditar.setEnabled(True)
-        self.ui.btnCancelar.setEnabled(True)
-        self.ui.btnDeletar.setEnabled(True)
+        self.ui.btnEditar.setEnabled(self.edit)
+        self.ui.btnCancelar.setEnabled(self.canc)
+        self.ui.btnDeletar.setEnabled(self.dele)
 
         self.setSetores()
         self.setCargo()
@@ -261,11 +267,11 @@ class CadastroFuncionario(QtGui.QDialog):
         self.setDeficiencia()
 
     def ativarCampos(self):
-        self.ui.tabWiAdicionais.setEnabled(True)
+        self.ui.tabWiAdicionais.setEnabled(self.cada)
         self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(True)
+        self.ui.btnSalvar.setEnabled(self.cada)
         self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(True)
+        self.ui.btnCancelar.setEnabled(self.canc)
         self.ui.btnDeletar.setEnabled(False)
 
 
