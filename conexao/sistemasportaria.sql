@@ -26,7 +26,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: 12-Maio-2018 às 21:53
+-- Generation Time: 03-Jun-2018 às 20:18
 -- Versão do servidor: 5.7.11
 -- PHP Version: 7.0.4
 
@@ -1359,18 +1359,6 @@ INSERT INTO `atividades` (`codigo`, `nome`, `ativo`) VALUES
 (9609299, 'Outras atividades de serviços pessoais não especificadas anteriormente', '1'),
 (9700500, 'Serviços domésticos', '1'),
 (9900800, 'Organismos internacionais e outras instituições extraterritoriais', '1');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `carga_produto`
---
-
-CREATE TABLE `carga_produto` (
-  `id_carga_produto` int(11) NOT NULL,
-  `id_produto` int(11) DEFAULT NULL,
-  `id_tipo_carga` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -14895,45 +14883,6 @@ INSERT INTO `cofins` (`id_cofins`, `codigo_cofins`, `desc_cofins`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `contato_cliente`
---
-
-CREATE TABLE `contato_cliente` (
-  `id_contato_cli` int(11) NOT NULL,
-  `nome_contato` varchar(50) DEFAULT NULL,
-  `numero` varchar(11) DEFAULT NULL,
-  `id_cliente` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `contato_empresa`
---
-
-CREATE TABLE `contato_empresa` (
-  `id_contato_emp` int(11) NOT NULL,
-  `numero` varchar(11) DEFAULT NULL,
-  `nome_contato` varchar(50) DEFAULT NULL,
-  `id_empresa` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `contato_fornecedor`
---
-
-CREATE TABLE `contato_fornecedor` (
-  `id_contato_for` int(11) NOT NULL,
-  `nome_contato` varchar(50) DEFAULT NULL,
-  `numero` varchar(11) DEFAULT NULL,
-  `id_fornecedor` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `csosn`
 --
 
@@ -15050,19 +14999,21 @@ INSERT INTO `deficiencia` (`id_deficiencia`, `descricao`) VALUES
 CREATE TABLE `descricao_produto_nota_fiscal` (
   `id_desc_pro_nota` int(11) NOT NULL,
   `id_notas_fiscais` int(11) DEFAULT NULL,
-  `id_produto` int(11) NOT NULL,
-  `ncm` decimal(10,2) NOT NULL,
-  `cst` decimal(10,2) NOT NULL,
-  `cfop` decimal(10,2) NOT NULL,
+  `id_produto` int(11) DEFAULT NULL,
+  `ncm` varchar(11) DEFAULT NULL,
+  `cst` varchar(11) DEFAULT NULL,
+  `cfop` varchar(11) DEFAULT NULL,
+  `csosn` varchar(11) DEFAULT NULL,
   `unidade_medida` varchar(5) DEFAULT NULL,
-  `quantidade` int(11) DEFAULT NULL,
-  `valor_unitario` decimal(10,2) DEFAULT NULL,
-  `valor_total` decimal(10,2) NOT NULL,
-  `valor_icms` decimal(10,2) NOT NULL,
-  `valor_ipi` decimal(10,2) NOT NULL,
-  `alicota_icms` decimal(10,2) NOT NULL,
-  `alicota_ipi` decimal(10,2) NOT NULL
+  `quantidade` varchar(11) DEFAULT NULL,
+  `valor_unitario` varchar(11) DEFAULT NULL,
+  `valor_total` varchar(11) DEFAULT NULL,
+  `valor_icms` varchar(11) DEFAULT NULL,
+  `valor_ipi` varchar(11) DEFAULT NULL,
+  `alicota_icms` varchar(11) DEFAULT NULL,
+  `alicota_ipi` varchar(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 
@@ -15112,6 +15063,29 @@ CREATE TABLE `email_fornecedor` (
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `email_funcionario`
+--
+
+CREATE TABLE `email_funcionario` (
+  `id_funcionario` int(11) DEFAULT NULL,
+  `id_email` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `email_motorista`
+--
+
+CREATE TABLE `email_motorista` (
+  `id_email_motorista` int(11) NOT NULL,
+  `id_email` int(11) DEFAULT NULL,
+  `id_motorista` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `empresa`
 --
 
@@ -15124,42 +15098,6 @@ CREATE TABLE `empresa` (
   `atualizado` timestamp NULL DEFAULT NULL,
   `id_tipo_empresa` int(11) DEFAULT NULL,
   `id_cnae_22` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `entrada_caminhao_empresa_carregamento`
---
-
-CREATE TABLE `entrada_caminhao_empresa_carregamento` (
-  `id_entrada_cami_emp_carre` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_veiculos_emp` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `id_cliente` int(11) NOT NULL,
-  `id_carga` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `entrada_caminhao_empresa_descarregamento`
---
-
-CREATE TABLE `entrada_caminhao_empresa_descarregamento` (
-  `id_entrada_cami_emp_desc` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_veiculos_emp` int(11) NOT NULL,
-  `id_fornecedor` int(11) NOT NULL,
-  `id_carga` int(11) NOT NULL,
-  `id_entrada_notas_teca` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15178,23 +15116,6 @@ CREATE TABLE `entrada_funcionario` (
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `entrada_veiculos_terceira`
---
-
-CREATE TABLE `entrada_veiculos_terceira` (
-  `id_entrada_vei_ter` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `nome` varchar(70) DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_tipo_afazer` int(11) NOT NULL,
-  `id_cidades` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `entrada_veiculo_carregamento`
 --
 
@@ -15203,10 +15124,11 @@ CREATE TABLE `entrada_veiculo_carregamento` (
   `data` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
   `status` enum('Aberto','Fechado') DEFAULT NULL,
-  `id_carga_produto` int(11) NOT NULL,
+  `id_produto` int(11) NOT NULL,
+  `id_tipo_carga` int(11) DEFAULT NULL,
   `id_cliente` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `id_motorista` int(11) DEFAULT NULL
+  `id_motorista` int(11) DEFAULT NULL,
+  `id_veiculo` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15219,26 +15141,10 @@ CREATE TABLE `entrada_veiculo_descarregamento` (
   `id_entrada_vei_desc` int(11) NOT NULL,
   `data` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_entrada_notas_teca` int(11) NOT NULL,
-  `id_carga_produto` int(11) NOT NULL,
+  `status` enum('Aberto','Fechado') DEFAULT NULL,
+  `id_entrada_notas_fiscais` int(11) DEFAULT NULL,
   `id_fornecedor` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
   `id_motorista` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `entrada_vei_emp`
---
-
-CREATE TABLE `entrada_vei_emp` (
-  `id_entrada_vei_emp` int(11) NOT NULL,
-  `nome_condutor` varchar(70) DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_saida_vei_emp` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15304,33 +15210,21 @@ CREATE TABLE `formularios` (
 
 INSERT INTO `formularios` (`id_formularios`, `descricao`) VALUES
 (1, 'Ui_frmCadastroEmpresa'),
-(2, 'Ui_frmCadastroSetoresCargos'),
-(3, 'Ui_frmCadastroFuncionario'),
-(4, 'Ui_frmCadastroFornecedor'),
-(5, 'Ui_frmCadastroClientes'),
-(6, 'Ui_frmCadastroUsuarios'),
-(7, 'Ui_frmCadastroMotorista'),
-(8, 'Ui_frmCadastroVeiculosEmpresa'),
-(9, 'Ui_frmCadastroEntradaFuncionario'),
-(10, 'Ui_frmEntradaNotaRomaneios'),
-(11, 'Ui_frmEntradaVeiculosCarregamento'),
-(12, 'Ui_frmEntradaVeiculosDescarregamento'),
-(13, 'Ui_frmEntradaCaminhoaEmpresa'),
-(14, 'Ui_frmEntradaVeiculosEmpresa'),
-(15, 'Ui_frmEntradaVeiculosEmpresaTerceiros'),
-(16, 'Ui_frmEntradaVeiculosTerceiros'),
-(17, 'Ui_frmLogin'),
-(18, 'Ui_frmMainHouse'),
-(19, 'Ui_frmConsultarEmpresa'),
-(20, 'Ui_frmConsultarFornecedores'),
-(21, 'Ui_frmConsultarMotoristas'),
-(22, 'Ui_frmConsultarNotasFiscais'),
-(23, 'Ui_frmSaidaCaminhoaEmpresa'),
-(24, 'Ui_frmSaidaFuncionario'),
-(25, 'Ui_frmSaidaVeiculoDescarregamento'),
-(26, 'Ui_frmSaidaVeiculosCarregamento'),
-(27, 'Ui_frmSaidaVeiculosEmpresa'),
-(28, 'Ui_frmSaidaVeiculosTerceiros');
+(2, 'Ui_frmCadastroFuncionario'),
+(3, 'Ui_frmCadastroFornecedor'),
+(4, 'Ui_frmCadastroClientes'),
+(5, 'Ui_frmCadastroUsuarios'),
+(6, 'Ui_frmCadastroMotorista'),
+(7, 'Ui_frmCadastroEntradaFuncionario'),
+(8, 'Ui_frmEntradaNotaRomaneios'),
+(9, 'Ui_frmEntradaVeiculosCarregamento'),
+(10, 'Ui_frmEntradaVeiculosDescarregamento'),
+(11, 'Ui_frmRelatorio'),
+(12, 'Ui_frmSaidaFuncionario'),
+(13, 'Ui_frmSaidaVeiculoDescarregamento'),
+(14, 'Ui_frmSaidaVeiculosCarregamento'),
+(15, 'Ui_frmCadastroPessoaJuridica'),
+(16, 'Ui_frmCadastroPessoaFisica');
 
 -- --------------------------------------------------------
 
@@ -15349,7 +15243,6 @@ CREATE TABLE `fornecedor` (
   `id_pessoa_juridica` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-
 -- --------------------------------------------------------
 
 --
@@ -15361,21 +15254,21 @@ CREATE TABLE `funcionario` (
   `observacao` varchar(255) DEFAULT NULL,
   `data_demissao` date DEFAULT NULL,
   `data_admissao` date DEFAULT NULL,
-  `situacao` tinyint(1) DEFAULT NULL,
-  `cadastrado` timestamp NULL DEFAULT NULL,
-  `atualizado` timestamp NULL DEFAULT NULL,
-  `id_pessoa_fisica` int(11) NOT NULL,
   `num_carteira` varchar(15) NOT NULL,
   `serie` varchar(15) NOT NULL,
   `uf` char(2) NOT NULL,
   `data_emissao` date NOT NULL,
   `pis_pasep` varchar(15) NOT NULL,
+  `situacao` tinyint(1) DEFAULT NULL,
+  `cadastrado` timestamp NULL DEFAULT NULL,
+  `atualizado` timestamp NULL DEFAULT NULL,
+  `id_pessoa_fisica` int(11) NOT NULL,
   `id_civil` int(11) NOT NULL,
   `id_deficiencia` int(11) NOT NULL,
-  `Coluna id_categoria_trabalho` int(11) NOT NULL,
+  `id_categoria_trabalho` int(11) NOT NULL,
   `id_setores` int(11) NOT NULL,
   `id_cargo` int(11) NOT NULL,
-  `id_jornada_trabalho` int(11) NOT NULL
+  `id_jornada_trabalho` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15410,11 +15303,8 @@ CREATE TABLE `horario_jornada` (
   `hora_ini_intervalo` time DEFAULT NULL,
   `hora_fim_intervalo` time DEFAULT NULL,
   `hora_saida` time DEFAULT NULL,
-  `min_intervalo` varchar(20) DEFAULT NULL,
-  `max_intervalo` varchar(20) DEFAULT NULL,
-  `max_horas_extra` varchar(20) DEFAULT NULL,
-  `jornada` varchar(20) DEFAULT NULL,
-  `id_jornada_trabalho` int(11) DEFAULT NULL
+  `id_jornada_trabalho` int(11) DEFAULT NULL,
+  `id_funcionario` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -15629,35 +15519,13 @@ CREATE TABLE `jornada_trabalho` (
 
 INSERT INTO `jornada_trabalho` (`id_jornada_trabalho`, `descricao`) VALUES
 (1, 'HORARIO NORMAL 44H'),
-(2, 'HORARIO REDUZIDO 39H'),
-(3, 'HORARIO REDUZIDO 34H'),
-(4, 'HORARIO REDUZIDO 30H'),
-(5, 'HORARIO REDUZIDO 29H'),
+(2, 'HORARIO REDUZIDO 42H'),
+(3, 'HORARIO REDUZIDO 40H'),
+(4, 'HORARIO REDUZIDO 36H'),
+(5, 'HORARIO REDUZIDO 30H'),
 (6, 'HORARIO REDUZIDO 24H'),
-(7, 'HORARIO ESPECIAL 36H'),
-(8, 'HORARIO ESPECIAL 26H'),
-(9, 'HORARIO ESPECIAL 12x36');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `metragem`
---
-
-CREATE TABLE `metragem` (
-  `id_metragem` int(11) NOT NULL,
-  `descricao` varchar(10) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `metragem`
---
-
-INSERT INTO `metragem` (`id_metragem`, `descricao`) VALUES
-(1, '15 x 16,9'),
-(2, '17 x 19,9'),
-(3, '20 x 24,9'),
-(4, '25 x 30');
+(7, 'HORARIO REDUZIDO 20H'),
+(8, 'HORARIO ESPECIAL CONTRATO');
 
 -- --------------------------------------------------------
 
@@ -15667,24 +15535,14 @@ INSERT INTO `metragem` (`id_metragem`, `descricao`) VALUES
 
 CREATE TABLE `motorista` (
   `id_motorista` int(11) NOT NULL,
-  `nome` varchar(70) DEFAULT NULL,
-  `rg` varchar(10) DEFAULT NULL,
-  `expeditor` varchar(10) DEFAULT NULL,
-  `cpf` varchar(14) DEFAULT NULL,
-  `data_nascimento` date DEFAULT NULL,
   `cnh` varchar(10) DEFAULT NULL,
-  `id_categoria_cnh` int(11) DEFAULT NULL,
   `pis` varchar(20) DEFAULT NULL,
-  `celular` varchar(15) DEFAULT NULL,
-  `telefone` varchar(15) DEFAULT NULL,
-  `endereco` varchar(50) DEFAULT NULL,
-  `numero` varchar(11) DEFAULT NULL,
-  `complemento` varchar(50) DEFAULT NULL,
-  `bairro` varchar(50) DEFAULT NULL,
-  `sexo` enum('MASCULINO','FEMININO') DEFAULT NULL,
-  `id_cidade` int(11) DEFAULT NULL,
+  `observacao` varchar(255) DEFAULT NULL,
+  `situacao` tinyint(1) DEFAULT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
-  `atualizado` timestamp NULL DEFAULT NULL
+  `atualizado` timestamp NULL DEFAULT NULL,
+  `id_categoria_cnh` int(11) DEFAULT NULL,
+  `id_pessoa_fisica` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25109,14 +24967,20 @@ INSERT INTO `ncm` (`cod_ncm`, `ncm`, `nome`) VALUES
 
 CREATE TABLE `notas_fiscais` (
   `id_entrada_notas_fiscais` int(11) NOT NULL,
-  `numero_nota` char(11) DEFAULT NULL,
+  `serie` char(1) DEFAULT NULL,
+  `numero_nota` varchar(11) DEFAULT NULL,
   `data_emissao` date DEFAULT NULL,
-  `valor_total` decimal(10,2) NOT NULL,
+  `data_entrada` date DEFAULT NULL,
+  `valor_total` decimal(10,2) DEFAULT NULL,
+  `valor_icms` decimal(10,2) DEFAULT NULL,
+  `valor_ipi` decimal(10,2) DEFAULT NULL,
+  `alicota_icms` decimal(10,2) DEFAULT NULL,
+  `alicota_ipi` decimal(10,2) DEFAULT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `alterado` timestamp NULL DEFAULT NULL,
   `id_fornecedor` int(11) NOT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `id_motorista` int(11) NOT NULL
+  `id_motorista` int(11) NOT NULL,
+  `id_tipo_nf` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25147,11 +25011,10 @@ INSERT INTO `pais` (`id_pais`, `sigla`, `nome`) VALUES
 CREATE TABLE `permissoes` (
   `id_permissoes` int(11) NOT NULL,
   `ativar` tinyint(1) DEFAULT NULL,
-  `novo` tinyint(1) DEFAULT NULL,
   `cadastra` tinyint(1) DEFAULT NULL,
+  `cancelar` tinyint(1) DEFAULT NULL,
   `altera` tinyint(1) DEFAULT NULL,
   `deleta` tinyint(1) DEFAULT NULL,
-  `nome_formulario` varchar(50) DEFAULT NULL,
   `id_formularios` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -25159,64 +25022,24 @@ CREATE TABLE `permissoes` (
 -- Extraindo dados da tabela `permissoes`
 --
 
-INSERT INTO `permissoes` (`id_permissoes`, `ativar`, `novo`, `cadastra`, `altera`, `deleta`, `nome_formulario`, `id_formularios`) VALUES
-(1, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
-(2, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
-(3, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
-(4, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
-(5, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
-(6, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
-(7, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
-(8, NULL, NULL, NULL, NULL, NULL, 'CADASTRO USUARIO', 6),
-(9, NULL, NULL, NULL, NULL, NULL, 'CADASTRO PERMISSAO', 6),
-(10, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
-(11, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
-(12, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
-(13, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
-(14, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
-(15, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
-(16, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
-(17, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
-(18, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
-(19, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
-(20, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
-(21, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
-(22, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
-(23, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
-(24, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
-(25, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
-(28, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
-(29, NULL, NULL, NULL, NULL, NULL, 'CADASTRO EMPRESA', 1),
-(30, NULL, NULL, NULL, NULL, NULL, 'CADASTRO SETOR', 2),
-(31, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CARGO', 2),
-(32, NULL, NULL, NULL, NULL, NULL, 'CADASTRO RELACAO', 2),
-(33, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FUNCIONARIO', 3),
-(34, NULL, NULL, NULL, NULL, NULL, 'CADASTRO FORNECEDOR', 4),
-(35, NULL, NULL, NULL, NULL, NULL, 'CADASTRO CLIENTE', 5),
-(36, NULL, NULL, NULL, NULL, NULL, 'CADASTRO USUARIO', 6),
-(37, NULL, NULL, NULL, NULL, NULL, 'CADASTRO PERMISSAO', 6),
-(38, NULL, NULL, NULL, NULL, NULL, 'CADASTRO MOTORISTA', 7),
-(39, NULL, NULL, NULL, NULL, NULL, 'CADASTRO VEICULO EMPRESA', 8),
-(40, NULL, NULL, NULL, NULL, NULL, 'ENTRADA FUNCIONARIO', 9),
-(41, NULL, NULL, NULL, NULL, NULL, 'ENTRADA DE NF E ROMANIEO', 10),
-(42, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO CARREGAMENTO', 11),
-(43, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO DESCARREGAMENTO', 12),
-(44, NULL, NULL, NULL, NULL, NULL, 'ENTRADA CAMINHAO EMPRESA', 13),
-(45, NULL, NULL, NULL, NULL, NULL, 'ENTRA VEICULOS EMPRESA', 14),
-(46, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO EMPRESA TERCEIRO', 15),
-(47, NULL, NULL, NULL, NULL, NULL, 'ENTRADA VEICULO  TERCEIRO', 16),
-(48, NULL, NULL, NULL, NULL, NULL, 'LOGIN', 17),
-(49, NULL, NULL, NULL, NULL, NULL, 'PRINCIPAL', 18),
-(50, NULL, NULL, NULL, NULL, NULL, 'COSULTAR EMPRESA', 19),
-(51, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR FORNECEDOR', 20),
-(52, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR MOTORISTA', 21),
-(53, NULL, NULL, NULL, NULL, NULL, 'CONSULTAR NF E ROMANEIO', 22),
-(54, NULL, NULL, NULL, NULL, NULL, 'SAIDA CAMINHAO EMPRESA', 23),
-(55, NULL, NULL, NULL, NULL, NULL, 'SAIDA FUNCIONARIO', 24),
-(56, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS DESCARREGAMENTO', 25),
-(57, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULO CARREGAMENTO', 26),
-(58, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS EMPRESA', 27),
-(59, NULL, NULL, NULL, NULL, NULL, 'SAIDA VEICULOS TERCEIRO', 28);
+INSERT INTO `permissoes` (`id_permissoes`, `ativar`, `cadastra`, `cancelar`, `altera`, `deleta`, `id_formularios`) VALUES
+(1, 1, 1, 1, 1, 1, 1),
+(2, 1, 1, 1, 1, 1, 2),
+(3, 1, 1, 1, 1, 1, 3),
+(4, 1, 1, 1, 1, 1, 4),
+(5, 1, 1, 1, 1, 1, 5),
+(6, 1, 1, 1, 1, 1, 6),
+(7, 1, 1, 1, 1, 1, 7),
+(8, 1, 1, 1, 1, 1, 8),
+(9, 1, 1, 1, 1, 1, 9),
+(10, 1, 1, 1, 1, 1, 10),
+(11, 1, 1, 1, 1, 1, 11),
+(12, 1, 1, 1, 1, 1, 12),
+(13, 1, 1, 1, 1, 1, 13),
+(14, 1, 1, 1, 1, 1, 14),
+(15, 1, 1, 1, 1, 1, 15),
+(16, 1, 1, 1, 1, 1, 16),
+
 
 -- --------------------------------------------------------
 
@@ -25228,6 +25051,28 @@ CREATE TABLE `permissoes_usuarios` (
   `id_usuarios` int(11) NOT NULL,
   `id_permissoes` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `permissoes_usuarios`
+--
+
+INSERT INTO `permissoes_usuarios` (`id_usuarios`, `id_permissoes`) VALUES
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(1, 8),
+(1, 9),
+(1, 10),
+(1, 11),
+(1, 12),
+(1, 13),
+(1, 14),
+(1, 15),
+(1, 16);
 
 -- --------------------------------------------------------
 
@@ -25250,7 +25095,6 @@ CREATE TABLE `pessoa` (
   `cadastrado` timestamp NULL DEFAULT NULL,
   `atualizado` timestamp NULL DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
 
 -- --------------------------------------------------------
 
@@ -25401,53 +25245,6 @@ INSERT INTO `produto` (`id_produto`, `descricao`, `quantidade`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `romaneios`
---
-
-CREATE TABLE `romaneios` (
-  `id_romaneios` int(11) NOT NULL,
-  `numer_romaneio` varchar(11) DEFAULT NULL,
-  `certificada` tinyint(1) DEFAULT NULL,
-  `id_entrada_notas_fiscais` int(11) DEFAULT NULL,
-  `id_metragem` int(11) NOT NULL,
-  `cadastrado` timestamp NULL DEFAULT NULL,
-  `atualizado` timestamp NULL DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `saida_caminhao_empresa_carregamento`
---
-
-CREATE TABLE `saida_caminhao_empresa_carregamento` (
-  `id_caminhao_emp_carre` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_entrada_cami_emp_carre` int(11) DEFAULT NULL,
-  `id_entrada_cami_emp_desc` int(11) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `saida_caminhao_empresa_descarregamento`
---
-
-CREATE TABLE `saida_caminhao_empresa_descarregamento` (
-  `id_saida_cami_emp_desc` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_entrada_cami_emp_desc` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `saida_funcionario`
 --
 
@@ -25456,7 +25253,7 @@ CREATE TABLE `saida_funcionario` (
   `data` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
   `id_funcionario` int(11) DEFAULT NULL,
-  `id_funcao` int(11) DEFAULT NULL
+  `status` enum('Aberto','Fechado') NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25469,9 +25266,7 @@ CREATE TABLE `saida_veiculos_caregamento` (
   `id_saida_vei_carre` int(11) NOT NULL,
   `data` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
-  `status` enum('Entrou Vazio','Entrou Carregado') DEFAULT NULL,
-  `id_entrada_vei_carre` int(11) DEFAULT NULL,
-  `id_entrada_vei_desc` int(11) DEFAULT NULL
+  `id_entrada_vei_carre` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25484,36 +25279,7 @@ CREATE TABLE `saida_veiculos_descarregamento` (
   `id_saida_vei_emp` int(11) NOT NULL,
   `data` date DEFAULT NULL,
   `hora` time DEFAULT NULL,
-  `status` enum('Saiu Vazio','Saiu Carregado') DEFAULT NULL,
-  `observaco` varchar(255) DEFAULT NULL,
   `id_entrada_vei_desc` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `saida_veiculos_terceiros`
---
-
-CREATE TABLE `saida_veiculos_terceiros` (
-  `id_saida_vei_ter` int(11) NOT NULL,
-  `data` date DEFAULT NULL,
-  `hora` time DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_entrada_vei_ter` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `saida_vei_emp`
---
-
-CREATE TABLE `saida_vei_emp` (
-  `id_saida_vei_emp` int(11) NOT NULL,
-  `nome_condutor` varchar(70) DEFAULT NULL,
-  `observacao` varchar(255) DEFAULT NULL,
-  `id_veiculos_emp` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25642,6 +25408,7 @@ CREATE TABLE `telefone` (
   `telefone` varchar(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
@@ -25652,6 +25419,7 @@ CREATE TABLE `telefone_cliente` (
   `id_telefone` int(11) DEFAULT NULL,
   `id_cliente` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 
@@ -25664,6 +25432,7 @@ CREATE TABLE `telefone_empresa` (
   `id_empresa` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
 
 --
@@ -25673,6 +25442,30 @@ CREATE TABLE `telefone_empresa` (
 CREATE TABLE `telefone_fornecedor` (
   `id_fornecedor` int(11) DEFAULT NULL,
   `id_telefone` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `telefone_funcionario`
+--
+
+CREATE TABLE `telefone_funcionario` (
+  `id_funcionario` int(11) DEFAULT NULL,
+  `id_telefone` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `telefone_motorista`
+--
+
+CREATE TABLE `telefone_motorista` (
+  `id_telefone_motorista` int(11) NOT NULL,
+  `id_telefone` int(11) DEFAULT NULL,
+  `id_motorista` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -25685,19 +25478,6 @@ CREATE TABLE `tipo_afazeres` (
   `id_tipo_afazer` int(11) NOT NULL,
   `descricao` varchar(50) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `tipo_afazeres`
---
-
-INSERT INTO `tipo_afazeres` (`id_tipo_afazer`, `descricao`) VALUES
-(1, 'TRABALHO'),
-(2, 'PRESTAÇÃO DE SERVIÇO'),
-(3, 'COLETA'),
-(4, 'ENTREGA'),
-(5, 'VISITA'),
-(6, 'PESAGEM'),
-(7, 'COMPRA / COLETA DE MADEIRA');
 
 -- --------------------------------------------------------
 
@@ -25786,48 +25566,6 @@ INSERT INTO `tipo_pessoa` (`id_tipo_pessoa`, `descricao`) VALUES
 (1, 'PESSOA FÍSICA'),
 (2, 'PESSOA JURÍDICA');
 
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `tipo_usuario`
---
-
-CREATE TABLE `tipo_usuario` (
-  `id_tipo_usuario` int(11) NOT NULL,
-  `descricao` varchar(30) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `tipo_usuario`
---
-
-INSERT INTO `tipo_usuario` (`id_tipo_usuario`, `descricao`) VALUES
-(1, 'ADMINISTRADOR'),
-(2, 'USUARIO COMUM'),
-(3, 'USUARIO MASTER');
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `tipo_veiculo`
---
-
-CREATE TABLE `tipo_veiculo` (
-  `id_tipo_veiculo` int(11) NOT NULL,
-  `descricao` varchar(30) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `tipo_veiculo`
---
-
-INSERT INTO `tipo_veiculo` (`id_tipo_veiculo`, `descricao`) VALUES
-(1, 'BICILETA'),
-(2, 'MOTOCICLETA'),
-(3, 'AUTOMOVEL'),
-(4, 'CAMINHÃO'),
-(5, 'EMBARCAÇÃO'),
-(6, 'AERONAVES');
 
 -- --------------------------------------------------------
 
@@ -25842,7 +25580,6 @@ CREATE TABLE `usuarios` (
   `salto` varchar(50) NOT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
   `alterado` timestamp NULL DEFAULT NULL,
-  `id_tipo_usuario` int(11) NOT NULL,
   `id_funcionario` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -25852,25 +25589,8 @@ CREATE TABLE `usuarios` (
 -- Usuario ADMIN 
 -- Senha ADMIN
 
-INSERT INTO `usuarios` (`id_usuarios`, `login`, `senha`, `salto`, `cadastrado`, `alterado`, `id_tipo_usuario`, `id_funcionario`) VALUES
-(1, 'ADMIN', '$2b$08$wZCwEHUxqOYLR5MNcjMsDeHBfthV39HvOswRi2J0CQFGm/WIkkmUK', '$2b$08$wZCwEHUxqOYLR5MNcjMsDe', '2017-07-26 00:00:00', NULL, 1, NULL);
-
--- --------------------------------------------------------
-
---
--- Estrutura da tabela `veiculos_empresa`
---
-
-CREATE TABLE `veiculos_empresa` (
-  `id_veiculos_emp` int(11) NOT NULL,
-  `marca` varchar(50) DEFAULT NULL,
-  `modelo` varchar(50) DEFAULT NULL,
-  `placa` char(7) DEFAULT NULL,
-  `cadastrado` timestamp NULL DEFAULT NULL,
-  `alterado` timestamp NULL DEFAULT NULL,
-  `id_empresa` int(11) NOT NULL,
-  `id_tipo_veiculo` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO `usuarios` (`id_usuarios`, `login`, `senha`, `salto`, `cadastrado`, `alterado`, `id_funcionario`) VALUES
+(1, 'ADMIN', '$2b$08$wZCwEHUxqOYLR5MNcjMsDeHBfthV39HvOswRi2J0CQFGm/WIkkmUK', '$2b$08$wZCwEHUxqOYLR5MNcjMsDe', '2018-06-03 00:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -25883,13 +25603,11 @@ CREATE TABLE `veiculo_motorista` (
   `marca` varchar(30) DEFAULT NULL,
   `modelo` varchar(50) DEFAULT NULL,
   `placa` varchar(8) DEFAULT NULL,
-  `id_motorista` int(11) DEFAULT NULL,
-  `id_tipo_veiculo` int(11) DEFAULT NULL,
+  `situacao` tinyint(1) NOT NULL,
   `cadastrado` timestamp NULL DEFAULT NULL,
-  `atualizado` timestamp NULL DEFAULT NULL
+  `atualizado` timestamp NULL DEFAULT NULL,
+  `id_motorista` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-
 
 --
 -- Indexes for dumped tables
@@ -26051,6 +25769,21 @@ ALTER TABLE `email_fornecedor`
   ADD KEY `id_email` (`id_email`);
 
 --
+-- Indexes for table `email_funcionario`
+--
+ALTER TABLE `email_funcionario`
+  ADD KEY `id_email` (`id_email`),
+  ADD KEY `id_funcionario` (`id_funcionario`);
+
+--
+-- Indexes for table `email_motorista`
+--
+ALTER TABLE `email_motorista`
+  ADD PRIMARY KEY (`id_email_motorista`),
+  ADD KEY `id_motorista` (`id_motorista`),
+  ADD KEY `id_email` (`id_email`);
+
+--
 -- Indexes for table `empresa`
 --
 ALTER TABLE `empresa`
@@ -26061,24 +25794,12 @@ ALTER TABLE `empresa`
   ADD KEY `id_cnae_22` (`id_cnae_22`);
 
 --
--- Indexes for table `entrada_caminhao_empresa_carregamento`
+-- Indexes for table `endereco_pessoa`
 --
-ALTER TABLE `entrada_caminhao_empresa_carregamento`
-  ADD PRIMARY KEY (`id_entrada_cami_emp_carre`),
-  ADD KEY `id_veiculos_emp` (`id_veiculos_emp`),
-  ADD KEY `id_empresa` (`id_empresa`),
-  ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_carga` (`id_carga`);
-
---
--- Indexes for table `entrada_caminhao_empresa_descarregamento`
---
-ALTER TABLE `entrada_caminhao_empresa_descarregamento`
-  ADD PRIMARY KEY (`id_entrada_cami_emp_desc`),
-  ADD KEY `id_veiculos_emp` (`id_veiculos_emp`),
-  ADD KEY `id_fornecedor` (`id_fornecedor`),
-  ADD KEY `id_carga` (`id_carga`),
-  ADD KEY `id_entrada_notas_teca` (`id_entrada_notas_teca`);
+ALTER TABLE `endereco_pessoa`
+  ADD PRIMARY KEY (`id_endereco_pessoa`),
+  ADD KEY `id_cidade` (`id_cidade`),
+  ADD KEY `id_pessoa` (`id_pessoa`);
 
 --
 -- Indexes for table `entrada_funcionario`
@@ -26102,20 +25823,19 @@ ALTER TABLE `entrada_veiculos_terceira`
 ALTER TABLE `entrada_veiculo_carregamento`
   ADD PRIMARY KEY (`id_entrada_vei_carre`),
   ADD KEY `id_cliente` (`id_cliente`),
-  ADD KEY `id_empresa` (`id_empresa`),
   ADD KEY `id_motorista` (`id_motorista`),
-  ADD KEY `id_carga_produto` (`id_carga_produto`);
+  ADD KEY `id_produto` (`id_produto`),
+  ADD KEY `id_veiculo` (`id_veiculo`),
+  ADD KEY `id_tipo_carga` (`id_tipo_carga`);
 
 --
 -- Indexes for table `entrada_veiculo_descarregamento`
 --
 ALTER TABLE `entrada_veiculo_descarregamento`
   ADD PRIMARY KEY (`id_entrada_vei_desc`),
-  ADD KEY `id_entrada_notas_teca` (`id_entrada_notas_teca`),
   ADD KEY `id_fornecedor` (`id_fornecedor`),
-  ADD KEY `id_empresa` (`id_empresa`),
   ADD KEY `id_motorista` (`id_motorista`),
-  ADD KEY `id_carga_produto` (`id_carga_produto`);
+  ADD KEY `id_entrada_notas_fiscais` (`id_entrada_notas_fiscais`);
 
 --
 -- Indexes for table `entrada_vei_emp`
@@ -26147,6 +25867,14 @@ ALTER TABLE `fornecedor`
   ADD KEY `id_pessoa_juridica` (`id_pessoa_juridica`);
 
 --
+-- Indexes for table `funcao`
+--
+ALTER TABLE `funcao`
+  ADD PRIMARY KEY (`id_funcao`),
+  ADD KEY `id_cargo` (`id_cargo`),
+  ADD KEY `id_setores` (`id_setores`);
+
+--
 -- Indexes for table `funcionario`
 --
 ALTER TABLE `funcionario`
@@ -26155,7 +25883,9 @@ ALTER TABLE `funcionario`
   ADD KEY `id_deficiencia` (`id_deficiencia`),
   ADD KEY `id_setores` (`id_setores`),
   ADD KEY `id_cargo` (`id_cargo`),
-  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`);
+  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`),
+  ADD KEY `id_categoria_trabalho` (`id_categoria_trabalho`),
+  ADD KEY `id_jornada_trabalho` (`id_jornada_trabalho`);
 
 --
 -- Indexes for table `genero`
@@ -26168,7 +25898,8 @@ ALTER TABLE `genero`
 --
 ALTER TABLE `horario_jornada`
   ADD PRIMARY KEY (`id_horario_jornada`),
-  ADD KEY `id_jornada_trabalho` (`id_jornada_trabalho`);
+  ADD KEY `id_jornada_trabalho` (`id_jornada_trabalho`),
+  ADD KEY `id_funcionario` (`id_funcionario`);
 
 --
 -- Indexes for table `icms`
@@ -26230,7 +25961,7 @@ ALTER TABLE `metragem`
 ALTER TABLE `motorista`
   ADD PRIMARY KEY (`id_motorista`),
   ADD KEY `id_categoria_cnh` (`id_categoria_cnh`),
-  ADD KEY `id_cidade` (`id_cidade`);
+  ADD KEY `id_pessoa_fisica` (`id_pessoa_fisica`);
 
 --
 -- Indexes for table `ncm`
@@ -26245,8 +25976,8 @@ ALTER TABLE `ncm`
 ALTER TABLE `notas_fiscais`
   ADD PRIMARY KEY (`id_entrada_notas_fiscais`),
   ADD KEY `id_fornecedor` (`id_fornecedor`),
-  ADD KEY `id_empresa` (`id_empresa`),
-  ADD KEY `id_motorista` (`id_motorista`);
+  ADD KEY `id_motorista` (`id_motorista`),
+  ADD KEY `id_tipo_nf` (`id_tipo_nf`);
 
 --
 -- Indexes for table `pais`
@@ -26331,16 +26062,14 @@ ALTER TABLE `saida_caminhao_empresa_descarregamento`
 --
 ALTER TABLE `saida_funcionario`
   ADD PRIMARY KEY (`id_saida_funcionario`),
-  ADD KEY `id_funcionario` (`id_funcionario`),
-  ADD KEY `id_funcao` (`id_funcao`);
+  ADD KEY `id_funcionario` (`id_funcionario`);
 
 --
 -- Indexes for table `saida_veiculos_caregamento`
 --
 ALTER TABLE `saida_veiculos_caregamento`
   ADD PRIMARY KEY (`id_saida_vei_carre`),
-  ADD KEY `id_entrada_vei_carre` (`id_entrada_vei_carre`),
-  ADD KEY `id_entrada_vei_desc` (`id_entrada_vei_desc`);
+  ADD KEY `id_entrada_vei_carre` (`id_entrada_vei_carre`);
 
 --
 -- Indexes for table `saida_veiculos_descarregamento`
@@ -26411,6 +26140,21 @@ ALTER TABLE `telefone_fornecedor`
   ADD KEY `id_telefone` (`id_telefone`);
 
 --
+-- Indexes for table `telefone_funcionario`
+--
+ALTER TABLE `telefone_funcionario`
+  ADD KEY `id_telefone` (`id_telefone`),
+  ADD KEY `id_funcionario` (`id_funcionario`);
+
+--
+-- Indexes for table `telefone_motorista`
+--
+ALTER TABLE `telefone_motorista`
+  ADD PRIMARY KEY (`id_telefone_motorista`),
+  ADD KEY `id_motorista` (`id_motorista`),
+  ADD KEY `id_telefone` (`id_telefone`);
+
+--
 -- Indexes for table `tipo_afazeres`
 --
 ALTER TABLE `tipo_afazeres`
@@ -26458,7 +26202,6 @@ ALTER TABLE `tipo_veiculo`
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuarios`),
   ADD UNIQUE KEY `login` (`login`),
-  ADD KEY `id_tipo_usuario` (`id_tipo_usuario`),
   ADD KEY `id_funcionario` (`id_funcionario`);
 
 --
@@ -26474,7 +26217,6 @@ ALTER TABLE `veiculos_empresa`
 --
 ALTER TABLE `veiculo_motorista`
   ADD PRIMARY KEY (`id_veiculo`),
-  ADD KEY `id_tipo_veiculo` (`id_tipo_veiculo`),
   ADD KEY `id_motorista` (`id_motorista`);
 
 --
@@ -26560,12 +26302,17 @@ ALTER TABLE `deficiencia`
 -- AUTO_INCREMENT for table `descricao_produto_nota_fiscal`
 --
 ALTER TABLE `descricao_produto_nota_fiscal`
-  MODIFY `id_desc_pro_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_desc_pro_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 --
 -- AUTO_INCREMENT for table `email`
 --
 ALTER TABLE `email`
-  MODIFY `id_email` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `id_email` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+--
+-- AUTO_INCREMENT for table `email_motorista`
+--
+ALTER TABLE `email_motorista`
+  MODIFY `id_email_motorista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `empresa`
 --
@@ -26577,20 +26324,10 @@ ALTER TABLE `empresa`
 ALTER TABLE `endereco_pessoa`
   MODIFY `id_endereco_pessoa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
--- AUTO_INCREMENT for table `entrada_caminhao_empresa_carregamento`
---
-ALTER TABLE `entrada_caminhao_empresa_carregamento`
-  MODIFY `id_entrada_cami_emp_carre` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `entrada_caminhao_empresa_descarregamento`
---
-ALTER TABLE `entrada_caminhao_empresa_descarregamento`
-  MODIFY `id_entrada_cami_emp_desc` int(11) NOT NULL AUTO_INCREMENT;
---
 -- AUTO_INCREMENT for table `entrada_funcionario`
 --
 ALTER TABLE `entrada_funcionario`
-  MODIFY `id_entrada_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_entrada_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `entrada_veiculos_terceira`
 --
@@ -26600,12 +26337,12 @@ ALTER TABLE `entrada_veiculos_terceira`
 -- AUTO_INCREMENT for table `entrada_veiculo_carregamento`
 --
 ALTER TABLE `entrada_veiculo_carregamento`
-  MODIFY `id_entrada_vei_carre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_entrada_vei_carre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `entrada_veiculo_descarregamento`
 --
 ALTER TABLE `entrada_veiculo_descarregamento`
-  MODIFY `id_entrada_vei_desc` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_entrada_vei_desc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `entrada_vei_emp`
 --
@@ -26620,7 +26357,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT for table `formularios`
 --
 ALTER TABLE `formularios`
-  MODIFY `id_formularios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id_formularios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=152;
 --
 -- AUTO_INCREMENT for table `fornecedor`
 --
@@ -26635,7 +26372,7 @@ ALTER TABLE `funcao`
 -- AUTO_INCREMENT for table `funcionario`
 --
 ALTER TABLE `funcionario`
-  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `genero`
 --
@@ -26645,7 +26382,7 @@ ALTER TABLE `genero`
 -- AUTO_INCREMENT for table `horario_jornada`
 --
 ALTER TABLE `horario_jornada`
-  MODIFY `id_horario_jornada` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_horario_jornada` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 --
 -- AUTO_INCREMENT for table `icms`
 --
@@ -26695,7 +26432,7 @@ ALTER TABLE `metragem`
 -- AUTO_INCREMENT for table `motorista`
 --
 ALTER TABLE `motorista`
-  MODIFY `id_motorista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_motorista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `ncm`
 --
@@ -26705,7 +26442,7 @@ ALTER TABLE `ncm`
 -- AUTO_INCREMENT for table `notas_fiscais`
 --
 ALTER TABLE `notas_fiscais`
-  MODIFY `id_entrada_notas_fiscais` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_entrada_notas_fiscais` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 --
 -- AUTO_INCREMENT for table `pais`
 --
@@ -26715,7 +26452,7 @@ ALTER TABLE `pais`
 -- AUTO_INCREMENT for table `permissoes`
 --
 ALTER TABLE `permissoes`
-  MODIFY `id_permissoes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id_permissoes` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 --
 -- AUTO_INCREMENT for table `pessoa`
 --
@@ -26760,17 +26497,17 @@ ALTER TABLE `saida_caminhao_empresa_descarregamento`
 -- AUTO_INCREMENT for table `saida_funcionario`
 --
 ALTER TABLE `saida_funcionario`
-  MODIFY `id_saida_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_saida_funcionario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `saida_veiculos_caregamento`
 --
 ALTER TABLE `saida_veiculos_caregamento`
-  MODIFY `id_saida_vei_carre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_saida_vei_carre` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `saida_veiculos_descarregamento`
 --
 ALTER TABLE `saida_veiculos_descarregamento`
-  MODIFY `id_saida_vei_emp` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_saida_vei_emp` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `saida_veiculos_terceiros`
 --
@@ -26795,7 +26532,12 @@ ALTER TABLE `tabelacest`
 -- AUTO_INCREMENT for table `telefone`
 --
 ALTER TABLE `telefone`
-  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+--
+-- AUTO_INCREMENT for table `telefone_motorista`
+--
+ALTER TABLE `telefone_motorista`
+  MODIFY `id_telefone_motorista` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tipo_afazeres`
 --
@@ -26835,7 +26577,7 @@ ALTER TABLE `tipo_veiculo`
 -- AUTO_INCREMENT for table `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuarios` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `veiculos_empresa`
 --
@@ -26845,7 +26587,7 @@ ALTER TABLE `veiculos_empresa`
 -- AUTO_INCREMENT for table `veiculo_motorista`
 --
 ALTER TABLE `veiculo_motorista`
-  MODIFY `id_veiculo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_veiculo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

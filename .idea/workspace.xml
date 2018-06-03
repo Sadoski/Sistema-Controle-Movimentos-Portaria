@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bec4c958-f4cf-4f90-bfec-937c191b2209" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormCarreEnt.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormCarreSai.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormCliente.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormDescaEnt.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormDescaSai.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormEmpresa.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormFornecedor.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormFuncEnt.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormFuncSai.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormFuncionario.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormMotorista.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormNF.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormPesFis.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormPesJur.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormRelatori.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/controller/permissaoFormUsuPer.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classLogin.py" afterPath="$PROJECT_DIR$/classes/classLogin.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classes/classPrincipal.py" afterPath="$PROJECT_DIR$/classes/classPrincipal.py" />
-    </list>
+    <list default="true" id="bec4c958-f4cf-4f90-bfec-937c191b2209" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -192,7 +173,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="73" />
     <option name="y" value="10" />
     <option name="width" value="1301" />
@@ -231,11 +212,6 @@
             <path>
               <item name="Sistema Controle Movimentos Portaria" type="b2602c69:ProjectViewProjectNode" />
               <item name="Sistema Controle Movimentos Portaria" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Sistema Controle Movimentos Portaria" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Sistema Controle Movimentos Portaria" type="462c0819:PsiDirectoryNode" />
-              <item name="controller" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -488,15 +464,14 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="784" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="784" extended-state="7" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20863836" sideWeight="0.49209487" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20863836" sideWeight="0.49209487" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973805" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22033899" sideWeight="0.5060514" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973805" sideWeight="0.4969743" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32973805" sideWeight="0.4969743" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2470238" sideWeight="0.49394855" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2470238" sideWeight="0.49394855" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18489985" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2591508" sideWeight="0.5079051" order="2" side_tool="false" content_ui="tabs" />
