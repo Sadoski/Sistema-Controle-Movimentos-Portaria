@@ -10,23 +10,6 @@ from classes.classCarreSaida import CarregamentoSaida
 from classes.classCadPessoaJuridica import CadastroPessoaJuridica
 from classes.classRelatorio import Relatorio
 from classes.classUsuarioPermissao import UsuarioPermissao
-from controller.permissaoFormCarreEnt import PermissaoFormCarreEnt
-from controller.permissaoFormCarreSai import PermissaoFormCarreSai
-from controller.permissaoFormCliente import PermissaoFormCliente
-from controller.permissaoFormDescaEnt import PermissaoFormDescaEnt
-from controller.permissaoFormDescaSai import PermissaoFormDescaSai
-from controller.permissaoFormEmpresa import PermissaoFormEmpresa
-from controller.permissaoFormFornecedor import PermissaoFormFornecedor
-from controller.permissaoFormFuncEnt import PermissaoFormFunceEnt
-from controller.permissaoFormFuncSai import PermissaoFormFunceSai
-from controller.permissaoFormFuncionario import PermissaoFormFuncionario
-from controller.permissaoFormMotorista import PermissaoFormMotorista
-from controller.permissaoFormNF import PermissaoFormNF
-from controller.permissaoFormPesFis import PermissaoFormPesFis
-from controller.permissaoFormPesJur import PermissaoFormPesJur
-from controller.permissaoFormRelatori import PermissaoFormRelatorio
-from controller.permissaoFormUsuPer import PermissaoFormUsuPer
-
 from telas.frmMainHouse import Ui_frmMainHouse
 from .classEmpresa import Empresa
 from .classCadFuncionarios import CadastroFuncionario
