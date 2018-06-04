@@ -37,8 +37,12 @@ class Ui_frmRelatorio(object):
 
         self.tabPesquisar = QtGui.QTableWidget(frmRelatorio)
         self.tabPesquisar.setEnabled(False)
+        self.tabPesquisar.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)
+        self.tabPesquisar.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.tabPesquisar.setGeometry(QtCore.QRect(10, 140, 960, 371))
         self.tabPesquisar.setObjectName(_fromUtf8("tabPesquisar"))
+        self.tabPesquisar.verticalHeader().setVisible(False)
+        self.tabPesquisar.verticalHeader().setCascadingSectionResizes(True)
 
         self.btnPesquisar = QtGui.QPushButton(frmRelatorio)
         self.btnPesquisar.setEnabled(False)
