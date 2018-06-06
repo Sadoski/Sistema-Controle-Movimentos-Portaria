@@ -295,3 +295,91 @@ class NotaFiscalRomanieo(object):
             return result
         except BaseException as os:
             return False
+
+    def pesquisarForneRel(self, pesquisa):
+        try:
+            _sql = "SELECT p.nome_razao FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = r.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = r.id_pessoa_juridica LEFT OUTER JOIN pessoa p ON p.id_pessoa = f.id_pessoa_fisica OR p.id_pessoa = j.id_pessoa_juridica WHERE n.id_fornecedor =  '"+str(pesquisa)+"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarMotoRel(self, pesquisa):
+        try:
+            _sql = "SELECT p.nome_razao FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = m.id_pessoa_fisica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE n.id_motorista =  '"+str(pesquisa)+"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarProdRel(self, pesquisa):
+        try:
+            _sql = "SELECT p.descricao FROM notas_fiscais n INNER JOIN descricao_produto_nota_fiscal d ON d.id_notas_fiscais = n.id_entrada_notas_fiscais INNER JOIN produto p ON p.id_produto = d.id_produto WHERE n.id_entrada_notas_fiscais = '"+str(pesquisa)+"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchone()[0]
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarCodNfRel(self, pesquisa):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.id_fornecedor, n.id_motorista, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor WHERE n.numero_nota =  '" + pesquisa + "'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarNumNfRel(self, pesquisa):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.id_fornecedor, n.id_motorista, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor WHERE n.numero_nota =  '"+pesquisa+"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarForNfRel(self, pesquisa):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.id_fornecedor, n.id_motorista, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = r.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = r.id_pessoa_juridica LEFT OUTER JOIN pessoa p ON p.id_pessoa = f.id_pessoa_fisica OR p.id_pessoa = j.id_pessoa_juridica WHERE p.nome_razao LIKE  '%"+pesquisa+"%'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarMotoNfRel(self, pesquisa):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.id_fornecedor, n.id_motorista, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = m.id_pessoa_fisica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa WHERE p.nome_razao LIKE  '%"+pesquisa+"%'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarProNfRel(self, pesquisa):
+        try:
+            _sql = "SELECT n.id_entrada_notas_fiscais, t.tipo, n.serie, n.numero_nota, n.id_fornecedor, n.id_motorista, n.data_emissao, n.data_entrada, n.valor_total, n.valor_icms, n.valor_ipi, n.alicota_icms, n.alicota_ipi FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN motorista m ON m.id_motorista = n.id_motorista INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor INNER JOIN descricao_produto_nota_fiscal d ON d.id_notas_fiscais = n.id_entrada_notas_fiscais INNER JOIN produto p ON p.id_produto = d.id_produto WHERE p.descricao LIKE  '%"+pesquisa+"%'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            #self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

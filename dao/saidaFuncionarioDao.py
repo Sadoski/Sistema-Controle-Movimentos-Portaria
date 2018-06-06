@@ -38,4 +38,42 @@ class SaidaFuncionarioDao(object):
             self.__conexao.conn.rollback()
             return False
 
+    def pesquisarCodFuncRel(self, pesquisar):
+        try:
+            _sql = "SELECT p.id_saida_funcionario, p.data, p.hora, n.data, n.hora, s.nome_razao, t.descricao, l.descricao FROM saida_funcionario p LEFT OUTER JOIN entrada_funcionario n ON n.id_saida_funcionario = p.id_saida_funcionario INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE p.id_funcionario = '"+pesquisar+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
 
+    def pesquisarFuncioFuncRel(self, pesquisar):
+        try:
+            _sql = "SELECT p.id_saida_funcionario, p.data, p.hora, n.data, n.hora, s.nome_razao, t.descricao, l.descricao FROM saida_funcionario p LEFT OUTER JOIN entrada_funcionario n ON n.id_saida_funcionario = p.id_saida_funcionario INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE s.nome_razao LIKE  '%"+pesquisar+"%'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarSetorFuncRel(self, pesquisar):
+        try:
+            _sql = "SELECT p.id_saida_funcionario, p.data, p.hora, n.data, n.hora, s.nome_razao, t.descricao, l.descricao FROM saida_funcionario p LEFT OUTER JOIN entrada_funcionario n ON n.id_saida_funcionario = p.id_saida_funcionario INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE t.descricao = '"+pesquisar+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarCargoFuncRel(self, pesquisar):
+        try:
+            _sql = "SELECT p.id_saida_funcionario, p.data, p.hora, n.data, n.hora, s.nome_razao, t.descricao, l.descricao FROM saida_funcionario p LEFT OUTER JOIN entrada_funcionario n ON n.id_saida_funcionario = p.id_saida_funcionario INNER JOIN funcionario f ON f.id_funcionario = p.id_funcionario INNER JOIN pessoa_fisica e ON e.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN pessoa s ON s.id_pessoa = e.id_pessoa INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo l ON l.id_cargo = f.id_cargo WHERE l.descricao = '"+pesquisar+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False

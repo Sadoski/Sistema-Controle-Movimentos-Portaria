@@ -1,22 +1,30 @@
-import sys
-import datetime
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 
 from classes.CSV import RelatorioPessoaFisicaCSV
+from classes.NotasFiscaisCSV import NotasFiscaisCSV
 from classes.classValidator import Validator
 from classes.clienteCSV import ClienteCSV
 from classes.empresaCSV import EmpresaCSV
+from classes.entSaiCarreCSV import EntSaiCarreCSV
+from classes.entSaiDescaCSV import EntSaiDescaCSV
+from classes.entSaiFuncCSV import EntSaiFuncCSV
 from classes.fornecedorCSV import FornecedorCSV
 from classes.funcionarioCSV import FuncionarioCSV
 from classes.pessoaJuridicaCSV import RelatorioPessoaJuridicaCSV
+from classes.usuarioCSV import UsuarioCSV
+from dao.carregamentoSaidaDao import CarregamentoSaidaDao
 from dao.clienteDao import ClienteDao
+from dao.descarregamentoSaidaDao import DescarreSaidaDao
 from dao.empresaDao import EmpresaDao
 from dao.fornecedorDao import FornecedorDao
 from dao.funcionarioDao import FuncionarioDao
+from dao.notaFiscalRomaneioDao import NotaFiscalRomanieo
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from dao.pesquisarPessoaJuridicaDao import PesquisarPessoaJuridicaDao
+from dao.saidaFuncionarioDao import SaidaFuncionarioDao
+from dao.usuarioPermissaoDao import UsuarioPermissaoDao
 from telas.frmRelatorio import Ui_frmRelatorio
 
 
@@ -80,6 +88,26 @@ class Relatorio(QtGui.QDialog):
             self.removerColuna()
             self.ui.tabPesquisar.setColumnCount(19)
             self.ui.tabPesquisar.setRowCount(0)
+        elif self.ui.radBtnUsuarios.isChecked():
+            self.removerColuna()
+            self.ui.tabPesquisar.setColumnCount(5)
+            self.ui.tabPesquisar.setRowCount(0)
+        elif self.ui.radBtnNf.isChecked():
+            self.removerColuna()
+            self.ui.tabPesquisar.setColumnCount(14)
+            self.ui.tabPesquisar.setRowCount(0)
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+            self.removerColuna()
+            self.ui.tabPesquisar.setColumnCount(12)
+            self.ui.tabPesquisar.setRowCount(0)
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+            self.removerColuna()
+            self.ui.tabPesquisar.setColumnCount(12)
+            self.ui.tabPesquisar.setRowCount(0)
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+            self.removerColuna()
+            self.ui.tabPesquisar.setColumnCount(8)
+            self.ui.tabPesquisar.setRowCount(0)
 
 
     def limparRad(self):
@@ -102,7 +130,11 @@ class Relatorio(QtGui.QDialog):
         self.ui.radBtn2.setText(btn2)
         self.ui.radBtn3.setText(btn3)
         self.ui.radBtn4.setText(btn4)
-        self.ui.radBtn5.setText(btn5)
+        if btn5 == False:
+            self.ui.radBtn5.setEnabled(btn5)
+        else:
+            self.ui.radBtn5.setEnabled(True)
+            self.ui.radBtn5.setText(btn5)
         if btn6 == False:
             self.ui.radBtn6.setEnabled(btn6)
         else:
@@ -123,6 +155,16 @@ class Relatorio(QtGui.QDialog):
             self.camposAtivar("Codigo", "Nome/Razão Social", "Sobrenome/Fantasia", "CPF/CNPJ", "RG/Ins. Estadual", False)
         elif self.ui.radBtnFornecedor.isChecked():
             self.camposAtivar("Codigo", "Nome/Razão Social", "Sobrenome/Fantasia", "CPF/CNPJ", "RG/Ins. Estadual", False)
+        elif self.ui.radBtnUsuarios.isChecked():
+            self.camposAtivar("Codigo", "Nome", "Setor", "Cargo", "Login", False)
+        elif self.ui.radBtnNf.isChecked():
+            self.camposAtivar("Codigo", "Nº NF", "Fornecedor", "Motorista", "Produto", False)
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+            self.camposAtivar("Codigo", "Motorista", "Placa Veiculo", "Carga", "Produto", 'Cliente')
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+            self.camposAtivar("Codigo", "Nº NF", "Produto", "Motorista", "Placa Veiculo", 'Fornecedor')
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+            self.camposAtivar("Codigo", "Funcionario", "Setor", "Cargo", False, False)
 
 
 
@@ -259,6 +301,117 @@ class Relatorio(QtGui.QDialog):
             elif self.ui.radBtn5.isChecked():
                 dados = forDao.pesquisaRgFisica(self.ui.txtPesquisar.text())
                 self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnUsuarios.isChecked():
+
+            usuDao = UsuarioPermissaoDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = usuDao.pesquisaCodigoUsuario(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn2.isChecked():
+                dados = usuDao.pesquisarNomeFuncionario(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn3.isChecked():
+                dados = usuDao.pesquisaSetor(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn4.isChecked():
+                dados = usuDao.pesquisaCargo(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn5.isChecked():
+                dados = usuDao.pesquisaLogin(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnNf.isChecked():
+
+            nfDao = NotaFiscalRomanieo()
+
+            if self.ui.radBtn1.isChecked():
+                dados = nfDao.pesquisarCodNfRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn2.isChecked():
+                dados = nfDao.pesquisarNumNfRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn3.isChecked():
+                dados = nfDao.pesquisarForNfRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn4.isChecked():
+                dados = nfDao.pesquisarMotoNfRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn5.isChecked():
+                dados = nfDao.pesquisarProNfRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+
+            entSaiDao = CarregamentoSaidaDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarMotoCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarPlacaCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargaCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarProdCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarClieCarreRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+
+            entSaiDao = DescarreSaidaDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarNumNfDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarProdutoDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarMotoDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarPlacaDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarFornDescaRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+
+            entSaiDao = SaidaFuncionarioDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodFuncRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarFuncioFuncRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarSetorFuncRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargoFuncRel(self.ui.txtPesquisar.text())
+                self.setarTabelaPesquisa(dados)
+            elif self.ui.radBtn5.isChecked():
+                pass
             elif self.ui.radBtn6.isChecked():
                 pass
 
@@ -589,6 +742,184 @@ class Relatorio(QtGui.QDialog):
 
                 linha += 1
 
+        elif self.ui.radBtnUsuarios.isChecked():
+            qtde_registros = len(__retorno)
+            self.ui.tabPesquisar.setRowCount(qtde_registros)
+
+            linha = 0
+            for pesqui in __retorno:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                nome = pesqui[1]
+                sobrenome = pesqui[2]
+                setor = pesqui[3]
+                cargo = pesqui[4]
+                login = pesqui[5]
+
+                # preenchendo o grid de pesquisa
+                self.ui.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.ui.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(nome + ' ' + sobrenome)))
+                self.ui.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(setor)))
+                self.ui.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(cargo)))
+                self.ui.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(login)))
+
+                linha += 1
+
+        elif self.ui.radBtnNf.isChecked():
+            qtde_registros = len(__retorno)
+            self.ui.tabPesquisar.setRowCount(qtde_registros)
+
+            nf = NotaFiscalRomanieo()
+            linha = 0
+            for pesqui in __retorno:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                tipo = pesqui[1]
+                serie = pesqui[2]
+                numNf = pesqui[3]
+                fornecedor = nf.pesquisarForneRel(pesqui[4])
+                motorista = nf.pesquisarMotoRel(pesqui[5])
+                dataEmissao = pesqui[6]
+                dataEntrada = pesqui[7]
+                valorTotal = pesqui[8]
+                valorIcms = pesqui[9]
+                valorIpi = pesqui[10]
+                alicotaIcms = pesqui[11]
+                alicotaIpi = pesqui[12]
+                produtos = nf.pesquisarProdRel(str(codigo))
+
+                # preenchendo o grid de pesquisa
+                self.ui.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.ui.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(tipo)))
+                self.ui.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(serie)))
+                self.ui.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(numNf)))
+                self.ui.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(fornecedor)))
+                self.ui.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(motorista)))
+                self.ui.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(dataEmissao)))
+                self.ui.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(dataEntrada)))
+                self.ui.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(valorTotal)))
+                self.ui.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(valorIcms)))
+                self.ui.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(valorIpi)))
+                self.ui.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(alicotaIcms)))
+                self.ui.tabPesquisar.setItem(linha, 12, QtGui.QTableWidgetItem(str(alicotaIpi)))
+                self.ui.tabPesquisar.setItem(linha, 13, QtGui.QTableWidgetItem(str(produtos)))
+
+                linha += 1
+
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+            qtde_registros = len(__retorno)
+            self.ui.tabPesquisar.setRowCount(qtde_registros)
+
+            entSaiDao = CarregamentoSaidaDao()
+            linha = 0
+            for pesqui in __retorno:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                dataEnt = pesqui[1]
+                horaEnt = pesqui[2]
+                dataSai = pesqui[3]
+                horaSai = pesqui[4]
+                carga = pesqui[5]
+                produto = pesqui[6]
+                motorista = entSaiDao.pesquisarMotoristaCarreRel(pesqui[7])
+                marca = pesqui[8]
+                modelo = pesqui[9]
+                placa = pesqui[10]
+                cliente = entSaiDao.pesquisarClienteCarreRel(pesqui[11])
+
+
+                # preenchendo o grid de pesquisa
+                self.ui.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.ui.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(dataEnt)))
+                self.ui.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(horaEnt)))
+                self.ui.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(dataSai)))
+                self.ui.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(horaSai)))
+                self.ui.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(carga)))
+                self.ui.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(produto)))
+                self.ui.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(motorista)))
+                self.ui.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(marca)))
+                self.ui.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(modelo)))
+                self.ui.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(placa)))
+                self.ui.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(cliente)))
+
+                linha += 1
+
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+            qtde_registros = len(__retorno)
+            self.ui.tabPesquisar.setRowCount(qtde_registros)
+
+            entDao = DescarreSaidaDao()
+
+            linha = 0
+            for pesqui in __retorno:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                data = pesqui[1]
+                hora = pesqui[2]
+                dataSai = pesqui[3]
+                horaSai = pesqui[4]
+                numNf = pesqui[5]
+                produto = pesqui[6]
+                motorista = entDao.pesquisarMotoristaDescaRel(pesqui[7])
+                marca = pesqui[8]
+                modelo = pesqui[9]
+                placa = pesqui[10]
+                fornecedor = entDao.pesquisarFornecedorDescaRel(pesqui[11])
+
+                # preenchendo o grid de pesquisa
+                self.ui.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.ui.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(data)))
+                self.ui.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(hora)))
+                self.ui.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(dataSai)))
+                self.ui.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(horaSai)))
+                self.ui.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(numNf)))
+                self.ui.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(produto)))
+                self.ui.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(motorista)))
+                self.ui.tabPesquisar.setItem(linha, 8, QtGui.QTableWidgetItem(str(marca)))
+                self.ui.tabPesquisar.setItem(linha, 9, QtGui.QTableWidgetItem(str(modelo)))
+                self.ui.tabPesquisar.setItem(linha, 10, QtGui.QTableWidgetItem(str(placa)))
+                self.ui.tabPesquisar.setItem(linha, 11, QtGui.QTableWidgetItem(str(fornecedor)))
+
+
+                linha += 1
+
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+            qtde_registros = len(__retorno)
+            self.ui.tabPesquisar.setRowCount(qtde_registros)
+
+            entDao = DescarreSaidaDao()
+
+            linha = 0
+            for pesqui in __retorno:
+                # capturando os dados da tupla
+
+                codigo = pesqui[0]
+                data = pesqui[1]
+                hora = pesqui[2]
+                dataSai = pesqui[3]
+                horaSai = pesqui[4]
+                funcionario = pesqui[5]
+                setor = pesqui[6]
+                cargo = pesqui[7]
+
+                # preenchendo o grid de pesquisa
+                self.ui.tabPesquisar.setItem(linha, 0, QtGui.QTableWidgetItem(str(codigo)))
+                self.ui.tabPesquisar.setItem(linha, 1, QtGui.QTableWidgetItem(str(data)))
+                self.ui.tabPesquisar.setItem(linha, 2, QtGui.QTableWidgetItem(str(hora)))
+                self.ui.tabPesquisar.setItem(linha, 3, QtGui.QTableWidgetItem(str(dataSai)))
+                self.ui.tabPesquisar.setItem(linha, 4, QtGui.QTableWidgetItem(str(horaSai)))
+                self.ui.tabPesquisar.setItem(linha, 5, QtGui.QTableWidgetItem(str(funcionario)))
+                self.ui.tabPesquisar.setItem(linha, 6, QtGui.QTableWidgetItem(str(setor)))
+                self.ui.tabPesquisar.setItem(linha, 7, QtGui.QTableWidgetItem(str(cargo)))
+
+
+                linha += 1
+
+
     def gerarCsv(self):
         if self.ui.radBtnPessoaFisica.isChecked():
 
@@ -817,6 +1148,195 @@ class Relatorio(QtGui.QDialog):
                     FornecedorCSV(dados)
                 else:
                     QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnUsuarios.isChecked():
+
+            usuDao = UsuarioPermissaoDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = usuDao.pesquisaCodigoUsuario(self.ui.txtPesquisar.text())
+                if dados != []:
+                    UsuarioCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = usuDao.pesquisarNomeFuncionario(self.ui.txtPesquisar.text())
+                if dados != []:
+                    UsuarioCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = usuDao.pesquisaSetor(self.ui.txtPesquisar.text())
+                if dados != []:
+                    UsuarioCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = usuDao.pesquisaCargo(self.ui.txtPesquisar.text())
+                if dados != []:
+                    UsuarioCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = usuDao.pesquisaLogin(self.ui.txtPesquisar.text())
+                if dados != []:
+                    UsuarioCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnNf.isChecked():
+
+            nf = NotaFiscalRomanieo()
+
+            if self.ui.radBtn1.isChecked():
+                dados = nf.pesquisarCodNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = nf.pesquisarNumNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = nf.pesquisarForNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = nf.pesquisarMotoNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = nf.pesquisarProNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                pass
+
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+
+            entSaiDao = CarregamentoSaidaDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiCarreCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarMotoCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiCarreCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarPlacaCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiCarreCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargaCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    NotasFiscaisCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarProdCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiCarreCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarClieCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiCarreCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+
+            entSaiDao = DescarreSaidaDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarNumNfDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarProdutoDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarMotoDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarPlacaDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarFornDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiDescaCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+
+            entSaiDao = SaidaFuncionarioDao()
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiFuncCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarFuncioFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiFuncCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarSetorFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiFuncCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargoFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    EntSaiFuncCSV(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                pass
             elif self.ui.radBtn6.isChecked():
                 pass
 
@@ -1088,3 +1608,223 @@ class Relatorio(QtGui.QDialog):
                     QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
             elif self.ui.radBtn6.isChecked():
                pass
+
+        elif self.ui.radBtnUsuarios.isChecked():
+
+            usuDao = UsuarioPermissaoDao()
+            from classes.usuarioHTML import TAG
+
+            if self.ui.radBtn1.isChecked():
+                dados = usuDao.pesquisaCodigoUsuario(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = usuDao.pesquisarNomeFuncionario(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = usuDao.pesquisaSetor(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = usuDao.pesquisaCargo(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = usuDao.pesquisaLogin(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+               pass
+
+        elif self.ui.radBtnNf.isChecked():
+
+            nfDao = NotaFiscalRomanieo()
+            from classes.notasFiscaisHTML import TAG
+
+            if self.ui.radBtn1.isChecked():
+                dados = nfDao.pesquisarCodNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = nfDao.pesquisarNumNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = nfDao.pesquisarForNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = nfDao.pesquisarMotoNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = nfDao.pesquisarProNfRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+               pass
+
+        elif self.ui.radBtnEntSaiCarregamento.isChecked():
+
+            entSaiDao = CarregamentoSaidaDao()
+            from classes.entSaiCarreHTML import TAG
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarMotoCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarPlacaCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargaCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarProdCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarClieCarreRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+
+        elif self.ui.radBtnEntSaiDescarregamento.isChecked():
+
+            entSaiDao = DescarreSaidaDao()
+            from classes.entSaiDescaHTML import TAG
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarNumNfDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarProdutoDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarMotoDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                dados = entSaiDao.pesquisarPlacaDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn6.isChecked():
+                dados = entSaiDao.pesquisarFornDescaRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+
+        elif self.ui.radBtnEntSaiFuncionario.isChecked():
+
+            entSaiDao = SaidaFuncionarioDao()
+            from classes.entSaiFuncHTML import TAG
+
+            if self.ui.radBtn1.isChecked():
+                dados = entSaiDao.pesquisarCodFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn2.isChecked():
+                dados = entSaiDao.pesquisarFuncioFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn3.isChecked():
+                dados = entSaiDao.pesquisarSetorFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn4.isChecked():
+                dados = entSaiDao.pesquisarCargoFuncRel(self.ui.txtPesquisar.text())
+                if dados != []:
+                    html = TAG
+                    html.gerar(dados)
+                else:
+                    QMessageBox.warning(QWidget(), 'Atenção', "Não à dados de pesquisa para gerar o arquivo")
+            elif self.ui.radBtn5.isChecked():
+                pass
+            elif self.ui.radBtn6.isChecked():
+                pass

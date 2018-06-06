@@ -58,6 +58,7 @@ class Ui_frmRelatorio(object):
         self.txtPesquisar.setObjectName(_fromUtf8("txtPesquisar"))
 
         self.btnGerarCsv = QtGui.QPushButton(frmRelatorio)
+        self.btnGerarCsv.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnGerarCsv.setEnabled(False)
         self.btnGerarCsv.setGeometry(QtCore.QRect(600, 530, 161, 31))
         icon1 = QtGui.QIcon()
@@ -67,6 +68,7 @@ class Ui_frmRelatorio(object):
         self.btnGerarCsv.setObjectName(_fromUtf8("btnGerarCsv"))
 
         self.btnGerarHtml = QtGui.QPushButton(frmRelatorio)
+        self.btnGerarHtml.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnGerarHtml.setEnabled(False)
         self.btnGerarHtml.setGeometry(QtCore.QRect(770, 530, 161, 31))
         icon2 = QtGui.QIcon()
