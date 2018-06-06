@@ -9,6 +9,7 @@ from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetMotorista import Motorista
 from controller.getSetPessoaFisica import PessoaFisica
+from dao.empresaDao import EmpresaDao
 from dao.motoristaDao import MotoristaDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from telas.frmCadMotorista import Ui_frmCadastroMotorista
@@ -48,6 +49,7 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtPlaca.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
         self.ui.txtContatoEmail.setValidator(self.validator)
+        self.ui.txtEnderecoEmail.setValidator(self.validator)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastrar)
@@ -168,16 +170,21 @@ class CadastroMotoristas(QtGui.QDialog):
                     self.ui.txtSobrenome.setText(str(empres[3]))
 
     def novo(self):
-        self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
-        self.ui.tabWiAdicionais.setEnabled(self.cada)
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(self.cada)
-        self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(self.edit)
-        self.ui.btnDeletar.setEnabled(False)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            self.limparCampos()
+            self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+            self.ui.tabWiAdicionais.setEnabled(self.cada)
+            self.ui.btnNovo.setEnabled(False)
+            self.ui.btnSalvar.setEnabled(self.cada)
+            self.ui.btnEditar.setEnabled(False)
+            self.ui.btnCancelar.setEnabled(self.edit)
+            self.ui.btnDeletar.setEnabled(False)
 
-        self.addCategoria()
+            self.addCategoria()
+        else:
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
     def botaoNovo(self):
         self.ui.txtCodigo.clear()
@@ -626,25 +633,30 @@ class CadastroMotoristas(QtGui.QDialog):
         return categoria
 
     def cadastrar(self):
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtCnh.text() != '' and self.ui.txtPis.text() != '' and self.ui.txtMarca.text() != '' and self.ui.txtModelo.text() != '' and self.removerCaracter(self.ui.txtPlaca.text()) != '':
+                motoDao = MotoristaDao()
+                idPessoa = motoDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
+                categoria = self.getIndexCategoria()
+                motoris = Motorista(None, idPessoa, self.ui.txtCodigo.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtCnpj.text(), self.ui.txtPis.text(), self.ui.txtCnh.text(), categoria, self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.ui.txtObservacao.toPlainText(), 1)
+                motoDao.cadastrarMotorista(motoris)
+                self.idMotorista = motoDao.ultimoRegistro()
+                motoDao.cadastrarVeiculoMotorista(self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.idMotorista)
 
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtCnh.text() != '' and self.ui.txtPis.text() != '' and self.ui.txtMarca.text() != '' and self.ui.txtModelo.text() != '' and self.removerCaracter(self.ui.txtPlaca.text()) != '':
-            motoDao = MotoristaDao()
-            idPessoa = motoDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
-            categoria = self.getIndexCategoria()
-            motoris = Motorista(None, idPessoa, self.ui.txtCodigo.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtCnpj.text(), self.ui.txtPis.text(), self.ui.txtCnh.text(), categoria, self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.ui.txtObservacao.toPlainText(), 1)
-            motoDao.cadastrarMotorista(motoris)
-            self.idMotorista = motoDao.ultimoRegistro()
-            motoDao.cadastrarVeiculoMotorista(self.ui.txtMarca.text(), self.ui.txtModelo.text(), self.removerCaracter(self.ui.txtPlaca.text()), self.idMotorista)
+                if self.contatoAdd != []:
+                    self.cadastrarTelefone()
 
-            if self.contatoAdd != []:
-                self.cadastrarTelefone()
+                if self.emailAdd != []:
+                    self.cadastrarEmail()
 
-            if self.emailAdd != []:
-                self.cadastrarEmail()
+                self.cancelar()
+            else:
+                self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
 
-            self.cancelar()
         else:
-            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):

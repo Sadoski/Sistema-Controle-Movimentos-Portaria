@@ -12,6 +12,7 @@ from controller.getSetContatoEmail import ContatoEmail
 from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetFuncionario import Funcionario
 from controller.getSetPessoaFisica import PessoaFisica
+from dao.empresaDao import EmpresaDao
 from dao.funcionarioDao import FuncionarioDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from telas.frmCadFuncionario import Ui_frmCadastroFuncionario
@@ -54,6 +55,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
+        self.ui.txtEnderecoEmail.setValidator(self.validator)
         self.ui.txtUf.setValidator(self.validator)
 
         self.ui.btnNovo.clicked.connect(self.novo)
@@ -202,22 +204,27 @@ class CadastroFuncionario(QtGui.QDialog):
             return False
 
     def novo(self):
-        self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
-        self.ui.tabWiAdicionais.setEnabled(self.cada)
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(self.cada)
-        self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(self.canc)
-        self.ui.btnDeletar.setEnabled(False)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            self.limparCampos()
+            self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+            self.ui.tabWiAdicionais.setEnabled(self.cada)
+            self.ui.btnNovo.setEnabled(False)
+            self.ui.btnSalvar.setEnabled(self.cada)
+            self.ui.btnEditar.setEnabled(False)
+            self.ui.btnCancelar.setEnabled(self.canc)
+            self.ui.btnDeletar.setEnabled(False)
 
 
-        self.setEstadoCivil()
-        self.setDeficiencia()
-        self.setCategoriaTrabalho()
-        self.setSetores()
-        self.setCargo()
-        self.setJornadaTrabalho()
+            self.setEstadoCivil()
+            self.setDeficiencia()
+            self.setCategoriaTrabalho()
+            self.setSetores()
+            self.setCargo()
+            self.setJornadaTrabalho()
+        else:
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
     def botaoNovo(self):
         self.ui.txtCodigo.clear()
@@ -1138,32 +1145,35 @@ class CadastroFuncionario(QtGui.QDialog):
             self.mensagem.warning('Atenção', "Data invalidas, por favor insira uma data valida")
 
     def cadastrar(self):
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '' and len(self.removerCaracter(self.ui.txtDataEmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataAdmissao.text())) != '' :
-            if self.getTime() == True:
-                funcionarioDao = FuncionarioDao()
-                idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
-                idCivil = self.getIndexCivil()
-                idDeficiencia = self.getIndexDeficiencia()
-                idCategoria = self.getIndexCategoria()
-                idSetor = self.getIndexSetor()
-                idCargo = self.getIndexCargo()
-                self.idJornada = self.getIndexJornada()
-                funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtNome.text() != '' and self.ui.txtSobrenome.text() != '' and self.ui.txtNumCarteira.text() != '' and self.ui.txtSerie.text() != '' and self.ui.txtUf.text() != '' and self.ui.txtPis.text() != '' and len(self.removerCaracter(self.ui.txtDataEmissao.text())) != '' and len(self.removerCaracter(self.ui.txtDataAdmissao.text())) != '' :
+                if self.getTime() == True:
+                    funcionarioDao = FuncionarioDao()
+                    idPessoa = funcionarioDao.pesquisarPessoaFisico(self.ui.txtCodigo.text())
+                    idCivil = self.getIndexCivil()
+                    idDeficiencia = self.getIndexDeficiencia()
+                    idCategoria = self.getIndexCategoria()
+                    idSetor = self.getIndexSetor()
+                    idCargo = self.getIndexCargo()
+                    self.idJornada = self.getIndexJornada()
+                    funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
 
-                funcionarioDao.cadastrarFuncionarioFisico(funcionario)
-                self.idFuncionrio = funcionarioDao.ultimoRegistro()
+                    funcionarioDao.cadastrarFuncionarioFisico(funcionario)
+                    self.idFuncionrio = funcionarioDao.ultimoRegistro()
 
-                self.cadastrarHorarios()
+                    self.cadastrarHorarios()
 
-                if self.contatoAdd != []:
-                    self.cadastrarTelefone()
+                    if self.contatoAdd != []:
+                        self.cadastrarTelefone()
 
-                if self.emailAdd != []:
-                    self.cadastrarEmail()
+                    if self.emailAdd != []:
+                        self.cadastrarEmail()
 
-                self.cancelar()
-        else:
-            self.mensagem.warning('Atenção',"Por Favor preencha os campos obrigatorios")
+                    self.cancelar()
+            else:
+                self.mensagem.warning('Atenção',"Por Favor preencha os campos obrigatorios")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):

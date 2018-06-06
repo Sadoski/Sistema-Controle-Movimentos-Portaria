@@ -9,6 +9,7 @@ from classes.classValidator import Validator
 from controller.getSetFuncionario import Funcionario
 from controller.getSetUsuario import UsuarioGetSet
 from controller.getSetUsuarioPermissao import UsuarioPermissoes
+from dao.empresaDao import EmpresaDao
 from dao.funcionarioDao import FuncionarioDao
 from dao.usuarioPermissaoDao import UsuarioPermissaoDao
 from telas.frmCadUsuarios import Ui_frmCadastroUsuarios
@@ -88,13 +89,18 @@ class UsuarioPermissao(QtGui.QDialog):
         self.ui.stackedWidget.setCurrentIndex(2)
 
     def ativarPesquisaUsuario(self):
-        self.ui.grbFuncionarioPesquisa.setEnabled(self.cada)
-        self.ui.tabwCadPermUsuario.setEnabled(self.cada)
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(self.cada)
-        self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(self.edit)
-        self.ui.btnDeletar.setEnabled(False)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            self.ui.grbFuncionarioPesquisa.setEnabled(self.cada)
+            self.ui.tabwCadPermUsuario.setEnabled(self.cada)
+            self.ui.btnNovo.setEnabled(False)
+            self.ui.btnSalvar.setEnabled(self.cada)
+            self.ui.btnEditar.setEnabled(False)
+            self.ui.btnCancelar.setEnabled(self.edit)
+            self.ui.btnDeletar.setEnabled(False)
+        else:
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
     def botoesEditar(self):
         self.ui.grbFuncionarioPesquisa.setEnabled(self.edit)
@@ -667,26 +673,31 @@ class UsuarioPermissao(QtGui.QDialog):
                 self.ui.txtCargo.setText(non[29])
 
     def cadastrar(self):
-        if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeFuncionario.text() != "" and self.ui.txtCargo.text() != "" and self.ui.txtSetor.text() != "" and self.ui.txtLoginFuncionario.text() != "" and self.ui.txtSenhaFuncionario.text() != "" :
-            idFuncionario = self.ui.txtidFuncionario.text()
-            login = self.ui.txtLoginFuncionario.text()
-            senha = self.ui.txtSenhaFuncionario.text()
-            __usuario = Usuario()
-            __saltoCripto = __usuario.getSalto()
-            salto = __saltoCripto.decode('utf-8')
-            __senhaCripto = __usuario.criptografar(senha, salto)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeFuncionario.text() != "" and self.ui.txtCargo.text() != "" and self.ui.txtSetor.text() != "" and self.ui.txtLoginFuncionario.text() != "" and self.ui.txtSenhaFuncionario.text() != "" :
+                idFuncionario = self.ui.txtidFuncionario.text()
+                login = self.ui.txtLoginFuncionario.text()
+                senha = self.ui.txtSenhaFuncionario.text()
+                __usuario = Usuario()
+                __saltoCripto = __usuario.getSalto()
+                salto = __saltoCripto.decode('utf-8')
+                __senhaCripto = __usuario.criptografar(senha, salto)
 
-            usu = UsuarioGetSet(idFuncionario, login, __senhaCripto, salto)
-            usuDao = UsuarioPermissaoDao()
-            usuDao.cadatrar(usu)
-            self.idUsuario = usuDao.ultimoRegistro()
-            self.cadastroPermissoes()
+                usu = UsuarioGetSet(idFuncionario, login, __senhaCripto, salto)
+                usuDao = UsuarioPermissaoDao()
+                usuDao.cadatrar(usu)
+                self.idUsuario = usuDao.ultimoRegistro()
+                self.cadastroPermissoes()
 
-            self.limparCamposCheckBox()
-            self.limparCamposUsuario()
-            self.desativarPesquisaUsuario()
+                self.limparCamposCheckBox()
+                self.limparCamposUsuario()
+                self.desativarPesquisaUsuario()
+            else:
+                MensagemBox().warning('Atenção', "Por favor preencha todos os campos")
         else:
-            MensagemBox().warning('Atenção', "Por favor preencha todos os campos")
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
 
     def cadastroPermissoes(self):

@@ -53,6 +53,7 @@ class Empresa(QtGui.QDialog):
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
+        self.ui.txtEnderecoEmail.setValidator(self.validator)
         self.ui.txtCadSetoresSetor.setValidator(self.validator)
         self.ui.txtCadCargoCargo.setValidator(self.validator)
 
@@ -134,16 +135,21 @@ class Empresa(QtGui.QDialog):
             self.idTipoEmpresa = tipoEmpresa.idTipoEmpresa(self.ui.cBoxTipoEmpresa.currentText())
 
     def novo(self):
-        self.limparCampos()
-        self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
-        self.ui.tabWiAdicionais.setEnabled(self.cada)
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(self.cada)
-        self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(self.canc)
-        self.ui.btnDeletar.setEnabled(False)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno == []:
+            self.limparCampos()
+            self.ui.grbDadosPessoaJuridica.setEnabled(self.cada)
+            self.ui.tabWiAdicionais.setEnabled(self.cada)
+            self.ui.btnNovo.setEnabled(False)
+            self.ui.btnSalvar.setEnabled(self.cada)
+            self.ui.btnEditar.setEnabled(False)
+            self.ui.btnCancelar.setEnabled(self.canc)
+            self.ui.btnDeletar.setEnabled(False)
 
-        self.setTipoEmpresa()
+            self.setTipoEmpresa()
+        else:
+            MensagemBox().warning('Atenção', "Esse sistema apenas administra uma empresa")
 
     def cancelar(self):
         self.limparCampos()
@@ -618,33 +624,36 @@ class Empresa(QtGui.QDialog):
             i += 1
 
     def cadastro(self):
-        self.setEmpresa()
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '' and self.removerCaracter(self.ui.txtCnae.text()) != '' and self.ui.txtCnaeDescricao.text() != '':
-            empresaDao = EmpresaDao()
-            idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
-            idCnae = empresaDao.pesquisarIdCnae(self.ui.txtCnae.text())
-            empresa = Empresas(self.ui.txtCodigo.text(), None, idPessoaJuridica, self.idTipoEmpresa, idCnae, None, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
-            cad = empresaDao.cadastroEmpresa(empresa)
-            self.idEmpresa = empresaDao.ultimoRegistro()
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno == []:
+            self.setEmpresa()
+            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '' and self.removerCaracter(self.ui.txtCnae.text()) != '' and self.ui.txtCnaeDescricao.text() != '':
+                empresaDao = EmpresaDao()
+                idPessoaJuridica = empresaDao.pesquisarPessoaJuridicaId(self.ui.txtCodigo.text())
+                idCnae = empresaDao.pesquisarIdCnae(self.ui.txtCnae.text())
+                empresa = Empresas(self.ui.txtCodigo.text(), None, idPessoaJuridica, self.idTipoEmpresa, idCnae, None, None, None, self.ui.txtInscricaoMunicipal.text(), None, None, None, None, None, None, None, None, None, None, 1)
+                cad = empresaDao.cadastroEmpresa(empresa)
+                self.idEmpresa = empresaDao.ultimoRegistro()
 
 
-            if self.contatoAdd != []:
-                self.cadastrarTelefone()
+                if self.contatoAdd != []:
+                    self.cadastrarTelefone()
 
-            if self.emailAdd != []:
-                self.cadastrarEmail()
+                if self.emailAdd != []:
+                    self.cadastrarEmail()
 
-            if self.setoresAdd != []:
-                self.cadastrarSetores()
+                if self.setoresAdd != []:
+                    self.cadastrarSetores()
 
-            if self.cargoAdd != []:
-                self.cadastrarCargo()
+                if self.cargoAdd != []:
+                    self.cadastrarCargo()
 
-            if cad == True:
-                MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
-                self.cancelar()
-        else:
-            MensagemBox().warning( 'Atenção', "Preencha os campos obrigatorio")
+                if cad == True:
+                    MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
+                    self.cancelar()
+            else:
+                MensagemBox().warning( 'Atenção', "Preencha os campos obrigatorio")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):

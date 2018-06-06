@@ -11,6 +11,7 @@ from controller.getSetContatoTelefone import ContatoTelefone
 from controller.getSetPessoaFisica import PessoaFisica
 from controller.getSetPessoaJuridica import PessoaJuridica
 from dao.clienteDao import ClienteDao
+from dao.empresaDao import EmpresaDao
 from dao.pesquisarPessoaFisicaDao import PesquisarPessoaFisicaDao
 from dao.pesquisarPessoaJuridicaDao import PesquisarPessoaJuridicaDao
 from telas.frmCadCliente import Ui_frmCadastroCliente
@@ -45,6 +46,7 @@ class CadastroClientes(QtGui.QDialog):
 
         self.ui.txtContatoEmail.setValidator(self.validator)
         self.ui.txtContatoTelefone.setValidator(self.validator)
+        self.ui.txtEnderecoEmail.setValidator(self.validator)
 
         self.ui.btnNovo.clicked.connect(self.novo)
         self.ui.btnSalvar.clicked.connect(self.cadastro)
@@ -83,15 +85,20 @@ class CadastroClientes(QtGui.QDialog):
             self.ui.txtObservacao.textCursor().deletePreviousChar()
 
     def novo(self):
-        self.limparCampos()
-        self.ui.grbTipoPessoa.setEnabled(self.cada)
-        self.ui.radBtnPessoaFisica.setCheckable(self.cada)
-        self.ui.radBtnPessoaJuridica.setCheckable(self.cada)
-        self.ui.btnNovo.setEnabled(False)
-        self.ui.btnSalvar.setEnabled(self.cada)
-        self.ui.btnEditar.setEnabled(False)
-        self.ui.btnCancelar.setEnabled(self.canc)
-        self.ui.btnDeletar.setEnabled(False)
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            self.limparCampos()
+            self.ui.grbTipoPessoa.setEnabled(self.cada)
+            self.ui.radBtnPessoaFisica.setCheckable(self.cada)
+            self.ui.radBtnPessoaJuridica.setCheckable(self.cada)
+            self.ui.btnNovo.setEnabled(False)
+            self.ui.btnSalvar.setEnabled(self.cada)
+            self.ui.btnEditar.setEnabled(False)
+            self.ui.btnCancelar.setEnabled(self.canc)
+            self.ui.btnDeletar.setEnabled(False)
+        else:
+            MensagemBox().warning('Atenção', "Cadastre uma empresa primeiro")
 
     def botaoNovo(self):
         self.ui.txtCodigo.clear()
@@ -340,81 +347,91 @@ class CadastroClientes(QtGui.QDialog):
 
     def setCliente(self):
         cliente = ClienteDao()
+        pesDao = EmpresaDao()
         if self.ui.radBtnPessoaFisica.isChecked():
             cli = cliente.pesquisarClienteIdFisico(self.ui.txtCodigo.text())
-
-            if cli == []:
-                clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
-                if clien == []:
-                    self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
-                    self.ui.txtCnpj.clear()
-                    self.ui.txtInscricaoEstadua.clear()
-                    self.ui.txtRazaoSocial.clear()
-                    self.ui.txtFantasia.clear()
+            emp = pesDao.pesquisaEmpresaJuridica(self.ui.txtCodigo.text())
+            if emp == []:
+                if cli == []:
+                    clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+                    if clien == []:
+                        self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                        self.ui.txtCnpj.clear()
+                        self.ui.txtInscricaoEstadua.clear()
+                        self.ui.txtRazaoSocial.clear()
+                        self.ui.txtFantasia.clear()
+                    else:
+                        for empres in clien:
+                            self.ui.txtCnpj.setText(str(empres[0]))
+                            self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                            self.ui.txtRazaoSocial.setText(str(empres[2]))
+                            self.ui.txtFantasia.setText(str(empres[3]))
                 else:
-                    for empres in clien:
-                        self.ui.txtCnpj.setText(str(empres[0]))
-                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
-                        self.ui.txtRazaoSocial.setText(str(empres[2]))
-                        self.ui.txtFantasia.setText(str(empres[3]))
+                    self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
             else:
-                self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
+                self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa não poder ser cliente")
 
         elif self.ui.radBtnPessoaJuridica.isChecked():
             cli = cliente.pesquisarClienteIdJuridico(self.ui.txtCodigo.text())
-
-            if cli == []:
-                clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
-                if clien == []:
-                    self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
-                    self.ui.txtCnpj.clear()
-                    self.ui.txtInscricaoEstadua.clear()
-                    self.ui.txtRazaoSocial.clear()
-                    self.ui.txtFantasia.clear()
+            emp = pesDao.pesquisaEmpresaJuridica(self.ui.txtCodigo.text())
+            if emp == []:
+                if cli == []:
+                    clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+                    if clien == []:
+                        self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                        self.ui.txtCnpj.clear()
+                        self.ui.txtInscricaoEstadua.clear()
+                        self.ui.txtRazaoSocial.clear()
+                        self.ui.txtFantasia.clear()
+                    else:
+                        for empres in clien:
+                            self.ui.txtCnpj.setText(str(empres[0]))
+                            self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                            self.ui.txtRazaoSocial.setText(str(empres[2]))
+                            self.ui.txtFantasia.setText(str(empres[3]))
                 else:
-                    for empres in clien:
-                        self.ui.txtCnpj.setText(str(empres[0]))
-                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
-                        self.ui.txtRazaoSocial.setText(str(empres[2]))
-                        self.ui.txtFantasia.setText(str(empres[3]))
+                    self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
             else:
-                self.mensagem.warning( 'Mensagem', "Atenção já tem um cadastro deste cliente")
+                self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa  não poder ser cliente")
 
     def setClienteEditFinish(self):
         cliente = ClienteDao()
+        pesDao = EmpresaDao()
         if self.ui.radBtnPessoaFisica.isChecked():
             cli = cliente.pesquisarClienteIdFisico(self.ui.txtCodigo.text())
-
-            if cli == []:
-                clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
-                if clien == []:
-                    self.ui.txtCnpj.clear()
-                    self.ui.txtInscricaoEstadua.clear()
-                    self.ui.txtRazaoSocial.clear()
-                    self.ui.txtFantasia.clear()
-                else:
-                    for empres in clien:
-                        self.ui.txtCnpj.setText(str(empres[0]))
-                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
-                        self.ui.txtRazaoSocial.setText(str(empres[2]))
-                        self.ui.txtFantasia.setText(str(empres[3]))
+            emp = pesDao.pesquisaEmpresaJuridica(self.ui.txtCodigo.text())
+            if emp == []:
+                if cli == [] :
+                    clien = cliente.pesquisarPessoaFisica(self.ui.txtCodigo.text())
+                    if clien == []:
+                        self.ui.txtCnpj.clear()
+                        self.ui.txtInscricaoEstadua.clear()
+                        self.ui.txtRazaoSocial.clear()
+                        self.ui.txtFantasia.clear()
+                    else:
+                        for empres in clien:
+                            self.ui.txtCnpj.setText(str(empres[0]))
+                            self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                            self.ui.txtRazaoSocial.setText(str(empres[2]))
+                            self.ui.txtFantasia.setText(str(empres[3]))
 
         elif self.ui.radBtnPessoaJuridica.isChecked():
             cli = cliente.pesquisarClienteIdJuridico(self.ui.txtCodigo.text())
-
-            if cli == []:
-                clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
-                if clien == []:
-                    self.ui.txtCnpj.clear()
-                    self.ui.txtInscricaoEstadua.clear()
-                    self.ui.txtRazaoSocial.clear()
-                    self.ui.txtFantasia.clear()
-                else:
-                    for empres in clien:
-                        self.ui.txtCnpj.setText(str(empres[0]))
-                        self.ui.txtInscricaoEstadua.setText(str(empres[1]))
-                        self.ui.txtRazaoSocial.setText(str(empres[2]))
-                        self.ui.txtFantasia.setText(str(empres[3]))
+            emp = pesDao.pesquisaEmpresaJuridica(self.ui.txtCodigo.text())
+            if emp == []:
+                if cli == []:
+                    clien = cliente.pesquisarPessoaJuridica(self.ui.txtCodigo.text())
+                    if clien == []:
+                        self.ui.txtCnpj.clear()
+                        self.ui.txtInscricaoEstadua.clear()
+                        self.ui.txtRazaoSocial.clear()
+                        self.ui.txtFantasia.clear()
+                    else:
+                        for empres in clien:
+                            self.ui.txtCnpj.setText(str(empres[0]))
+                            self.ui.txtInscricaoEstadua.setText(str(empres[1]))
+                            self.ui.txtRazaoSocial.setText(str(empres[2]))
+                            self.ui.txtFantasia.setText(str(empres[3]))
 
     def cadastrarTelefone(self):
         cli = ClienteDao()
@@ -449,39 +466,42 @@ class CadastroClientes(QtGui.QDialog):
             i += 1
 
     def cadastro(self):
-        if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
-            clienteDao = ClienteDao()
-            if self.ui.radBtnPessoaFisica.isChecked():
-                idPessoa = clienteDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
-                cliente = Cliente(None, idPessoa, self.ui.txtCodigo.text(), None, None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
-                clienteDao.cadastrarClienteFisico(cliente)
-                self.idCliente = clienteDao.ultimoRegistro()
+        __pesDao = EmpresaDao()
+        __retorno = __pesDao.pesquisaCodigoFrom()
+        if __retorno != []:
+            if self.ui.txtCodigo.text() != '' and self.ui.txtCnpj.text() != '' and self.ui.txtInscricaoEstadua.text() != '' and self.ui.txtFantasia.text() != '' and self.ui.txtRazaoSocial.text() != '':
+                clienteDao = ClienteDao()
+                if self.ui.radBtnPessoaFisica.isChecked():
+                    idPessoa = clienteDao.pesquisarPessoaFis(self.ui.txtCodigo.text())
+                    cliente = Cliente(None, idPessoa, self.ui.txtCodigo.text(), None, None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
+                    clienteDao.cadastrarClienteFisico(cliente)
+                    self.idCliente = clienteDao.ultimoRegistro()
 
 
-                if self.contatoAdd != []:
-                    self.cadastrarTelefone()
+                    if self.contatoAdd != []:
+                        self.cadastrarTelefone()
 
-                if self.emailAdd != []:
-                    self.cadastrarEmail()
+                    if self.emailAdd != []:
+                        self.cadastrarEmail()
 
-                self.cancelar()
+                    self.cancelar()
 
-            if self.ui.radBtnPessoaJuridica.isChecked():
-                idPessoa = clienteDao.pesquisarPessoaJur(self.ui.txtCodigo.text())
-                cliente = Cliente(None, idPessoa, None, self.ui.txtCodigo.text(), None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
-                clienteDao.cadastrarClienteJuridica(cliente)
-                self.idCliente = clienteDao.ultimoRegistro()
+                if self.ui.radBtnPessoaJuridica.isChecked():
+                    idPessoa = clienteDao.pesquisarPessoaJur(self.ui.txtCodigo.text())
+                    cliente = Cliente(None, idPessoa, None, self.ui.txtCodigo.text(), None, None, None, None, self.ui.txtObservacao.toPlainText(), 1, None)
+                    clienteDao.cadastrarClienteJuridica(cliente)
+                    self.idCliente = clienteDao.ultimoRegistro()
 
-                if self.contatoAdd != []:
-                    self.cadastrarTelefone()
+                    if self.contatoAdd != []:
+                        self.cadastrarTelefone()
 
-                if self.emailAdd != []:
-                    self.cadastrarEmail()
+                    if self.emailAdd != []:
+                        self.cadastrarEmail()
 
-                self.cancelar()
+                    self.cancelar()
 
-        else:
-            self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
+            else:
+                self.mensagem.warning( 'Atenção', "Preencha os campos obrigatorio")
 
 
     def pesquisarPessoaFisicaJuridica(self):
