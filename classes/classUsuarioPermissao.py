@@ -584,6 +584,9 @@ class UsuarioPermissao(QtGui.QDialog):
             linha += 1
 
     def setarCampos(self):
+        __nome = self.ui.txtidFuncionario.text()
+        __funDao = UsuarioPermissaoDao()
+
         itens = []
 
         for item in self.__pesquisarPessoa.tabPesquisar.selectedItems():
@@ -627,9 +630,14 @@ class UsuarioPermissao(QtGui.QDialog):
             situacao = False
 
 
-        __dados = Funcionario(codigo, None, None, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao)
-        self.setCampos(__dados)
-        self.dialog.close()
+        __resultada = __funDao.pesquisarFuncionario(codigo)
+        if __resultada == []:
+
+            __dados = Funcionario(codigo, None, None, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao)
+            self.setCampos(__dados)
+            self.dialog.close()
+        else:
+            MensagemBox().warning('Mensagem', "Atenção existe um cadastro deste funcionario")
 
 
     def setCampos(self, campos):
@@ -643,7 +651,7 @@ class UsuarioPermissao(QtGui.QDialog):
         __nome = self.ui.txtidFuncionario.text()
         __funDao = UsuarioPermissaoDao()
         __resultada = __funDao.pesquisarFuncionario(__nome)
-        if __resultada == False:
+        if __resultada != []:
             self.ui.txtNomeFuncionario.clear()
             self.ui.txtSetor.clear()
             self.ui.txtCargo.clear()
@@ -660,7 +668,7 @@ class UsuarioPermissao(QtGui.QDialog):
         __nome = self.ui.txtidFuncionario.text()
         __funDao = UsuarioPermissaoDao()
         __resultada = __funDao.pesquisarFuncionario(__nome)
-        if __resultada == False:
+        if __resultada != []:
             self.ui.txtNomeFuncionario.clear()
             self.ui.txtSetor.clear()
             self.ui.txtCargo.clear()
