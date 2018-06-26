@@ -5,7 +5,6 @@ __version__    = '1.0'
 __maintainer__ = 'Jefferson Aparecido Sadoski'
 __status__     = 'Beta'
 
-
 if __name__ == '__main__':
 
     from classes.classLogin import Login

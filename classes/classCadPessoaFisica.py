@@ -248,8 +248,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
     def formatarData(self, data):
         dia = data[:2]
-        mes = data[4:6]
-        ano = data[8:10]
+        mes = data[2:4]
+        ano = data[4:8]
 
         return ("%s-%s-%s" % (ano, mes, dia))
 
@@ -298,7 +298,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         return bool(cpf == selfcpf)
 
     def cadastrar(self):
-        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() and self.ui.txtPai.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
+        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
             if self.removerCaracter(self.ui.txtCpf.text()) != '':
                 valCpf = self.validacaoCpf()
                 if valCpf != False:
@@ -309,14 +309,13 @@ class CadastroPessoaFisica(QtGui.QDialog):
                         rg = self.ui.txtRg.text()
                         expeditor = self.ui.txtExpeditor.text()
                         uf = self.ui.txtUf.text()
-                        data = self.removerCaracter(self.ui.dateData.text())
                         if self.ui.radBtnMasculino.isChecked():
                             sexo = '1'
                         elif self.ui.radBtnFeminino.isChecked():
                             sexo = '2'
                         else:
                             return None
-                        nascimento = self.formatarData(data)
+                        nascimento = self.formatarData(self.removerCaracter(self.ui.dateData.text()))
                         endereco = self.ui.txtEndereco.text()
                         numero = self.ui.txtNumero.text()
                         complemento = self.ui.txtComplemento.text()
@@ -326,14 +325,14 @@ class CadastroPessoaFisica(QtGui.QDialog):
                         cidade = self.idCidade
 
 
-                        pessoaFisico = PessoaFisica(None, None, 1, nome, segundoNome, cpf, rg, expeditor,  uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                        pessoaFisico = PessoaFisica(None, None, str(1), nome, segundoNome, cpf, rg, expeditor,  uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, str(cidade), None, None, None)
                         fisicaDao = PessoaFisicaDao()
                         pes = fisicaDao.pesquisarPessoaFisica(pessoaFisico)
                         if pes == []:
                             a = fisicaDao.cadastrarPessoa(pessoaFisico)
                             if a == True:
                                 id = fisicaDao.ultimoRegistro()
-                                pessoaFisico = PessoaFisica(id, None, 1, nome, segundoNome, cpf, rg, expeditor, uf, nascimento, sexo, endereco, numero, complemento, bairro, mae, pai, cidade, None, None, None)
+                                pessoaFisico = PessoaFisica(str(id), None, str(1), nome, segundoNome, cpf, rg, expeditor, uf, nascimento, str(sexo), endereco, numero, complemento, bairro, mae, pai, str(cidade), None, None, None)
                                 b = fisicaDao.cadastrarPessoaFisica(pessoaFisico)
                                 if b == True:
                                     MensagemBox().informacao('Mensagem', 'Cadastro realizado com sucesso!')
@@ -348,6 +347,8 @@ class CadastroPessoaFisica(QtGui.QDialog):
                         MensagemBox().warning( 'Atenção', "Selecione o sexo da pessoa")
             else:
                 MensagemBox().warning( 'Atenção', "Insira o CPF")
+        else:
+            MensagemBox().warning('Atenção', "Por Favor, preencham os campos obrigtorios")
 
     def keyPressEvent(self, keyEvent):
         if keyEvent.key() == (QtCore.Qt.Key_F12):
@@ -534,7 +535,7 @@ class CadastroPessoaFisica(QtGui.QDialog):
         self.ui.btnDeletar.setEnabled(self.dele)
 
     def editar(self):
-        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() and self.ui.txtPai.text() != '' and self.removerCaracter(self.ui.txtCep.text()) != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
+        if self.ui.txtNome.text() != '' and self.ui.txtRg.text() != '' and self.ui.txtExpeditor.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and self.ui.txtBairro.text() != '' and self.ui.txtMae.text() != '' and self.removerCaracter(self.ui.txtCep.text()) != '' and self.ui.txtCidade.text() != '' and self.ui.txtEstado.text() != '':
             if self.removerCaracter(self.ui.txtCpf.text()) != '':
                 valCpf = self.validacaoCpf()
                 if valCpf != False:
@@ -584,9 +585,9 @@ class CadastroPessoaFisica(QtGui.QDialog):
 
     def deletar(self):
         fisicaDao = PessoaFisicaDao()
-        clie = fisicaDao.pesquisarTabelaCliente(self.pessoa)
-        forn = fisicaDao.pesquisarTabelaFornecedor(self.pessoa)
-        func = fisicaDao.pesquisarTabelaFuncionario(self.pessoa)
+        clie = fisicaDao.pesquisarTabelaCliente(str(self.pessoa))
+        forn = fisicaDao.pesquisarTabelaFornecedor(str(self.pessoa))
+        func = fisicaDao.pesquisarTabelaFuncionario(str(self.pessoa))
         if clie == "" or forn == "" or func == "":
             try:
                 _fromUtf8 = QtCore.QString.fromUtf8

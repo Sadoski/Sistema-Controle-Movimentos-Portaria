@@ -432,8 +432,7 @@ class UsuarioPermissao(QtGui.QDialog):
         self.ui.txtSenhaFuncionario.clear()
 
     def cancelarUsuario(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Deseja realmente cancelar a operação", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
+
             self.limparCamposCheckBox()
             self.limparCamposUsuario()
             self.changeClic()
@@ -630,7 +629,7 @@ class UsuarioPermissao(QtGui.QDialog):
             situacao = False
 
 
-        __resultada = __funDao.pesquisarFuncionario(codigo)
+        __resultada = __funDao.pesquisarUser(codigo)
         if __resultada == []:
 
             __dados = Funcionario(codigo, None, None, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao)
@@ -650,35 +649,41 @@ class UsuarioPermissao(QtGui.QDialog):
     def pesquisarFuncionario(self):
         __nome = self.ui.txtidFuncionario.text()
         __funDao = UsuarioPermissaoDao()
-        __resultada = __funDao.pesquisarFuncionario(__nome)
-        if __resultada != []:
-            self.ui.txtNomeFuncionario.clear()
-            self.ui.txtSetor.clear()
-            self.ui.txtCargo.clear()
-            MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro deste funcionario")
+        __resultada = __funDao.pesquisarUser(str(__nome))
+        print(__resultada )
+        if __resultada == []:
+            pess = __funDao.pesquisarFuncionario(__nome)
+            print(pess)
+            if pess ==[]:
+                MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro desta pessoa")
+                self.ui.txtNomeFuncionario.clear()
+                self.ui.txtSetor.clear()
+                self.ui.txtCargo.clear()
+            else:
+                for non in pess:
+                    self.ui.txtidFuncionario.setText(str(non[0]))
+                    self.ui.txtNomeFuncionario.setText(non[1] + ' ' + non[2])
+                    self.ui.txtSetor.setText(non[28])
+                    self.ui.txtCargo.setText(non[29])
         else:
-            self.limparCamposUsuario()
-            for non in __resultada:
-                self.ui.txtidFuncionario.setText(str(non[0]))
-                self.ui.txtNomeFuncionario.setText(non[1] + ' ' + non[2])
-                self.ui.txtSetor.setText(non[28])
-                self.ui.txtCargo.setText(non[29])
+            MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
 
     def pesquisarFuncionarioEditFinish(self):
         __nome = self.ui.txtidFuncionario.text()
         __funDao = UsuarioPermissaoDao()
         __resultada = __funDao.pesquisarFuncionario(__nome)
-        if __resultada != []:
-            self.ui.txtNomeFuncionario.clear()
-            self.ui.txtSetor.clear()
-            self.ui.txtCargo.clear()
-        else:
-            self.limparCamposUsuario()
-            for non in __resultada:
-                self.ui.txtidFuncionario.setText(str(non[0]))
-                self.ui.txtNomeFuncionario.setText(non[1] + ' ' + non[2])
-                self.ui.txtSetor.setText(non[28])
-                self.ui.txtCargo.setText(non[29])
+        if __resultada == []:
+            pess = __funDao.pesquisarPessoaFisica(__nome)
+            if pess == []:
+                self.ui.txtNomeFuncionario.clear()
+                self.ui.txtSetor.clear()
+                self.ui.txtCargo.clear()
+            else:
+                for non in __resultada:
+                    self.ui.txtidFuncionario.setText(str(non[0]))
+                    self.ui.txtNomeFuncionario.setText(non[1] + ' ' + non[2])
+                    self.ui.txtSetor.setText(non[28])
+                    self.ui.txtCargo.setText(non[29])
 
     def cadastrar(self):
         __pesDao = EmpresaDao()

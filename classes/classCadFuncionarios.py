@@ -1158,7 +1158,7 @@ class CadastroFuncionario(QtGui.QDialog):
                     idSetor = self.getIndexSetor()
                     idCargo = self.getIndexCargo()
                     self.idJornada = self.getIndexJornada()
-                    funcionario = Funcionario(None, idPessoa, self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
+                    funcionario = Funcionario(None, self.ui.txtCodigo.text(), self.ui.txtCodigo.text, self.ui.txtCnpj.text(), self.ui.txtInscricaoEstadua.text(), self.ui.txtNome.text(), self.ui.txtSobrenome.text(), self.ui.txtObservacao.toPlainText(), 1, idCivil, idDeficiencia, idCategoria, idSetor, idCargo, self.idJornada, self.converterData(self.ui.txtDataAdmissao.text()), self.converterData(self.ui.txtDataDemissao.text()), self.ui.txtNumCarteira.text(), self.ui.txtPis.text(), self.ui.txtSerie.text(), self.ui.txtUf.text(), self.converterData(self.ui.txtDataEmissao.text()))
 
                     funcionarioDao.cadastrarFuncionarioFisico(funcionario)
                     self.idFuncionrio = funcionarioDao.ultimoRegistro()
@@ -1366,7 +1366,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
 
         idPessoa = funcionarioDao.pesquisarPessoaCodigo(codigo)
-        idPessoaFisico = funcionarioDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoaFisico = funcionarioDao.pesquisarPessoaFisicaId(str(idPessoa))
 
         __dados = Funcionario(codigo, idPessoa, idPessoaFisico, cpf, rg, nome, sobrenome, obs, situacao, civil, deficiencia, categoria, setor, cargo, jornada, admissao, demissao, carteira, pis, serie, uf,  emissao)
         self.botoesEditar()
@@ -1402,7 +1402,7 @@ class CadastroFuncionario(QtGui.QDialog):
 
         self.ui.txtObservacao.setText(str(campos.getObservacao))
         self.ui.cBoxCateTrabalhador.setCurrentIndex(self.ui.cBoxCateTrabalhador.findText(campos.getCategoria))
-        self.ui.cBoxSetor.setCurrentIndex(self.test(campos.getCargo))
+        self.ui.cBoxSetor.setCurrentIndex(self.ui.cBoxSetor.findText(campos.getCargo))
         self.ui.cBoxCargo.setCurrentIndex(self.ui.cBoxCargo.findText(campos.getSetor))
 
 

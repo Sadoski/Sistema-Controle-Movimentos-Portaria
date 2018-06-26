@@ -30,11 +30,32 @@ class UsuarioPermissaoDao(object):
         except BaseException as os:
             return False
 
+    def pesquisarUser(self, idUsuario):
+        try:
+            _sql = "SELECT u.id_funcionario FROM usuarios u INNER JOIN funcionario n ON n.id_funcionario = u.id_funcionario WHERE u.id_usuarios = '"+idUsuario+"'"
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
     def pesquisarIdFuncionario(self, idUsuario):
         try:
             _sql = "SELECT u.id_funcionario FROM usuarios u INNER JOIN funcionario n ON n.id_funcionario = u.id_funcionario WHERE u.id_usuarios = '"+idUsuario+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
+            # self.__cursor.close()
+            return result
+        except BaseException as os:
+            return False
+
+    def pesquisarPessoaFisica(self, pessoaFisica):
+        try:
+            _sql = "SELECT  p.cpf_cnpj, p.rg_inscricao, f.id_funcionario, p.nome_razao, p.sobrenome_fantasia FROM funcionario f INNER JOIN civil i ON i.id_civil = f.id_civil INNER JOIN deficiencia d ON d.id_deficiencia = f.id_deficiencia INNER JOIN categoria_trabalho r ON r.id_categoria_trabalho = f.id_categoria_trabalho INNER JOIN setores t ON t.id_setores = f.id_setores INNER JOIN cargo o ON o.id_cargo = f.id_cargo INNER JOIN jornada_trabalho b ON b.id_jornada_trabalho = f.id_jornada_trabalho INNER JOIN pessoa_fisica s ON s.id_pessoa_fisica = f.id_pessoa_fisica INNER JOIN genero g ON g.id_genero = s.id_genero INNER JOIN pessoa p ON p.id_pessoa = s.id_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = c.id_estado  WHERE f.id_funcionario = '"+ pessoaFisica +"'"
+
+            self.__cursor.execute(_sql)
+            result = self.__cursor.fetchall()
             # self.__cursor.close()
             return result
         except BaseException as os:
@@ -53,7 +74,6 @@ class UsuarioPermissaoDao(object):
     def pesquisarPermissoes(self, idFormulario, ativo, cadastro, cancela, deleta, edita):
         try:
             _sql = "SELECT id_permissoes FROM permissoes WHERE id_formularios = '"+str(idFormulario)+"' AND ativar = '"+str(ativo)+"' AND cadastra = '"+str(cadastro)+"' AND cancelar = '"+str(cancela)+"' AND deleta = '"+str(deleta)+"' AND altera = '"+str(edita)+"'"
-            print(_sql)
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()

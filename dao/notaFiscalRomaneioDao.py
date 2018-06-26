@@ -211,7 +211,7 @@ class NotaFiscalRomanieo(object):
 
     def pesquisarFornecedorNF(self, pesquisar):
         try:
-            _sql = "SELECT n.id_fornecedor, p.nome_razao FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor  LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica =  r.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = r.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa OR p.id_pessoa = r.id_pessoa WHERE n.id_entrada_notas_fiscais = '" + pesquisar+ "' "
+            _sql = "SELECT n.id_fornecedor, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, p.endereco, p.numero, p.complemento, p.bairro, i.nome, e.nome, i.cep FROM notas_fiscais n INNER JOIN tipo_nf t ON t.id_tipo_nf = n.id_tipo_nf INNER JOIN fornecedor r ON r.id_fornecedor = n.id_fornecedor  LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica =  r.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = r.id_pessoa_juridica INNER JOIN pessoa p ON p.id_pessoa = f.id_pessoa OR p.id_pessoa = r.id_pessoa INNER JOIN cidade i ON i.id_cidade = p.id_cidade INNER JOIN estado e ON e.id_estado = i.id_estado WHERE n.id_entrada_notas_fiscais = '" + pesquisar+ "' "
 
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()[0]

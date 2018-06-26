@@ -14,7 +14,7 @@ class CarregamentoSaidaDao(object):
 
     def pesquisarEntradaCarregamento(self):
         try:
-            _sql = "SELECT e.id_entrada_vei_carre, e.data, e.hora, g.descricao, t.descricao, m.id_motorista, v.marca, v.modelo, v.placa, c.id_cliente FROM entrada_veiculo_carregamento e INNER JOIN tipo_carga g on g.id_tipo_carga = e.id_tipo_carga INNER JOIN produto t ON t.id_produto = e.id_produto INNER JOIN motorista m ON m.id_motorista = e.id_motorista INNER JOIN veiculo_motorista v ON v.id_motorista = m.id_motorista INNER JOIN cliente c ON c.id_cliente = e.id_cliente LEFT OUTER JOIN pessoa_fisica f ON f.id_pessoa_fisica = m.id_pessoa_fisica OR f.id_pessoa_fisica = c.id_pessoa_fisica LEFT OUTER JOIN pessoa_juridica j ON j.id_pessoa_juridica = c.id_pessoa_juridica WHERE e.status = 'Aberto'"
+            _sql = "SELECT e.id_entrada_vei_carre, e.data, e.hora, g.descricao, t.descricao, m.id_motorista, v.marca, v.modelo, v.placa, c.id_cliente FROM entrada_veiculo_carregamento e INNER JOIN tipo_carga g on g.id_tipo_carga = e.id_tipo_carga INNER JOIN produto t ON t.id_produto = e.id_produto INNER JOIN motorista m ON m.id_motorista = e.id_motorista INNER JOIN veiculo_motorista v ON v.id_motorista = m.id_motorista INNER JOIN cliente c ON c.id_cliente = e.id_cliente  WHERE e.status = 'Aberto'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchall()
             # self.__cursor.close()

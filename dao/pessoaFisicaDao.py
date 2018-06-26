@@ -39,7 +39,7 @@ class PessoaFisicaDao(object):
 
     def pesquisarIdPessoaFisica(self, pessoaFisica):
         try:
-            _sql = "SELECT p.id_pessoa, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE p.id_pessoa = '"+str(pessoaFisica)+"'"
+            _sql = "SELECT f.id_pessoa_fisica, p.nome_razao, p.sobrenome_fantasia, p.cpf_cnpj, p.rg_inscricao, f.expeditor, f.uf, f.aniversario, g.sexo, f.mae, f.pai, p.endereco, p.numero, p.complemento, p.bairro, c.nome, s.nome, c.cep FROM pessoa p INNER JOIN pessoa_fisica f ON f.id_pessoa = p.id_pessoa INNER JOIN genero g ON g.id_genero = f.id_genero INNER JOIN tipo_pessoa t ON t.id_tipo_pessoa = p.id_tipo_pessoa INNER JOIN cidade c ON c.id_cidade = p.id_cidade INNER JOIN estado s ON s.id_estado = c.id_estado WHERE p.id_pessoa = '"+str(pessoaFisica)+"'"
             self.__cursor.execute(_sql)
             result = self.__cursor.fetchone()[0]
             # self.__cursor.close()
@@ -51,6 +51,7 @@ class PessoaFisicaDao(object):
         try:
             _sql = "INSERT INTO pessoa (nome_razao, sobrenome_fantasia, cpf_cnpj, rg_inscricao, endereco, numero, complemento, bairro, id_cidade, id_tipo_pessoa, cadastrado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             _valores = (pessoaFisica.getNome, pessoaFisica.getApelido, pessoaFisica.getCpf, pessoaFisica.getRg, pessoaFisica.getEndereco, pessoaFisica.getNumero, pessoaFisica.getComplemento, pessoaFisica.getBairro,  pessoaFisica.getIdCidade, pessoaFisica.getIdTipoPessoa, self.__dataHora)
+
             self.__cursor.execute(_sql, _valores)
             self.__conexao.conn.commit()
 

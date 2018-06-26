@@ -57,6 +57,7 @@ class FornecedorDao(object):
         except BaseException as os:
             return False
 
+
     def pesquisarPessoaJuridica(self, pessoaJuridica):
         try:
             _sql = "SELECT p.cpf_cnpj, p.rg_inscricao, p.nome_razao, p.sobrenome_fantasia FROM pessoa_juridica j INNER JOIN pessoa p ON p.id_pessoa = J.id_pessoa WHERE j.id_pessoa_juridica = '"+pessoaJuridica+"'"
@@ -164,7 +165,7 @@ class FornecedorDao(object):
             self.__cursor.execute(__sql, _valores)
             self.__conexao.conn.commit()
             # self.__cursor.close()
-            QMessageBox.information(QWidget(), 'Erro', "Cadastro atualizar com sucesso")
+            QMessageBox.information(QWidget(), 'Mensagem', "Cadastro atualizar com sucesso")
         except mysql.connector.Error as e:
             QMessageBox.warning(QWidget(), 'Erro', "Erro ao atualizar as informações no banco de dados")
             self.__conexao.conn.rollback()
@@ -196,6 +197,7 @@ class FornecedorDao(object):
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             # self.__cursor.close()
+            return True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao deletar as informações no banco de dados")

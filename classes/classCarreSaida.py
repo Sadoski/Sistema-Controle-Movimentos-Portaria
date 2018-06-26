@@ -157,10 +157,8 @@ class CarregamentoSaida(QtGui.QDialog):
 
 
     def cancelarCadastro(self):
-        result = QMessageBox.question(QWidget(), 'Menssagem', "Tem certeza que deseja cancelar essa operação?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if result == QMessageBox.Yes:
-            self.botoesCancelarCadastro()
-            self.limparCampos()
+        self.botoesCancelarCadastro()
+        self.limparCampos()
 
     def tablePesquisa(self):
         if self.ui.txtidFuncionario.text() != "" and self.ui.txtNomeMotorista.text() != "" and self.ui.txtMarcaMotorista.text() != "" and self.ui.txtModeloMotorista.text() != "" and self.ui.txtIdClienteDestinatario.text() != "" and self.ui.txtNomeClienteDestinatario.text() != "" and self.ui.txtRazaoSocialClienteDestinatario.text() != "" and self.ui.txtInscricaoEstaduaClienteDestinatario != "":

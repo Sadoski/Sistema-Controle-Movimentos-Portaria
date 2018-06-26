@@ -63,6 +63,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.grbDadosFornecedor.setObjectName(_fromUtf8("grbDadosFornecedor"))
 
         self.txtIdFornecedor = QtGui.QLineEdit(self.grbDadosFornecedor)
+        self.txtIdFornecedor.setEnabled(False)
         self.txtIdFornecedor.setGeometry(QtCore.QRect(10, 33, 181, 25))
         self.txtIdFornecedor.setMaxLength(11)
         self.txtIdFornecedor.setObjectName(_fromUtf8("txtIdFornecedor"))
@@ -184,15 +185,6 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.txtCnpjFornecedor.setCursorMoveStyle(QtCore.Qt.VisualMoveStyle)
         self.txtCnpjFornecedor.setObjectName(_fromUtf8("txtCnpjFornecedor"))
 
-        self.btnPesquisarFornecedor = QtGui.QPushButton(self.grbDadosFornecedor)
-        self.btnPesquisarFornecedor.setGeometry(QtCore.QRect(390, 220, 31, 26))
-        self.btnPesquisarFornecedor.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.btnPesquisarFornecedor.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.btnPesquisarFornecedor.setIcon(icon1)
-        self.btnPesquisarFornecedor.setObjectName(_fromUtf8("btnPesquisarFornecedor"))
-
         self.grbNotaFiscal = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbNotaFiscal.setEnabled(False)
         self.grbNotaFiscal.setGeometry(QtCore.QRect(5, 58, 731, 63))
@@ -222,6 +214,8 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.btnPesquisarNotaFiscal.setGeometry(QtCore.QRect(690, 30, 31, 27))
         self.btnPesquisarNotaFiscal.setFocusPolicy(QtCore.Qt.NoFocus)
         self.btnPesquisarNotaFiscal.setText(_fromUtf8(""))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("./imagens/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.btnPesquisarNotaFiscal.setIcon(icon1)
         self.btnPesquisarNotaFiscal.setObjectName(_fromUtf8("btnPesquisarNotaFiscal"))
 
@@ -275,6 +269,7 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.lblModelo.setObjectName(_fromUtf8("lblModelo"))
 
         self.txtidMotorista = QtGui.QLineEdit(self.grbDadosMotorista)
+        self.txtidMotorista.setEnabled(False)
         self.txtidMotorista.setGeometry(QtCore.QRect(5, 34, 161, 25))
         self.txtidMotorista.setMaxLength(11)
         self.txtidMotorista.setObjectName(_fromUtf8("txtidMotorista"))
@@ -286,13 +281,6 @@ class Ui_frmEntradaVeiculosDescarregamento(object):
         self.lblPlaca = QtGui.QLabel(self.grbDadosMotorista)
         self.lblPlaca.setGeometry(QtCore.QRect(460, 58, 51, 19))
         self.lblPlaca.setObjectName(_fromUtf8("lblPlaca"))
-
-        self.btnPesquisarMotorista = QtGui.QPushButton(self.grbDadosMotorista)
-        self.btnPesquisarMotorista.setGeometry(QtCore.QRect(690, 76, 31, 26))
-        self.btnPesquisarMotorista.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.btnPesquisarMotorista.setText(_fromUtf8(""))
-        self.btnPesquisarMotorista.setIcon(icon1)
-        self.btnPesquisarMotorista.setObjectName(_fromUtf8("btnPesquisarMotorista"))
 
         self.grbBotoes = QtGui.QGroupBox(frmEntradaVeiculosDescarregamento)
         self.grbBotoes.setGeometry(QtCore.QRect(20, 500, 718, 51))

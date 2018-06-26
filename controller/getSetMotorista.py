@@ -36,7 +36,7 @@ class Motorista():
 
     @property
     def getIdPessoaFisica(self):
-        return self.__idPessoa
+        return self.__idPessoaFisica
 
     @getIdPessoaFisica.setter
     def setIdPessoaFisica(self, idPessoaFisica):

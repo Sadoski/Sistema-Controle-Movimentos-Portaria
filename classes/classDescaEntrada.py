@@ -37,8 +37,7 @@ class DescaEntrada(QtGui.QDialog):
         self.ui.btnCancelar.clicked.connect(self.cancelar)
 
         self.ui.btnPesquisarNotaFiscal.clicked.connect(self.pesquisarNf)
-        self.ui.btnPesquisarFornecedor.clicked.connect(self.pesquisarFornecedor)
-        self.ui.btnPesquisarMotorista.clicked.connect(self.pesquisarMotorista)
+
 
         self.ui.txtidMotorista.returnPressed.connect(self.setMotorista)
         self.ui.txtIdFornecedor.returnPressed.connect(self.setFornecedor)
@@ -570,6 +569,7 @@ class DescaEntrada(QtGui.QDialog):
         motor = nfDao.pesquisarMotoristaNF(codigo)
 
         __dados = NotaFiscal(codigo, forne[0], forne[1], tipo, motor[0], motor[1]+' '+motor[2], serie, numNf, dataEmissao, dataEntrada, valorTotal, valorIcms, valorIpi, alicotaIcms, alicotaIpi)
+
         desDao = DescarreEntradaDao()
         produto = desDao.pesquisarProduto(codigo)
         self.setCamposNotasFiscais(__dados, produto)
@@ -577,15 +577,80 @@ class DescaEntrada(QtGui.QDialog):
 
 
     def setCamposNotasFiscais(self, campos, produto):
+        self.ui.txtCodigo.setText(campos.getIdNotaFiscal)
         self.ui.txtNumeroNotaFiscal.setText(campos.getNumNotaFiscal)
         self.ui.txtProduto.setText(str(produto))
 
+        self.ui.txtIdFornecedor.setText(str(campos.getIdFornecedor))
+        self.ui.txtNomeFornecedor.setText(campos.getFornecedor)
+        self.setFornecedor()
+
+        self.ui.txtidMotorista.setText(str(campos.getIdMotorista))
+        self.ui.txtNomeMotorista.setText(campos.getMotorista)
+        self.setMotorista()
+
+    def setFornecedor(self):
+            cliente = FornecedorDao()
+
+            clien = cliente.pesquisaCodigo(self.ui.txtIdFornecedor.text())
+            if clien == []:
+                self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                self.ui.txtIdFornecedor.clear()
+                self.ui.txtNomeFornecedor.clear()
+                self.ui.txtRazaoSocialFornecedor.clear()
+                self.ui.txtCnpjFornecedor.clear()
+                self.ui.txtInscricaoEstaduaFornecedor.clear()
+                self.ui.txtEnderecoFornecedor.clear()
+                self.ui.txtNumeroFornecedor.clear()
+                self.ui.txtComplementoFornecedor.clear()
+                self.ui.txtBairroFornecedor.clear()
+                self.ui.txtCidadeFornecedor.clear()
+                self.ui.txtEstadoFornecedor.clear()
+                self.ui.txtCepFornecedor.clear()
+            else:
+                for empres in clien:
+
+                    self.ui.txtNomeFornecedor.setText(str(empres[2]))
+                    self.ui.txtRazaoSocialFornecedor.setText(str(empres[3]))
+                    self.ui.txtCnpjFornecedor.setText(str(empres[4]))
+                    self.ui.txtInscricaoEstaduaFornecedor.setText(str(empres[5]))
+                    self.ui.txtEnderecoFornecedor.setText(str(empres[6]))
+                    self.ui.txtNumeroFornecedor.setText(str(empres[7]))
+                    self.ui.txtComplementoFornecedor.setText(str(empres[8]))
+                    self.ui.txtBairroFornecedor.setText(str(empres[9]))
+                    self.ui.txtCidadeFornecedor.setText(str(empres[10]))
+                    self.ui.txtEstadoFornecedor.setText(str(empres[11]))
+                    self.ui.txtCepFornecedor.setText(str(empres[12]))
+
+    def setMotorista(self):
+            motorista = MotoristaDao()
+
+            moto = motorista.pesquisaCodigoFisica(self.ui.txtidMotorista.text())
+            if moto == []:
+                self.mensagem.warning('Mensagem', "Atenção não existe nenhum cadastro neste codigo")
+                self.ui.txtidMotorista.clear()
+                self.ui.txtNomeMotorista.clear()
+                self.ui.txtModeloMotorista.clear()
+                self.ui.txtMarcaMotorista.clear()
+                self.ui.txtPlacaMotorista.clear()
+            else:
+                for empres in moto:
+                    self.ui.txtNomeMotorista.setText(str(empres[1]))
+                    self.ui.txtModeloMotorista.setText(str(empres[21]))
+                    self.ui.txtMarcaMotorista.setText(str(empres[22]))
+                    self.ui.txtPlacaMotorista.setText(str(empres[23]))
+
+
+
 
     def setNf(self):
+
         moto = DescarreEntradaDao()
         emp = moto.pesquisarNumNotaFiscal(self.ui.txtCodigo.text())
         produto = moto.pesquisarProduto(self.ui.txtCodigo.text())
-
+        nfDao = NotaFiscalRomanieo()
+        forne = nfDao.pesquisarFornecedorNF(self.ui.txtCodigo.text())
+        motor = nfDao.pesquisarMotoristaNF(self.ui.txtCodigo.text())
         if emp == []:
             MensagemBox().warning('Mensagem', "Atenção não existe nenhum cadastro deste NF")
             self.ui.txtNumeroNotaFiscal.clear()
@@ -594,13 +659,22 @@ class DescaEntrada(QtGui.QDialog):
             for empres in emp:
                 self.ui.txtNumeroNotaFiscal.setText(str(empres[3]))
                 self.ui.txtProduto.setText(produto)
+                self.ui.txtIdFornecedor.setText(str(forne[0]))
+                self.ui.txtNomeFornecedor.setText(forne[2])
+                self.setFornecedor()
+
+                self.ui.txtidMotorista.setText(str(motor[0]))
+                self.ui.txtNomeMotorista.setText(motor[1])
+                self.setMotorista()
 
 
     def setNfFinish(self):
         moto = DescarreEntradaDao()
         emp = moto.pesquisarNumNotaFiscal(self.ui.txtCodigo.text())
         produto = moto.pesquisarProduto(self.ui.txtCodigo.text())
-
+        nfDao = NotaFiscalRomanieo()
+        forne = nfDao.pesquisarFornecedorNF(self.ui.txtCodigo.text())
+        motor = nfDao.pesquisarMotoristaNF(self.ui.txtCodigo.text())
         if emp == []:
             self.ui.txtNumeroNotaFiscal.clear()
             self.ui.txtProduto.clear()
@@ -609,6 +683,13 @@ class DescaEntrada(QtGui.QDialog):
             for empres in emp:
                 self.ui.txtNumeroNotaFiscal.setText(str(empres[3]))
                 self.ui.txtProduto.setText(produto)
+                self.ui.txtIdFornecedor.setText(str(forne[0]))
+                self.ui.txtNomeFornecedor.setText(forne[2])
+                self.setFornecedor()
+
+                self.ui.txtidMotorista.setText(str(motor[0]))
+                self.ui.txtNomeMotorista.setText(motor[1])
+                self.setMotorista()
 
     def setFornecedor(self):
         moto = DescarreEntradaDao()

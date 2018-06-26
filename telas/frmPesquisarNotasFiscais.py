@@ -136,7 +136,7 @@ class Ui_frmConsultarNotasFiscais(object):
         frmConsultarNotasFiscais.setTabOrder(self.txtDataInicial, self.txtDataFinal)
 
     def retranslateUi(self, frmConsultarNotasFiscais):
-        frmConsultarNotasFiscais.setWindowTitle(_translate("frmConsultarNotasFiscais", "Consultar Notas Fiscal / Romaneios", None))
+        frmConsultarNotasFiscais.setWindowTitle(_translate("frmConsultarNotasFiscais", "Consultar Notas Fiscal", None))
         self.grbTipoPesquisa.setTitle(_translate("frmConsultarNotasFiscais", "Tipo Pesquisa", None))
         self.radBtnNumNotaFiscal.setWhatsThis(_translate("frmConsultarNotasFiscais", "<html><head/><body><p>Campo de seleção para pesquisa por numero de NF</p></body></html>", None))
         self.radBtnNumNotaFiscal.setText(_translate("frmConsultarNotasFiscais", "Nº Nota Fiscal", None))

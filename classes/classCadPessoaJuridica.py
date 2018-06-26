@@ -268,7 +268,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         return verificadores == str(digito_um) + str(digito_dois)
 
     def cadastrar(self):
-        if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and  self.ui.txtComplemento.text() != '' and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '' and self.ui.txtSite.text() != '':
+        if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != ''  and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '':
 
             razao = self.ui.txtRazaoSocial.text()
             fantasia = self.ui.txtFantasia.text()
@@ -458,7 +458,7 @@ class CadastroPessoaJuridica(QtGui.QDialog):
         self.ui.btnDeletar.setEnabled(self.dele)
 
     def editar(self):
-        if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != '' and  self.ui.txtComplemento.text() != '' and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '' and self.ui.txtSite.text() != '':
+        if self.ui.txtRazaoSocial.text() != '' and self.ui.txtFantasia.text() != '' and self.removerCaracter(self.ui.txtCnpj.text()) != '' and self.ui.txtInsEstadual.text() != '' and self.ui.txtEndereco.text() != '' and self.ui.txtNumero.text() != ''  and  self.ui.txtBairro.text() != '' and self.ui.txtCidade.text() != '' and self.ui.txtCep.text() != '':
             validar = self.validacaoCnpj()
             if validar == True:
                 codigo = self.pessoa
@@ -492,9 +492,9 @@ class CadastroPessoaJuridica(QtGui.QDialog):
 
     def deletar(self):
         juridicoDao = PessoaJuridicaDao()
-        clie = juridicoDao.pesquisarTabelaCliente(self.pessoa)
-        forn = juridicoDao.pesquisarTabelaFornecedor(self.pessoa)
-        empr = juridicoDao.pesquisarTabelaEmpresa(self.pessoa)
+        clie = juridicoDao.pesquisarTabelaCliente(str(self.pessoa))
+        forn = juridicoDao.pesquisarTabelaFornecedor(str(self.pessoa))
+        empr = juridicoDao.pesquisarTabelaEmpresa(str(self.pessoa))
         if clie == "" or forn == "" or empr == "":
             try:
                 _fromUtf8 = QtCore.QString.fromUtf8

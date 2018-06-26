@@ -419,8 +419,8 @@ class Ui_frmCadastroMotorista(object):
         frmCadastroMotorista.setTabOrder(self.txtModelo, self.txtPlaca)
 
     def retranslateUi(self, frmCadastroMotorista):
-        frmCadastroMotorista.setWindowTitle(_translate("frmCadastroMotorista", "Cadastro Funcionario", None))
-        self.grbDadosPessoaJuridica.setWhatsThis(_translate("frmCadastroMotorista", "Grupo de Dados para cadastro e edição de empresas", None))
+        frmCadastroMotorista.setWindowTitle(_translate("frmCadastroMotorista", "Cadastro Motorista", None))
+        self.grbDadosPessoaJuridica.setWhatsThis(_translate("frmCadastroMotorista", "Grupo de Dados para cadastro e edição de pessoa fisica", None))
         self.grbDadosPessoaJuridica.setTitle(_translate("frmCadastroMotorista", "Dados Pessoa Fisíca", None))
         self.txtCnpj.setToolTip(_translate("frmCadastroMotorista", "CNPJ", None))
         self.txtCnpj.setWhatsThis(_translate("frmCadastroMotorista", "<html><head/><body><p>Campo do numero do CNPJ da pessoa fisica</p></body></html>", None))

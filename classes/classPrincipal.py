@@ -197,20 +197,20 @@ class Principal(QtGui.QMainWindow):
                 self.permiSaiCarreEditar=edita
 
             elif idFormulario == 15:
-                #Pessoa Fisica
-                self.permiPesFisAtivo=ativo
-                self.permiPesFisCadastrar=cadastro
-                self.permiPesFisCancelar=cancela
-                self.permiPesFisDeletar=deleta
-                self.permiPesFisEditar=edita
+                # Pessoa Juridica
+                self.permiPesJurAtivo = ativo
+                self.permiPesJurCadastrar = cadastro
+                self.permiPesJurCancelar = cancela
+                self.permiPesJurDeletar = deleta
+                self.permiPesJurEditar = edita
 
             elif idFormulario == 16:
-                #Pessoa Juridica
-                self.permiPesJurAtivo=ativo
-                self.permiPesJurCadastrar=cadastro
-                self.permiPesJurCancelar=cancela
-                self.permiPesJurDeletar=deleta
-                self.permiPesJurEditar=edita
+                # Pessoa Fisica
+                self.permiPesFisAtivo = ativo
+                self.permiPesFisCadastrar = cadastro
+                self.permiPesFisCancelar = cancela
+                self.permiPesFisDeletar = deleta
+                self.permiPesFisEditar = edita
 
         self.ui.subMenuCadastroEmpresa.setEnabled(self.permiEmpAtivo)
         self.ui.subMenuCadastroFuncionarios.setEnabled(self.permiFuncAtivo)

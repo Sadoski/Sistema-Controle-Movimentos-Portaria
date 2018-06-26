@@ -258,6 +258,9 @@ class CadastroMotoristas(QtGui.QDialog):
         self.ui.txtModelo.clear()
         self.ui.txtMarca.clear()
         self.ui.txtPlaca.clear()
+        self.ui.txtModelo.setEnabled(True)
+        self.ui.txtMarca.setEnabled(True)
+        self.ui.txtPlaca.setEnabled(True)
 
         self.ui.txtContatoTelefone.clear()
         self.ui.txtNumeroTelefone.clear()
@@ -818,7 +821,7 @@ class CadastroMotoristas(QtGui.QDialog):
 
 
         idPessoa = motoDao.pesquisarPessoaCodigo(codigo)
-        idPessoaFisico = motoDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoaFisico = motoDao.pesquisarPessoaFisicaId(str(idPessoa))
 
         __dados = Motorista(codigo, idPessoa, idPessoaFisico, nome, sobrenome, rg, cpf, pis, cnh, categoria, marca, modelo, placa, obs, situacao)
         self.botoesEditar()
@@ -1015,7 +1018,7 @@ class CadastroMotoristas(QtGui.QDialog):
 
     def deletar(self):
         fisicaDao = MotoristaDao()
-        nf = fisicaDao.pesquisarTabelaNf(self.idMotorista)
+        nf = fisicaDao.pesquisarTabelaNf(str(self.idMotorista))
 
         if nf == []:
             try:

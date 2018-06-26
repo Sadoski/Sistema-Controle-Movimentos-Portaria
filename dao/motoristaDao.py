@@ -424,6 +424,7 @@ class MotoristaDao(object):
             self.__cursor.execute(__sql)
             self.__conexao.conn.commit()
             # self.__cursor.close()
+            return True
         except mysql.connector.Error as e:
             w = QWidget()
             QMessageBox.warning(w, 'Erro', "Erro ao deletar as informações no banco de dados")

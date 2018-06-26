@@ -710,12 +710,17 @@ class CadastroClientes(QtGui.QDialog):
             cep = str(itens[15])
 
             cli = cliente.pesquisarClientesFisico(codigo)
-            if cli == []:
-                __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
-                self.setCamposFisicoJuridico(__dados)
-                self.dialogFisicoJuridico.close()
+            pesDao = EmpresaDao()
+            emp = pesDao.pesquisaEmpresaJuridica(codigo)
+            if emp == []:
+                if cli == []:
+                    __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+                    self.setCamposFisicoJuridico(__dados)
+                    self.dialogFisicoJuridico.close()
+                else:
+                    MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
             else:
-                MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
+                self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa  não poder ser cliente")
 
         elif self.ui.radBtnPessoaJuridica.isChecked():
             itens = []
@@ -738,12 +743,17 @@ class CadastroClientes(QtGui.QDialog):
             cep = str(itens[11])
 
             cli = cliente.pesquisarClientesJuridico(codigo)
-            if cli == []:
-                __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
-                self.setCamposFisicoJuridico(__dados)
-                self.dialogFisicoJuridico.close()
+            pesDao = EmpresaDao()
+            emp = pesDao.pesquisaEmpresaJuridica(codigo)
+            if emp == []:
+                if cli == []:
+                    __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
+                    self.setCamposFisicoJuridico(__dados)
+                    self.dialogFisicoJuridico.close()
+                else:
+                    MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
             else:
-                MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
+                self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa  não poder ser cliente")
 
     def setCamposFisicoJuridico(self, campos):
         if self.ui.radBtnPessoaFisica.isChecked():
@@ -892,8 +902,8 @@ class CadastroClientes(QtGui.QDialog):
             situacao = False
 
         idPessoa = clienteDao.pesquisarPessoaCodigo(codigo)
-        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(idPessoa)
-        idPessoaJuridica = clienteDao.pesquisarPessoaJuridicaId(idPessoa)
+        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(str(idPessoa))
+        idPessoaJuridica = clienteDao.pesquisarPessoaJuridicaId(str(idPessoa))
 
         __dados = Cliente(codigo, idPessoa, idPessoaFisico, idPessoaJuridica, cnpj, insEstadual, fantasia, razao, obs, situacao, tipo)
         self.botoesEditar()
@@ -909,13 +919,15 @@ class CadastroClientes(QtGui.QDialog):
         if campos.getTipo == "PESSOA FÍSICA":
             self.ui.radBtnPessoaFisica.setChecked(True)
             self.idPessoaFisica = campos.getIdPessoaFisica
+            self.ui.txtCodigo.setText(str(campos.getIdPessoaFisica))
         elif campos.getTipo == "PESSOA JURÍDICA":
             self.idPessoaJurirdica = campos.getIdPessoaJuridica
             self.ui.radBtnPessoaJuridica.setChecked(True)
+            self.ui.txtCodigo.setText(str(campos.getIdPessoaJuridica))
 
         self.idCliente= int(campos.getIdCliente)
         self.idPessoa = int(campos.getIdPessoa)
-        self.ui.txtCodigo.setText(str(campos.getIdPessoa))
+
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
         self.ui.txtFantasia.setText(campos.getFantasia)
@@ -1069,8 +1081,8 @@ class CadastroClientes(QtGui.QDialog):
 
     def deletar(self):
         fisicaDao = ClienteDao()
-        carre = fisicaDao.pesquisarTabelaCarreg(self.idCliente)
-
+        carre = fisicaDao.pesquisarTabelaCarreg(str(self.idCliente))
+        print(carre)
         if carre == []:
             try:
                 _fromUtf8 = QtCore.QString.fromUtf8

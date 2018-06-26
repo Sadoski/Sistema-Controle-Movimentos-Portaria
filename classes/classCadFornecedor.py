@@ -642,12 +642,17 @@ class CadastroFornecedores(QtGui.QDialog):
 
             if self.ui.radBtnPessoaFisica.isChecked():
                 cli = fornecedor.pesquisarFornecedoresFisico(codigo)
-                if cli == []:
-                    __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
-                    self.setCamposFisicoJuridico(__dados)
-                    self.dialogFisicoJuridico.close()
+                pesDao = EmpresaDao()
+                emp = pesDao.pesquisaEmpresaJuridica(codigo)
+                if emp == []:
+                    if cli == []:
+                        __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
+                        self.setCamposFisicoJuridico(__dados)
+                        self.dialogFisicoJuridico.close()
+                    else:
+                        MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
                 else:
-                    MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
+                    self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa  não poder ser fornecedor")
 
         elif self.ui.radBtnPessoaJuridica.isChecked():
             itens = []
@@ -670,12 +675,17 @@ class CadastroFornecedores(QtGui.QDialog):
             cep = str(itens[11])
 
             cli = fornecedor.pesquisarFornecedoresJuridico(codigo)
-            if cli == []:
-                __dados = PessoaFisica(None, codigo, None, nome, apelido, cpf, rg, expeditor, uf, aniversario, sexo, endereco, numero, complemento, bairro, None, None, None, cidade, estado, cep)
-                self.setCamposFisicoJuridico(__dados)
-                self.dialogFisicoJuridico.close()
+            pesDao = EmpresaDao()
+            emp = pesDao.pesquisaEmpresaJuridica(codigo)
+            if emp == []:
+                if cli == []:
+                    __dados = PessoaJuridica(None, codigo, None, razao, fantasia, cnpj, inscricao, endereco, numero, complemento, bairro, None, cidade, estado, cep, None)
+                    self.setCamposFisicoJuridico(__dados)
+                    self.dialogFisicoJuridico.close()
+                else:
+                    MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
             else:
-                MensagemBox().warning('Mensagem', "Atenção já tem um cadastro desta pessoa")
+                self.mensagem.warning('Mensagem', "Atenção já tem um cadastro como empresa  não poder ser fornecedor")
 
     def setCamposFisicoJuridico(self, campos):
         if self.ui.radBtnPessoaFisica.isChecked():
@@ -894,7 +904,7 @@ class CadastroFornecedores(QtGui.QDialog):
             situacao = False
 
         idPessoa = clienteDao.pesquisarPessoaCodigo(codigo)
-        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(idPessoa)
+        idPessoaFisico = clienteDao.pesquisarPessoaFisicaId(str(idPessoa))
         idPessoaJuridica = clienteDao.pesquisarPessoaJuridicaId(idPessoa)
 
         __dados = Fornecedor(codigo, idPessoa, idPessoaFisico, idPessoaJuridica, cnpj, insEstadual, fantasia, razao, obs, situacao, tipo)
@@ -911,13 +921,15 @@ class CadastroFornecedores(QtGui.QDialog):
         if campos.getTipo == "PESSOA FÍSICA":
             self.ui.radBtnPessoaFisica.setChecked(True)
             self.idPessoaFisica = campos.getIdPessoaFisica
+            self.ui.txtCodigo.setText(str(campos.getIdPessoaFisica))
         elif campos.getTipo == "PESSOA JURÍDICA":
             self.idPessoaJurirdica = campos.getIdPessoaJuridica
             self.ui.radBtnPessoaJuridica.setChecked(True)
+            self.ui.txtCodigo.setText(str(campos.getIdPessoaJuridica))
 
         self.idFornecedor = int(campos.getIdFornecedor)
         self.idPessoa = int(campos.getIdPessoa)
-        self.ui.txtCodigo.setText(str(campos.getIdPessoa))
+
         self.ui.txtCnpj.setText(campos.getCnpj)
         self.ui.txtInscricaoEstadua.setText(campos.getInscricaoEstadual)
         self.ui.txtFantasia.setText(campos.getFantasia)
@@ -1071,8 +1083,8 @@ class CadastroFornecedores(QtGui.QDialog):
 
     def deletar(self):
         fisicaDao = FornecedorDao()
-        desca = fisicaDao.pesquisarTabelaDesca(self.idFornecedor)
-        nf = fisicaDao.pesquisarTabelaNf(self.idFornecedor)
+        desca = fisicaDao.pesquisarTabelaDesca(str(self.idFornecedor))
+        nf = fisicaDao.pesquisarTabelaNf(str(self.idFornecedor))
 
         if desca == [] or nf == []:
             try:
